@@ -4,13 +4,17 @@ Bilangan berbasis 64 ini menggunakan karakter Base64 untuk merepresentasikan dat
 Kegunaan dari class ini cukup banyak, antara lain untuk mengkompress data numeric dari data JSON.
 
 menggunakan decimal
-`{
+```
+{
     "data" : "1235478956"
-}`
+}
+```
 
 menggunakan b64
-`{
+```
+{
     "data" : "BJo+ms"
-}`
+}
+```
 
 Hasilnya lebih pendek
