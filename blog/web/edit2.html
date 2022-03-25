@@ -1,0 +1,60 @@
+<html>
+
+<head>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, target-densityDpi=device-dpi">
+
+	<link rel="stylesheet" href='./css/grid.css' />
+	<link rel="stylesheet" href='./css/umum.css' />
+
+	<style>
+		body,
+		html {
+			height: 100vh;
+			padding: 0px;
+			margin: 0px;
+		}
+
+		div.kontainer {
+			height: 100%;
+		}
+
+		form,
+		iframe {
+			border: 0px;
+			box-sizing: border-box;
+			width: 50%;
+			height: 100%;
+		}
+
+		textarea {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div>
+		<button id="tebel">bold</button>
+	</div>
+	<div class='layout kontainer row'>
+
+		<form>
+			<textarea class='edit-area'></textarea>
+		</form>
+
+		<iframe class='iframe'>
+
+		</iframe>
+
+	</div>
+
+	<script src='./js/comp/BaseComponent.js'></script>
+	<script src='./js/comp/Dialog.js'></script>
+	<script src='./js/comp/Loading.js'></script>
+	<script src='./js/comp/Util.js'></script>
+	<script src='./js/Edit2.js'></script>
+</body>
+
+</html>
