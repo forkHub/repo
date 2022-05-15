@@ -7,6 +7,7 @@ namespace ha.list {
         private aktif: IListObj;
 
         getByNama(nama: string): IListObj {
+
             for (let i: number = 0; i < this.ar.length; i++) {
                 if (this.ar[i].nama == nama) {
                     this.aktif = this.ar[i];
