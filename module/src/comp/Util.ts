@@ -82,13 +82,6 @@ namespace ha.comp {
 			throw Error(x.responseText);
 		}
 
-		//TODO: hapus
-		static async sql(query: string,): Promise<any[]> {
-			query;
-			return [];
-		}
-
-
 		static async Ajax(type: string, url: string, dataStr: string, pf: (p: ProgressEvent) => void = null): Promise<XMLHttpRequest> {
 			return new Promise((resolve: any, reject: any) => {
 				try {

@@ -7,7 +7,8 @@
         target-densityDpi=device-dpi">
 	<link href="css/umum.css" rel="stylesheet">
 
-	<title>code</title>
+	<title>fungsi</title>
+
 	<style>
 		html {
 			padding: 16px;
@@ -30,17 +31,17 @@
 			flex-grow: 1;
 		}
 
-		daftar-modul,
+		daftar-param,
 		daftar-var,
-		daftar-fungsi {
+		daftar-stmt {
 			display: flex;
 			flex-direction: column;
 			width: 100%;
 		}
 
-		daftar-modul item,
+		daftar-param item,
 		daftar-var item,
-		daftar-fungsi item {
+		daftar-stmt item {
 			box-sizing: border-box;
 			width: 100%;
 			padding: 8px;
@@ -48,9 +49,9 @@
 			cursor: pointer;
 		}
 
-		daftar-modul item.dipilih,
+		daftar-param item.dipilih,
 		daftar-var item.dipilih,
-		daftar-fungsi item.dipilih {
+		daftar-stmt item.dipilih {
 			background-color: lightgray;
 		}
 
@@ -65,7 +66,8 @@
 		}
 
 		var-baru,
-		fungsi-baru {
+		param-baru,
+		stmt-baru {
 			position: absolute;
 			background-color: white;
 			padding: 16px;
@@ -78,12 +80,20 @@
 
 <body>
 	<halaman>
+
 		<daftar>
-			<daftar-modul></daftar-modul>
+			<daftar-param></daftar-param>
 			<daftar-var></daftar-var>
-			<daftar-fungsi></daftar-fungsi>
+			<daftar-stmt></daftar-stmt>
 		</daftar>
-		<menu></menu>
+
+		<menu>
+			<button class="tambah">tambah</button>
+			<button class="edit">edit</button>
+			<button class="hapus">hapus</button>
+		</menu>
+
+
 	</halaman>
 
 	<ha-blok>
@@ -91,6 +101,38 @@
 	</ha-blok>
 
 	<template>
+
+		<var-isi>
+			<form>
+				<label>variable:</label><br />
+				<input type="text" name="nama" class="nama" readonly>
+				<button class="cari">...</button>
+
+				<label>value:</label><br />
+				<input type="text" name="value" class="value">
+				<br />
+
+				<button type="submit" class="simpan">OK</button>
+				<button type="button" class="batal">Batal</button>
+			</form>
+		</var-isi>
+
+		<menu-popup>
+			<menu-tambah>
+				<button class="var">variable</button>
+				<button class="param">param</button>
+				<button class="stmt">stmt</button>
+			</menu-tambah>
+
+			<menu-stmt>
+				<button class="var-isi">isi var</button>
+				<button class="for">for</button>
+				<button class="if">if</button>
+				<button class="else-if">else if</button>
+				<button class="else">else</button>
+				<button class="while">while</button>
+			</menu-stmt>
+		</menu-popup>
 
 		<item>
 			<judul></judul>
