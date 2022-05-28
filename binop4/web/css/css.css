@@ -1,0 +1,12 @@
+div.modul-item,
+div.var-item {
+	padding: 8px;
+	border: 1px gray solid;
+	user-select: none;
+	cursor: pointer;
+}
+
+div.modul-item.dipilih,
+div.var-item.dipilih {
+	background-color: gray;
+}
