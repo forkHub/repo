@@ -6,10 +6,6 @@ namespace menu {
         const balikQuery: string = 'button.balik';
         const namaQuery: string = 'button.nama';
 
-
-
-
-
         export function el(): HTMLDivElement {
             if (!_el) {
                 _el = ha.comp.Util.getTemplate('div.menu-fungsi-deklarasi-update') as HTMLDivElement;

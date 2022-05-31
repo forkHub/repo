@@ -19,7 +19,7 @@ namespace data {
         if (modul.dipilih()) return data.TY_MODUL;
         if (variable.dipilih()) return data.TY_VARIABLE;
         if (fung.dek.dipilih()) return data.TY_DEK_FUNGSI;
-        if (nama.dipilih()) return data.TY_NAMA;
+        // if (nama.dipilih()) return data.TY_NAMA;
         return '';
     }
 

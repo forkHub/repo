@@ -55,7 +55,8 @@ namespace menu.utama {
             }
             else if (data.TY_NAMA == dipilih) {
                 //edit nama
-                nama.klikUpdate(nama.dipilih());
+                // nama.klikUpdate(nama.dipilih());
+                //TODO: dihapus
             }
             else {
                 console.warn('dipilih kosong: ' + dipilih);

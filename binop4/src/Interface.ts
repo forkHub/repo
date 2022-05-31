@@ -28,7 +28,3 @@ interface IFungDek extends IData {
 interface IParam extends IData {
     view?: param.View
 }
-
-interface INama extends IData {
-    view?: nama.View
-}
