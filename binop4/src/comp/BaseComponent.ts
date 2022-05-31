@@ -1,8 +1,24 @@
 namespace ha.comp {
+
+	export function createComponent(template: string): BaseComponent {
+		let comp: BaseComponent = new BaseComponent();
+		comp.template = template;
+		comp.build();
+
+		return comp;
+	}
+
 	export class BaseComponent {
 		protected _template: string = '';
 		protected _elHtml: HTMLElement | null = document.createElement('div');
 		protected _parent: HTMLElement;
+
+		public get template(): string {
+			return this._template;
+		}
+		public set template(value: string) {
+			this._template = value;
+		}
 
 		async loadTemplate(f: string): Promise<string> {
 			let http: XMLHttpRequest = await Util.Ajax('get', f, '');

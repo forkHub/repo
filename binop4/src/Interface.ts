@@ -1,8 +1,15 @@
+interface ISimpan {
+    modul: IModul[],
+    var: IVar[],
+    dekFung: IFungDek[]
+}
+
 interface IData {
     id: number
     indukId: number
     type: string
     dipilih: boolean
+    diedit: boolean
     nama: string
 }
 
@@ -15,9 +22,13 @@ interface IVar extends IData {
 }
 
 interface IFungDek extends IData {
-    // view?:
+    view?: fung.dek.View
 }
 
 interface IParam extends IData {
     view?: param.View
+}
+
+interface INama extends IData {
+    view?: nama.View
 }
