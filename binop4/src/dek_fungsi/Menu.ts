@@ -1,7 +1,7 @@
 namespace menu {
 
     //menu update di klik saat pilih deklarasi fungsi
-    export namespace func.dec.update {
+    export namespace fung.dek.update {
         let _el: HTMLDivElement;
         const balikQuery: string = 'button.balik';
         const namaQuery: string = 'button.nama';
@@ -23,7 +23,7 @@ namespace menu {
             });
 
             klik(namaQuery, el(), () => {
-
+                window.fung.dek.updateNama.exec();
             })
 
 

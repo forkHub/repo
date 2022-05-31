@@ -51,7 +51,10 @@ namespace menu.utama {
             }
             else if (data.TY_DEK_FUNGSI == dipilih) {
                 console.log('fungsi dipilih');
-                menu.ganti(menu.func.dec.update.el());
+                let fungObj: IFungDek = window.fung.dek.dipilih();
+                window.fung.dek.hapusDiedit();
+                fungObj.diedit = true;
+                menu.ganti(menu.fung.dek.update.el());
             }
             else if (data.TY_NAMA == dipilih) {
                 //edit nama

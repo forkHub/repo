@@ -8,7 +8,7 @@ namespace menu {
     }
 
     export function mulai(): void {
-        menu.func.dec.update.mulai();
+        menu.fung.dek.update.mulai();
         menu.utama.mulai();
         menu.tambah.mulai();
         menu.system.mulai();

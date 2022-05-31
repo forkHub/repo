@@ -224,6 +224,21 @@ namespace variable {
 namespace fung.dek {
     const daftar: IFungDek[] = [];
 
+    export function diedit(): IFungDek {
+
+        for (let i: number = 0; i < daftar.length; i++) {
+            if (daftar[i].diedit) return daftar[i];
+        }
+
+        throw Error('tidak ada deklarasi fungsi diedit');
+    }
+
+    export function hapusDiedit(): void {
+        daftar.forEach((item: IFungDek) => {
+            item.diedit = false;
+        })
+    }
+
     //Buat dan pasang view
     export function buat(nama: string, indukId: number): IFungDek {
 
@@ -290,6 +305,10 @@ namespace fung.dek {
         }
         public set item(value: IFungDek) {
             this._item = value;
+        }
+
+        update(): void {
+            this._elHtml.innerHTML = 'fungsi ' + this.item.nama + '()';
         }
 
         constructor(item: IFungDek) {
@@ -404,17 +423,7 @@ namespace param {
 namespace modul {
     const daftar: IModul[] = [];
 
-    export function diedit(): IModul {
-        let hasil: IModul;
 
-        daftar.forEach((item: IModul) => {
-            if (item.diedit) {
-                hasil = item;
-            }
-        })
-
-        return hasil;
-    }
 
     //TODO: hapus
     export function hapusPilihan(): void {
