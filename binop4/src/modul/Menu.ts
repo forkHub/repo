@@ -23,6 +23,7 @@ namespace modul.editor.menu {
 }
 
 namespace modul.editor.menu.utama {
+
     class View extends ha.comp.BaseComponent {
         constructor() {
             super();

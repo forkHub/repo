@@ -1,5 +1,4 @@
 namespace variable.isi.ent {
-    const daftar: IVarIsi[] = [];
 
     export function buat(indukId: number): IVarIsi {
         let hasil: IVarIsi;
@@ -14,9 +13,7 @@ namespace variable.isi.ent {
             type: data.TY_STMT
         }
 
-        daftar.push(hasil);
-
-
+        stmt.daftar.push(hasil);
 
         return hasil;
     }

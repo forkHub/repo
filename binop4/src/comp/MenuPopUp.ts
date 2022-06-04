@@ -44,9 +44,8 @@ namespace ha.comp {
 		constructor() {
 			super();
 			this._template = `
-				<div class='menu-popup' style="position:absolute; top:0px; left:0px; right:0px; bottom:0px; z-index:1000; background-color: rgba(0,0,0,.3)">
-					<div class='box cont' style="position:absolute; bottom:0px; left:0px; right:0px">
-	
+				<div class='menu-popup' style="position:fixed; top:0px; left:0px; right:0px; bottom:0px; z-index:1000; background-color: rgba(0,0,0,.3)">
+					<div class='box cont' style="position:fixed; bottom:0px; left:0px; right:0px">
 					</div>
 				</div>
 			`;

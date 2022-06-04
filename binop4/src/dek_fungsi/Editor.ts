@@ -213,7 +213,7 @@ namespace fung.dek.editor.param {
         constructor(param: IParam) {
             super();
             this._template = `
-                <div class='param-item border'>
+                <div class='param-item padding'>
                     <div class='border padding row'>
                         <div class='nama flex-grow-1'>
                         </div>

@@ -1,28 +1,46 @@
 namespace fung.dek.editor.stmt {
     const daftar: ha.comp.BaseComponent[] = [];
 
+    async function buatExp(id: number, cont: HTMLDivElement): Promise<void> {
+        let exp1: IExp;
+        let expView: exp.View;
+
+        await ha.comp.Util.delay(5);
+        exp1 = window.exp.ent.buat(id);
+        expView = new exp.View(exp1);
+        expView.attach(cont);
+
+        //buat value 
+        await ha.comp.Util.delay(5);
+        let valueObj: IValue = window.value.ent.buat(exp1.id);
+        let valueView: value.View = new value.View(valueObj);
+        valueView.attach(expView.cont);
+    }
+
     async function buatVarIsiKlik(): Promise<void> {
         let id: number = fung.dek.diedit().id
         let varIsiObj: IVarIsi;
         let varIsiView: variable.isi.item.View;
-        let exp1: IExp;
-        let exp2: IExp;
-        let expView: ExpView;
+        // let exp1: IExp;
+        // let exp2: IExp;
+        // let expView: exp.View;
 
         varIsiObj = variable.isi.ent.buat(id);
         varIsiView = new variable.isi.item.View(varIsiObj);
         varIsiView.attach(view.daftar);
         daftar.push(varIsiView);
 
-        await ha.comp.Util.delay(5);
-        exp1 = exp.ent.buat(varIsiObj.id);
-        expView = new ExpView(exp1);
-        expView.attach(varIsiView.var1Tbl)
+        // await ha.comp.Util.delay(5);
+        // exp1 = window.exp.ent.buat(varIsiObj.id);
+        // expView = new exp.View(exp1);
+        // expView.attach(varIsiView.exp1)
+        buatExp(varIsiObj.id, varIsiView.exp1);
 
-        await ha.comp.Util.delay(5);
-        exp2 = exp.ent.buat(varIsiObj.id);
-        expView = new ExpView(exp2);
-        expView.attach(varIsiView.var2Tbl);
+        // await ha.comp.Util.delay(5);
+        // exp2 = window.exp.ent.buat(varIsiObj.id);
+        // expView = new exp.View(exp2);
+        // expView.attach(varIsiView.exp2);
+        buatExp(varIsiObj.id, varIsiView.exp2);
     }
 
     const menuTambah: ha.comp.MenuPopup = new ha.comp.MenuPopup();
@@ -43,13 +61,13 @@ namespace fung.dek.editor.stmt {
         constructor() {
             super();
             this._template = `
-                <div class='stmt padding border'>
+                <div class='stmt-comp padding border'>
                     <div class='padding'>
                         stmts:
                     </div>
                     <div class='daftar padding border'>
                     </div>
-                    <div>
+                    <div class='padding'>
                         <button class='menu'>|||</button>
                     </div>
                 </stmt>
@@ -72,19 +90,6 @@ namespace fung.dek.editor.stmt {
         }
     }
     export const view: View = new View();
-
-    class ExpView extends ha.comp.BaseComponent {
-        private _exp: IExp;
-        public get exp(): IExp {
-            return this._exp;
-        }
-
-        constructor(exp: IExp) {
-            super();
-
-            this._exp = exp;
-        }
-    }
 
     export function render(): void {
         let fungDekObj: IFungDek = window.fung.dek.diedit();

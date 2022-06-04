@@ -17,19 +17,15 @@ namespace variable.isi.item {
         constructor(item: IVarIsi) {
             super();
             this._template = `
-                <div class='var-isi-item row'>
+                <div class='var-isi-comp row padding'>
                     <div class='var1 row'>
                         <div class='exp-cont'></div>
-                        <div class='padding'>
-                            <button>|||</button>
-                        </div>
                     </div>
-                   <span class='opr'>=</span>
+                    <div class='tengah-tengah padding'>
+                        <span class='opr'>=</span>
+                    </div>
                     <div class='var2 row'>
                         <div class='exp-cont'></div>
-                        <div class='padding'>
-                            <button>|||</button>
-                        </div>
                     </div>
                 </div>
             `;
@@ -37,20 +33,6 @@ namespace variable.isi.item {
             this.build();
             this._item = item;
             this.render();
-
-
-
-            this.var1Tbl.onclick = (e: MouseEvent) => {
-                e.stopPropagation();
-                console.log('referensi variable');
-                //TODO:
-            }
-
-            this.var2Tbl.onclick = (e: MouseEvent) => {
-                e.stopPropagation();
-                console.log('referensi variable atau value');
-                //TODO:
-            }
         }
 
         render(): void {
@@ -63,12 +45,12 @@ namespace variable.isi.item {
             this._item = null;
         }
 
-        get var1Tbl(): HTMLDivElement {
-            return this.getEl('div.var1 exp-cont') as HTMLDivElement;
+        get exp1(): HTMLDivElement {
+            return this.getEl('div.var1 div.exp-cont') as HTMLDivElement;
         }
 
-        get var2Tbl(): HTMLButtonElement {
-            return this.getEl('div.var2 exp-cont') as HTMLButtonElement;
+        get exp2(): HTMLDivElement {
+            return this.getEl('div.var2 div.exp-cont') as HTMLDivElement;
         }
     }
 
