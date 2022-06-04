@@ -35,15 +35,18 @@ interface IStmt extends IData {
 }
 
 interface IVarIsi extends IStmt {
-    var1?: IRef,
-    var2?: IValue
+
 }
 
 interface IValue extends IData {
-    valueType: string,
+    valueType: "teks" | "angka" | "ar_angka" | "ar_teks",
     value: string
 }
 
 interface IRef extends IData {
     refId: number;
+}
+
+interface IExp extends IData {
+
 }

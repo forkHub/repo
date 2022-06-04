@@ -5,6 +5,10 @@ namespace data {
     export const TY_NAMA: string = 'nama';
     export const TY_PARAM: string = 'param';
     export const TY_STMT: string = 'stmt';
+    export const TY_VALUE: string = 'value';
+    export const TY_EXP: string = 'exp';
+
+    export const STMT_VAR_ISI: string = 'var isi';
 
     export var idEdit: number = 0;
 
@@ -593,6 +597,7 @@ namespace modul {
 }
 
 namespace stmt {
+
     const daftar: IStmt[] = [];
 
     export function byIndukId(indukId: number): IStmt[] {
