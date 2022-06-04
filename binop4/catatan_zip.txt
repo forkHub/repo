@@ -1,0 +1,16 @@
+idx dibagi  digit   variasi
+0   4       1       4
+1   8       2       8
+2   16      4       16
+3   32      8       32
+4   64      16      64
+5   128     32      128
+6   256     64      256
+
+3   3       3       8 (17bit /3 byte) + 1 flag => 18 bit
+
+1  byte simpan 2 bit
+8  byte simpan 16 bit / 2 byte
+16 byte simpan 32 bit / 4 byte
+
+16 byte = 15 byte

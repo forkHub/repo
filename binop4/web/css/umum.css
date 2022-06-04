@@ -1,3 +1,8 @@
+html,
+body {
+	height: 100%;
+}
+
 * {
 	margin: 0px;
 	padding: 0px;
@@ -184,6 +189,14 @@ a.bersih {
 	display: flex
 }
 
+.flex-dir-row {
+	flex-direction: row;
+}
+
+.flex-dir-col {
+	flex-direction: column;
+}
+
 .flex-grow-1 {
 	flex-grow: 1
 }
@@ -196,4 +209,8 @@ a.bersih {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.min-height-100 {
+	min-height: 100vh;
 }

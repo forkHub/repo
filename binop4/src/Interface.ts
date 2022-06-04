@@ -2,6 +2,7 @@ interface ISimpan {
     modul: IModul[],
     var: IVar[],
     dekFung: IFungDek[]
+    param?: IParam[]
 }
 
 interface IData {
@@ -26,5 +27,23 @@ interface IFungDek extends IData {
 }
 
 interface IParam extends IData {
-    view?: param.View
+    // view?: param.View
+}
+
+interface IStmt extends IData {
+    stmtType: string;
+}
+
+interface IVarIsi extends IStmt {
+    var1?: IRef,
+    var2?: IValue
+}
+
+interface IValue extends IData {
+    valueType: string,
+    value: string
+}
+
+interface IRef extends IData {
+    refId: number;
 }

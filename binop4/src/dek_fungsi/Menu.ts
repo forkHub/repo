@@ -1,10 +1,17 @@
-namespace menu {
+namespace modul.editor.modul.update {
 
-    //menu update di klik saat pilih deklarasi fungsi
-    export namespace fung.dek.update {
+    export namespace fung.dek {
         let _el: HTMLDivElement;
         const balikQuery: string = 'button.balik';
         const namaQuery: string = 'button.nama';
+        const paramQuery: string = 'button.param';
+        const stmtQuery: string = 'button.stmt';
+
+        let popUp: ha.comp.MenuPopup = new ha.comp.MenuPopup();
+        popUp.buatTombol({
+            f: () => { },
+            label: 'var isi'
+        });
 
         export function el(): HTMLDivElement {
             if (!_el) {
@@ -18,86 +25,25 @@ namespace menu {
         }
 
         export function mulai(): void {
-            klik(balikQuery, el(), () => {
-                menu.ganti(menu.utama.el());
+            menu.klik(balikQuery, el(), () => {
+                window.modul.editor.menu.ganti(window.modul.editor.menu.utama.view.elHtml);
             });
 
-            klik(namaQuery, el(), () => {
-                window.fung.dek.updateNama.exec();
+            menu.klik(namaQuery, el(), () => {
+                // window.fung.dek.daftar.updateNama.exec();
             })
 
+            menu.klik(paramQuery, el(), () => {
+                console.log('param klik')
+                window.param.update.exec();
+            })
 
-
+            menu.klik(stmtQuery, el(), () => {
+                console.log('stmt klik');
+                popUp.view.attach(document.body);
+            });
         }
 
     }
-
-    /*
-    export namespace func.dec.edit {
-        let _el: HTMLDivElement;
-
-        export function el(): HTMLDivElement {
-            if (!_el) {
-                _el = ha.comp.Util.getTemplate('div.menu-fung-dec-edit') as HTMLDivElement;
-            }
-            return _el;
-        }
-
-        export function modulTbl(): HTMLButtonElement {
-            return ha.comp.Util.getEl('button.modul', el()) as HTMLButtonElement;
-        }
-
-        export function varTbl(): HTMLButtonElement {
-            return ha.comp.Util.getEl('button.var', el()) as HTMLButtonElement;
-        }
-
-        export function fungTbl(): HTMLButtonElement {
-            return ha.comp.Util.getEl('button.fungsi', el()) as HTMLButtonElement;
-        }
-
-        export function paramTbl(): HTMLButtonElement {
-            return ha.comp.Util.getEl('button.param', el()) as HTMLButtonElement;
-        }
-
-        export function stmtTbl(): HTMLButtonElement {
-            return ha.comp.Util.getEl('button.stmt', el()) as HTMLButtonElement;
-        }
-
-        export function mulai(): void {
-
-            modulTbl().onclick = (e: MouseEvent) => {
-                e.stopPropagation();
-                let nama: string = window.prompt('nama', 'modul 1');
-                let modulObj: IModul = window.modul.buat(nama, 0);
-                modulObj.view.attach(modul.hal.halaman());
-            }
-
-            varTbl().onclick = (e: MouseEvent) => {
-                e.stopPropagation();
-                let nama: string = window.prompt('nama', 'variable 1');
-                let varObj: IVar = window.variable.buat(nama, 0);   //TODO: id dipilih
-                varObj.view.attach(modul.hal.variable());
-            }
-
-            fungTbl().onclick = (e: MouseEvent) => {
-                e.stopPropagation();
-                let nama: string = window.prompt('nama', 'fungsi');
-                let varObj: IFungDek = window.fung.dek.buat(nama, 0);   //TODO: id dipilih
-                varObj.view.attach(modul.hal.deklarasiFungsi());
-            }
-
-            paramTbl().onclick = (e: MouseEvent) => {
-                e.stopPropagation();
-                console.log('param tbl');
-            }
-
-            stmtTbl().onclick = (e: MouseEvent) => {
-                e.stopPropagation();
-                console.log('stmt tbl');
-            }
-
-
-        }
-    }*/
 
 }

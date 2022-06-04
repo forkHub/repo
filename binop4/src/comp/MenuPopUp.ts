@@ -1,20 +1,9 @@
 namespace ha.comp {
 	export class MenuPopup {
-		private view: View = new View();
+		readonly view: View = new View();
 
 		constructor() {
 
-		}
-
-		tampil(tombol: ITombol[]): void {
-			while (this.view.box.firstChild) {
-				this.view.box.removeChild(this.view.box.firstChild);
-			}
-
-			tombol.forEach((item: ITombol) => {
-				this.buatTombol(item);
-			});
-			this.view.attach(document.body);
 		}
 
 		buatClass(label: string): string {
@@ -48,15 +37,15 @@ namespace ha.comp {
 
 	interface ITombol {
 		label: string,
-		f: Function
+		f: () => void
 	}
 
 	class View extends BaseComponent {
 		constructor() {
 			super();
 			this._template = `
-				<div class='menu-popup' style="position:fixed; top:0px; left:0px; right:0px; bottom:0px; z-index:1000; background-color: rgba(0,0,0,.3)">
-					<div class='box cont' style="position:fixed; bottom:0px; left:0px; right:0px">
+				<div class='menu-popup' style="position:absolute; top:0px; left:0px; right:0px; bottom:0px; z-index:1000; background-color: rgba(0,0,0,.3)">
+					<div class='box cont' style="position:absolute; bottom:0px; left:0px; right:0px">
 	
 					</div>
 				</div>

@@ -48,6 +48,11 @@ namespace ha.comp {
 			})
 		}
 
+		static bersihDiv(div: HTMLElement): void {
+			while (div.firstChild) {
+				div.removeChild(div.firstChild);
+			}
+		}
 
 		//default error
 		static error(e: Error): void {

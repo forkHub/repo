@@ -3,18 +3,21 @@ namespace data {
     export const TY_VARIABLE: string = 'variable';
     export const TY_DEK_FUNGSI: string = 'dek-fungsi';
     export const TY_NAMA: string = 'nama';
+    export const TY_PARAM: string = 'param';
+    export const TY_STMT: string = 'stmt';
 
+    export var idEdit: number = 0;
 
-    //TODO: dipindah
+    //TODO: dipindah ke modul, kurang efektif
     export function hapusPilihan(): void {
         modul.hapusPilihan();
         variable.hapusPilihan();
         fung.dek.hapusPilihan();
-        param.hapusPilihan();
+        // param.hapusPilihan();
         // nama.hapusPilihan();
     }
 
-    //TODO: dipindah
+    //TODO: dipindah ke modul, kurang efektif
     export function typeDipilih(): string {
         if (modul.dipilih()) return data.TY_MODUL;
         if (variable.dipilih()) return data.TY_VARIABLE;
@@ -29,7 +32,8 @@ namespace data {
         let simpanObj: ISimpan = {
             dekFung: fung.dek.simpan(),
             modul: modul.simpan(),
-            var: variable.simpan()
+            var: variable.simpan(),
+            param: param.simpan()
         }
 
         // hasil = JSON.stringify(simpanObj);
@@ -41,6 +45,7 @@ namespace data {
         modul.muat(obj.modul);
         variable.muat(obj.var);
         fung.dek.muat(obj.dekFung);
+        param.muat(obj.param);
     }
 
     //TODO: dipindah
@@ -181,7 +186,7 @@ namespace variable {
                 this.item.view.elHtml.classList.add('dipilih');
 
                 //reset menu
-                menu.ganti(menu.utama.el());
+                modul.editor.menu.ganti(modul.editor.menu.utama.view.elHtml);
             }
         }
 
@@ -194,8 +199,8 @@ namespace variable {
 
         daftar.forEach((item: IVar) => {
             let obj: IVar = {
-                dipilih: item.dipilih,
-                diedit: item.diedit,
+                dipilih: false,
+                diedit: false,
                 id: item.id,
                 indukId: item.indukId,
                 nama: item.nama,
@@ -207,6 +212,7 @@ namespace variable {
         return ar;
     }
 
+    //TODO: dipindah
     export function muat(obj: IVar[]): void {
         while (daftar.length > 0) {
             hapus(daftar[0].id);
@@ -214,7 +220,7 @@ namespace variable {
 
         obj.forEach((item: IVar) => {
             item.view = new View(item);
-            item.view.attach(modul.hal.halaman());
+            item.view.attach(modul.editor.view.variable);
             daftar.push(item);
         })
     }
@@ -223,6 +229,12 @@ namespace variable {
 
 namespace fung.dek {
     const daftar: IFungDek[] = [];
+
+    export function validasiNama(nama: string): boolean {
+        //TODO: validasi nama;
+        nama;
+        return true;
+    }
 
     export function diedit(): IFungDek {
 
@@ -264,6 +276,7 @@ namespace fung.dek {
         })
     }
 
+    //TODO: hapus param, hapus stmt, hapus
     export function hapus(id: number): void {
         for (let i: number = 0; i < daftar.length; i++) {
             if (daftar[i].id == id) {
@@ -325,7 +338,7 @@ namespace fung.dek {
                 this.item.dipilih = true;
                 this.item.view.elHtml.classList.add('dipilih');
 
-                menu.ganti(menu.utama.el());
+                modul.editor.menu.ganti(modul.editor.menu.utama.view.elHtml as HTMLDivElement);
             }
         }
     }
@@ -335,8 +348,8 @@ namespace fung.dek {
 
         daftar.forEach((item: IFungDek) => {
             let obj: IFungDek = {
-                dipilih: item.dipilih,
-                diedit: item.diedit,
+                dipilih: false,
+                diedit: false,
                 id: item.id,
                 indukId: item.indukId,
                 nama: item.nama,
@@ -355,11 +368,10 @@ namespace fung.dek {
 
         obj.forEach((item: IFungDek) => {
             item.view = new View(item);
-            item.view.attach(modul.hal.halaman());
+            item.view.attach(modul.editor.view.deklarasiFungsi);
             daftar.push(item);
         })
     }
-
 
 }
 
@@ -367,7 +379,7 @@ namespace param {
     const daftar: IParam[] = [];
 
     export function byIndukId(indukId: number): IParam[] {
-        let hasil: IParam[];
+        let hasil: IParam[] = [];
 
         daftar.forEach((item: IParam) => {
             if (item.indukId == indukId) {
@@ -386,44 +398,70 @@ namespace param {
         return null;
     }
 
-    export function hapusPilihan(): void {
-        daftar.forEach((item: IParam) => {
-            item.dipilih = false;
-            item.view.elHtml.classList.remove('dipilih');
-        })
+    export function buat(indukId: number, nama: string): IParam {
+        let hasil: IParam = {
+            id: ha.comp.Util.id(),
+            indukId: indukId,
+            nama: nama,
+            diedit: false,
+            dipilih: false,
+            type: data.TY_PARAM
+        }
+
+        daftar.push(hasil);
+
+        return hasil;
     }
 
-    export class View extends ha.comp.BaseComponent {
-        private _item: IParam;
-        public get item(): IParam {
-            return this._item;
-        }
-        public set item(value: IParam) {
-            this._item = value;
-        }
+    export function checkDouble(indukId: number, nama: string): boolean {
+        indukId;
+        nama;
+        return false; //TODO:
+    }
 
-        constructor(item: IParam) {
-            super();
-            this.item = item;
-            this._elHtml = this.getTemplate('div.param-item');
-            this._elHtml.innerHTML = item.nama;
-
-            this._elHtml.onclick = (e: MouseEvent) => {
-                e.stopPropagation();
-
-                param.hapusPilihan();
-
-                this.item.dipilih = true;
-                this.item.view.elHtml.classList.add('dipilih');
+    export function hapus(id: number): void {
+        for (let i: number = 0; i < daftar.length; i++) {
+            if (daftar[i].id == id) {
+                daftar.splice(i, 1);
+                return;
             }
         }
+
+        throw Error('hapus gagal, id ' + id);
+    }
+
+    export function simpan(): IParam[] {
+        let ar: IParam[] = [];
+
+        daftar.forEach((item: IParam) => {
+            let obj: IParam = {
+                dipilih: false,
+                diedit: false,
+                id: item.id,
+                indukId: item.indukId,
+                nama: item.nama,
+                type: item.type
+            }
+            ar.push(obj);
+        });
+
+        return ar;
+
+    }
+
+    export function muat(obj: IParam[] = []): void {
+        while (daftar.length > 0) {
+            hapus(daftar[0].id);
+        }
+
+        obj.forEach((item: IParam) => {
+            daftar.push(item);
+        });
     }
 }
 
 namespace modul {
     const daftar: IModul[] = [];
-
-
 
     //TODO: hapus
     export function hapusPilihan(): void {
@@ -494,8 +532,8 @@ namespace modul {
 
         daftar.forEach((item: IModul) => {
             let obj: IModul = {
-                dipilih: item.dipilih,
-                diedit: item.diedit,
+                dipilih: false,
+                diedit: false,
                 id: item.id,
                 indukId: item.indukId,
                 nama: item.nama,
@@ -516,7 +554,7 @@ namespace modul {
 
             //TODO: dihapus
             item.view = new View(item);
-            item.view.attach(hal.halaman());
+            item.view.attach(modul.editor.view.halaman);
 
             daftar.push(item);
         });
@@ -548,12 +586,22 @@ namespace modul {
                 this.item.view.elHtml.classList.add('dipilih');
 
                 //reset menu
-                menu.ganti(menu.utama.el());
+                modul.editor.menu.ganti(modul.editor.menu.utama.view.elHtml);
             }
         }
     }
 }
 
 namespace stmt {
+    const daftar: IStmt[] = [];
 
+    export function byIndukId(indukId: number): IStmt[] {
+        let hasil: IStmt[] = [];
+        for (let i: number = 0; i < daftar.length; i++) {
+            if (daftar[i].indukId == indukId) {
+                hasil.push(daftar[i]);
+            }
+        }
+        return hasil;
+    }
 }

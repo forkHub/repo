@@ -118,7 +118,11 @@ namespace ha.comp {
 
 			this._elHtml = el;
 
-			if (!this._elHtml) throw new Error('');
+			if (!this._elHtml) {
+				console.log(div);
+				console.log(this._template);
+				throw new Error('');
+			}
 
 			this.onBuild();
 		}

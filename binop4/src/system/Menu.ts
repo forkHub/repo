@@ -1,4 +1,4 @@
-namespace menu.system {
+namespace system.menu {
     let _el: HTMLDivElement;
 
     export function el(): HTMLDivElement {
@@ -16,18 +16,28 @@ namespace menu.system {
         return ha.comp.Util.getEl('button.muat', el()) as HTMLButtonElement;
     }
 
-    export function mulai(): void {
+    export function muatKlik(): void {
+        storage.muat();
+        window.modul.editor.menu.ganti(window.modul.editor.menu.utama.view.elHtml as HTMLDivElement);
+    }
+
+    export function simplanKlik(): void {
+        storage.simpan();
+        window.modul.editor.menu.ganti(window.modul.editor.menu.utama.view.elHtml as HTMLDivElement);
+
+    }
+
+    //TODO: pindah ke basecomponent
+    export function exec(): void {
 
         simpanTbl().onclick = (e: MouseEvent) => {
             e.stopPropagation();
-            storage.simpan();
-            menu.ganti(menu.utama.el());
+            simplanKlik();
         }
 
         muatTbl().onclick = (e: MouseEvent) => {
             e.stopPropagation();
-            storage.muat();
-            menu.ganti(menu.utama.el());
+            muatKlik();
         }
     }
 }
