@@ -1,9 +1,16 @@
 namespace fung.dek.editor.value {
+    var viewAktif: View;
+
     const menuPopUp: ha.comp.MenuPopup = new ha.comp.MenuPopup();
     menuPopUp.buatTombol({
         label: 'update',
         f: () => {
-            //TODO:
+            let nama: string = window.prompt('update value: ', viewAktif.value.value);
+
+            if (nama && window.value.ent.validateNama(nama)) {
+                viewAktif.value.value = nama;
+                viewAktif.valueDiv.innerHTML = nama;
+            }
         }
     })
 
@@ -29,6 +36,7 @@ namespace fung.dek.editor.value {
             this.menuTbl.onclick = (e: MouseEvent) => {
                 e.stopPropagation();
                 menuPopUp.view.attach(document.body);
+                viewAktif = this;
             }
 
             this._value = value;
@@ -41,5 +49,12 @@ namespace fung.dek.editor.value {
         get menuTbl(): HTMLButtonElement {
             return this.getEl('button.menu') as HTMLButtonElement;
         }
+    }
+
+    export async function buatValue(indukId: number, cont: HTMLDivElement): Promise<void> {
+        await ha.comp.Util.delay(5);
+        let valueObj: IValue = window.value.ent.buat(indukId);
+        let valueView: value.View = new value.View(valueObj);
+        valueView.attach(cont);
     }
 }

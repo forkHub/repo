@@ -56,14 +56,14 @@ namespace modul.editor.menu.utama {
                     }
                 }
                 else if (data.TY_VARIABLE == dipilih) {
-                    let varObj: IVar = window.variable.dipilih();
+                    let varObj: IVar = window.variable.ent.dipilih();
                     varObj.nama = window.prompt('nama', varObj.nama);
                     if (varObj.nama && varObj.nama != '') varObj.view.nama.innerHTML = varObj.nama;
                 }
                 else if (data.TY_DEK_FUNGSI == dipilih) {
                     console.log('fungsi dipilih');
-                    let fungObj: IFungDek = window.fung.dek.dipilih();
-                    window.fung.dek.hapusDiedit();
+                    let fungObj: IFungDek = window.fung.dek.ent.dipilih();
+                    window.fung.dek.ent.hapusDiedit();
                     fungObj.diedit = true;
                     fung.dek.editor.exec();
                     window.modul.editor.view.detach();
@@ -93,12 +93,12 @@ namespace modul.editor.menu.utama {
                     window.modul.hapus(modulObj.id);
                 }
                 else if (data.TY_VARIABLE == dipilih) {
-                    let varObj: IVar = window.variable.dipilih();
-                    window.variable.hapus(varObj.id);
+                    let varObj: IVar = window.variable.ent.dipilih();
+                    window.variable.ent.hapus(varObj.id);
                 }
                 else if (data.TY_DEK_FUNGSI == dipilih) {
-                    let fungDekObj: IFungDek = window.fung.dek.dipilih();
-                    window.fung.dek.hapus(fungDekObj.id);
+                    let fungDekObj: IFungDek = window.fung.dek.ent.dipilih();
+                    window.fung.dek.ent.hapus(fungDekObj.id);
                 }
                 else {
                     console.error('dipilih kosong: ' + dipilih);
@@ -164,14 +164,14 @@ namespace modul.editor.menu.tambah {
         varTbl().onclick = (e: MouseEvent) => {
             e.stopPropagation();
             let nama: string = window.prompt('nama', 'variable 1');
-            let varObj: IVar = window.variable.buat(nama, 0);   //TODO: id dipilih
+            let varObj: IVar = window.variable.ent.buat(nama, 0);   //TODO: id dipilih
             varObj.view.attach(window.modul.editor.view.variable);
         }
 
         fungTbl().onclick = (e: MouseEvent) => {
             e.stopPropagation();
             let nama: string = window.prompt('nama', 'fungsi');
-            let varObj: IFungDek = window.fung.dek.buat(nama, 0);   //TODO: id dipilih
+            let varObj: IFungDek = window.fung.dek.ent.buat(nama, 0);   //TODO: id dipilih
             varObj.view.attach(window.modul.editor.view.deklarasiFungsi);
         }
 

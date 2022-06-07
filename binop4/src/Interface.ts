@@ -2,7 +2,11 @@ interface ISimpan {
     modul: IModul[],
     var: IVar[],
     dekFung: IFungDek[]
-    param?: IParam[]
+    param: IParam[],
+    value: IValue[],
+    stmt: IStmt[],
+    exp: IExp[],
+    ref: IRef[]
 }
 
 interface IData {
@@ -19,11 +23,12 @@ interface IModul extends IData {
 }
 
 interface IVar extends IData {
-    view?: variable.View;
+    view?: variable.ent.View;
 }
 
+//TODO: dihapus
 interface IFungDek extends IData {
-    view?: fung.dek.View
+    view?: fung.dek.ent.View
 }
 
 interface IParam extends IData {
@@ -39,7 +44,7 @@ interface IVarIsi extends IStmt {
 }
 
 interface IValue extends IData {
-    valueType: "teks" | "angka" | "ar_angka" | "ar_teks",
+    valueType: "teks" | "angka" | "ar_angka" | "ar_teks", //ar pakai id
     value: string
 }
 

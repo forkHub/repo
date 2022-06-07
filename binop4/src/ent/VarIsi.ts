@@ -13,8 +13,14 @@ namespace variable.isi.ent {
             type: data.TY_STMT
         }
 
-        stmt.daftar.push(hasil);
+        stmt.ent.daftar.push(hasil);
 
         return hasil;
     }
+
+    /**
+     * simpan dan muat ikut ke stmt
+     */
+
+
 }

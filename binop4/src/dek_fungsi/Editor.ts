@@ -53,7 +53,7 @@ namespace fung.dek.editor {
         view.attach(document.body);
         renderPath();
         nama.view.attach(view.namaCont);
-        let fungDekObj: IFungDek = fung.dek.diedit();
+        let fungDekObj: IFungDek = fung.dek.ent.diedit();
         nama.view.nama.innerHTML = fungDekObj.nama;
 
         param.view.attach(view.paramCont);
@@ -71,10 +71,10 @@ namespace fung.dek.editor.nama {
     menu.buatTombol({
         label: 'rename',
         f: () => {
-            let fungDekObj: IFungDek = fung.dek.diedit();
+            let fungDekObj: IFungDek = fung.dek.ent.diedit();
             let namaBaru: string = window.prompt('nama: ' + fungDekObj.nama);
 
-            if (namaBaru && fung.dek.validasiNama(namaBaru)) {
+            if (namaBaru && fung.dek.ent.validasiNama(namaBaru)) {
                 fungDekObj.nama = namaBaru;
                 view.nama.innerHTML = namaBaru;
             }
@@ -132,7 +132,7 @@ namespace fung.dek.editor.param {
         f: () => {
             let nama: string = window.prompt('nama parameter:', 'param');
             if (nama) {
-                let paramObj: IParam = window.param.buat(fung.dek.diedit().id, nama);
+                let paramObj: IParam = window.param.buat(fung.dek.ent.diedit().id, nama);
                 let viewItem: Item = new Item(paramObj);
                 viewItem.attach(view.daftar);
             }
@@ -251,7 +251,7 @@ namespace fung.dek.editor.param {
     }
 
     export function render(): void {
-        let fungDekObj: IFungDek = window.fung.dek.diedit();
+        let fungDekObj: IFungDek = window.fung.dek.ent.diedit();
 
         let paramObj: IParam[] = window.param.byIndukId(fungDekObj.id);
         paramObj.forEach((item: IParam) => {

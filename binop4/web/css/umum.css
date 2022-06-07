@@ -123,6 +123,12 @@ a.bersih {
 	font-weight: bold;
 }
 
+
+/* layout */
+.disp-inline-flex {
+	display: inline-block;
+}
+
 .border {
 	border: 1px solid grey;
 }

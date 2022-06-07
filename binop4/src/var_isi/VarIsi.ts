@@ -1,4 +1,4 @@
-namespace variable.isi.item {
+namespace variable.isi.editor {
 
     const menu: ha.comp.MenuPopup = new ha.comp.MenuPopup();
     menu.buatTombol({

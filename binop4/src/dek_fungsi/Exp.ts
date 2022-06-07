@@ -1,6 +1,18 @@
 namespace fung.dek.editor.exp {
     var aktifView: View;
 
+    export async function buatExp(indukid: number, cont: HTMLDivElement): Promise<void> {
+        let exp1: IExp;
+        let expView: exp.View;
+
+        await ha.comp.Util.delay(5);
+        exp1 = window.exp.ent.buat(indukid);
+        expView = new exp.View(exp1);
+        expView.attach(cont);
+
+        await value.buatValue(exp1.id, expView.cont);
+    }
+
     const menu: ha.comp.MenuPopup = new ha.comp.MenuPopup();
     menu.buatTombol({
         label: 'value',
