@@ -92,6 +92,10 @@ html {
 	position: relative;
 }
 
+.pos-fixed {
+	position: fixed;
+}
+
 a.tambah {
 	position: fixed;
 	bottom: 32px;

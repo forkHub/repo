@@ -67,6 +67,8 @@ class ItemDekFungsi extends ha.comp.BaseComponent {
                 console.log('edit dek fungsi');
                 data.halModul.detach();
                 data.halFungsi.attach(document.body);
+                data.halFungsi.item = this._item;
+                data.halFungsi.tampil();
             }
         })
 

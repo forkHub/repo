@@ -6,7 +6,9 @@ window.onload = () => {
 
     //render 
     data.variableAr.forEach((item: IVar) => {
-        data.halModul.renderVar(item);
+        if (item.indukId == 0) {
+            data.halModul.renderVar(item);
+        }
     });
 
     data.modulAr.forEach((item: IModul) => {

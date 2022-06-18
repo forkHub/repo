@@ -3,9 +3,6 @@ namespace df {
         private _item: IDekFungsi;
         private menu: ha.comp.MenuPopup = new ha.comp.MenuPopup();
 
-        public get item(): IDekFungsi {
-            return this._item;
-        }
         public set item(value: IDekFungsi) {
             this._item = value;
         }
@@ -18,13 +15,37 @@ namespace df {
                 e.stopPropagation();
                 this.menu.view.attach(document.body);
             }
+
+            this.setupMenu();
+        }
+
+        tampil(): void {
+            data.variableAr.forEach((item: IVar) => {
+                if (item.indukId == this._item.id) {
+                    let itemView: ItemVar;
+
+                    itemView = new ItemVar(item);
+                    itemView.attach(this.daftarVar);
+                }
+            })
         }
 
         setupMenu(): void {
             this.menu.buatTombol({
                 label: 'var',
                 f: () => {
-                    //TODO: tambah variable
+                    let nama: string;
+
+                    nama = window.prompt('Nama variable: ');
+
+                    if (nama) {
+                        let varObj: IVar = data.halModul.buatVarObj(nama, this._item.id);
+                        let view: ItemVar;
+
+                        view = new ItemVar(varObj);
+                        view.attach(this.daftarVar);
+                        data.variableAr.push(varObj);
+                    }
                 }
             });
 
@@ -41,6 +62,10 @@ namespace df {
                     //TODO: stmt
                 }
             })
+        }
+
+        get daftarVar(): HTMLDivElement {
+            return this.getEl('div.daftar-var') as HTMLDivElement;
         }
 
         get menuTbl(): HTMLButtonElement {
