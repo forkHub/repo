@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+
+	<link href="css/umum.css" rel="stylesheet">
+	<link href="css/css.css" rel="stylesheet">
+
+	<title>edit deklarasi fungsi</title>
+</head>
+
+<body>
+
+	<div class="daftar">
+		<div class="nama"></div>
+		<div class="param"></div>
+		<div class="var"></div>
+		<div class="stmt"></div>
+	</div>
+
+	<div class="menu">
+		<div class="utama">
+			<button class="modul">modul</button>
+			<button class="tambah">tambah</button>
+			<button class="update">update</button>
+			<button class="hapus">hapus</button>
+		</div>
+
+		<div class="tambah" style="display:none">
+			<button class="var">var</button>
+			<button class="param">param</button>
+			<button class="stmt">stmt</button>
+		</div>
+	</div>
+
+	<template>
+		<!-- item -->
+		<div class="nama-item"></div>
+		<div class="var-item">
+			<span>var </span>
+			<span class="nama"></span>
+		</div>
+		<div class="param-item"></div>
+		<div class="stmt-item"></div>
+	</template>
+
+	<script src="js/comp/BaseComponent.js"></script>
+	<script src="js/comp/Dialog.js"></script>
+	<script src="js/comp/Util.js"></script>
+	<script src="js/Storage.js"></script>
+	<script src="js/Entity.js"></script>
+	<script src="js/dek_fungsi_edit/HalDekFungsiEdit.js"></script>
+</body>
+
+</html>

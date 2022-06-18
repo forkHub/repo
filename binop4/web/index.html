@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+	<link href="css/umum.css" rel="stylesheet">
+	<link href="css/grid.css" rel="stylesheet">
+	<link href="css/css.css" rel="stylesheet">
+
+	<title>modul editor</title>
+</head>
+
+<body class="pos-rel">
+
+	<template>
+		<div class="modul-cont">
+
+			<!-- halaman -->
+			<div class="hal-modul">
+				<div class="daftar">
+					<!-- modul -->
+					<halaman></halaman>
+
+					<div class="nama"></div>
+					<div class="var"></div>
+					<div class="dek-fung"></div>
+					<div class="param"></div>
+					<div class="stmt"></div>
+				</div>
+
+				<div class='menu'></div>
+			</div>
+
+			<!-- item -->
+			<div class="modul-item"></div>
+			<div class="var-item">
+				<span>var </span>
+				<span class="nama"></span>
+			</div>
+			<div class="fung-dek-item"></div>
+
+		</div>
+
+		<div class="dek-fungsi">
+			<div class="param-item"></div>
+			<div class="nama-item"></div>
+		</div>
+
+		<div class="menu">
+
+			<div class="menu-fungsi-deklarasi-update">
+				<button class="balik">&lt;&lt;&lt;</button>
+				<button class="nama">nama</button>
+				<button class="param">param</button>
+				<button class="stmt">stmt</button>
+			</div>
+
+			<div class="menu-fung-dec-edit">
+				<button class="modul">modul</button>
+				<button class="tambah">tambah</button>
+				<button class="update">update</button>
+				<button class="hapus">delete</button>
+			</div>
+
+			<div class="menu-tambah">
+				<button class="modul">modul</button>
+				<button class="var">var</button>
+				<button class="fungsi">fungsi</button>
+				<button class="param">param</button>
+				<button class="stmt">stmt</button>
+			</div>
+
+			<div class="menu-param">
+				<button class="nama">nama</button>
+				<button class="param">param</button>
+			</div>
+
+			<div class="menu-sistem">
+				<button class="simpan">simpan</button>
+				<button class="muat">muat</button>
+			</div>
+		</div>
+
+		<!-- param fung -->
+		<div class="edit-param">
+			<div class="daftar"></div>
+			<div>
+				<button class="ok">ok</button>
+				<button class="batal">batal</button>
+			</div>
+		</div>
+		<div class="param-item"></div>
+	</template>
+
+	<script src="js/comp/BaseComponent.js"></script>
+	<script src="js/comp/Dialog.js"></script>
+	<script src="js/comp/Util.js"></script>
+	<script src="js/comp/MenuPopUp.js"></script>
+
+	<script src="js/ent/Entity.js"></script>
+	<script src="js/ent/Exp.js"></script>
+	<script src="js/ent/Stmt.js"></script>
+	<script src="js/ent/Value.js"></script>
+	<script src="js/ent/VarIsi.js"></script>
+	<script src="js/ent/VarRef.js"></script>
+	<script src="js/ent/Variable.js"></script>
+
+	<script src="js/system/Storage.js"></script>
+	<script src="js/system/Menu.js"></script>
+
+	<script src="js/dek_fungsi/Stmt.js"></script>
+	<script src="js/dek_fungsi/Daftar.js"></script>
+	<script src="js/dek_fungsi/Editor.js"></script>
+	<script src="js/dek_fungsi/Exp.js"></script>
+	<script src="js/dek_fungsi/VarIsi.js"></script>
+	<script src="js/dek_fungsi/VarRef.js"></script>
+	<script src="js/dek_fungsi/Value.js"></script>
+
+	<script src="js/modul/Hal.js"></script>
+	<script src="js/modul/Menu.js"></script>
+	<script src="js/modul/Editor.js"></script>
+</body>
+
+</html>
