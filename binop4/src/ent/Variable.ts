@@ -107,7 +107,7 @@ namespace variable.ent {
                 this.item.view.elHtml.classList.add('dipilih');
 
                 //reset menu
-                modul.editor.menu.ganti(modul.editor.menu.utama.view.elHtml);
+                md.editor.menu.ganti(md.editor.menu.utama.view.elHtml);
             }
         }
 
@@ -141,7 +141,7 @@ namespace variable.ent {
 
         obj.forEach((item: IVar) => {
             item.view = new View(item);
-            item.view.attach(modul.editor.view.variable);
+            item.view.attach(md.editor.view.variable);
             daftar.push(item);
         })
     }

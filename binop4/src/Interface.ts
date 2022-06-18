@@ -19,7 +19,7 @@ interface IData {
 }
 
 interface IModul extends IData {
-    view?: modul.View
+    view?: md.View
 }
 
 interface IVar extends IData {

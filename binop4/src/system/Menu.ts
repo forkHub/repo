@@ -18,12 +18,12 @@ namespace system.menu {
 
     export function muatKlik(): void {
         storage.muat();
-        window.modul.editor.menu.ganti(window.modul.editor.menu.utama.view.elHtml as HTMLDivElement);
+        window.md.editor.menu.ganti(window.md.editor.menu.utama.view.elHtml as HTMLDivElement);
     }
 
     export function simplanKlik(): void {
         storage.simpan();
-        window.modul.editor.menu.ganti(window.modul.editor.menu.utama.view.elHtml as HTMLDivElement);
+        window.md.editor.menu.ganti(window.md.editor.menu.utama.view.elHtml as HTMLDivElement);
 
     }
 

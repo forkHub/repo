@@ -14,14 +14,14 @@ namespace data {
 
     //TODO: dipindah ke modul, kurang efektif
     export function hapusPilihan(): void {
-        modul.hapusPilihan();
+        md.hapusPilihan();
         variable.ent.hapusPilihan();
         fung.dek.ent.hapusPilihan();
     }
 
     //TODO: dipindah ke modul, kurang efektif
     export function typeDipilih(): string {
-        if (modul.dipilih()) return data.TY_MODUL;
+        if (md.dipilih()) return data.TY_MODUL;
         if (variable.ent.dipilih()) return data.TY_VARIABLE;
         if (fung.dek.ent.dipilih()) return data.TY_DEK_FUNGSI;
         return '';
@@ -30,7 +30,7 @@ namespace data {
     export function simpan(): ISimpan {
         let simpanObj: ISimpan = {
             dekFung: fung.dek.ent.simpan(),
-            modul: modul.simpan(),
+            modul: md.simpan(),
             var: variable.ent.simpan(),
             param: param.simpan(),
             exp: exp.ent.simpan(),
@@ -43,7 +43,7 @@ namespace data {
     }
 
     export function muat(obj: ISimpan): void {
-        modul.muat(obj.modul);
+        md.muat(obj.modul);
         variable.ent.muat(obj.var);
         fung.dek.ent.muat(obj.dekFung);
         param.muat(obj.param);
@@ -55,7 +55,7 @@ namespace data {
 
     //TODO: dipindah
     export function idDipilih(): number {
-        if (modul.dipilih()) return modul.dipilih().id;
+        if (md.dipilih()) return md.dipilih().id;
         if (variable.ent.dipilih()) return variable.ent.dipilih().id;
         if (fung.dek.ent.dipilih()) return fung.dek.ent.dipilih().id;
 
@@ -70,7 +70,7 @@ namespace data {
     export function typeById(id: number): string {
         let hasil: string;
 
-        if (modul.byId(id)) hasil = modul.byId(id).type;
+        if (md.byId(id)) hasil = md.byId(id).type;
         if (fung.dek.ent.byId(id)) hasil = fung.dek.ent.byId(id).type;
         if (variable.ent.byId(id)) hasil = variable.ent.byId(id).type;
         if (param.byId(id)) hasil = param.byId(id).type;
@@ -83,7 +83,7 @@ namespace data {
 
     //TODO: dipindah
     export function updateNama(id: number, nama: string): void {
-        if (modul.byId(id)) nama; //TODO:
+        if (md.byId(id)) nama; //TODO:
 
     }
 }
@@ -199,7 +199,7 @@ namespace fung.dek.ent {
                 this.item.dipilih = true;
                 this.item.view.elHtml.classList.add('dipilih');
 
-                modul.editor.menu.ganti(modul.editor.menu.utama.view.elHtml as HTMLDivElement);
+                md.editor.menu.ganti(md.editor.menu.utama.view.elHtml as HTMLDivElement);
             }
         }
     }
@@ -229,7 +229,7 @@ namespace fung.dek.ent {
 
         obj.forEach((item: IFungDek) => {
             item.view = new View(item);
-            item.view.attach(modul.editor.view.deklarasiFungsi);
+            item.view.attach(halModul.view.deklarasiFungsi);
             daftar.push(item);
         })
     }
@@ -321,8 +321,8 @@ namespace param {
     }
 }
 
-namespace modul {
-    const daftar: IModul[] = [];
+namespace md {
+    export const daftar: IModul[] = [];
 
     //TODO: hapus
     export function hapusPilihan(): void {
@@ -415,7 +415,7 @@ namespace modul {
 
             //TODO: dihapus
             item.view = new View(item);
-            item.view.attach(modul.editor.view.halaman);
+            item.view.attach(halModul.halaman);
 
             daftar.push(item);
         });
@@ -447,7 +447,7 @@ namespace modul {
                 this.item.view.elHtml.classList.add('dipilih');
 
                 //reset menu
-                modul.editor.menu.ganti(modul.editor.menu.utama.view.elHtml);
+                md.editor.menu.ganti(md.editor.menu.utama.view.elHtml);
             }
         }
     }

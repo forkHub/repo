@@ -1,11 +1,11 @@
-namespace modul.editor.menu {
+namespace md.editor.menu {
 
     export function ganti(el: HTMLDivElement | HTMLElement): void {
-        while (window.modul.editor.view.menu.firstChild) {
-            window.modul.editor.view.menu.removeChild(window.modul.editor.view.menu.firstChild);
+        while (halModul.menu.firstChild) {
+            halModul.menu.removeChild(halModul.menu.firstChild);
         }
 
-        window.modul.editor.view.menu.appendChild(el);
+        halModul.menu.appendChild(el);
     }
 
     function tombol(query: string, el: HTMLDivElement): HTMLButtonElement {
@@ -22,7 +22,7 @@ namespace modul.editor.menu {
 
 }
 
-namespace modul.editor.menu.utama {
+namespace md.editor.menu.utama {
 
     class View extends ha.comp.BaseComponent {
         constructor() {
@@ -40,7 +40,7 @@ namespace modul.editor.menu.utama {
 
             this.sistemTbl.onclick = (e: MouseEvent) => {
                 e.stopPropagation();
-                window.modul.editor.menu.ganti(system.menu.el());
+                window.md.editor.menu.ganti(system.menu.el());
             }
 
             this.updateTbl.onclick = (e: MouseEvent) => {
@@ -48,7 +48,7 @@ namespace modul.editor.menu.utama {
                 let dipilih: string = data.typeDipilih();
 
                 if (data.TY_MODUL == dipilih) {
-                    let modulObj: IModul = window.modul.dipilih();
+                    let modulObj: IModul = window.md.dipilih();
                     let nama: string = window.prompt('nama', modulObj.nama);
                     if (nama) {
                         modulObj.nama = nama;
@@ -65,8 +65,8 @@ namespace modul.editor.menu.utama {
                     let fungObj: IFungDek = window.fung.dek.ent.dipilih();
                     window.fung.dek.ent.hapusDiedit();
                     fungObj.diedit = true;
-                    fung.dek.editor.exec();
-                    window.modul.editor.view.detach();
+                    fungsi.exec();
+                    halModul.detach();
                 }
                 else if (data.TY_NAMA == dipilih) {
                     //edit nama
@@ -81,7 +81,7 @@ namespace modul.editor.menu.utama {
             this.tambahTbl.onclick = (e: MouseEvent) => {
                 e.stopPropagation();
 
-                window.modul.editor.menu.ganti(window.modul.editor.menu.tambah.el());
+                window.md.editor.menu.ganti(window.md.editor.menu.tambah.el());
             }
 
             this.hapusTbl.onclick = (e: MouseEvent) => {
@@ -89,8 +89,8 @@ namespace modul.editor.menu.utama {
 
                 let dipilih: string = data.typeDipilih();
                 if (data.TY_MODUL == dipilih) {
-                    let modulObj: IModul = window.modul.dipilih();
-                    window.modul.hapus(modulObj.id);
+                    let modulObj: IModul = window.md.dipilih();
+                    window.md.hapus(modulObj.id);
                 }
                 else if (data.TY_VARIABLE == dipilih) {
                     let varObj: IVar = window.variable.ent.dipilih();
@@ -130,7 +130,7 @@ namespace modul.editor.menu.utama {
 
 }
 
-namespace modul.editor.menu.tambah {
+namespace md.editor.menu.tambah {
     let _el: HTMLDivElement;
 
     export function el(): HTMLDivElement {
@@ -157,22 +157,22 @@ namespace modul.editor.menu.tambah {
         modulTbl().onclick = (e: MouseEvent) => {
             e.stopPropagation();
             let nama: string = window.prompt('nama', 'modul 1');
-            let modulObj: IModul = window.modul.buat(nama, 0);
-            modulObj.view.attach(window.modul.editor.view.halaman);
+            let modulObj: IModul = window.md.buat(nama, 0);
+            modulObj.view.attach(halModul.halaman);
         }
 
         varTbl().onclick = (e: MouseEvent) => {
             e.stopPropagation();
             let nama: string = window.prompt('nama', 'variable 1');
             let varObj: IVar = window.variable.ent.buat(nama, 0);   //TODO: id dipilih
-            varObj.view.attach(window.modul.editor.view.variable);
+            varObj.view.attach(halModul.variable);
         }
 
         fungTbl().onclick = (e: MouseEvent) => {
             e.stopPropagation();
             let nama: string = window.prompt('nama', 'fungsi');
             let varObj: IFungDek = window.fung.dek.ent.buat(nama, 0);   //TODO: id dipilih
-            varObj.view.attach(window.modul.editor.view.deklarasiFungsi);
+            varObj.view.attach(halModul.deklarasiFungsi);
         }
 
     }
