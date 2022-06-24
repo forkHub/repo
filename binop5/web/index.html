@@ -32,7 +32,7 @@
 		</div>
 
 		<div class="hal-fungsi-dek comp min-height-12">
-			<div class="daftar" style="">
+			<div class="daftar">
 				<div class="daftar-param"></div>
 				<div class="daftar-var"></div>
 				<div class="daftar-stmt"></div>
@@ -43,6 +43,30 @@
 			</div>
 		</div>
 
+		<div class="edit-arg">
+			<form>
+				<div>
+					<div>tipe argument:</div>
+					<input type="radio" value="arg value" name="tipe_arg"><label>literal</label><br />
+					<input type="radio" value="arg value" name="tipe_arg"><label>ref var</label><br />
+					<input type="radio" value="arg value" name="tipe_arg"><label>ref fungsi</label><br />
+				</div>
+				<div>
+					<label>literal:</label><br />
+					<input type="text" value="" name="literal" placeholder="0">
+				</div>
+				<div>
+					<label>referensi:</label> <button type='button' class="browse">browse</button>
+				</div>
+				<div>
+					<button type="submit" class="ok">ok</button>
+					<button type="button" class="batal">batal</button>
+				</div>
+			</form>
+
+
+		</div>
+
 	</template>
 
 	<script src="js/comp/BaseComponent.js"></script>
@@ -50,12 +74,18 @@
 	<script src="js/comp/Util.js"></script>
 	<script src="js/comp/MenuPopUp.js"></script>
 
-	<script src="js/md/HalModul.js"></script>
 	<script src="js/df/Fungsi.js"></script>
+	<script src="js/df/ItemParam.js"></script>
 
 	<script src="js/Kons.js"></script>
 	<script src="js/Data.js"></script>
+	<script src="js/ItemVarIsi.js"></script>
+	<script src="js/ViewWadah.js"></script>
+	<script src="js/PilihVar.js"></script>
 
+	<script src="js/arg/FormArg.js"></script>
+
+	<script src="js/md/HalModul.js"></script>
 	<script src="js/md/ItemDekFungsi.js"></script>
 	<script src="js/md/ItemModul.js"></script>
 	<script src="js/md/ItemVar.js"></script>

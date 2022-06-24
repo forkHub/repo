@@ -1,57 +1,27 @@
-interface ISimpan {
-    modul: IModul[],
-    var: IVar[],
-    dekFung: IDekFungsi[]
-    param: IParam[],
-    value: IValue[],
-    stmt: IStmt[],
-    exp: IExp[],
-    ref: IRef[]
-}
-
-interface IData {
-    id: number
-    indukId: number
-    type: string
-    // dipilih: boolean
-    // diedit: boolean
-    nama: string
-}
-
 interface IModul extends IData {
-    // view?: md.View
+	// view?: md.View
 }
 
 interface IVar extends IData {
-    // view?: variable.ent.View;
+	// view?: variable.ent.View;
 }
 
-//TODO: dihapus
 interface IDekFungsi extends IData {
-    // view?: fung.dek.ent.View
+	// view?: fung.dek.ent.View
 }
 
 interface IParam extends IData {
-    // view?: param.View
+	prevIdx: number;
+	// view?: param.View
 }
 
-interface IStmt extends IData {
-    stmtType: string;
-}
-
-interface IVarIsi extends IStmt {
-
+interface IArg extends IData {
+	refParamId: number,
+	value: string,	//berisi value atau id referensi
+	tipeArg: string
 }
 
 interface IValue extends IData {
-    valueType: "teks" | "angka" | "ar_angka" | "ar_teks", //ar pakai id
-    value: string
-}
-
-interface IRef extends IData {
-    refId: number;
-}
-
-interface IExp extends IData {
-
+	tipeValue: "teks" | "angka" | "ar_angka" | "ar_teks", //ar pakai id
+	value: string
 }

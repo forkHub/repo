@@ -1,15 +1,15 @@
-class ItemModul extends ha.comp.BaseComponent {
+class ItemParam extends ha.comp.BaseComponent {
 	private menu: ha.comp.MenuPopup;
 
-	private _item: IModul;
-	public get item(): IModul {
+	private _item: IParam;
+	public get item(): IParam {
 		return this._item;
 	}
 
-	constructor(item: IModul) {
+	constructor(item: IParam) {
 		super();
 		this._template = `
-            <div class='comp var-item disp-flex'>
+            <div class='comp item-param disp-flex'>
                 <div class='nama flex-grow-1'></div>
                 <div class='menu'>
                     <button>|||</button>
@@ -19,26 +19,13 @@ class ItemModul extends ha.comp.BaseComponent {
 		this.build();
 
 		this._item = item;
-		this.gantiNama(item.nama);
-		this.setupMenu();
+		this.namaDiv.innerText = 'param: ' + item.nama;
 
-		this.menuTbl.onclick = (e: MouseEvent) => {
-			e.stopPropagation();
-			this.menu.view.attach(document.body);
-		}
-	}
-
-	destroy(): void {
-		super.destroy();
-		this._item = null;
-	}
-
-	setupMenu(): void {
 		this.menu = new ha.comp.MenuPopup();
 		this.menu.buatTombol({
 			label: 'rename',
 			f: () => {
-				let nama: string = window.prompt('Nama Modul: ', this._item.nama);
+				let nama: string = window.prompt('Nama param: ', this._item.nama);
 				if (nama) {
 					this.gantiNama(nama);
 					data.simpan();
@@ -47,32 +34,33 @@ class ItemModul extends ha.comp.BaseComponent {
 		})
 
 		this.menu.buatTombol({
-			label: 'edit',
-			f: () => {
-				console.log('edit modul');
-			}
-		})
-
-		this.menu.buatTombol({
 			label: 'hapus',
 			f: () => {
-				for (let i: number = 0; i < data.modulAr.length; i++) {
-					if (data.modulAr[i].id == this._item.id) {
-						data.modulAr.splice(i, 1);
-						break;
+
+				for (let i: number = 0; i < data.paramAr.length; i++) {
+					if (data.paramAr[i].id == this._item.id) {
+						data.paramAr.splice(i, 1);
 					}
 				}
-
 				this.destroy();
 				data.simpan();
 			}
 		})
 
+		this.menuTbl.onclick = (e: MouseEvent) => {
+			e.stopPropagation();
+			this.menu.view.attach(document.body);
+		}
 	}
 
 	gantiNama(nama: string): void {
 		this._item.nama = nama;
-		this.namaDiv.innerText = 'mod: ' + nama;
+		this.namaDiv.innerText = 'param: ' + nama;
+	}
+
+	destroy(): void {
+		super.destroy();
+		this._item = null;
 	}
 
 	get namaDiv(): HTMLDivElement {
