@@ -49,12 +49,12 @@ namespace arg {
 			this.browse.onclick = (e: MouseEvent) => {
 				e.stopPropagation();
 				console.log('browse click');
-				// PilihVariable./
 				this.detach();
 				pilihVariable.finish = () => {
+					this._item.value = pilihVariable.varDipilih + '';
 					this.attach(document.body);
 				}
-				pilihVariable.tampil(this.item);
+				pilihVariable.tampil();
 			}
 		}
 
@@ -63,6 +63,7 @@ namespace arg {
 		}
 
 		tampil(): void {
+			//TODO:atur tampilan sesuai dengan terima
 		}
 
 		get form(): HTMLFormElement {
@@ -81,10 +82,10 @@ namespace arg {
 			return this.getEl('button.browse') as HTMLButtonElement;
 		}
 
-
 		get itemDiv(): HTMLDivElement {
 			return this.getEl('item-var-ref') as HTMLDivElement;
 		}
+
 	}
 	export var formArg: FormArg = new FormArg();
 

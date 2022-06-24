@@ -18,7 +18,7 @@ interface IParam extends IData {
 interface IArg extends IData {
 	refParamId: number,
 	value: string,	//berisi value atau id referensi
-	tipeArg: string
+	tipeArg: string //
 }
 
 interface IValue extends IData {

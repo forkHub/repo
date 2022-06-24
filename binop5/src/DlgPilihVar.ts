@@ -7,7 +7,7 @@ class PilihVariableItem extends ha.comp.BaseComponent {
 		this._finish = value;
 	}
 
-	constructor(arg: IArg, variable: IVar) {
+	constructor(variable: IVar) {
 		super();
 		this._template = `
 			<div class='item-var'>
@@ -22,10 +22,9 @@ class PilihVariableItem extends ha.comp.BaseComponent {
 
 		this._elHtml.onclick = (e: MouseEvent) => {
 			e.stopPropagation();
-			console.log('pilih variable: ');
-			console.log(variable);
+			console.log('klik variable item: ');
 
-			arg.value = variable.id + '';
+			this.destroy();
 			this._finish();
 		}
 	}
@@ -67,9 +66,18 @@ class PilihVariableView extends ha.comp.BaseComponent {
 /**
  * pilih variable untuk diberikan ke argument
  */
-class PilihVariable {
+class DlgPilihVariable {
 	readonly view: PilihVariableView = new PilihVariableView();
 	private _finish: () => void;
+	private _varDipilih: number;
+
+	public get varDipilih(): number {
+		return this._varDipilih;
+	}
+	public set varDipilih(value: number) {
+		this._varDipilih = value;
+	}
+
 	public get finish(): () => void {
 		return this._finish;
 	}
@@ -77,22 +85,22 @@ class PilihVariable {
 		this._finish = value;
 	}
 
-	constructor() {
-
-	}
-
-	tampil(arg: IArg): void {
-		// this.arg = arg;
+	tampil(): void {
 
 		data.variableAr.forEach((item: IVar) => {
 			let view: PilihVariableItem;
-			view = new PilihVariableItem(arg, item);
+			view = new PilihVariableItem(item);
 			view.finish = () => {
+				this._varDipilih = item.id;
+				this.view.detach();
 				this._finish();
 			}
+
 			view.attach(this.view.daftar);
-			this.view.attach(document.body);
 		});
+
+		this.view.attach(document.body);
+
 	}
 }
-const pilihVariable: PilihVariable = new PilihVariable();
+const pilihVariable: DlgPilihVariable = new DlgPilihVariable();
