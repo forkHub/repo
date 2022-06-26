@@ -28,7 +28,7 @@ class ItemParam extends ha.comp.BaseComponent {
 				let nama: string = window.prompt('Nama param: ', this._item.nama);
 				if (nama) {
 					this.gantiNama(nama);
-					data.simpan();
+					dataObj.simpan();
 				}
 			}
 		})
@@ -37,13 +37,13 @@ class ItemParam extends ha.comp.BaseComponent {
 			label: 'hapus',
 			f: () => {
 
-				for (let i: number = 0; i < data.paramAr.length; i++) {
-					if (data.paramAr[i].id == this._item.id) {
-						data.paramAr.splice(i, 1);
+				for (let i: number = 0; i < dataObj.paramAr.length; i++) {
+					if (dataObj.paramAr[i].id == this._item.id) {
+						dataObj.paramAr.splice(i, 1);
 					}
 				}
 				this.destroy();
-				data.simpan();
+				dataObj.simpan();
 			}
 		})
 

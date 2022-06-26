@@ -25,7 +25,7 @@ namespace df {
 			let hasil: IParam;
 
 			hasil = {
-				id: ha.comp.Util.id(),
+				id: Id.id,
 				nama: nama,
 				indukId: indukId,
 				type: TY_PARAM,
@@ -36,7 +36,7 @@ namespace df {
 		}
 
 		tampil(): void {
-			data.variableAr.forEach((item: IVar) => {
+			Variable.daftar.forEach((item: IVar) => {
 				if (item.indukId == this._item.id) {
 					let itemView: ItemVar;
 
@@ -45,7 +45,7 @@ namespace df {
 				}
 			})
 
-			data.paramAr.forEach((item: IParam) => {
+			dataObj.paramAr.forEach((item: IParam) => {
 				if (item.indukId == this._item.id) {
 					let itemView: ItemParam;
 
@@ -54,14 +54,23 @@ namespace df {
 				}
 			})
 
-			data.stmtAr.forEach((item: IStmt) => {
-				if (item.stmtType == STMT_VAR_ISI) {
+			for (let i: number = 0; i < dataObj.stmtAr.length; i++) {
+				let item: IStmt = dataObj.stmtAr[i];
 
+				if (item.stmtType == STMT_VAR_ISI) {
+					console.log('var isi:');
+
+					let view: VarisiViewItem = new VarisiViewItem(item as IVarIsi);
+					view.init();
+
+					view.attach(this.daftarStmt);
 				}
 				else {
+					console.warn('');
 					//TODO: stmt yang lain
 				}
-			});
+			}
+
 		}
 
 		setupMenuPilihStmt() {
@@ -70,7 +79,7 @@ namespace df {
 				f: () => {
 					//buat obj
 					let obj: IPanggilFungsi = {
-						id: ha.comp.Util.id(),
+						id: Id.id,
 						indukId: this._item.id,
 						nama: 'fungsi',
 						prevIdx: 0,
@@ -88,26 +97,10 @@ namespace df {
 			this.pilihStmt.buatTombol({
 				label: 'nama = exp',
 				f: () => {
-					//buat obj
-					let obj: IVarIsi = {
-						id: ha.comp.Util.id(),
-						indukId: this._item.id,
-						nama: '',
-						prevIdx: 0,
-						refVarId: 0,
-						refExpId: 0,
-						stmtType: STMT_VAR_ISI,
-						type: TY_STMT
-					}
+					let obj: IVarIsi = Data.buatVarIsi(this._item.id);
 
-					// let view:
-					let view: ItemVarIsi = new ItemVarIsi(obj);
+					let view: VarisiViewItem = VarisiViewItem.buat(obj);
 					view.attach(this.daftarStmt);
-
-					//TODO: simpan
-					data.stmtAr.push(obj);
-					data.simpan();
-
 				}
 			})
 		}
@@ -121,13 +114,13 @@ namespace df {
 					nama = window.prompt('Nama variable: ');
 
 					if (nama) {
-						let varObj: IVar = data.halModul.buatVarObj(nama, this._item.id);
+						let varObj: IVar = dataObj.halModul.buatVarObj(nama, this._item.id);
 						let view: ItemVar;
 
 						view = new ItemVar(varObj);
 						view.attach(this.daftarVar);
-						data.variableAr.push(varObj);
-						data.simpan();
+						Variable.daftar.push(varObj);
+						dataObj.simpan();
 					}
 				}
 			});
@@ -140,8 +133,8 @@ namespace df {
 						let paramObj: IParam = this.buatParamObj(nama, this._item.id, 0);
 						let paramView: ItemParam = new ItemParam(paramObj);
 						paramView.attach(this.daftarParam);
-						data.paramAr.push(paramObj);
-						data.simpan();
+						dataObj.paramAr.push(paramObj);
+						dataObj.simpan();
 					}
 				}
 			})
@@ -173,8 +166,6 @@ namespace df {
 			return this.getEl('div.menu button') as HTMLButtonElement;
 		}
 	}
-
-
 
 	// export const halDeklarasiFungsi: HalDeklarasiFungsi = new HalDeklarasiFungsi();
 }

@@ -6,6 +6,23 @@ namespace ha.comp {
 		static readonly sFilter: string = 'filter';
 		static readonly storageId: string = 'xyz.hagarden.tugas';
 
+		static createEl(str: string): HTMLElement {
+			let div: HTMLElement = document.createElement('div');
+			let el: HTMLElement;
+
+			div.innerHTML = str;
+
+			el = div.firstElementChild as HTMLElement;
+
+			if (!el) {
+				console.log(div);
+				console.log(str);
+				throw new Error('');
+			}
+
+			return el;
+		}
+
 		static getTemplate(query: string): HTMLElement {
 			try {
 				let template: DocumentFragment = document.body.querySelector('template').content;
@@ -46,6 +63,15 @@ namespace ha.comp {
 					resolve()
 				}, m);
 			})
+		}
+
+		static stackTrace(): void {
+			try {
+				throw Error('');
+			}
+			catch (e) {
+				console.error(e);
+			}
 		}
 
 		static bersihDiv(div: HTMLElement): void {

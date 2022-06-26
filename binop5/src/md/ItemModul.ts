@@ -41,7 +41,7 @@ class ItemModul extends ha.comp.BaseComponent {
 				let nama: string = window.prompt('Nama Modul: ', this._item.nama);
 				if (nama) {
 					this.gantiNama(nama);
-					data.simpan();
+					dataObj.simpan();
 				}
 			}
 		})
@@ -56,15 +56,15 @@ class ItemModul extends ha.comp.BaseComponent {
 		this.menu.buatTombol({
 			label: 'hapus',
 			f: () => {
-				for (let i: number = 0; i < data.modulAr.length; i++) {
-					if (data.modulAr[i].id == this._item.id) {
-						data.modulAr.splice(i, 1);
+				for (let i: number = 0; i < dataObj.modulAr.length; i++) {
+					if (dataObj.modulAr[i].id == this._item.id) {
+						dataObj.modulAr.splice(i, 1);
 						break;
 					}
 				}
 
 				this.destroy();
-				data.simpan();
+				dataObj.simpan();
 			}
 		})
 

@@ -17,11 +17,14 @@ namespace ha.comp {
 		// 	return hasil;
 		// }
 
+		destroy(): void {
+			this.view.destroy();
+		}
+
 		buatTombol(t: ITombol): void {
 			let button: HTMLButtonElement = document.createElement('button');
 			button.classList.add("btn");
 			button.classList.add("btn-primary");
-			// button.classList.add(this.buatClass(t.label));
 			button.style.display = 'block';
 			button.style.margin = 'auto';
 			button.style.marginBottom = '8px';

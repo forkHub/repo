@@ -41,7 +41,7 @@ class ItemDekFungsi extends ha.comp.BaseComponent {
 				nama = window.prompt('Nama Dek Fungsi: ', this._item.nama);
 				if (nama) {
 					this.gantiNama(nama);
-					data.simpan();
+					dataObj.simpan();
 				}
 			}
 		})
@@ -49,15 +49,15 @@ class ItemDekFungsi extends ha.comp.BaseComponent {
 		this.menu.buatTombol({
 			label: 'hapus',
 			f: () => {
-				for (let i: number = 0; i < data.dekFungsiAr.length; i++) {
-					if (data.dekFungsiAr[i].id == this._item.id) {
-						data.dekFungsiAr.splice(i, 1);
+				for (let i: number = 0; i < dataObj.dekFungsiAr.length; i++) {
+					if (dataObj.dekFungsiAr[i].id == this._item.id) {
+						dataObj.dekFungsiAr.splice(i, 1);
 						break;
 					}
 				}
 
 				this.destroy();
-				data.simpan();
+				dataObj.simpan();
 			}
 		})
 
@@ -65,10 +65,10 @@ class ItemDekFungsi extends ha.comp.BaseComponent {
 			label: 'edit',
 			f: () => {
 				console.log('edit dek fungsi');
-				data.halModul.detach();
-				data.halFungsi.attach(document.body);
-				data.halFungsi.item = this._item;
-				data.halFungsi.tampil();
+				dataObj.halModul.detach();
+				dataObj.halFungsi.attach(document.body);
+				dataObj.halFungsi.item = this._item;
+				dataObj.halFungsi.tampil();
 			}
 		})
 

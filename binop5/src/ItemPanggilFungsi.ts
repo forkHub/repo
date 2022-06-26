@@ -44,7 +44,7 @@ class PanggilFungsi extends ha.comp.BaseComponent {
 			this.paramAR.pop();
 		}
 
-		data.paramAr.forEach((item: IParam) => {
+		dataObj.paramAr.forEach((item: IParam) => {
 			if (item.indukId == this._item.id) {
 				this.paramAR.push(item);
 			}

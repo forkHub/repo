@@ -10,15 +10,13 @@ class PilihVariableItem extends ha.comp.BaseComponent {
 	constructor(variable: IVar) {
 		super();
 		this._template = `
-			<div class='item-var'>
+			<div class='item-var padding'>
 				<span class='nama'></span>
 			</div>
 		`;
 		this.build();
 
 		this.nama.innerText = variable.nama;
-
-		// this.item = item;
 
 		this._elHtml.onclick = (e: MouseEvent) => {
 			e.stopPropagation();
@@ -38,12 +36,20 @@ class PilihVariableView extends ha.comp.BaseComponent {
 	constructor() {
 		super();
 		this._template = `
-			<div class='pilih variable'>
-				<div class='judul'>Pilih Variable</div>
-				<div class='daftar'>
-				</div>
-				<div>
-					<button class='batal'>batal</button>
+			<div class='pilih variable padding pos-abs top-0 left-0 back-color-white'>
+				<div class="padding border">
+					<div class="padding border">
+						<div class='judul'>Pilih Variable</div>
+					</div>
+					<div class='padding-4'></div>
+					<div class="padding border">
+						<div class='daftar'>
+
+						</div>
+					</div>
+					<div class='padding'>
+						<button class='batal'>batal</button>
+					</div>
 				</div>
 			</div>
 		`;
@@ -66,6 +72,8 @@ class PilihVariableView extends ha.comp.BaseComponent {
 /**
  * pilih variable untuk diberikan ke argument
  */
+
+//TODO: bisa dibuat static
 class DlgPilihVariable {
 	readonly view: PilihVariableView = new PilihVariableView();
 	private _finish: () => void;
@@ -87,10 +95,15 @@ class DlgPilihVariable {
 
 	tampil(): void {
 
-		data.variableAr.forEach((item: IVar) => {
+		while (this.view.daftar.firstChild) {
+			this.view.daftar.removeChild(this.view.daftar.firstChild);
+		}
+
+		Variable.daftar.forEach((item: IVar) => {
 			let view: PilihVariableItem;
 			view = new PilihVariableItem(item);
 			view.finish = () => {
+				console.log('variable dipilih ' + item.id);
 				this._varDipilih = item.id;
 				this.view.detach();
 				this._finish();
@@ -100,6 +113,10 @@ class DlgPilihVariable {
 		});
 
 		this.view.attach(document.body);
+		this.view.batalTbl.onclick = (e: MouseEvent) => {
+			e.stopPropagation();
+			this.view.detach();
+		}
 
 	}
 }

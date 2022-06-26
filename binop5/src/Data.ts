@@ -1,145 +1,70 @@
 class Data {
-	readonly variableAr: IVar[] = [];
-	readonly modulAr: IModul[] = [];
-	readonly dekFungsiAr: IDekFungsi[] = [];
-	readonly paramAr: IParam[] = [];
-	readonly stmtAr: IStmt[] = [];
 
-	private _halModul: HalModule;
-	public get halModul(): HalModule {
-		return this._halModul;
-	}
+    static buatVarIsi(indukId: number): IVarIsi {
+        let obj: IVarIsi;
 
-	private _halFungsi: df.HalDeklarasiFungsi;
-	public get halFungsi(): df.HalDeklarasiFungsi {
-		return this._halFungsi;
-	}
+        //buat obj
+        obj = {
+            id: Id.id,
+            indukId: indukId,
+            nama: '',
+            prevIdx: 0,
+            refVarId: -1,
+            refExpId: -1,
+            stmtType: STMT_VAR_ISI,
+            type: TY_STMT
+        }
 
-	buatHalaman(): void {
-		this._halFungsi = new df.HalDeklarasiFungsi();
-		this._halModul = new HalModule();
-	}
+        dataObj.stmtAr.push(obj);
+        dataObj.simpan();
 
-	simpan(): void {
-		let str: string = '';
-		let simpan: ISimpan;
+        return obj;
+    }
 
-		simpan = {
-			var: this.variableAr,
-			dekFung: this.dekFungsiAr,
-			// exp: [],
-			modul: this.modulAr,
-			param: this.paramAr,
-			// ref: [],
-			stmt: this.stmtAr,
-			value: [],
-			arg: [] //TODO:
-		};
+    static deleteVarIsi(id: number): void {
+        for (let i: number = 0; i < dataObj.stmtAr.length; i++) {
+            if (dataObj.stmtAr[i].id == id) {
+                dataObj.stmtAr.splice(i, 1);
+                return;
+            }
+        }
+    }
 
-		str = JSON.stringify(simpan);
+    static getArg(id: number): IArg {
+        let hasil: IArg;
 
-		window.localStorage.setItem('ha.binop', str);
-	}
+        dataObj.argAr.forEach((item: IArg) => {
+            if (item.id == id) {
+                hasil = item;
+            }
+        })
 
-	load(): void {
-		try {
-			let str: string;
-			str = window.localStorage.getItem('ha.binop');
+        if (!hasil) {
+            throw new Error('');
+        }
 
-			if (str) {
-				let muatObj: ISimpan;
-				muatObj = JSON.parse(str);
+        return hasil;
+    }
 
-				//hapus data
-				while (this.variableAr.length > 0) {
-					this.variableAr.pop();
-				}
+    static buatArg(type: string, indukId: number): IArg {
+        let argObj: IArg;
+        argObj = {
+            id: Id.id,
+            refParamId: 0,
+            indukId: indukId,
+            nama: '',
+            type: TY_ARG,
+            tipeArg: type,
+            value: '0'
+        }
 
-				while (this.modulAr.length > 0) {
-					this.modulAr.pop();
-				}
+        if (type == ARG_REF) {
+            argObj.value = '-1';
+        }
 
-				while (this.dekFungsiAr.length > 0) {
-					this.dekFungsiAr.pop();
-				}
+        dataObj.argAr.push(argObj);
+        dataObj.simpan();
 
-				while (this.paramAr.length > 0) {
-					this.paramAr.pop();
-				}
-
-				while (this.stmtAr.length > 0) {
-					this.stmtAr.pop();
-				}
-
-				//TODO: 
-
-				//isi data
-				muatObj.var.forEach((item: IVar) => {
-					this.variableAr.push({
-						id: item.id,
-						indukId: item.indukId,
-						nama: item.nama,
-						type: item.type
-					})
-				})
-
-				muatObj.modul.forEach((item: IModul) => {
-					this.modulAr.push({
-						id: item.id,
-						indukId: item.indukId,
-						nama: item.nama,
-						type: item.type
-					})
-				})
-
-				muatObj.dekFung.forEach((item: IDekFungsi) => {
-					this.dekFungsiAr.push({
-						id: item.id,
-						indukId: item.indukId,
-						nama: item.nama,
-						type: item.type
-					})
-				})
-
-				muatObj.param.forEach((item: IParam) => {
-					this.paramAr.push({
-						id: item.id,
-						indukId: item.indukId,
-						nama: item.nama,
-						type: item.type,
-						prevIdx: item.prevIdx
-					})
-				})
-
-				muatObj.stmt.forEach((item: IStmt) => {
-					if (item.stmtType == STMT_PANGGIL_FUNGSI) {
-
-					}
-					else if (item.stmtType == STMT_VAR_ISI) {
-						let varIsi: IVarIsi = item as IVarIsi;
-						let obj: IVarIsi = {
-							id: varIsi.id,
-							indukId: varIsi.indukId,
-							nama: varIsi.nama,
-							prevIdx: varIsi.prevIdx,
-							refExpId: varIsi.refExpId,
-							refVarId: varIsi.refVarId,
-							stmtType: varIsi.stmtType,
-							type: varIsi.type,
-						};
-						this.stmtAr.push(obj);
-					}
-
-				})
-
-			}
-			else {
-
-			}
-		}
-		catch (e) {
-			ha.comp.dialog.tampil(e);
-		}
-	}
+        return argObj;
+    }
 }
-let data: Data = new Data();

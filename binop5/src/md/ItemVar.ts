@@ -28,7 +28,7 @@ class ItemVar extends ha.comp.BaseComponent {
 				let nama: string = window.prompt('Nama var: ', this._item.nama);
 				if (nama) {
 					this.gantiNama(nama);
-					data.simpan();
+					dataObj.simpan();
 				}
 			}
 		})
@@ -37,13 +37,13 @@ class ItemVar extends ha.comp.BaseComponent {
 			label: 'hapus',
 			f: () => {
 
-				for (let i: number = 0; i < data.variableAr.length; i++) {
-					if (data.variableAr[i].id == this._item.id) {
-						data.variableAr.splice(i, 1);
+				for (let i: number = 0; i < Variable.daftar.length; i++) {
+					if (Variable.daftar[i].id == this._item.id) {
+						Variable.daftar.splice(i, 1);
 					}
 				}
 				this.destroy();
-				data.simpan();
+				dataObj.simpan();
 			}
 		})
 

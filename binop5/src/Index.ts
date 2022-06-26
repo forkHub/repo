@@ -1,27 +1,27 @@
 function init(): void {
-	data.load();
+	dataObj.load();
 
-	data.buatHalaman();
-	data.halModul.attach(document.body);
+	dataObj.initHalaman();
+	dataObj.halModul.attach(document.body);
 
 	//render 
-	data.variableAr.forEach((item: IVar) => {
+	Variable.daftar.forEach((item: IVar) => {
 		if (item.indukId == 0) {
-			data.halModul.renderVar(item);
+			dataObj.halModul.renderVar(item);
 		}
 	});
 
-	data.modulAr.forEach((item: IModul) => {
-		data.halModul.renderModul(item);
+	dataObj.modulAr.forEach((item: IModul) => {
+		dataObj.halModul.renderModul(item);
 	});
 
-	data.dekFungsiAr.forEach((item: IDekFungsi) => {
-		data.halModul.renderDekFungsi(item);
+	dataObj.dekFungsiAr.forEach((item: IDekFungsi) => {
+		dataObj.halModul.renderDekFungsi(item);
 	})
 }
 
 function test(): void {
-	data.load();
+	dataObj.load();
 	arg.formArg.attach(document.body);
 }
 

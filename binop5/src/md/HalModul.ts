@@ -19,8 +19,8 @@ class HalModule extends ha.comp.BaseComponent {
                 if (nama) {
                     let modulObj: IModul = this.buatModulObj(nama, 0);
                     this.renderModul(modulObj);
-                    data.modulAr.push(modulObj);
-                    data.simpan();
+                    dataObj.modulAr.push(modulObj);
+                    dataObj.simpan();
                 }
             }
         });
@@ -31,8 +31,8 @@ class HalModule extends ha.comp.BaseComponent {
                 if (nama) {
                     let fungObj: IDekFungsi = this.buatDekFungsiObj(nama, 0);
                     this.renderDekFungsi(fungObj);
-                    data.dekFungsiAr.push(fungObj);
-                    data.simpan();
+                    dataObj.dekFungsiAr.push(fungObj);
+                    dataObj.simpan();
                 }
             }
         });
@@ -61,8 +61,8 @@ class HalModule extends ha.comp.BaseComponent {
                     variable = this.buatVarObj(nama, 0);
                     this.renderVar(variable);
 
-                    data.variableAr.push(variable);
-                    data.simpan();
+                    Variable.daftar.push(variable);
+                    dataObj.simpan();
                 }
             }
         }
@@ -95,7 +95,7 @@ class HalModule extends ha.comp.BaseComponent {
         let hasil: IVar;
 
         hasil = {
-            id: ha.comp.Util.id(),
+            id: Id.id,
             nama: nama,
             indukId: indukId,
             type: TY_VARIABLE,
@@ -106,7 +106,7 @@ class HalModule extends ha.comp.BaseComponent {
 
     buatModulObj(nama: string, indukId: number): IModul {
         return {
-            id: ha.comp.Util.id(),
+            id: Id.id,
             indukId: indukId,
             nama: nama,
             type: TY_MODUL
@@ -115,7 +115,7 @@ class HalModule extends ha.comp.BaseComponent {
 
     buatDekFungsiObj(nama: string, indukId: number): IDekFungsi {
         return {
-            id: ha.comp.Util.id(),
+            id: Id.id,
             indukId: indukId,
             nama: nama,
             type: TY_DEK_FUNGSI
