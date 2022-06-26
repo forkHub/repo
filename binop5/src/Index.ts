@@ -1,23 +1,18 @@
 function init(): void {
 	dataObj.load();
 
+	let modul: IModul;
+	modul = Modul.awal();
+
+	if (!modul) {
+		modul = Modul.buatModulObj('awal', 0);
+	}
+
 	dataObj.initHalaman();
 	dataObj.halModul.attach(document.body);
+	dataObj.halModul.tampil(modul);
 
-	//render 
-	Variable.daftar.forEach((item: IVar) => {
-		if (item.indukId == 0) {
-			dataObj.halModul.renderVar(item);
-		}
-	});
-
-	dataObj.modulAr.forEach((item: IModul) => {
-		dataObj.halModul.renderModul(item);
-	});
-
-	dataObj.dekFungsiAr.forEach((item: IDekFungsi) => {
-		dataObj.halModul.renderDekFungsi(item);
-	})
+	dataObj.simpan();
 }
 
 function test(): void {
@@ -26,7 +21,5 @@ function test(): void {
 }
 
 window.onload = () => {
-	// test();
 	init();
-
 }

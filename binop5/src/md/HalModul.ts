@@ -1,5 +1,6 @@
 class HalModule extends ha.comp.BaseComponent {
     private menu: ha.comp.MenuPopup;
+    private _modul: IModul;
 
     constructor() {
         super();
@@ -9,17 +10,40 @@ class HalModule extends ha.comp.BaseComponent {
         this.setupMenu();
     }
 
-    setupMenu(): void {
+    tampil(modul: IModul): void {
+        this._modul = modul;
+
+        this._modul.varAr.forEach((id: number) => {
+            let item: IVar;
+
+            item = Variable.getVar(id);
+            this.renderVar(item);
+
+        });
+
+        this._modul.modulAr.forEach((id: number) => {
+            let item: IModul = Modul.getModul(id);
+            this.renderModul(item);
+        });
+
+        this._modul.fungAr.forEach((id: number) => {
+            let item: IDekFungsi = DekFungsi.get(id);
+            this.renderDekFungsi(item);
+        })
+
+    }
+
+    private setupMenu(): void {
         this.menu = new ha.comp.MenuPopup();
         this.menu.buatTombol(this.buatTombolTambahVar());
         this.menu.buatTombol({
             label: 'modul',
             f: () => {
-                let nama: string = window.prompt('Nama Modul');
+                let nama: string = window.prompt('Nama Modul', 'modul');
                 if (nama) {
-                    let modulObj: IModul = this.buatModulObj(nama, 0);
+                    let modulObj: IModul = Modul.buatModulObj(nama, 0);
                     this.renderModul(modulObj);
-                    dataObj.modulAr.push(modulObj);
+                    Modul.daftar.push(modulObj);
                     dataObj.simpan();
                 }
             }
@@ -27,25 +51,25 @@ class HalModule extends ha.comp.BaseComponent {
         this.menu.buatTombol({
             label: 'deklarasi fungsi',
             f: () => {
-                let nama: string = window.prompt('Nama Fungsi');
+                let nama: string = window.prompt('Nama Fungsi', 'fungsi');
                 if (nama) {
-                    let fungObj: IDekFungsi = this.buatDekFungsiObj(nama, 0);
+                    let fungObj: IDekFungsi = DekFungsi.buat(nama, 0);
                     this.renderDekFungsi(fungObj);
-                    dataObj.dekFungsiAr.push(fungObj);
+                    this._modul.fungAr.push(fungObj.id);
                     dataObj.simpan();
                 }
             }
         });
     }
 
-    setupTombol(): void {
+    private setupTombol(): void {
         this.menuTbl.onclick = (e: MouseEvent) => {
             e.stopPropagation();
             this.menu.view.attach(document.body);
         }
     }
 
-    buatTombolTambahVar(): ha.comp.ITombol {
+    private buatTombolTambahVar(): ha.comp.ITombol {
         let tombol: ha.comp.ITombol;
 
         tombol = {
@@ -58,7 +82,7 @@ class HalModule extends ha.comp.BaseComponent {
                 if (nama) {
                     let variable: IVar;
 
-                    variable = this.buatVarObj(nama, 0);
+                    variable = Variable.buatVarObj(nama, 0);
                     this.renderVar(variable);
 
                     Variable.daftar.push(variable);
@@ -70,64 +94,43 @@ class HalModule extends ha.comp.BaseComponent {
         return tombol;
     }
 
-    renderVar(variable: IVar): void {
-        let view: ItemVar;
+    private renderVar(variable: IVar): void {
+        let view: VariableItem;
 
-        view = new ItemVar(variable);
+        view = new VariableItem(variable);
         view.attach(this.variable);
     }
 
-    renderModul(modul: IModul): void {
+    private renderModul(modul: IModul): void {
         let view: ItemModul;
 
         view = new ItemModul(modul);
-        view.attach(this.modul);
+        view.attach(this.modulEl);
     }
 
-    renderDekFungsi(fung: IDekFungsi): void {
-        let view: ItemDekFungsi;
+    private renderDekFungsi(fung: IDekFungsi): void {
+        let view: DekFungsiItemView;
 
-        view = new ItemDekFungsi(fung);
-        view.attach(this.modul);
+        view = new DekFungsiItemView(fung);
+        view.attach(this.modulEl);
     }
 
-    buatVarObj(nama: string, indukId: number): IVar {
-        let hasil: IVar;
+    //TODO: dipindah
+    // private buatDekFungsiObj(nama: string, indukId: number): IDekFungsi {
+    //     return {
+    //         id: Id.id,
+    //         indukId: indukId,
+    //         nama: nama,
+    //         type: TY_DEK_FUNGSI
+    //     }
 
-        hasil = {
-            id: Id.id,
-            nama: nama,
-            indukId: indukId,
-            type: TY_VARIABLE,
-        }
-
-        return hasil;
-    }
-
-    buatModulObj(nama: string, indukId: number): IModul {
-        return {
-            id: Id.id,
-            indukId: indukId,
-            nama: nama,
-            type: TY_MODUL
-        }
-    }
-
-    buatDekFungsiObj(nama: string, indukId: number): IDekFungsi {
-        return {
-            id: Id.id,
-            indukId: indukId,
-            nama: nama,
-            type: TY_DEK_FUNGSI
-        }
-
-    }
+    // }
 
     get menuTbl(): HTMLButtonElement {
         return this.getEl('div.menu button') as HTMLButtonElement;
     }
 
-    get modul(): HTMLDivElement {
+    get modulEl(): HTMLDivElement {
         return this.getEl('div.modul') as HTMLDivElement;
     }
 

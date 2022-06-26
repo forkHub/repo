@@ -8,8 +8,10 @@ interface IPanggilFungsi extends IStmt {
 }
 
 interface IVarIsi extends IStmt {
-	refVarId: number,
-	refExpId: number
+	varId: number,
+	expId: number,
+	expTipe: string,
+	expValue: string	//bila exp adalah value maka diisi dengan value
 }
 
 interface IVarIsiBinop extends IStmt {

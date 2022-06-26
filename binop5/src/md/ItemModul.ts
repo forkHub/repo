@@ -56,9 +56,9 @@ class ItemModul extends ha.comp.BaseComponent {
 		this.menu.buatTombol({
 			label: 'hapus',
 			f: () => {
-				for (let i: number = 0; i < dataObj.modulAr.length; i++) {
-					if (dataObj.modulAr[i].id == this._item.id) {
-						dataObj.modulAr.splice(i, 1);
+				for (let i: number = 0; i < Modul.daftar.length; i++) {
+					if (Modul.daftar[i].id == this._item.id) {
+						Modul.daftar.splice(i, 1);
 						break;
 					}
 				}

@@ -1,26 +1,5 @@
 class Data {
 
-    static buatVarIsi(indukId: number): IVarIsi {
-        let obj: IVarIsi;
-
-        //buat obj
-        obj = {
-            id: Id.id,
-            indukId: indukId,
-            nama: '',
-            prevIdx: 0,
-            refVarId: -1,
-            refExpId: -1,
-            stmtType: STMT_VAR_ISI,
-            type: TY_STMT
-        }
-
-        dataObj.stmtAr.push(obj);
-        dataObj.simpan();
-
-        return obj;
-    }
-
     static deleteVarIsi(id: number): void {
         for (let i: number = 0; i < dataObj.stmtAr.length; i++) {
             if (dataObj.stmtAr[i].id == id) {

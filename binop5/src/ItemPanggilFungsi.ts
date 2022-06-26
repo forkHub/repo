@@ -1,4 +1,5 @@
 ///<reference path="./InterfaceStmt.ts"/>
+///<reference path="./comp/BaseComponent.ts"/>
 
 class PanggilFungsi extends ha.comp.BaseComponent {
 	private _fungsi: IDekFungsi;

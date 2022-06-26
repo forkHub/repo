@@ -1,3 +1,5 @@
+///<reference path="./comp/BaseComponent.ts"/>
+
 class ViewWadah extends ha.comp.BaseComponent {
 	private _item: IArg;
 	private _diupdate: () => void;

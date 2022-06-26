@@ -1,6 +1,6 @@
 class DataObj {
-	readonly modulAr: IModul[] = [];
-	readonly dekFungsiAr: IDekFungsi[] = [];
+	// readonly modulAr: IModul[] = [];
+	// readonly dekFungsiAr: IDekFungsi[] = [];
 	readonly paramAr: IParam[] = [];
 	readonly stmtAr: IStmt[] = [];
 	readonly argAr: IArg[] = [];
@@ -10,13 +10,13 @@ class DataObj {
 		return this._halModul;
 	}
 
-	private _halFungsi: df.HalDeklarasiFungsi;
-	public get halFungsi(): df.HalDeklarasiFungsi {
+	private _halFungsi: DekFungsiEditor;
+	public get halFungsi(): DekFungsiEditor {
 		return this._halFungsi;
 	}
 
 	initHalaman(): void {
-		this._halFungsi = new df.HalDeklarasiFungsi();
+		this._halFungsi = new DekFungsiEditor();
 		this._halModul = new HalModule();
 	}
 
@@ -26,8 +26,8 @@ class DataObj {
 
 		simpan = {
 			var: Variable.daftar,
-			dekFung: this.dekFungsiAr,
-			modul: this.modulAr,
+			dekFung: DekFungsi.daftar,
+			modul: Modul.daftar,
 			param: this.paramAr,
 			stmt: this.stmtAr,
 			value: [],	//TODO:
@@ -53,12 +53,12 @@ class DataObj {
 					Variable.daftar.pop();
 				}
 
-				while (this.modulAr.length > 0) {
-					this.modulAr.pop();
+				while (Modul.daftar.length > 0) {
+					Modul.daftar.pop();
 				}
 
-				while (this.dekFungsiAr.length > 0) {
-					this.dekFungsiAr.pop();
+				while (DekFungsi.daftar.length > 0) {
+					DekFungsi.daftar.pop();
 				}
 
 				while (this.paramAr.length > 0) {
@@ -79,25 +79,31 @@ class DataObj {
 						id: item.id,
 						indukId: item.indukId,
 						nama: item.nama,
-						type: item.type
+						type: item.type,
+						nilai: item.nilai
 					})
 				})
 
 				muatObj.modul.forEach((item: IModul) => {
-					this.modulAr.push({
+					Modul.daftar.push({
 						id: item.id,
 						indukId: item.indukId,
 						nama: item.nama,
-						type: item.type
+						type: item.type,
+						fungAr: item.fungAr,
+						modulAr: item.modulAr,
+						varAr: item.varAr
 					})
 				})
 
 				muatObj.dekFung.forEach((item: IDekFungsi) => {
-					this.dekFungsiAr.push({
+					DekFungsi.daftar.push({
 						id: item.id,
 						indukId: item.indukId,
 						nama: item.nama,
-						type: item.type
+						type: item.type,
+						fungAr: item.fungAr,
+						varAr: item.varAr
 					})
 				})
 
@@ -122,10 +128,12 @@ class DataObj {
 							indukId: varIsi.indukId,
 							nama: varIsi.nama,
 							prevIdx: varIsi.prevIdx,
-							refExpId: varIsi.refExpId,
-							refVarId: varIsi.refVarId,
+							expId: varIsi.expId,
+							varId: varIsi.varId,
 							stmtType: varIsi.stmtType,
 							type: varIsi.type,
+							expTipe: varIsi.expTipe,
+							expValue: varIsi.expValue,
 						};
 						this.stmtAr.push(obj);
 					}

@@ -6,17 +6,6 @@ namespace ha.comp {
 
 		}
 
-		// buatClass(label: string): string {
-		// 	let hasil: string;
-
-		// 	hasil = label.toLowerCase();
-		// 	while (hasil.indexOf(' ') > -1) {
-		// 		hasil = hasil.replace(' ', '-');
-		// 	}
-
-		// 	return hasil;
-		// }
-
 		destroy(): void {
 			this.view.destroy();
 		}

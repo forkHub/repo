@@ -1,19 +1,17 @@
-class ItemVar extends ha.comp.BaseComponent {
+class VariableItem extends ha.comp.BaseComponent {
 	private menu: ha.comp.MenuPopup;
-
 	private _item: IVar;
-	public get item(): IVar {
-		return this._item;
-	}
 
 	constructor(item: IVar) {
 		super();
 		this._template = `
-            <div class='comp var-item disp-flex'>
-                <div class='nama flex-grow-1'></div>
-                <div class='menu'>
-                    <button>|||</button>
-                </div>
+            <div class='comp var-item disp-flex padding-4'>
+				<div class='border padding'>
+					<div class='menu'>
+						<button>|||</button>
+					</div>
+					<div class='nama'></div>
+				</div>
             </div>
         `;
 		this.build();
@@ -54,7 +52,7 @@ class ItemVar extends ha.comp.BaseComponent {
 		}
 	}
 
-	gantiNama(nama: string): void {
+	private gantiNama(nama: string): void {
 		this._item.nama = nama;
 		this.namaDiv.innerText = 'var: ' + nama;
 	}
@@ -64,11 +62,11 @@ class ItemVar extends ha.comp.BaseComponent {
 		this._item = null;
 	}
 
-	get namaDiv(): HTMLDivElement {
+	private get namaDiv(): HTMLDivElement {
 		return this.getEl('div.nama') as HTMLDivElement;
 	}
 
-	get menuTbl(): HTMLButtonElement {
+	private get menuTbl(): HTMLButtonElement {
 		return this.getEl('div.menu button') as HTMLButtonElement;
 	}
 }

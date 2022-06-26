@@ -1,4 +1,4 @@
-//TODO: namespace bisa dihapus
+///<reference path="./comp/BaseComponent.ts"/>
 namespace arg {
 
 	/**
@@ -81,19 +81,19 @@ namespace arg {
 			this.browse.onclick = (e: MouseEvent) => {
 				e.stopPropagation();
 				console.log('browse click');
-				pilihVariable.finish = () => {
-					this._value = pilihVariable.varDipilih + '';
-					this.literalHtml.value = Variable.nama(pilihVariable.varDipilih);
+				dlgPilihVariable.finish = () => {
+					this._value = dlgPilihVariable.varDipilih + '';
+					this.literalHtml.value = Variable.nama(dlgPilihVariable.varDipilih);
 					// this.literalHtml.innerText = this.namaVar(pilihVariable.varDipilih);
 
-					console.log('pilih var finish: ' + pilihVariable.varDipilih);
+					console.log('pilih var finish: ' + dlgPilihVariable.varDipilih);
 					console.log(this.literalHtml);
 					console.log('value: ' + this.literalHtml.value);
 					console.log('text: ' + this.literalHtml.innerText);
 					console.log('this.value: ' + this._value);
-					console.log('nama var: ' + Variable.nama(pilihVariable.varDipilih));
+					console.log('nama var: ' + Variable.nama(dlgPilihVariable.varDipilih));
 				}
-				pilihVariable.tampil();
+				dlgPilihVariable.tampil();
 			}
 
 			(this.getEl('button.batal') as HTMLButtonElement).onclick = (e: MouseEvent) => {

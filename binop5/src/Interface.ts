@@ -1,18 +1,21 @@
 interface IModul extends IData {
 	// view?: md.View
+	varAr: number[],
+	fungAr: number[],
+	modulAr: number[]
 }
 
 interface IVar extends IData {
-	// view?: variable.ent.View;
+	nilai: string;
 }
 
 interface IDekFungsi extends IData {
-	// view?: fung.dek.ent.View
+	varAr: number[],
+	fungAr: number[],
 }
 
 interface IParam extends IData {
 	prevIdx: number;
-	// view?: param.View
 }
 
 interface IArg extends IData {

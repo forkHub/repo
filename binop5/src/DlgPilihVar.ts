@@ -1,3 +1,4 @@
+///<reference path="./comp/BaseComponent.ts"/>
 class PilihVariableItem extends ha.comp.BaseComponent {
 	private _finish: () => void;
 	public get finish(): () => void {
@@ -10,8 +11,10 @@ class PilihVariableItem extends ha.comp.BaseComponent {
 	constructor(variable: IVar) {
 		super();
 		this._template = `
-			<div class='item-var padding'>
-				<span class='nama'></span>
+			<div class='item-var padding-4'>
+				<div class='border padding'>
+					<span class='nama disp-inline-block'></span>
+				</div>
 			</div>
 		`;
 		this.build();
@@ -54,6 +57,11 @@ class PilihVariableView extends ha.comp.BaseComponent {
 			</div>
 		`;
 		this.build();
+
+		this.batalTbl.onclick = (e: MouseEvent) => {
+			e.stopPropagation();
+			this.detach();
+		}
 	}
 
 	get daftar(): HTMLDivElement {
@@ -120,4 +128,4 @@ class DlgPilihVariable {
 
 	}
 }
-const pilihVariable: DlgPilihVariable = new DlgPilihVariable();
+const dlgPilihVariable: DlgPilihVariable = new DlgPilihVariable();
