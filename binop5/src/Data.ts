@@ -1,9 +1,9 @@
 class Data {
 
     static deleteVarIsi(id: number): void {
-        for (let i: number = 0; i < dataObj.stmtAr.length; i++) {
-            if (dataObj.stmtAr[i].id == id) {
-                dataObj.stmtAr.splice(i, 1);
+        for (let i: number = 0; i < Stmt.daftar.length; i++) {
+            if (Stmt.daftar[i].id == id) {
+                Stmt.daftar.splice(i, 1);
                 return;
             }
         }
@@ -34,7 +34,8 @@ class Data {
             nama: '',
             type: TY_ARG,
             tipeArg: type,
-            value: '0'
+            value: '0',
+            ket: ''
         }
 
         if (type == ARG_REF) {

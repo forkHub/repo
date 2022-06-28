@@ -1,9 +1,34 @@
 class VarIsi {
-    // readonly daftar: IVarIsi[] = [];
+    /**
+     * 
+     */
 
     static varRef(obj: IVarIsi, value: number) {
         ha.comp.Util.stackTrace();
         obj.varId = value;
+    }
+
+    static muat(muatObj: ISimpan): void {
+        muatObj.stmt.forEach((item: IStmt) => {
+            if (item.stmtType == STMT_VAR_ISI) {
+                let varIsi: IVarIsi = item as IVarIsi;
+                let obj: IVarIsi = {
+                    id: varIsi.id,
+                    indukId: varIsi.indukId,
+                    nama: varIsi.nama,
+                    prevIdx: varIsi.prevIdx,
+                    expId: varIsi.expId,
+                    varId: varIsi.varId,
+                    stmtType: varIsi.stmtType,
+                    type: varIsi.type,
+                    expTipe: varIsi.expTipe,
+                    expValue: varIsi.expValue,
+                    ket: item.ket
+                };
+                Stmt.daftar.push(obj);
+            }
+
+        })
     }
 
     static buatVarIsi(indukId: number): IVarIsi {
@@ -20,11 +45,14 @@ class VarIsi {
             stmtType: STMT_VAR_ISI,
             type: TY_STMT,
             expTipe: ARG_VALUE,
-            expValue: '0'
+            expValue: '0',
+            ket: ''
         }
 
-        dataObj.stmtAr.push(obj);
+        Stmt.daftar.push(obj);
         dataObj.simpan();
+
+        this.validasi(obj);
 
         return obj;
     }
@@ -43,6 +71,21 @@ class VarIsi {
         }
 
         return hasil;
+    }
+
+    static validasi(obj: IVarIsi): void {
+        if (obj.indukId > 0) {
+            //masih ambigue tidak bisa dideteksi tipe dari induk
+        }
+
+        if (obj.expId > 0) {
+            //kemungkinan dihapus karena var isi biasa hanya berisi value
+        }
+
+        if (obj.varId > 0) {
+            Variable.getVar(obj.varId);
+        }
+
     }
 
 }

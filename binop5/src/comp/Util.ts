@@ -111,6 +111,26 @@ namespace ha.comp {
 			return urlHasil;
 		}
 
+		static build(temp: string): HTMLElement {
+			let div: HTMLElement = document.createElement('div');
+			let el: HTMLElement;
+
+			div.innerHTML = temp;
+
+			el = div.firstElementChild as HTMLElement;
+
+			// this._elHtml = el;
+
+			if (!el) {
+				console.log(div);
+				console.log(temp);
+				throw new Error('');
+			}
+
+			return el;
+
+		}
+
 		static async AjaxLogin(type: string, urlServer: string, dataStr: string, loginUrl: string, pf: (p: ProgressEvent) => void = null): Promise<XMLHttpRequest> {
 			let xml: XMLHttpRequest;
 

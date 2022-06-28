@@ -26,7 +26,8 @@ class DekFungsiEditor extends ha.comp.BaseComponent {
 			nama: nama,
 			indukId: indukId,
 			type: TY_PARAM,
-			prevIdx: prevIdx
+			prevIdx: prevIdx,
+			ket: ''
 		}
 
 		return hasil;
@@ -35,15 +36,18 @@ class DekFungsiEditor extends ha.comp.BaseComponent {
 	tampil(item: IDekFungsi): void {
 		this._item = item;
 
-		Variable.daftar.forEach((item: IVar) => {
-			if (item.indukId == this._item.id) {
-				let itemView: VariableItem;
+		item.varAr.forEach((id: number) => {
+			let varObj: IVar = Variable.getVar(id);
 
-				itemView = new VariableItem(item);
-				itemView.attach(this.daftarVar);
+			if (varObj.indukId == this._item.id) {
+				let varView: VariableItem;
+
+				varView = new VariableItem(varObj);
+				varView.attach(this.daftarVar);
 			}
 		})
 
+		//TODO:
 		dataObj.paramAr.forEach((item: IParam) => {
 			if (item.indukId == this._item.id) {
 				let itemView: ParamView;
@@ -53,14 +57,15 @@ class DekFungsiEditor extends ha.comp.BaseComponent {
 			}
 		})
 
-		for (let i: number = 0; i < dataObj.stmtAr.length; i++) {
-			let item: IStmt = dataObj.stmtAr[i];
+		//TODO:
+		for (let i: number = 0; i < item.stmtAr.length; i++) {
+			let idx: number = item.stmtAr[i];
+			let stmt: IStmt = Stmt.get(idx);
 
-			if (item.stmtType == STMT_VAR_ISI) {
+			if (stmt.stmtType == STMT_VAR_ISI) {
 				console.log('var isi:');
 
-				let view: VarisiViewItem = new VarisiViewItem(item as IVarIsi);
-				// view.init();
+				let view: VarisiViewItem = new VarisiViewItem(stmt as IVarIsi);
 
 				view.attach(this.daftarStmt);
 			}
@@ -85,6 +90,7 @@ class DekFungsiEditor extends ha.comp.BaseComponent {
 					refFungsiIdx: 0,
 					stmtType: STMT_PANGGIL_FUNGSI,
 					type: TY_STMT,
+					ket: ''
 				}
 
 				obj; //TODO:
@@ -98,8 +104,11 @@ class DekFungsiEditor extends ha.comp.BaseComponent {
 			f: () => {
 				let obj: IVarIsi = VarIsi.buatVarIsi(this._item.id);
 				let view: VarisiViewItem = new VarisiViewItem(obj);
+				this._item.stmtAr.push(obj.id);
 				view.attach(this.daftarStmt);
+				dataObj.simpan();
 
+				DekFungsi.validasi(this._item);
 			}
 		})
 	}
@@ -114,12 +123,13 @@ class DekFungsiEditor extends ha.comp.BaseComponent {
 				nama = window.prompt('Nama variable: ', 'var 1');
 
 				if (nama) {
-					// let varObj: IVar = dataObj.halModul.buatVarObj(nama, this._item.id);
 					let varObj: IVar = Variable.buatVarObj(nama, this._item.id);
 					let view: VariableItem;
+					this._item.varAr.push(varObj.id);
 
 					view = new VariableItem(varObj);
 					view.attach(this.daftarVar);
+					dataObj.simpan();
 				}
 			}
 		});

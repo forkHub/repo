@@ -11,7 +11,7 @@ interface IVar extends IData {
 
 interface IDekFungsi extends IData {
 	varAr: number[],
-	fungAr: number[],
+	stmtAr: number[],
 }
 
 interface IParam extends IData {

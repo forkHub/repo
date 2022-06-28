@@ -11,7 +11,8 @@ class Modul {
             type: TY_MODUL,
             fungAr: [],
             modulAr: [],
-            varAr: []
+            varAr: [],
+            ket: ''
         }
 
         this.daftar.push(modul);
@@ -28,12 +29,32 @@ class Modul {
         throw Error('id ' + id);
     }
 
-    static awal(): IModul {
+    static getAwal(): IModul {
         for (let i: number = 0; i < this.daftar.length; i++) {
             let item: IModul = this.daftar[i];
             if (item.indukId == 0) return item;
         }
 
         return null;
+    }
+
+    static terj(modul: IModul): string {
+        let hasil: string = '';
+
+        //var
+        modul.varAr.forEach((id: number) => {
+            let item: IVar = Variable.getVar(id);
+            hasil += Variable.terj(item);
+            hasil += "\n";
+        });
+
+        //fung dek
+        modul.fungAr.forEach((id: number) => {
+            let item: IDekFungsi = DekFungsi.get(id);
+            hasil += DekFungsi.terj(item);
+            hasil += "\n";
+        })
+
+        return hasil;
     }
 }

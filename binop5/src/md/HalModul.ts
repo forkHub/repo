@@ -35,6 +35,13 @@ class HalModule extends ha.comp.BaseComponent {
 
     private setupMenu(): void {
         this.menu = new ha.comp.MenuPopup();
+        this.menu.buatTombol({
+            label: 'terjemah',
+            f: () => {
+                // dataObj.ter
+                Project.terj();
+            }
+        })
         this.menu.buatTombol(this.buatTombolTambahVar());
         this.menu.buatTombol({
             label: 'modul',

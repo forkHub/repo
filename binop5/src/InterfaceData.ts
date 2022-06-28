@@ -3,4 +3,5 @@ interface IData {
 	indukId: number
 	type: string
 	nama: string
+	ket: string
 }

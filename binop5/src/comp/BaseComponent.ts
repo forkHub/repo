@@ -20,6 +20,13 @@ namespace ha.comp {
 		// 	this._template = value;
 		// }
 
+		static buat(temp: string): ha.comp.BaseComponent {
+			let view: ha.comp.BaseComponent = new BaseComponent();
+			view.build(temp);
+
+			return view;
+		}
+
 		protected async loadTemplate(f: string): Promise<string> {
 			let http: XMLHttpRequest = await Util.Ajax('get', f, '');
 
@@ -69,9 +76,13 @@ namespace ha.comp {
 			}
 		}
 
-		protected build(): void {
+		protected build(temp: string = ''): void {
 			let div: HTMLElement = document.createElement('div');
 			let el: HTMLElement;
+
+			if (temp && temp != '') {
+				this._template = temp;
+			}
 
 			div.innerHTML = this._template;
 

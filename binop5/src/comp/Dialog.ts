@@ -18,6 +18,8 @@ namespace ha.comp {
 		}
 
 		tampil(pesan: string = '', def: boolean = true): void {
+			ha.comp.Util.stackTrace();
+
 			this.p.innerHTML = pesan;
 
 			if (def) {
@@ -28,6 +30,7 @@ namespace ha.comp {
 
 			this.attach(document.body);
 			this._elHtml.style.display = 'block';
+
 		}
 
 		get okTbl(): HTMLButtonElement {

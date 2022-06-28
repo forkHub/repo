@@ -2,7 +2,7 @@ class DataObj {
 	// readonly modulAr: IModul[] = [];
 	// readonly dekFungsiAr: IDekFungsi[] = [];
 	readonly paramAr: IParam[] = [];
-	readonly stmtAr: IStmt[] = [];
+	// readonly stmtAr: IStmt[] = [];
 	readonly argAr: IArg[] = [];
 
 	private _halModul: HalModule;
@@ -29,7 +29,7 @@ class DataObj {
 			dekFung: DekFungsi.daftar,
 			modul: Modul.daftar,
 			param: this.paramAr,
-			stmt: this.stmtAr,
+			stmt: Stmt.daftar,
 			value: [],	//TODO:
 			arg: this.argAr
 		};
@@ -48,6 +48,11 @@ class DataObj {
 				let muatObj: ISimpan;
 				muatObj = JSON.parse(str);
 
+				//def
+				if (!muatObj.stmt) muatObj.stmt = []
+
+				Stmt.muat(muatObj);
+
 				//hapus data
 				while (Variable.daftar.length > 0) {
 					Variable.daftar.pop();
@@ -65,10 +70,6 @@ class DataObj {
 					this.paramAr.pop();
 				}
 
-				while (this.stmtAr.length > 0) {
-					this.stmtAr.pop();
-				}
-
 				while (this.argAr.length > 0) {
 					this.argAr.pop();
 				}
@@ -80,7 +81,8 @@ class DataObj {
 						indukId: item.indukId,
 						nama: item.nama,
 						type: item.type,
-						nilai: item.nilai
+						nilai: item.nilai,
+						ket: item.ket
 					})
 				})
 
@@ -92,7 +94,8 @@ class DataObj {
 						type: item.type,
 						fungAr: item.fungAr,
 						modulAr: item.modulAr,
-						varAr: item.varAr
+						varAr: item.varAr,
+						ket: item.ket
 					})
 				})
 
@@ -102,8 +105,9 @@ class DataObj {
 						indukId: item.indukId,
 						nama: item.nama,
 						type: item.type,
-						fungAr: item.fungAr,
-						varAr: item.varAr
+						stmtAr: item.stmtAr,
+						varAr: item.varAr,
+						ket: item.ket
 					})
 				})
 
@@ -113,31 +117,9 @@ class DataObj {
 						indukId: item.indukId,
 						nama: item.nama,
 						type: item.type,
-						prevIdx: item.prevIdx
+						prevIdx: item.prevIdx,
+						ket: item.ket
 					})
-				})
-
-				muatObj.stmt.forEach((item: IStmt) => {
-					if (item.stmtType == STMT_PANGGIL_FUNGSI) {
-
-					}
-					else if (item.stmtType == STMT_VAR_ISI) {
-						let varIsi: IVarIsi = item as IVarIsi;
-						let obj: IVarIsi = {
-							id: varIsi.id,
-							indukId: varIsi.indukId,
-							nama: varIsi.nama,
-							prevIdx: varIsi.prevIdx,
-							expId: varIsi.expId,
-							varId: varIsi.varId,
-							stmtType: varIsi.stmtType,
-							type: varIsi.type,
-							expTipe: varIsi.expTipe,
-							expValue: varIsi.expValue,
-						};
-						this.stmtAr.push(obj);
-					}
-
 				})
 
 				muatObj.arg.forEach((item: IArg) => {
@@ -148,7 +130,8 @@ class DataObj {
 						type: item.type,
 						refParamId: item.refParamId,
 						tipeArg: item.tipeArg,
-						value: item.value
+						value: item.value,
+						ket: item.ket
 					})
 				})
 
@@ -158,7 +141,8 @@ class DataObj {
 			}
 		}
 		catch (e) {
-			ha.comp.dialog.tampil(e);
+			console.error(e);
+			// ha.comp.dialog.tampil(e);
 		}
 	}
 }

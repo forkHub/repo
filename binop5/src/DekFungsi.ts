@@ -9,8 +9,9 @@ class DekFungsi {
             indukId: indukId,
             nama: nama,
             type: TY_DEK_FUNGSI,
-            fungAr: [],
-            varAr: []
+            stmtAr: [],
+            varAr: [],
+            ket: ''
         }
 
         this.daftar.push(hasil);
@@ -26,5 +27,60 @@ class DekFungsi {
         }
 
         throw Error('');
+    }
+
+    static terj(item: IDekFungsi): string {
+        let hasil: string = '';
+
+        //dek
+        hasil += item.nama;
+        hasil += "(";
+
+        //param
+        //TODO:
+
+        hasil += ") ";
+        hasil += "{\n";
+
+        //var
+        item.varAr.forEach((id: number) => {
+            hasil += "let " + Variable.terj(Variable.getVar(id)) + "\n";
+        })
+
+        //stmt
+        // item.
+        item.stmtAr.forEach((id: number) => {
+            let stmt: IStmt;
+
+            stmt = null;//TODO:
+            id;//TODO:
+
+
+            if (stmt.stmtType == STMT_VAR_ISI) {
+                hasil += VarIsi.terj(stmt as IVarIsi);
+                hasil += "\n"
+            }
+            else {
+
+            }
+        })
+
+
+        hasil += "}\n";
+
+        return hasil;
+    }
+
+    static validasi(item: IDekFungsi): void {
+        //validasi variable
+        let varAr: IVar[] = Variable.getByIndukId(item.id);
+
+        //check jumlah sama
+        if (varAr.length != item.varAr.length) {
+            console.log(varAr);
+            console.log(item.varAr);
+            throw new Error('array tidak sama');
+        }
+
     }
 }

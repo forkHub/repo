@@ -8,6 +8,7 @@ const TY_STMT: string = 'stmt';
 const TY_VALUE: string = 'value';
 const TY_EXP: string = 'exp';
 
+//TOOD: var_isi biasa cuman bisa diisi value
 const STMT_VAR_ISI: string = 'var isi';
 const STMT_VAR_ISI_BINOP: string = 'var isi binop';
 const STMT_VAR_ISI_PANGGIL_FUNGSI: string = 'var isi panggil fungsi';

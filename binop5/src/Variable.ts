@@ -12,6 +12,18 @@ class Variable {
         throw Error('id: ' + id);
     }
 
+    static getByIndukId(id: number): IVar[] {
+        let hasil: IVar[] = [];
+
+        for (let i: number = 0; i < this.daftar.length; i++) {
+            if (this.daftar[i].indukId == id) {
+                hasil.push(this.daftar[i]);
+            }
+        }
+
+        return hasil;
+    }
+
     static getVar(id: number): IVar {
         for (let i: number = 0; i < this.daftar.length; i++) {
             if (this.daftar[i].id == id) {
@@ -30,7 +42,8 @@ class Variable {
             nama: nama,
             indukId: indukId,
             type: TY_VARIABLE,
-            nilai: ''
+            nilai: '',
+            ket: ''
         }
 
         this.daftar.push(hasil);
@@ -39,7 +52,7 @@ class Variable {
         return hasil;
     }
 
-    terj(obj: IVar): string {
+    static terj(obj: IVar): string {
         return "let " + obj.nama + "= ''";
     }
 

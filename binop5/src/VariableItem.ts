@@ -5,8 +5,8 @@ class VariableItem extends ha.comp.BaseComponent {
 	constructor(item: IVar) {
 		super();
 		this._template = `
-            <div class='comp var-item disp-flex padding-4'>
-				<div class='border padding'>
+            <div class='comp var-item padding-4'>
+				<div class='border padding disp-flex'>
 					<div class='menu'>
 						<button>|||</button>
 					</div>
