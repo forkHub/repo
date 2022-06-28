@@ -10,6 +10,12 @@ namespace ha.comp {
 			this.view.destroy();
 		}
 
+		buatTombol2(t: ITombol[]): void {
+			t.forEach((item: ITombol) => {
+				this.buatTombol(item);
+			})
+		}
+
 		buatTombol(t: ITombol): void {
 			let button: HTMLButtonElement = document.createElement('button');
 			button.classList.add("btn");

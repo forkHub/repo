@@ -10,8 +10,26 @@ class HalModule extends ha.comp.BaseComponent {
         this.setupMenu();
     }
 
+    private setBack(): void {
+        Path.back = () => {
+            if (this._modul.indukId == 0) {
+                console.log('modul awal');
+            }
+            else {
+                let pModul: IModul = Modul.getModul(this._modul.indukId);
+                dataObj.halModul.tampil(pModul);
+            }
+        }
+    }
+
     tampil(modul: IModul): void {
+        console.log('tampil');
+
         this._modul = modul;
+
+        ha.comp.Util.bersihDiv(this.varCont);
+        ha.comp.Util.bersihDiv(this.modulCont);
+        ha.comp.Util.bersihDiv(this.fungCont);
 
         this._modul.varAr.forEach((id: number) => {
             let item: IVar;
@@ -31,42 +49,64 @@ class HalModule extends ha.comp.BaseComponent {
             this.renderDekFungsi(item);
         })
 
+        this.setBack();
     }
 
     private setupMenu(): void {
         this.menu = new ha.comp.MenuPopup();
-        this.menu.buatTombol({
-            label: 'terjemah',
-            f: () => {
-                // dataObj.ter
-                Project.terj();
-            }
-        })
-        this.menu.buatTombol(this.buatTombolTambahVar());
-        this.menu.buatTombol({
-            label: 'modul',
-            f: () => {
-                let nama: string = window.prompt('Nama Modul', 'modul');
-                if (nama) {
-                    let modulObj: IModul = Modul.buatModulObj(nama, 0);
-                    this.renderModul(modulObj);
-                    Modul.daftar.push(modulObj);
-                    dataObj.simpan();
+        let tombol: ha.comp.ITombol[] = [
+            {
+                label: 'terjemah',
+                f: () => {
+                    // dataObj.ter
+                    Project.terj();
+                }
+            },
+            {
+                label: '+ var',
+                f: () => {
+                    //buat var
+                    let nama: string;
+
+                    nama = window.prompt('Nama:');
+                    if (nama) {
+                        let variable: IVar;
+
+                        variable = Variable.buatVarObj(nama, 0);
+                        this.renderVar(variable);
+                        this._modul.varAr.push(variable.id);
+
+                        dataObj.simpan();
+                    }
+                }
+            },
+            {
+                label: '+ modul',
+                f: () => {
+                    let nama: string = window.prompt('Nama Modul', 'modul');
+                    if (nama) {
+                        let modulObj: IModul = Modul.buatModulObj(nama, this._modul.id);
+                        this.renderModul(modulObj);
+                        this._modul.modulAr.push(modulObj.id);
+                        dataObj.simpan();
+                    }
+                }
+            },
+            {
+                label: '+ fungsi',
+                f: () => {
+                    let nama: string = window.prompt('Nama Fungsi', 'fungsi');
+                    if (nama) {
+                        let fungObj: IDekFungsi = DekFungsi.buat(nama, this._modul.id);
+                        this.renderDekFungsi(fungObj);
+                        this._modul.fungAr.push(fungObj.id);
+                        dataObj.simpan();
+                    }
                 }
             }
-        });
-        this.menu.buatTombol({
-            label: 'deklarasi fungsi',
-            f: () => {
-                let nama: string = window.prompt('Nama Fungsi', 'fungsi');
-                if (nama) {
-                    let fungObj: IDekFungsi = DekFungsi.buat(nama, 0);
-                    this.renderDekFungsi(fungObj);
-                    this._modul.fungAr.push(fungObj.id);
-                    dataObj.simpan();
-                }
-            }
-        });
+        ]
+
+        this.menu.buatTombol2(tombol);
     }
 
     private setupTombol(): void {
@@ -76,76 +116,40 @@ class HalModule extends ha.comp.BaseComponent {
         }
     }
 
-    private buatTombolTambahVar(): ha.comp.ITombol {
-        let tombol: ha.comp.ITombol;
-
-        tombol = {
-            label: 'var',
-            f: () => {
-                //buat var
-                let nama: string;
-
-                nama = window.prompt('Nama:');
-                if (nama) {
-                    let variable: IVar;
-
-                    variable = Variable.buatVarObj(nama, 0);
-                    this.renderVar(variable);
-
-                    Variable.daftar.push(variable);
-                    dataObj.simpan();
-                }
-            }
-        }
-
-        return tombol;
-    }
-
     private renderVar(variable: IVar): void {
         let view: VariableItem;
 
         view = new VariableItem(variable);
-        view.attach(this.variable);
+        view.attach(this.varCont);
     }
 
     private renderModul(modul: IModul): void {
         let view: ItemModul;
 
         view = new ItemModul(modul);
-        view.attach(this.modulEl);
+        view.attach(this.modulCont);
     }
 
     private renderDekFungsi(fung: IDekFungsi): void {
         let view: DekFungsiItemView;
 
         view = new DekFungsiItemView(fung);
-        view.attach(this.modulEl);
+        view.attach(this.fungCont);
     }
 
-    //TODO: dipindah
-    // private buatDekFungsiObj(nama: string, indukId: number): IDekFungsi {
-    //     return {
-    //         id: Id.id,
-    //         indukId: indukId,
-    //         nama: nama,
-    //         type: TY_DEK_FUNGSI
-    //     }
-
-    // }
-
-    get menuTbl(): HTMLButtonElement {
+    private get menuTbl(): HTMLButtonElement {
         return this.getEl('div.menu button') as HTMLButtonElement;
     }
 
-    get modulEl(): HTMLDivElement {
+    private get modulCont(): HTMLDivElement {
         return this.getEl('div.modul') as HTMLDivElement;
     }
 
-    get variable(): HTMLDivElement {
+    private get varCont(): HTMLDivElement {
         return this.getEl('div.var') as HTMLDivElement;
     }
 
-    get deklarasiFungsi(): HTMLDivElement {
+    private get fungCont(): HTMLDivElement {
         return this.getEl('div.dek-fung') as HTMLDivElement;
     }
 

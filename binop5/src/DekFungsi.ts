@@ -44,7 +44,7 @@ class DekFungsi {
 
         //var
         item.varAr.forEach((id: number) => {
-            hasil += "let " + Variable.terj(Variable.getVar(id)) + "\n";
+            hasil += Variable.terj(Variable.getVar(id)) + "\n";
         })
 
         //stmt
@@ -52,16 +52,14 @@ class DekFungsi {
         item.stmtAr.forEach((id: number) => {
             let stmt: IStmt;
 
-            stmt = null;//TODO:
-            id;//TODO:
-
+            stmt = Stmt.get(id);
 
             if (stmt.stmtType == STMT_VAR_ISI) {
                 hasil += VarIsi.terj(stmt as IVarIsi);
                 hasil += "\n"
             }
             else {
-
+                throw Error();
             }
         })
 
@@ -83,4 +81,5 @@ class DekFungsi {
         }
 
     }
+
 }

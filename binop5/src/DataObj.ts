@@ -15,6 +15,8 @@ class DataObj {
 		return this._halFungsi;
 	}
 
+
+
 	initHalaman(): void {
 		this._halFungsi = new DekFungsiEditor();
 		this._halModul = new HalModule();
@@ -58,9 +60,7 @@ class DataObj {
 					Variable.daftar.pop();
 				}
 
-				while (Modul.daftar.length > 0) {
-					Modul.daftar.pop();
-				}
+
 
 				while (DekFungsi.daftar.length > 0) {
 					DekFungsi.daftar.pop();
@@ -86,18 +86,7 @@ class DataObj {
 					})
 				})
 
-				muatObj.modul.forEach((item: IModul) => {
-					Modul.daftar.push({
-						id: item.id,
-						indukId: item.indukId,
-						nama: item.nama,
-						type: item.type,
-						fungAr: item.fungAr,
-						modulAr: item.modulAr,
-						varAr: item.varAr,
-						ket: item.ket
-					})
-				})
+				Modul.muat(muatObj);
 
 				muatObj.dekFung.forEach((item: IDekFungsi) => {
 					DekFungsi.daftar.push({

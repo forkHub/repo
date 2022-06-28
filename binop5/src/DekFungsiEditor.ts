@@ -33,6 +33,14 @@ class DekFungsiEditor extends ha.comp.BaseComponent {
 		return hasil;
 	}
 
+	private setBack(): void {
+		Path.back = () => {
+			this.detach();
+			dataObj.halModul.attach(document.body);
+			dataObj.halModul.tampil(Modul.getModul(this._item.indukId));
+		}
+	}
+
 	tampil(item: IDekFungsi): void {
 		this._item = item;
 
@@ -75,6 +83,7 @@ class DekFungsiEditor extends ha.comp.BaseComponent {
 			}
 		}
 
+		this.setBack()
 	}
 
 	private setupMenuPilihStmt() {

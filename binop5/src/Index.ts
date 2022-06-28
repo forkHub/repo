@@ -13,9 +13,6 @@ function init(): void {
 	dataObj.initHalaman();
 	dataObj.halModul.attach(document.body);
 	dataObj.halModul.tampil(modul);
-	Path.back = () => {
-		dataObj.halModul.detach();
-	}
 }
 
 function test(): void {

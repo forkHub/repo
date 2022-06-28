@@ -33,7 +33,7 @@ class ItemModul extends ha.comp.BaseComponent {
 		this._item = null;
 	}
 
-	setupMenu(): void {
+	private setupMenu(): void {
 		this.menu = new ha.comp.MenuPopup();
 		this.menu.buatTombol({
 			label: 'rename',
@@ -50,19 +50,14 @@ class ItemModul extends ha.comp.BaseComponent {
 			label: 'edit',
 			f: () => {
 				console.log('edit modul');
+				dataObj.halModul.tampil(this._item);
 			}
 		})
 
 		this.menu.buatTombol({
 			label: 'hapus',
 			f: () => {
-				for (let i: number = 0; i < Modul.daftar.length; i++) {
-					if (Modul.daftar[i].id == this._item.id) {
-						Modul.daftar.splice(i, 1);
-						break;
-					}
-				}
-
+				Modul.hapus(this._item.id);
 				this.destroy();
 				dataObj.simpan();
 			}
@@ -70,16 +65,16 @@ class ItemModul extends ha.comp.BaseComponent {
 
 	}
 
-	gantiNama(nama: string): void {
+	private gantiNama(nama: string): void {
 		this._item.nama = nama;
 		this.namaDiv.innerText = 'mod: ' + nama;
 	}
 
-	get namaDiv(): HTMLDivElement {
+	private get namaDiv(): HTMLDivElement {
 		return this.getEl('div.nama') as HTMLDivElement;
 	}
 
-	get menuTbl(): HTMLButtonElement {
+	private get menuTbl(): HTMLButtonElement {
 		return this.getEl('div.menu button') as HTMLButtonElement;
 	}
 }

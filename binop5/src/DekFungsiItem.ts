@@ -68,10 +68,7 @@ class DekFungsiItemView extends ha.comp.BaseComponent {
                 dataObj.halModul.detach();
                 dataObj.halFungsi.attach(document.body);
                 dataObj.halFungsi.tampil(this._item);
-                Path.back = () => {
-                    dataObj.halFungsi.detach();
-                    dataObj.halModul.attach(document.body);
-                }
+                // dataObj.halFungsi.setBack();
             }
         })
 
