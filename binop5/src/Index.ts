@@ -17,7 +17,7 @@ function init(): void {
 
 function test(): void {
 	dataObj.load();
-	arg.formArg.attach(document.body);
+	expForm.attach(document.body);
 }
 
 window.onload = () => {

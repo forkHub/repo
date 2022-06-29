@@ -28,3 +28,11 @@ interface IValue extends IData {
 	tipeValue: "teks" | "angka" | "ar_angka" | "ar_teks", //ar pakai id
 	value: string
 }
+
+interface IBinop extends IData {
+	exp1: string
+	exp1Tipe: string;	//ref, value
+
+	exp2: string
+	exp2Tipe: string;
+}

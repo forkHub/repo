@@ -49,20 +49,20 @@ class VarisiViewItem extends ha.comp.BaseComponent {
 
 		this.expCont.onclick = (e: MouseEvent) => {
 			e.stopPropagation();
-			arg.formArg.attach(document.body);
-			arg.formArg.selesai = () => {
-				if (arg.formArg.tipeArg == ARG_REF) {
-					this.varCont.innerText = Variable.nama(parseInt(arg.formArg.value));
-					this._item.expValue = arg.formArg.value;
+			expForm.attach(document.body);
+			expForm.selesai = () => {
+				if (expForm.tipeArg == ARG_REF) {
+					this.varCont.innerText = Variable.nama(parseInt(expForm.ref));
+					this._item.expValue = expForm.ref
 					this._item.expTipe = ARG_REF;
 				}
-				else if (arg.formArg.tipeArg == ARG_VALUE) {
-					this.varCont.innerText = arg.formArg.value;
+				else if (expForm.tipeArg == ARG_VALUE) {
+					this.varCont.innerText = expForm.value;
 					this._item.expTipe = ARG_VALUE;
-					this._item.expValue = arg.formArg.value;
+					this._item.expValue = expForm.value;
 				}
 				else {
-					throw new Error(arg.formArg.tipeArg);
+					throw new Error(expForm.tipeArg);
 				}
 				dataObj.simpan();
 			}

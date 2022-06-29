@@ -15,5 +15,6 @@ const STMT_VAR_ISI_PANGGIL_FUNGSI: string = 'var isi panggil fungsi';
 const STMT_PANGGIL_FUNGSI: string = 'panggil fungsi';
 
 const ARG_VALUE: string = 'arg value';
+const ARG_BINOP: string = 'arg value';
 const ARG_REF: string = 'arg var ref';
 const ARG_REF_FUNGSI: string = 'arg fungsi ref'

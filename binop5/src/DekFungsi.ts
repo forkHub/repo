@@ -33,7 +33,7 @@ class DekFungsi {
         let hasil: string = '';
 
         //dek
-        hasil += item.nama;
+        hasil += 'function ' + item.nama;
         hasil += "(";
 
         //param
