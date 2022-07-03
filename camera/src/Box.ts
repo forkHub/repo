@@ -3,6 +3,8 @@ let imgDrag: boolean = false;	//img is dragged or not
 let ratio: number = 0;
 let w2: number = 0;
 let normalFl: boolean = false;
+let gw: number = 800;
+let gh: number = 400;
 
 async function loadData(): Promise<void> {
 	let hasil: XMLHttpRequest = await ha.comp.Util.Ajax('get', './data.json', '');
@@ -16,15 +18,15 @@ async function loadData(): Promise<void> {
 }
 
 async function Start(): Promise<void> {
-	Graphics(400, 800);
+	Graphics(gw, gh);
 
 	// await loadData();
 	await load();
-	await gantiGambar('./img/sumur.jpg');
+	await gantiGambar('./img/depan.jpg');
 }
 
 function normalize(): void {
-	if (spot.img.x > 400) {
+	if (spot.img.x > gw) {
 		spot.img.x -= w2 - 2;
 		spot.img.dragX = spot.img.x;
 
@@ -65,9 +67,16 @@ async function Loop(): Promise<void> {
 
 		if (GetKey() == 'ArrowRight') {
 			console.log('kanan');
-			geser();
+			geser(-200);
 			FlushKeys();
 		}
+
+		if (GetKey() == 'ArrowLeft') {
+			console.log('kiri');
+			geser(200);
+			FlushKeys();
+		}
+
 
 		await checkHit();
 	}
@@ -77,18 +86,17 @@ async function Loop(): Promise<void> {
 	// gambar2();
 }
 
-function geser(): void {
-	spot.img.x += 100;
+function geser(jml: number): void {
+	spot.img.x += jml;
 	spot.img.dragX = spot.img.x;
 
 	for (let i: number = 0; i < spot.tbl.length; i++) {
 		let tbl: ITombol = spot.tbl[i];
-		tbl.x += 100;
+		tbl.x += jml;
 		tbl.dragX = tbl.x;
 	}
 
 	normalize();
-
 }
 
 async function load(): Promise<void> {
@@ -105,7 +113,7 @@ async function load(): Promise<void> {
 		}
 	}
 
-	ratio = 800 / spot.img.img.height;
+	ratio = gh / spot.img.img.height;
 	ResizeImage(spot.img.img, spot.img.img.width * ratio, spot.img.img.height * ratio);
 	w2 = spot.img.img.width * ratio;
 }

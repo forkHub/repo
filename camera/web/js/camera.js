@@ -2,6 +2,8 @@ let imgDrag = false; //img is dragged or not
 let ratio = 0;
 let w2 = 0;
 let normalFl = false;
+let gw = 800;
+let gh = 400;
 async function loadData() {
     let hasil = await ha.comp.Util.Ajax('get', './data.json', '');
     if (200 == hasil.status) {
@@ -13,13 +15,13 @@ async function loadData() {
     }
 }
 async function Start() {
-    Graphics(400, 800);
+    Graphics(gw, gh);
     // await loadData();
     await load();
-    await gantiGambar('./img/sumur.jpg');
+    await gantiGambar('./img/depan.jpg');
 }
 function normalize() {
-    if (spot.img.x > 400) {
+    if (spot.img.x > gw) {
         spot.img.x -= w2 - 2;
         spot.img.dragX = spot.img.x;
         for (let i = 0; i < spot.tbl.length; i++) {
@@ -52,7 +54,12 @@ async function Loop() {
         console.log('key ' + GetKey());
         if (GetKey() == 'ArrowRight') {
             console.log('kanan');
-            geser();
+            geser(-200);
+            FlushKeys();
+        }
+        if (GetKey() == 'ArrowLeft') {
+            console.log('kiri');
+            geser(200);
             FlushKeys();
         }
         await checkHit();
@@ -61,12 +68,12 @@ async function Loop() {
     gambar();
     // gambar2();
 }
-function geser() {
-    spot.img.x += 100;
+function geser(jml) {
+    spot.img.x += jml;
     spot.img.dragX = spot.img.x;
     for (let i = 0; i < spot.tbl.length; i++) {
         let tbl = spot.tbl[i];
-        tbl.x += 100;
+        tbl.x += jml;
         tbl.dragX = tbl.x;
     }
     normalize();
@@ -81,7 +88,7 @@ async function load() {
             tbl.img = await LoadImage(tbl.url);
         }
     }
-    ratio = 800 / spot.img.img.height;
+    ratio = gh / spot.img.img.height;
     ResizeImage(spot.img.img, spot.img.img.width * ratio, spot.img.img.height * ratio);
     w2 = spot.img.img.width * ratio;
 }
@@ -179,31 +186,30 @@ spots.push({
         x: 0,
         y: 0,
         dragX: 0,
-        // dragY: 0,
         img: null,
         url: "./img/depan.jpg"
     },
     tbl: [
         {
-            x: 2540,
-            y: 475,
-            dragX: 2540,
+            x: 1280,
+            y: 200,
+            dragX: 1280,
             img: null,
             url: "./img/box.png",
             target: './img/lompongan_kanan_1.jpg'
         },
         {
-            x: 3910,
-            y: 475,
-            dragX: 3910,
+            x: 1950,
+            y: 200,
+            dragX: 1950,
             img: null,
             url: "./img/box.png",
             target: './img/ruang_tamu.jpg'
         },
         {
-            x: 5860,
-            y: 480,
-            dragX: 5860,
+            x: 2950,
+            y: 200,
+            dragX: 2950,
             img: null,
             url: "./img/box.png",
             target: './img/lompongan_kiri.jpg'
@@ -221,17 +227,17 @@ spots.push({
     },
     tbl: [
         {
-            x: 3110,
-            y: 570,
-            dragX: 3110,
+            x: 1530,
+            y: 200,
+            dragX: 1530,
             img: null,
             url: "./img/box.png",
             target: './img/depan.jpg'
         },
         {
-            x: 230,
-            y: 310,
-            dragX: 230,
+            x: 130,
+            y: 200,
+            dragX: 130,
             img: null,
             url: "./img/box.png",
             target: './img/dapur_1.jpg'
@@ -250,20 +256,48 @@ spots.push({
     },
     tbl: [
         {
-            x: 2120,
-            y: 380,
-            dragX: 2120,
+            x: 1050,
+            y: 200,
+            dragX: 1050,
             img: null,
             url: "./img/box.png",
             target: './img/ruang_tamu.jpg'
         },
         {
-            x: 380,
-            y: 420,
-            dragX: 380,
+            x: 190,
+            y: 200,
+            dragX: 190,
             img: null,
             url: "./img/box.png",
             target: './img/dapur_2.jpg'
+        },
+        {
+            x: 3620,
+            y: 200,
+            dragX: 3620,
+            img: null,
+            url: "./img/box.png",
+            target: './img/musholla.jpg'
+        },
+    ]
+});
+//musholla
+spots.push({
+    img: {
+        x: 0,
+        y: 0,
+        dragX: 0,
+        img: null,
+        url: "./img/musholla.jpg"
+    },
+    tbl: [
+        {
+            x: 2950,
+            y: 200,
+            dragX: 2950,
+            img: null,
+            url: "./img/box.png",
+            target: './img/dapur_1.jpg'
         },
     ]
 });
@@ -278,17 +312,17 @@ spots.push({
     },
     tbl: [
         {
-            x: 4070,
-            y: 450,
-            dragX: 4070,
+            x: 1930,
+            y: 200,
+            dragX: 1930,
             img: null,
             url: "./img/box.png",
             target: './img/dapur_1.jpg'
         },
         {
-            x: 5790,
-            y: 450,
-            dragX: 5790,
+            x: 2890,
+            y: 200,
+            dragX: 2890,
             img: null,
             url: "./img/box.png",
             target: './img/sumur.jpg'
@@ -306,9 +340,9 @@ spots.push({
     },
     tbl: [
         {
-            x: 3790,
-            y: 450,
-            dragX: 3790,
+            x: 1850,
+            y: 200,
+            dragX: 1850,
             img: null,
             url: "./img/box.png",
             target: './img/dapur_2.jpg'
@@ -321,18 +355,25 @@ spots.push({
         x: 0,
         y: 0,
         dragX: 0,
-        // dragY: 0,
         img: null,
         url: "./img/lompongan_kiri.jpg"
     },
     tbl: [
         {
-            x: 6170,
-            y: 380,
-            dragX: 6170,
+            x: 3100,
+            y: 200,
+            dragX: 3100,
             img: null,
             url: "./img/box.png",
             target: './img/depan.jpg'
+        },
+        {
+            x: 190,
+            y: 200,
+            dragX: 190,
+            img: null,
+            url: "./img/box.png",
+            target: './img/depan.jpg' //lompongan kiri belakang
         },
     ]
 });
@@ -347,9 +388,9 @@ spots.push({
     },
     tbl: [
         {
-            x: 230,
-            y: 400,
-            dragX: 230,
+            x: 140,
+            y: 200,
+            dragX: 140,
             img: null,
             url: "./img/box.png",
             target: './img/depan.jpg'
