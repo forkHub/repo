@@ -8,7 +8,6 @@ class ExpForm extends ha.comp.BaseComponent {
 	private _tipeArg: string;
 	private _value: string;
 	private _ref: string;
-	// private binopEd: BinopEditor;
 
 	private _selesai: () => void;
 

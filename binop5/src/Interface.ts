@@ -24,6 +24,13 @@ interface IArg extends IData {
 	tipeArg: string //
 }
 
+interface IExp extends IData {
+	value: string,
+	varId: number,
+	fungId: number,
+	binopId: number
+}
+
 interface IValue extends IData {
 	tipeValue: "teks" | "angka" | "ar_angka" | "ar_teks", //ar pakai id
 	value: string
@@ -35,4 +42,6 @@ interface IBinop extends IData {
 
 	exp2: string
 	exp2Tipe: string;
+
+
 }
