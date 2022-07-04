@@ -1,16 +1,17 @@
 interface ITombol {
 	x: number,
 	y: number,
-	dragX: number,
+	// dragX: number,
 	img: IBuffer,
 	url: string,
-	target: string
+	target: string,
+	geser: number
 }
 
 interface IGbr {
 	x: number,
 	y: number,
-	dragX: number,
+	// startX: number,
 	// dragY: number,
 	img: IBuffer
 	url: string,

@@ -5,7 +5,7 @@ spots.push({
 	img: {
 		x: 0,
 		y: 0,
-		dragX: 0,
+		startX: 0,
 		img: null,
 		url: "./img/depan.jpg"
 	},
@@ -16,7 +16,8 @@ spots.push({
 			dragX: 1280,
 			img: null,
 			url: "./img/box.png",
-			target: './img/lompongan_kanan_1.jpg'
+			target: './img/lompongan_kanan_1.jpg',
+			geser: -1860
 		},
 		{
 			x: 1950,
@@ -24,7 +25,8 @@ spots.push({
 			dragX: 1950,
 			img: null,
 			url: "./img/box.png",
-			target: './img/ruang_tamu.jpg'
+			target: './img/ruang_tamu.jpg',
+			geser: 0
 		},
 		{
 			x: 2950,
@@ -32,7 +34,8 @@ spots.push({
 			dragX: 2950,
 			img: null,
 			url: "./img/box.png",
-			target: './img/lompongan_kiri.jpg'
+			target: './img/lompongan_kiri.jpg',
+			geser: -51
 		},
 
 	]
@@ -43,7 +46,7 @@ spots.push({
 	img: {
 		x: 0,
 		y: 0,
-		dragX: 0,
+		startX: 0,
 		img: null,
 		url: "./img/ruang_tamu.jpg"
 	},
@@ -54,7 +57,8 @@ spots.push({
 			dragX: 1530,
 			img: null,
 			url: "./img/box.png",
-			target: './img/depan.jpg'
+			target: './img/depan.jpg',
+			geser: 0
 		},
 
 		{
@@ -63,7 +67,8 @@ spots.push({
 			dragX: 130,
 			img: null,
 			url: "./img/box.png",
-			target: './img/dapur_1.jpg'
+			target: './img/dapur_1.jpg',
+			geser: 0
 		},
 
 		//ke arah dapur
@@ -77,7 +82,7 @@ spots.push({
 	img: {
 		x: 0,
 		y: 0,
-		dragX: 0,
+		startX: 0,
 		img: null,
 		url: "./img/dapur_1.jpg"
 	},
@@ -88,7 +93,8 @@ spots.push({
 			dragX: 1050,
 			img: null,
 			url: "./img/box.png",
-			target: './img/ruang_tamu.jpg'
+			target: './img/ruang_tamu.jpg',
+			geser: 0
 		},
 		{
 			x: 190,
@@ -96,7 +102,8 @@ spots.push({
 			dragX: 190,
 			img: null,
 			url: "./img/box.png",
-			target: './img/dapur_2.jpg'
+			target: './img/dapur_2.jpg',
+			geser: 0
 		},
 		{
 			x: 3620,
@@ -104,7 +111,8 @@ spots.push({
 			dragX: 3620,
 			img: null,
 			url: "./img/box.png",
-			target: './img/musholla.jpg'
+			target: './img/musholla.jpg',
+			geser: 0
 		},
 	]
 });
@@ -114,7 +122,7 @@ spots.push({
 	img: {
 		x: 0,
 		y: 0,
-		dragX: 0,
+		startX: 0,
 		img: null,
 		url: "./img/musholla.jpg"
 	},
@@ -125,7 +133,8 @@ spots.push({
 			dragX: 2950,
 			img: null,
 			url: "./img/box.png",
-			target: './img/dapur_1.jpg'
+			target: './img/dapur_1.jpg',
+			geser: 0
 		},
 	]
 });
@@ -135,7 +144,7 @@ spots.push({
 	img: {
 		x: 0,
 		y: 0,
-		dragX: 0,
+		startX: 0,
 		img: null,
 		url: "./img/dapur_2.jpg"
 	},
@@ -146,7 +155,9 @@ spots.push({
 			dragX: 1930,
 			img: null,
 			url: "./img/box.png",
-			target: './img/dapur_1.jpg'
+			target: './img/dapur_1.jpg',
+			geser: 0
+
 		},
 		{
 			x: 2890,
@@ -154,7 +165,8 @@ spots.push({
 			dragX: 2890,
 			img: null,
 			url: "./img/box.png",
-			target: './img/sumur.jpg'
+			target: './img/sumur.jpg',
+			geser: 0
 		},
 	]
 });
@@ -164,7 +176,7 @@ spots.push({
 	img: {
 		x: 0,
 		y: 0,
-		dragX: 0,
+		startX: 0,
 		img: null,
 		url: "./img/sumur.jpg"
 	},
@@ -175,9 +187,11 @@ spots.push({
 			dragX: 1850,
 			img: null,
 			url: "./img/box.png",
-			target: './img/dapur_2.jpg'
+			target: './img/dapur_2.jpg',
+			geser: 0
 		},
 	]
+
 });
 
 //lompongan kiri depan
@@ -185,7 +199,7 @@ spots.push({
 	img: {
 		x: 0,
 		y: 0,
-		dragX: 0,
+		startX: 0,
 		img: null,
 		url: "./img/lompongan_kiri.jpg"
 	},
@@ -196,15 +210,8 @@ spots.push({
 			dragX: 3100,
 			img: null,
 			url: "./img/box.png",
-			target: './img/depan.jpg'
-		},
-		{
-			x: 190,
-			y: 200,
-			dragX: 190,
-			img: null,
-			url: "./img/box.png",
-			target: './img/depan.jpg' //lompongan kiri belakang
+			target: './img/depan.jpg',
+			geser: -450
 		},
 
 	]
@@ -215,7 +222,7 @@ spots.push({
 	img: {
 		x: 0,
 		y: 0,
-		dragX: 0,
+		startX: 0,
 		img: null,
 		url: "./img/lompongan_kanan_1.jpg"
 	},
@@ -226,10 +233,52 @@ spots.push({
 			dragX: 140,
 			img: null,
 			url: "./img/box.png",
-			target: './img/depan.jpg'
+			target: './img/depan.jpg',
+			geser: -2410
+		},
+		{
+			x: 2580,
+			y: 200,
+			dragX: 2580,
+			img: null,
+			url: "./img/box.png",
+			target: './img/lompongan_kanan_2.jpg',
+			geser: 0
 		},
 	]
 });
+
+//lompongan kanan belakang
+spots.push({
+	img: {
+		x: 0,
+		y: 0,
+		startX: 0,
+		img: null,
+		url: "./img/lompongan_kanan_2.jpg"
+	},
+	tbl: [
+		{
+			x: 2310,
+			y: 200,
+			dragX: 2310,
+			img: null,
+			url: "./img/box.png",
+			target: './img/ruang_tamu.jpg',	//TODO: diganti ruang tamu tengah
+			geser: 0
+		},
+		{
+			x: 3450,
+			y: 200,
+			dragX: 3450,
+			img: null,
+			url: "./img/box.png",
+			target: './img/lompongan_kanan_1.jpg',
+			geser: 0
+		},
+	]
+});
+
 
 //tamu
 

@@ -1,9 +1,12 @@
 let imgDrag = false; //img is dragged or not
+let imgDragX = 0; //img x position when dragged
+let imgDragY = 0; //img y position when dragged
 let ratio = 0;
 let w2 = 0;
 let normalFl = false;
 let gw = 800;
 let gh = 400;
+let boxIdx = 0;
 async function loadData() {
     let hasil = await ha.comp.Util.Ajax('get', './data.json', '');
     if (200 == hasil.status) {
@@ -18,63 +21,117 @@ async function Start() {
     Graphics(gw, gh);
     // await loadData();
     await load();
-    await gantiGambar('./img/depan.jpg');
+    await gantiGambar('./img/depan.jpg', -1200);
 }
 function normalize() {
+    let b = true;
+    if (b)
+        return;
     if (spot.img.x > gw) {
-        spot.img.x -= w2 - 2;
-        spot.img.dragX = spot.img.x;
+        spot.img.x -= w2;
+        // spot.img.startX = spot.img.x;
         for (let i = 0; i < spot.tbl.length; i++) {
             let tbl = spot.tbl[i];
-            tbl.x -= w2 - 2;
-            tbl.dragX = tbl.x;
+            tbl.x -= w2;
+            // tbl.dragX = tbl.x;
         }
         console.log('normalize >');
         console.log('w2 ' + w2);
         console.log('img x ' + spot.img.x);
     }
     else if ((spot.img.x + w2) < 0) {
-        spot.img.x += w2 + 2;
-        spot.img.dragX = spot.img.x;
+        spot.img.x += w2;
+        // spot.img.startX = spot.img.x;
         for (let i = 0; i < spot.tbl.length; i++) {
             let tbl = spot.tbl[i];
-            tbl.x += w2 + 2;
-            tbl.dragX = tbl.x;
+            tbl.x += w2;
+            // tbl.dragX = tbl.x;
         }
         console.log('normalize <');
         console.log('w2 ' + w2);
         console.log('img x ' + spot.img.x);
     }
 }
+function getBox() {
+    boxIdx++;
+    if (boxIdx >= spot.tbl.length) {
+        boxIdx = 0;
+    }
+    console.log('get box ' + boxIdx);
+}
 async function Loop() {
     Cls();
+    //if input is pressed (mouse/touch)
+    if (InputDown()) {
+        imgDrag = true;
+        imgDragX = spot.img.x;
+        imgDragY = spot.img.y;
+    }
+    else {
+        imgDrag = false;
+        spot.img.x = imgDragX;
+        spot.img.y = imgDragY;
+    }
+    if (InputDrag() && imgDrag) {
+        imgDragX = spot.img.x + InputDragX();
+        imgDragY = spot.img.y + InputDragY();
+    }
+    // DrawImage(spot.img.img, imgDragX, 0);
+    gambar();
+    if (InputHit() > 0) {
+        console.log('hit: x: ' + (InputX() - spot.img.x) + '/y: ' + InputY());
+    }
+}
+/*
+async function Loop2(): Promise<void> {
+    Cls();
+
     drag();
+
     if (InputHit() > 0) {
         console.log('hit: ' + Math.floor(InputX() - spot.img.x) + '/' + (InputY()));
         console.log('key ' + GetKey());
+
         if (GetKey() == 'ArrowRight') {
             console.log('kanan');
-            geser(-200);
+            getBox();
+            geser(-(spot.tbl[boxIdx].x - 100));
             FlushKeys();
         }
+
         if (GetKey() == 'ArrowLeft') {
             console.log('kiri');
-            geser(200);
+            geser(Math.floor(gw * .75));
             FlushKeys();
         }
+
+
         await checkHit();
     }
+
     //draw second
     gambar();
-    // gambar2();
+    gambar2();
+
+    //debug
+    if (spot && spot.img) {
+        let str: string = spot.img.x + '/' + spot.img.startX + '<br/>';
+        str += 'imgdrag ' + InputDrag() + '/x ' + InputDragX() + '/y ' + InputDragY();
+        ha.comp.Util.getEl('div.debug').innerHTML = str;
+    }
 }
+*/
 function geser(jml) {
-    spot.img.x += jml;
-    spot.img.dragX = spot.img.x;
+    let b = true;
+    if (b)
+        return;
+    console.log('geser' + jml);
+    spot.img.x = jml;
+    // spot.img.startX = spot.img.x;
     for (let i = 0; i < spot.tbl.length; i++) {
         let tbl = spot.tbl[i];
-        tbl.x += jml;
-        tbl.dragX = tbl.x;
+        tbl.x = spot.img.x + tbl.x;
+        // tbl.dragX = tbl.x;
     }
     normalize();
 }
@@ -89,29 +146,33 @@ async function load() {
         }
     }
     ratio = gh / spot.img.img.height;
-    ResizeImage(spot.img.img, spot.img.img.width * ratio, spot.img.img.height * ratio);
-    w2 = spot.img.img.width * ratio;
+    ResizeImage(spot.img.img, Math.ceil(spot.img.img.width * ratio), Math.ceil(spot.img.img.height * ratio));
+    w2 = Math.ceil(spot.img.img.width * ratio);
 }
 function drag() {
     if (InputDown()) {
-        imgDrag = true;
-        spot.img.dragX = spot.img.x;
-        for (let i = 0; i < spot.tbl.length; i++) {
-            let tbl = spot.tbl[i];
-            tbl.dragX = tbl.x;
+        if (imgDrag == false) {
+            imgDrag = true;
+            spot.img.startX = spot.img.x;
+            // for (let i: number = 0; i < spot.tbl.length; i++) {
+            // 	let tbl: ITombol = spot.tbl[i];
+            // 	tbl.dragX = tbl.x;
+            // }
         }
     }
     else {
-        imgDrag = false;
-        spot.img.x = spot.img.dragX;
-        for (let i = 0; i < spot.tbl.length; i++) {
-            let tbl = spot.tbl[i];
-            tbl.x = tbl.dragX;
+        if (imgDrag) {
+            imgDrag = false;
         }
+        // spot.img.x = spot.img.dragX;
+        // for (let i: number = 0; i < spot.tbl.length; i++) {
+        // 	let tbl: ITombol = spot.tbl[i];
+        // 	tbl.x = tbl.dragX;
+        // }
         normalize();
     }
     if (InputDrag() && imgDrag) {
-        spot.img.dragX = spot.img.x + InputDragX();
+        spot.img.startX = spot.img.x + InputDragX();
         for (let i = 0; i < spot.tbl.length; i++) {
             let tbl = spot.tbl[i];
             tbl.dragX = tbl.x + InputDragX();
@@ -119,10 +180,11 @@ function drag() {
     }
 }
 function gambar() {
-    DrawImage(spot.img.img, spot.img.dragX, 0);
+    DrawImage(spot.img.img, imgDragX, 0);
+    // DrawImage(spot.img.img, spot.img.startX, 0);
     for (let i = 0; i < spot.tbl.length; i++) {
         let tbl = spot.tbl[i];
-        DrawImage(tbl.img, tbl.dragX, tbl.y);
+        DrawImage(tbl.img, imgDragX + tbl.x, tbl.y);
     }
 }
 async function checkHit() {
@@ -131,21 +193,21 @@ async function checkHit() {
         if (ImageDotCollide(tbl.img, tbl.dragX, tbl.y, InputX(), InputY())) {
             //collide tombol
             console.log('collide tombol normal');
-            await gantiGambar(tbl.target);
+            await gantiGambar(tbl.target, tbl.geser);
         }
         //kiri
-        if (spot.img.dragX < 0) {
+        if (spot.img.startX < 0) {
             if (ImageDotCollide(tbl.img, tbl.dragX + (w2) - 2, tbl.y, InputX(), InputY())) {
                 //collide tombol
                 console.log('collide tombol kiri');
-                await gantiGambar(tbl.target);
+                await gantiGambar(tbl.target, tbl.geser);
             }
         }
         else {
             if (ImageDotCollide(tbl.img, tbl.dragX - (w2) + 2, tbl.y, InputX(), InputY())) {
                 //collide tombol
                 console.log('collide tombol kanan');
-                await gantiGambar(tbl.target);
+                await gantiGambar(tbl.target, tbl.geser);
             }
             // DrawImage(spot.img.img, spot.img.dragX - (w2) + 2, 0);
         }
@@ -153,27 +215,28 @@ async function checkHit() {
     }
 }
 function gambar2() {
-    if (spot.img.dragX < 0) {
-        DrawImage(spot.img.img, spot.img.dragX + (w2) - 2, 0);
+    if (spot.img.startX < 0) {
+        DrawImage(spot.img.img, spot.img.startX + (w2), 0);
         for (let i = 0; i < spot.tbl.length; i++) {
             let tbl = spot.tbl[i];
-            DrawImage(tbl.img, tbl.dragX + (w2) - 2, 0);
+            DrawImage(tbl.img, tbl.dragX + (w2), tbl.y);
         }
     }
     else {
-        DrawImage(spot.img.img, spot.img.dragX - (w2) + 2, 0);
+        DrawImage(spot.img.img, spot.img.startX - (w2), 0);
         for (let i = 0; i < spot.tbl.length; i++) {
             let tbl = spot.tbl[i];
-            DrawImage(tbl.img, tbl.dragX - (w2) + 2, 0);
+            DrawImage(tbl.img, tbl.dragX - (w2), tbl.y);
         }
     }
 }
-async function gantiGambar(gbr) {
+async function gantiGambar(gbr, geserJml) {
     for (let i = 0; i < spots.length; i++) {
         let spotItem = spots[i];
         if (spotItem.img.url == gbr) {
             spot = spotItem;
             await load();
+            geser(geserJml);
             return;
         }
     }
@@ -185,7 +248,7 @@ spots.push({
     img: {
         x: 0,
         y: 0,
-        dragX: 0,
+        startX: 0,
         img: null,
         url: "./img/depan.jpg"
     },
@@ -196,7 +259,8 @@ spots.push({
             dragX: 1280,
             img: null,
             url: "./img/box.png",
-            target: './img/lompongan_kanan_1.jpg'
+            target: './img/lompongan_kanan_1.jpg',
+            geser: -1860
         },
         {
             x: 1950,
@@ -204,7 +268,8 @@ spots.push({
             dragX: 1950,
             img: null,
             url: "./img/box.png",
-            target: './img/ruang_tamu.jpg'
+            target: './img/ruang_tamu.jpg',
+            geser: 0
         },
         {
             x: 2950,
@@ -212,7 +277,8 @@ spots.push({
             dragX: 2950,
             img: null,
             url: "./img/box.png",
-            target: './img/lompongan_kiri.jpg'
+            target: './img/lompongan_kiri.jpg',
+            geser: -51
         },
     ]
 });
@@ -221,7 +287,7 @@ spots.push({
     img: {
         x: 0,
         y: 0,
-        dragX: 0,
+        startX: 0,
         img: null,
         url: "./img/ruang_tamu.jpg"
     },
@@ -232,7 +298,8 @@ spots.push({
             dragX: 1530,
             img: null,
             url: "./img/box.png",
-            target: './img/depan.jpg'
+            target: './img/depan.jpg',
+            geser: 0
         },
         {
             x: 130,
@@ -240,7 +307,8 @@ spots.push({
             dragX: 130,
             img: null,
             url: "./img/box.png",
-            target: './img/dapur_1.jpg'
+            target: './img/dapur_1.jpg',
+            geser: 0
         },
     ]
 });
@@ -250,7 +318,7 @@ spots.push({
     img: {
         x: 0,
         y: 0,
-        dragX: 0,
+        startX: 0,
         img: null,
         url: "./img/dapur_1.jpg"
     },
@@ -261,7 +329,8 @@ spots.push({
             dragX: 1050,
             img: null,
             url: "./img/box.png",
-            target: './img/ruang_tamu.jpg'
+            target: './img/ruang_tamu.jpg',
+            geser: 0
         },
         {
             x: 190,
@@ -269,7 +338,8 @@ spots.push({
             dragX: 190,
             img: null,
             url: "./img/box.png",
-            target: './img/dapur_2.jpg'
+            target: './img/dapur_2.jpg',
+            geser: 0
         },
         {
             x: 3620,
@@ -277,7 +347,8 @@ spots.push({
             dragX: 3620,
             img: null,
             url: "./img/box.png",
-            target: './img/musholla.jpg'
+            target: './img/musholla.jpg',
+            geser: 0
         },
     ]
 });
@@ -286,7 +357,7 @@ spots.push({
     img: {
         x: 0,
         y: 0,
-        dragX: 0,
+        startX: 0,
         img: null,
         url: "./img/musholla.jpg"
     },
@@ -297,7 +368,8 @@ spots.push({
             dragX: 2950,
             img: null,
             url: "./img/box.png",
-            target: './img/dapur_1.jpg'
+            target: './img/dapur_1.jpg',
+            geser: 0
         },
     ]
 });
@@ -306,7 +378,7 @@ spots.push({
     img: {
         x: 0,
         y: 0,
-        dragX: 0,
+        startX: 0,
         img: null,
         url: "./img/dapur_2.jpg"
     },
@@ -317,7 +389,8 @@ spots.push({
             dragX: 1930,
             img: null,
             url: "./img/box.png",
-            target: './img/dapur_1.jpg'
+            target: './img/dapur_1.jpg',
+            geser: 0
         },
         {
             x: 2890,
@@ -325,7 +398,8 @@ spots.push({
             dragX: 2890,
             img: null,
             url: "./img/box.png",
-            target: './img/sumur.jpg'
+            target: './img/sumur.jpg',
+            geser: 0
         },
     ]
 });
@@ -334,7 +408,7 @@ spots.push({
     img: {
         x: 0,
         y: 0,
-        dragX: 0,
+        startX: 0,
         img: null,
         url: "./img/sumur.jpg"
     },
@@ -345,7 +419,8 @@ spots.push({
             dragX: 1850,
             img: null,
             url: "./img/box.png",
-            target: './img/dapur_2.jpg'
+            target: './img/dapur_2.jpg',
+            geser: 0
         },
     ]
 });
@@ -354,7 +429,7 @@ spots.push({
     img: {
         x: 0,
         y: 0,
-        dragX: 0,
+        startX: 0,
         img: null,
         url: "./img/lompongan_kiri.jpg"
     },
@@ -365,15 +440,8 @@ spots.push({
             dragX: 3100,
             img: null,
             url: "./img/box.png",
-            target: './img/depan.jpg'
-        },
-        {
-            x: 190,
-            y: 200,
-            dragX: 190,
-            img: null,
-            url: "./img/box.png",
-            target: './img/depan.jpg' //lompongan kiri belakang
+            target: './img/depan.jpg',
+            geser: -450
         },
     ]
 });
@@ -382,7 +450,7 @@ spots.push({
     img: {
         x: 0,
         y: 0,
-        dragX: 0,
+        startX: 0,
         img: null,
         url: "./img/lompongan_kanan_1.jpg"
     },
@@ -393,7 +461,47 @@ spots.push({
             dragX: 140,
             img: null,
             url: "./img/box.png",
-            target: './img/depan.jpg'
+            target: './img/depan.jpg',
+            geser: -2410
+        },
+        {
+            x: 2580,
+            y: 200,
+            dragX: 2580,
+            img: null,
+            url: "./img/box.png",
+            target: './img/lompongan_kanan_2.jpg',
+            geser: 0
+        },
+    ]
+});
+//lompongan kanan belakang
+spots.push({
+    img: {
+        x: 0,
+        y: 0,
+        startX: 0,
+        img: null,
+        url: "./img/lompongan_kanan_2.jpg"
+    },
+    tbl: [
+        {
+            x: 2310,
+            y: 200,
+            dragX: 2310,
+            img: null,
+            url: "./img/box.png",
+            target: './img/ruang_tamu.jpg',
+            geser: 0
+        },
+        {
+            x: 3450,
+            y: 200,
+            dragX: 3450,
+            img: null,
+            url: "./img/box.png",
+            target: './img/lompongan_kanan_1.jpg',
+            geser: 0
         },
     ]
 });
