@@ -6,8 +6,8 @@ namespace ha.comp {
 				<div class='loading'>
 					<div class='box'>
 						<img src=''/>
-						<p>Memuat</p> 
-					</div>
+						<p>Memuat ...</p> 
+					</div> 
 				</div>
 			`;
 			this.build();

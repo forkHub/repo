@@ -9,38 +9,28 @@ let gw: number = 800;
 let gh: number = 400;
 let boxIdx: number = 0;
 
-async function loadData(): Promise<void> {
-	let hasil: XMLHttpRequest = await ha.comp.Util.Ajax('get', './data.json', '');
-	if (200 == hasil.status) {
-		spots = JSON.parse(hasil.responseText);
-		spot = spots[0];
-	}
-	else {
-		ha.comp.dialog.tampil(hasil.responseText);
-	}
-}
+let debugEl: HTMLElement;
 
 async function Start(): Promise<void> {
 	Graphics(gw, gh);
 
-	// await loadData();
 	await load();
 	await gantiGambar('./img/depan.jpg', -1200);
+
+	debugEl = ha.comp.Util.getEl('div.debug');
 }
 
 function normalize(): void {
-	let b: boolean = true;
-	if (b) return;
+	// let b: boolean = true;
+	// if (b) return;
 
 	if (spot.img.x > gw) {
 		spot.img.x -= w2;
-		// spot.img.startX = spot.img.x;
 
-		for (let i: number = 0; i < spot.tbl.length; i++) {
-			let tbl: ITombol = spot.tbl[i];
-			tbl.x -= w2;
-			// tbl.dragX = tbl.x;
-		}
+		// for (let i: number = 0; i < spot.tbl.length; i++) {
+		// 	let tbl: ITombol = spot.tbl[i];
+		// 	tbl.x -= w2;
+		// }
 
 		console.log('normalize >');
 		console.log('w2 ' + w2);
@@ -48,13 +38,11 @@ function normalize(): void {
 	}
 	else if ((spot.img.x + w2) < 0) {
 		spot.img.x += w2;
-		// spot.img.startX = spot.img.x;
 
-		for (let i: number = 0; i < spot.tbl.length; i++) {
-			let tbl: ITombol = spot.tbl[i];
-			tbl.x += w2;
-			// tbl.dragX = tbl.x;
-		}
+		// for (let i: number = 0; i < spot.tbl.length; i++) {
+		// 	let tbl: ITombol = spot.tbl[i];
+		// 	tbl.x += w2;
+		// }
 
 		console.log('normalize <');
 		console.log('w2 ' + w2);
@@ -73,86 +61,57 @@ function getBox(): void {
 async function Loop(): Promise<void> {
 	Cls();
 
-	//if input is pressed (mouse/touch)
 	if (InputDown()) {
 		imgDrag = true;
 		imgDragX = spot.img.x;
 		imgDragY = spot.img.y;
 	}
 	else {
-		imgDrag = false;
-		spot.img.x = imgDragX;
-		spot.img.y = imgDragY;
+		if (imgDrag) {
+			imgDrag = false;
+			imgDrag = false;
+			spot.img.x = imgDragX;
+			spot.img.y = imgDragY;
+			normalize();
+		}
 	}
+
+	// Input
 
 	if (InputDrag() && imgDrag) {
 		imgDragX = spot.img.x + InputDragX();
 		imgDragY = spot.img.y + InputDragY();
 	}
 
-	// DrawImage(spot.img.img, imgDragX, 0);
 	gambar();
 
 	if (InputHit() > 0) {
 		console.log('hit: x: ' + (InputX() - spot.img.x) + '/y: ' + InputY());
-	}
-
-}
-
-/*
-async function Loop2(): Promise<void> {
-	Cls();
-
-	drag();
-
-	if (InputHit() > 0) {
-		console.log('hit: ' + Math.floor(InputX() - spot.img.x) + '/' + (InputY()));
-		console.log('key ' + GetKey());
-
-		if (GetKey() == 'ArrowRight') {
-			console.log('kanan');
-			getBox();
-			geser(-(spot.tbl[boxIdx].x - 100));
-			FlushKeys();
-		}
-
-		if (GetKey() == 'ArrowLeft') {
-			console.log('kiri');
-			geser(Math.floor(gw * .75));
-			FlushKeys();
-		}
-
-
 		await checkHit();
 	}
 
-	//draw second
-	gambar();
-	gambar2();
 
 	//debug
-	if (spot && spot.img) {
-		let str: string = spot.img.x + '/' + spot.img.startX + '<br/>';
-		str += 'imgdrag ' + InputDrag() + '/x ' + InputDragX() + '/y ' + InputDragY();
-		ha.comp.Util.getEl('div.debug').innerHTML = str;
-	}
+	// let str: string = '';
+	// str += 'img x: ' + spot.img.x + '<br/>';
+	// debugEl.innerHTML = str;
+
 }
-*/
 
 function geser(jml: number): void {
-	let b: boolean = true;
-	if (b) return;
+	// let b: boolean = true;
+	// if (b) return;
 
 	console.log('geser' + jml);
 
 	spot.img.x = jml;
-	// spot.img.startX = spot.img.x;
+	imgDragX = spot.img.x;
+	imgDragY = 0;
 
-	for (let i: number = 0; i < spot.tbl.length; i++) {
-		let tbl: ITombol = spot.tbl[i];
-		tbl.x = spot.img.x + tbl.x;
-		// tbl.dragX = tbl.x;
-	}
+	// for (let i: number = 0; i < spot.tbl.length; i++) {
+	// 	let tbl: ITombol = spot.tbl[i];
+	// 	tbl.x = spot.img.x + tbl.x;
+	// }
 
 	normalize();
 }
@@ -160,121 +119,71 @@ function geser(jml: number): void {
 async function load(): Promise<void> {
 
 	if (!spot.img.img) {
+		ha.comp.loading.tampil();
 		spot.img.img = await LoadImage(spot.img.url);
+		await ha.comp.Util.delay(500);
 	}
 
 	for (let i: number = 0; i < spot.tbl.length; i++) {
 		let tbl: ITombol = spot.tbl[i];
 
 		if (!tbl.img) {
+			ha.comp.loading.tampil();
 			tbl.img = await LoadImage(tbl.url);
+			await ha.comp.Util.delay(500);
 		}
 	}
 
 	ratio = gh / spot.img.img.height;
 	ResizeImage(spot.img.img, Math.ceil(spot.img.img.width * ratio), Math.ceil(spot.img.img.height * ratio));
 	w2 = Math.ceil(spot.img.img.width * ratio);
-}
 
-function drag() {
-
-	if (InputDown()) {
-		if (imgDrag == false) {
-			imgDrag = true;
-
-			spot.img.startX = spot.img.x;
-
-			// for (let i: number = 0; i < spot.tbl.length; i++) {
-			// 	let tbl: ITombol = spot.tbl[i];
-			// 	tbl.dragX = tbl.x;
-			// }
-		}
-	}
-	else {
-		if (imgDrag) {
-			imgDrag = false;
-		}
-
-		// spot.img.x = spot.img.dragX;
-
-		// for (let i: number = 0; i < spot.tbl.length; i++) {
-		// 	let tbl: ITombol = spot.tbl[i];
-		// 	tbl.x = tbl.dragX;
-		// }
-
-		normalize();
-	}
-
-	if (InputDrag() && imgDrag) {
-		spot.img.startX = spot.img.x + InputDragX();
-
-		for (let i: number = 0; i < spot.tbl.length; i++) {
-			let tbl: ITombol = spot.tbl[i];
-			tbl.dragX = tbl.x + InputDragX();
-		}
-	}
 }
 
 function gambar() {
 
 	DrawImage(spot.img.img, imgDragX, 0);
-	// DrawImage(spot.img.img, spot.img.startX, 0);
+	DrawImage(spot.img.img, imgDragX - w2, 0);
+	DrawImage(spot.img.img, imgDragX + w2, 0);
 
 	for (let i: number = 0; i < spot.tbl.length; i++) {
 		let tbl: ITombol = spot.tbl[i];
-		DrawImage(tbl.img, imgDragX + tbl.x, tbl.y);
+		try {
+			DrawImage(tbl.img, imgDragX + tbl.x, tbl.y);
+			DrawImage(tbl.img, imgDragX + tbl.x - w2, tbl.y);
+			DrawImage(tbl.img, imgDragX + tbl.x + w2, tbl.y);
+		}
+		catch (e) {
+			console.log('idx ' + i);
+			throw Error();
+		}
 	}
 }
 
 async function checkHit(): Promise<void> {
 	for (let i: number = 0; i < spot.tbl.length; i++) {
 		let tbl: ITombol = spot.tbl[i];
+		let inputX: number = InputX() - spot.img.x;
 
-		if (ImageDotCollide(tbl.img, tbl.dragX, tbl.y, InputX(), InputY())) {
+		if (ImageDotCollide(tbl.img, tbl.x, tbl.y, inputX, InputY())) {
+
 			//collide tombol
 			console.log('collide tombol normal');
 			await gantiGambar(tbl.target, tbl.geser);
 		}
+		else if (ImageDotCollide(tbl.img, tbl.x, tbl.y, inputX - w2, InputY())) {
+			//collide tombol
+			console.log('collide tombol normal');
+			await gantiGambar(tbl.target, tbl.geser);
 
-		//kiri
-		if (spot.img.startX < 0) {
-			if (ImageDotCollide(tbl.img, tbl.dragX + (w2) - 2, tbl.y, InputX(), InputY())) {
-				//collide tombol
-				console.log('collide tombol kiri')
-				await gantiGambar(tbl.target, tbl.geser);
-			}
 		}
-		else {
-			if (ImageDotCollide(tbl.img, tbl.dragX - (w2) + 2, tbl.y, InputX(), InputY())) {
-				//collide tombol
-				console.log('collide tombol kanan')
-				await gantiGambar(tbl.target, tbl.geser);
-			}
+		else if (ImageDotCollide(tbl.img, tbl.x, tbl.y, inputX + w2, InputY())) {
+			//collide tombol
+			console.log('collide tombol normal');
+			await gantiGambar(tbl.target, tbl.geser);
 
-			// DrawImage(spot.img.img, spot.img.dragX - (w2) + 2, 0);
 		}
 
-		//kanan
-	}
-
-}
-
-function gambar2(): void {
-	if (spot.img.startX < 0) {
-
-		DrawImage(spot.img.img, spot.img.startX + (w2), 0);
-		for (let i: number = 0; i < spot.tbl.length; i++) {
-			let tbl: ITombol = spot.tbl[i];
-			DrawImage(tbl.img, tbl.dragX + (w2), tbl.y);
-		}
-	}
-	else {
-		DrawImage(spot.img.img, spot.img.startX - (w2), 0);
-
-		for (let i: number = 0; i < spot.tbl.length; i++) {
-			let tbl: ITombol = spot.tbl[i];
-			DrawImage(tbl.img, tbl.dragX - (w2), tbl.y);
-		}
 	}
 }
 
@@ -285,6 +194,10 @@ async function gantiGambar(gbr: string, geserJml: number): Promise<void> {
 			spot = spotItem;
 			await load();
 			geser(geserJml);
+			gambar();
+			setTimeout(() => {
+				ha.comp.loading.detach();
+			}, 500);
 			return;
 		}
 	}

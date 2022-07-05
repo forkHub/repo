@@ -7,46 +7,32 @@ let normalFl = false;
 let gw = 800;
 let gh = 400;
 let boxIdx = 0;
-async function loadData() {
-    let hasil = await ha.comp.Util.Ajax('get', './data.json', '');
-    if (200 == hasil.status) {
-        spots = JSON.parse(hasil.responseText);
-        spot = spots[0];
-    }
-    else {
-        ha.comp.dialog.tampil(hasil.responseText);
-    }
-}
+let debugEl;
 async function Start() {
     Graphics(gw, gh);
-    // await loadData();
     await load();
     await gantiGambar('./img/depan.jpg', -1200);
+    debugEl = ha.comp.Util.getEl('div.debug');
 }
 function normalize() {
-    let b = true;
-    if (b)
-        return;
+    // let b: boolean = true;
+    // if (b) return;
     if (spot.img.x > gw) {
         spot.img.x -= w2;
-        // spot.img.startX = spot.img.x;
-        for (let i = 0; i < spot.tbl.length; i++) {
-            let tbl = spot.tbl[i];
-            tbl.x -= w2;
-            // tbl.dragX = tbl.x;
-        }
+        // for (let i: number = 0; i < spot.tbl.length; i++) {
+        // 	let tbl: ITombol = spot.tbl[i];
+        // 	tbl.x -= w2;
+        // }
         console.log('normalize >');
         console.log('w2 ' + w2);
         console.log('img x ' + spot.img.x);
     }
     else if ((spot.img.x + w2) < 0) {
         spot.img.x += w2;
-        // spot.img.startX = spot.img.x;
-        for (let i = 0; i < spot.tbl.length; i++) {
-            let tbl = spot.tbl[i];
-            tbl.x += w2;
-            // tbl.dragX = tbl.x;
-        }
+        // for (let i: number = 0; i < spot.tbl.length; i++) {
+        // 	let tbl: ITombol = spot.tbl[i];
+        // 	tbl.x += w2;
+        // }
         console.log('normalize <');
         console.log('w2 ' + w2);
         console.log('img x ' + spot.img.x);
@@ -61,172 +47,101 @@ function getBox() {
 }
 async function Loop() {
     Cls();
-    //if input is pressed (mouse/touch)
     if (InputDown()) {
         imgDrag = true;
         imgDragX = spot.img.x;
         imgDragY = spot.img.y;
     }
     else {
-        imgDrag = false;
-        spot.img.x = imgDragX;
-        spot.img.y = imgDragY;
+        if (imgDrag) {
+            imgDrag = false;
+            imgDrag = false;
+            spot.img.x = imgDragX;
+            spot.img.y = imgDragY;
+            normalize();
+        }
     }
+    // Input
     if (InputDrag() && imgDrag) {
         imgDragX = spot.img.x + InputDragX();
         imgDragY = spot.img.y + InputDragY();
     }
-    // DrawImage(spot.img.img, imgDragX, 0);
     gambar();
     if (InputHit() > 0) {
         console.log('hit: x: ' + (InputX() - spot.img.x) + '/y: ' + InputY());
-    }
-}
-/*
-async function Loop2(): Promise<void> {
-    Cls();
-
-    drag();
-
-    if (InputHit() > 0) {
-        console.log('hit: ' + Math.floor(InputX() - spot.img.x) + '/' + (InputY()));
-        console.log('key ' + GetKey());
-
-        if (GetKey() == 'ArrowRight') {
-            console.log('kanan');
-            getBox();
-            geser(-(spot.tbl[boxIdx].x - 100));
-            FlushKeys();
-        }
-
-        if (GetKey() == 'ArrowLeft') {
-            console.log('kiri');
-            geser(Math.floor(gw * .75));
-            FlushKeys();
-        }
-
-
         await checkHit();
     }
-
-    //draw second
-    gambar();
-    gambar2();
-
     //debug
-    if (spot && spot.img) {
-        let str: string = spot.img.x + '/' + spot.img.startX + '<br/>';
-        str += 'imgdrag ' + InputDrag() + '/x ' + InputDragX() + '/y ' + InputDragY();
-        ha.comp.Util.getEl('div.debug').innerHTML = str;
-    }
+    // let str: string = '';
+    // str += 'img x: ' + spot.img.x + '<br/>';
+    // debugEl.innerHTML = str;
 }
-*/
 function geser(jml) {
-    let b = true;
-    if (b)
-        return;
+    // let b: boolean = true;
+    // if (b) return;
     console.log('geser' + jml);
     spot.img.x = jml;
-    // spot.img.startX = spot.img.x;
-    for (let i = 0; i < spot.tbl.length; i++) {
-        let tbl = spot.tbl[i];
-        tbl.x = spot.img.x + tbl.x;
-        // tbl.dragX = tbl.x;
-    }
+    imgDragX = spot.img.x;
+    imgDragY = 0;
+    // for (let i: number = 0; i < spot.tbl.length; i++) {
+    // 	let tbl: ITombol = spot.tbl[i];
+    // 	tbl.x = spot.img.x + tbl.x;
+    // }
     normalize();
 }
 async function load() {
     if (!spot.img.img) {
+        ha.comp.loading.tampil();
         spot.img.img = await LoadImage(spot.img.url);
+        await ha.comp.Util.delay(500);
     }
     for (let i = 0; i < spot.tbl.length; i++) {
         let tbl = spot.tbl[i];
         if (!tbl.img) {
+            ha.comp.loading.tampil();
             tbl.img = await LoadImage(tbl.url);
+            await ha.comp.Util.delay(500);
         }
     }
     ratio = gh / spot.img.img.height;
     ResizeImage(spot.img.img, Math.ceil(spot.img.img.width * ratio), Math.ceil(spot.img.img.height * ratio));
     w2 = Math.ceil(spot.img.img.width * ratio);
 }
-function drag() {
-    if (InputDown()) {
-        if (imgDrag == false) {
-            imgDrag = true;
-            spot.img.startX = spot.img.x;
-            // for (let i: number = 0; i < spot.tbl.length; i++) {
-            // 	let tbl: ITombol = spot.tbl[i];
-            // 	tbl.dragX = tbl.x;
-            // }
-        }
-    }
-    else {
-        if (imgDrag) {
-            imgDrag = false;
-        }
-        // spot.img.x = spot.img.dragX;
-        // for (let i: number = 0; i < spot.tbl.length; i++) {
-        // 	let tbl: ITombol = spot.tbl[i];
-        // 	tbl.x = tbl.dragX;
-        // }
-        normalize();
-    }
-    if (InputDrag() && imgDrag) {
-        spot.img.startX = spot.img.x + InputDragX();
-        for (let i = 0; i < spot.tbl.length; i++) {
-            let tbl = spot.tbl[i];
-            tbl.dragX = tbl.x + InputDragX();
-        }
-    }
-}
 function gambar() {
     DrawImage(spot.img.img, imgDragX, 0);
-    // DrawImage(spot.img.img, spot.img.startX, 0);
+    DrawImage(spot.img.img, imgDragX - w2, 0);
+    DrawImage(spot.img.img, imgDragX + w2, 0);
     for (let i = 0; i < spot.tbl.length; i++) {
         let tbl = spot.tbl[i];
-        DrawImage(tbl.img, imgDragX + tbl.x, tbl.y);
+        try {
+            DrawImage(tbl.img, imgDragX + tbl.x, tbl.y);
+            DrawImage(tbl.img, imgDragX + tbl.x - w2, tbl.y);
+            DrawImage(tbl.img, imgDragX + tbl.x + w2, tbl.y);
+        }
+        catch (e) {
+            console.log('idx ' + i);
+            throw Error();
+        }
     }
 }
 async function checkHit() {
     for (let i = 0; i < spot.tbl.length; i++) {
         let tbl = spot.tbl[i];
-        if (ImageDotCollide(tbl.img, tbl.dragX, tbl.y, InputX(), InputY())) {
+        let inputX = InputX() - spot.img.x;
+        if (ImageDotCollide(tbl.img, tbl.x, tbl.y, inputX, InputY())) {
             //collide tombol
             console.log('collide tombol normal');
             await gantiGambar(tbl.target, tbl.geser);
         }
-        //kiri
-        if (spot.img.startX < 0) {
-            if (ImageDotCollide(tbl.img, tbl.dragX + (w2) - 2, tbl.y, InputX(), InputY())) {
-                //collide tombol
-                console.log('collide tombol kiri');
-                await gantiGambar(tbl.target, tbl.geser);
-            }
+        else if (ImageDotCollide(tbl.img, tbl.x, tbl.y, inputX - w2, InputY())) {
+            //collide tombol
+            console.log('collide tombol normal');
+            await gantiGambar(tbl.target, tbl.geser);
         }
-        else {
-            if (ImageDotCollide(tbl.img, tbl.dragX - (w2) + 2, tbl.y, InputX(), InputY())) {
-                //collide tombol
-                console.log('collide tombol kanan');
-                await gantiGambar(tbl.target, tbl.geser);
-            }
-            // DrawImage(spot.img.img, spot.img.dragX - (w2) + 2, 0);
-        }
-        //kanan
-    }
-}
-function gambar2() {
-    if (spot.img.startX < 0) {
-        DrawImage(spot.img.img, spot.img.startX + (w2), 0);
-        for (let i = 0; i < spot.tbl.length; i++) {
-            let tbl = spot.tbl[i];
-            DrawImage(tbl.img, tbl.dragX + (w2), tbl.y);
-        }
-    }
-    else {
-        DrawImage(spot.img.img, spot.img.startX - (w2), 0);
-        for (let i = 0; i < spot.tbl.length; i++) {
-            let tbl = spot.tbl[i];
-            DrawImage(tbl.img, tbl.dragX - (w2), tbl.y);
+        else if (ImageDotCollide(tbl.img, tbl.x, tbl.y, inputX + w2, InputY())) {
+            //collide tombol
+            console.log('collide tombol normal');
+            await gantiGambar(tbl.target, tbl.geser);
         }
     }
 }
@@ -237,18 +152,22 @@ async function gantiGambar(gbr, geserJml) {
             spot = spotItem;
             await load();
             geser(geserJml);
+            gambar();
+            setTimeout(() => {
+                ha.comp.loading.detach();
+            }, 500);
             return;
         }
     }
     throw Error('gbr tidak ketemu ' + gbr);
 }
 let spots = [];
-//depan
+//depan ok
 spots.push({
     img: {
         x: 0,
         y: 0,
-        startX: 0,
+        // startX: 0,
         img: null,
         url: "./img/depan.jpg"
     },
@@ -256,7 +175,7 @@ spots.push({
         {
             x: 1280,
             y: 200,
-            dragX: 1280,
+            //dragX: 1280,
             img: null,
             url: "./img/box.png",
             target: './img/lompongan_kanan_1.jpg',
@@ -265,7 +184,7 @@ spots.push({
         {
             x: 1950,
             y: 200,
-            dragX: 1950,
+            // dragX: 1950,
             img: null,
             url: "./img/box.png",
             target: './img/ruang_tamu.jpg',
@@ -274,7 +193,7 @@ spots.push({
         {
             x: 2950,
             y: 200,
-            dragX: 2950,
+            // dragX: 2950,
             img: null,
             url: "./img/box.png",
             target: './img/lompongan_kiri.jpg',
@@ -282,12 +201,12 @@ spots.push({
         },
     ]
 });
-//ruang tamu
+//ruang tamu ok
 spots.push({
     img: {
         x: 0,
         y: 0,
-        startX: 0,
+        // startX: 0,
         img: null,
         url: "./img/ruang_tamu.jpg"
     },
@@ -295,7 +214,6 @@ spots.push({
         {
             x: 1530,
             y: 200,
-            dragX: 1530,
             img: null,
             url: "./img/box.png",
             target: './img/depan.jpg',
@@ -304,21 +222,53 @@ spots.push({
         {
             x: 130,
             y: 200,
-            dragX: 130,
             img: null,
             url: "./img/box.png",
-            target: './img/dapur_1.jpg',
-            geser: 0
+            target: './img/tengah.jpg',
+            geser: -513
         },
     ]
 });
-//ruang tamu 2
-//dapur 1
+//ruang tamu 2 ok
 spots.push({
     img: {
         x: 0,
         y: 0,
-        startX: 0,
+        img: null,
+        url: "./img/tengah.jpg"
+    },
+    tbl: [
+        {
+            x: 2578,
+            y: 200,
+            img: null,
+            url: "./img/box.png",
+            target: './img/ruang_tamu.jpg',
+            geser: -970
+        },
+        {
+            x: 1020,
+            y: 200,
+            img: null,
+            url: "./img/box.png",
+            target: './img/dapur_1.jpg',
+            geser: -3222
+        },
+        {
+            x: 60,
+            y: 200,
+            img: null,
+            url: "./img/box.png",
+            target: './img/lompongan_kanan_2.jpg',
+            geser: 0
+        },
+    ]
+});
+//dapur 1 ok
+spots.push({
+    img: {
+        x: 0,
+        y: 0,
         img: null,
         url: "./img/dapur_1.jpg"
     },
@@ -326,16 +276,14 @@ spots.push({
         {
             x: 1050,
             y: 200,
-            dragX: 1050,
             img: null,
             url: "./img/box.png",
-            target: './img/ruang_tamu.jpg',
-            geser: 0
+            target: './img/tengah.jpg',
+            geser: -2140
         },
         {
             x: 190,
             y: 200,
-            dragX: 190,
             img: null,
             url: "./img/box.png",
             target: './img/dapur_2.jpg',
@@ -344,7 +292,6 @@ spots.push({
         {
             x: 3620,
             y: 200,
-            dragX: 3620,
             img: null,
             url: "./img/box.png",
             target: './img/musholla.jpg',
@@ -352,12 +299,11 @@ spots.push({
         },
     ]
 });
-//musholla
+//musholla ok
 spots.push({
     img: {
         x: 0,
         y: 0,
-        startX: 0,
         img: null,
         url: "./img/musholla.jpg"
     },
@@ -365,20 +311,18 @@ spots.push({
         {
             x: 2950,
             y: 200,
-            dragX: 2950,
             img: null,
             url: "./img/box.png",
             target: './img/dapur_1.jpg',
-            geser: 0
+            geser: -589
         },
     ]
 });
-//dapur 2
+//dapur 2 ok
 spots.push({
     img: {
         x: 0,
         y: 0,
-        startX: 0,
         img: null,
         url: "./img/dapur_2.jpg"
     },
@@ -386,16 +330,14 @@ spots.push({
         {
             x: 1930,
             y: 200,
-            dragX: 1930,
             img: null,
             url: "./img/box.png",
             target: './img/dapur_1.jpg',
-            geser: 0
+            geser: -1699
         },
         {
             x: 2890,
             y: 200,
-            dragX: 2890,
             img: null,
             url: "./img/box.png",
             target: './img/sumur.jpg',
@@ -403,12 +345,11 @@ spots.push({
         },
     ]
 });
-//sumur
+//sumur ok
 spots.push({
     img: {
         x: 0,
         y: 0,
-        startX: 0,
         img: null,
         url: "./img/sumur.jpg"
     },
@@ -416,7 +357,6 @@ spots.push({
         {
             x: 1850,
             y: 200,
-            dragX: 1850,
             img: null,
             url: "./img/box.png",
             target: './img/dapur_2.jpg',
@@ -424,12 +364,11 @@ spots.push({
         },
     ]
 });
-//lompongan kiri depan
+//lompongan kiri depan ok
 spots.push({
     img: {
         x: 0,
         y: 0,
-        startX: 0,
         img: null,
         url: "./img/lompongan_kiri.jpg"
     },
@@ -437,7 +376,6 @@ spots.push({
         {
             x: 3100,
             y: 200,
-            dragX: 3100,
             img: null,
             url: "./img/box.png",
             target: './img/depan.jpg',
@@ -445,12 +383,12 @@ spots.push({
         },
     ]
 });
-//lompongan kanan depan
+//lompongan kanan depan ok
 spots.push({
     img: {
         x: 0,
         y: 0,
-        startX: 0,
+        // startX: 0,
         img: null,
         url: "./img/lompongan_kanan_1.jpg"
     },
@@ -458,7 +396,7 @@ spots.push({
         {
             x: 140,
             y: 200,
-            dragX: 140,
+            // dragX: 140,
             img: null,
             url: "./img/box.png",
             target: './img/depan.jpg',
@@ -467,20 +405,19 @@ spots.push({
         {
             x: 2580,
             y: 200,
-            dragX: 2580,
+            // dragX: 2580,
             img: null,
             url: "./img/box.png",
             target: './img/lompongan_kanan_2.jpg',
-            geser: 0
+            geser: -928
         },
     ]
 });
-//lompongan kanan belakang
+//lompongan kanan belakang ok
 spots.push({
     img: {
         x: 0,
         y: 0,
-        startX: 0,
         img: null,
         url: "./img/lompongan_kanan_2.jpg"
     },
@@ -488,16 +425,14 @@ spots.push({
         {
             x: 2310,
             y: 200,
-            dragX: 2310,
             img: null,
             url: "./img/box.png",
-            target: './img/ruang_tamu.jpg',
-            geser: 0
+            target: './img/tengah.jpg',
+            geser: -1600
         },
         {
             x: 3450,
             y: 200,
-            dragX: 3450,
             img: null,
             url: "./img/box.png",
             target: './img/lompongan_kanan_1.jpg',
@@ -505,7 +440,6 @@ spots.push({
         },
     ]
 });
-//tamu
 let spot = spots[0];
 /**
  * Wrapper
@@ -1430,8 +1364,8 @@ var ha;
 				<div class='loading'>
 					<div class='box'>
 						<img src=''/>
-						<p>Memuat</p> 
-					</div>
+						<p>Memuat ...</p> 
+					</div> 
 				</div>
 			`;
                 this.build();
