@@ -17,25 +17,25 @@ async function Start() {
 function normalize() {
     // let b: boolean = true;
     // if (b) return;
-    if (spot.img.x > gw) {
-        spot.img.x -= w2;
+    if (spot.gbr.x > gw) {
+        spot.gbr.x -= w2;
         // for (let i: number = 0; i < spot.tbl.length; i++) {
         // 	let tbl: ITombol = spot.tbl[i];
         // 	tbl.x -= w2;
         // }
         console.log('normalize >');
         console.log('w2 ' + w2);
-        console.log('img x ' + spot.img.x);
+        console.log('img x ' + spot.gbr.x);
     }
-    else if ((spot.img.x + w2) < 0) {
-        spot.img.x += w2;
+    else if ((spot.gbr.x + w2) < 0) {
+        spot.gbr.x += w2;
         // for (let i: number = 0; i < spot.tbl.length; i++) {
         // 	let tbl: ITombol = spot.tbl[i];
         // 	tbl.x += w2;
         // }
         console.log('normalize <');
         console.log('w2 ' + w2);
-        console.log('img x ' + spot.img.x);
+        console.log('img x ' + spot.gbr.x);
     }
 }
 function getBox() {
@@ -49,26 +49,26 @@ async function Loop() {
     Cls();
     if (InputDown()) {
         imgDrag = true;
-        imgDragX = spot.img.x;
-        imgDragY = spot.img.y;
+        imgDragX = spot.gbr.x;
+        // imgDragY = spot.img.y;
     }
     else {
         if (imgDrag) {
             imgDrag = false;
             imgDrag = false;
-            spot.img.x = imgDragX;
-            spot.img.y = imgDragY;
+            spot.gbr.x = imgDragX;
+            // spot.img.y = imgDragY;
             normalize();
         }
     }
     // Input
     if (InputDrag() && imgDrag) {
-        imgDragX = spot.img.x + InputDragX();
-        imgDragY = spot.img.y + InputDragY();
+        imgDragX = spot.gbr.x + InputDragX();
+        // imgDragY = spot.img.y + InputDragY();
     }
     gambar();
     if (InputHit() > 0) {
-        console.log('hit: x: ' + (InputX() - spot.img.x) + '/y: ' + InputY());
+        console.log('hit: x: ' + (InputX() - spot.gbr.x) + '/y: ' + InputY());
         await checkHit();
     }
     //debug
@@ -80,8 +80,8 @@ function geser(jml) {
     // let b: boolean = true;
     // if (b) return;
     console.log('geser' + jml);
-    spot.img.x = jml;
-    imgDragX = spot.img.x;
+    spot.gbr.x = jml;
+    imgDragX = spot.gbr.x;
     imgDragY = 0;
     // for (let i: number = 0; i < spot.tbl.length; i++) {
     // 	let tbl: ITombol = spot.tbl[i];
@@ -90,9 +90,9 @@ function geser(jml) {
     normalize();
 }
 async function load() {
-    if (!spot.img.img) {
+    if (!spot.gbr.img) {
         ha.comp.loading.tampil();
-        spot.img.img = await LoadImage(spot.img.url);
+        spot.gbr.img = await LoadImage(spot.gbr.url);
         await ha.comp.Util.delay(500);
     }
     for (let i = 0; i < spot.tbl.length; i++) {
@@ -103,14 +103,14 @@ async function load() {
             await ha.comp.Util.delay(500);
         }
     }
-    ratio = gh / spot.img.img.height;
-    ResizeImage(spot.img.img, Math.ceil(spot.img.img.width * ratio), Math.ceil(spot.img.img.height * ratio));
-    w2 = Math.ceil(spot.img.img.width * ratio);
+    ratio = gh / spot.gbr.img.height;
+    ResizeImage(spot.gbr.img, Math.ceil(spot.gbr.img.width * ratio), Math.ceil(spot.gbr.img.height * ratio));
+    w2 = Math.ceil(spot.gbr.img.width * ratio);
 }
 function gambar() {
-    DrawImage(spot.img.img, imgDragX, 0);
-    DrawImage(spot.img.img, imgDragX - w2, 0);
-    DrawImage(spot.img.img, imgDragX + w2, 0);
+    DrawImage(spot.gbr.img, imgDragX, 0);
+    DrawImage(spot.gbr.img, imgDragX - w2, 0);
+    DrawImage(spot.gbr.img, imgDragX + w2, 0);
     for (let i = 0; i < spot.tbl.length; i++) {
         let tbl = spot.tbl[i];
         try {
@@ -127,7 +127,7 @@ function gambar() {
 async function checkHit() {
     for (let i = 0; i < spot.tbl.length; i++) {
         let tbl = spot.tbl[i];
-        let inputX = InputX() - spot.img.x;
+        let inputX = InputX() - spot.gbr.x;
         if (ImageDotCollide(tbl.img, tbl.x, tbl.y, inputX, InputY())) {
             //collide tombol
             console.log('collide tombol normal');
@@ -148,7 +148,8 @@ async function checkHit() {
 async function gantiGambar(gbr, geserJml) {
     for (let i = 0; i < spots.length; i++) {
         let spotItem = spots[i];
-        if (spotItem.img.url == gbr) {
+        spotItem.gbr.x = 0;
+        if (spotItem.gbr.url == gbr) {
             spot = spotItem;
             await load();
             geser(geserJml);
@@ -161,286 +162,6 @@ async function gantiGambar(gbr, geserJml) {
     }
     throw Error('gbr tidak ketemu ' + gbr);
 }
-let spots = [];
-//depan ok
-spots.push({
-    img: {
-        x: 0,
-        y: 0,
-        // startX: 0,
-        img: null,
-        url: "./img/depan.jpg"
-    },
-    tbl: [
-        {
-            x: 1280,
-            y: 200,
-            //dragX: 1280,
-            img: null,
-            url: "./img/box.png",
-            target: './img/lompongan_kanan_1.jpg',
-            geser: -1860
-        },
-        {
-            x: 1950,
-            y: 200,
-            // dragX: 1950,
-            img: null,
-            url: "./img/box.png",
-            target: './img/ruang_tamu.jpg',
-            geser: 0
-        },
-        {
-            x: 2950,
-            y: 200,
-            // dragX: 2950,
-            img: null,
-            url: "./img/box.png",
-            target: './img/lompongan_kiri.jpg',
-            geser: -51
-        },
-    ]
-});
-//ruang tamu ok
-spots.push({
-    img: {
-        x: 0,
-        y: 0,
-        // startX: 0,
-        img: null,
-        url: "./img/ruang_tamu.jpg"
-    },
-    tbl: [
-        {
-            x: 1530,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/depan.jpg',
-            geser: 0
-        },
-        {
-            x: 130,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/tengah.jpg',
-            geser: -513
-        },
-    ]
-});
-//ruang tamu 2 ok
-spots.push({
-    img: {
-        x: 0,
-        y: 0,
-        img: null,
-        url: "./img/tengah.jpg"
-    },
-    tbl: [
-        {
-            x: 2578,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/ruang_tamu.jpg',
-            geser: -970
-        },
-        {
-            x: 1020,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/dapur_1.jpg',
-            geser: -3222
-        },
-        {
-            x: 60,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/lompongan_kanan_2.jpg',
-            geser: 0
-        },
-    ]
-});
-//dapur 1 ok
-spots.push({
-    img: {
-        x: 0,
-        y: 0,
-        img: null,
-        url: "./img/dapur_1.jpg"
-    },
-    tbl: [
-        {
-            x: 1050,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/tengah.jpg',
-            geser: -2140
-        },
-        {
-            x: 190,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/dapur_2.jpg',
-            geser: 0
-        },
-        {
-            x: 3620,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/musholla.jpg',
-            geser: 0
-        },
-    ]
-});
-//musholla ok
-spots.push({
-    img: {
-        x: 0,
-        y: 0,
-        img: null,
-        url: "./img/musholla.jpg"
-    },
-    tbl: [
-        {
-            x: 2950,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/dapur_1.jpg',
-            geser: -589
-        },
-    ]
-});
-//dapur 2 ok
-spots.push({
-    img: {
-        x: 0,
-        y: 0,
-        img: null,
-        url: "./img/dapur_2.jpg"
-    },
-    tbl: [
-        {
-            x: 1930,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/dapur_1.jpg',
-            geser: -1699
-        },
-        {
-            x: 2890,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/sumur.jpg',
-            geser: 0
-        },
-    ]
-});
-//sumur ok
-spots.push({
-    img: {
-        x: 0,
-        y: 0,
-        img: null,
-        url: "./img/sumur.jpg"
-    },
-    tbl: [
-        {
-            x: 1850,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/dapur_2.jpg',
-            geser: 0
-        },
-    ]
-});
-//lompongan kiri depan ok
-spots.push({
-    img: {
-        x: 0,
-        y: 0,
-        img: null,
-        url: "./img/lompongan_kiri.jpg"
-    },
-    tbl: [
-        {
-            x: 3100,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/depan.jpg',
-            geser: -450
-        },
-    ]
-});
-//lompongan kanan depan ok
-spots.push({
-    img: {
-        x: 0,
-        y: 0,
-        // startX: 0,
-        img: null,
-        url: "./img/lompongan_kanan_1.jpg"
-    },
-    tbl: [
-        {
-            x: 140,
-            y: 200,
-            // dragX: 140,
-            img: null,
-            url: "./img/box.png",
-            target: './img/depan.jpg',
-            geser: -2410
-        },
-        {
-            x: 2580,
-            y: 200,
-            // dragX: 2580,
-            img: null,
-            url: "./img/box.png",
-            target: './img/lompongan_kanan_2.jpg',
-            geser: -928
-        },
-    ]
-});
-//lompongan kanan belakang ok
-spots.push({
-    img: {
-        x: 0,
-        y: 0,
-        img: null,
-        url: "./img/lompongan_kanan_2.jpg"
-    },
-    tbl: [
-        {
-            x: 2310,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/tengah.jpg',
-            geser: -1600
-        },
-        {
-            x: 3450,
-            y: 200,
-            img: null,
-            url: "./img/box.png",
-            target: './img/lompongan_kanan_1.jpg',
-            geser: 0
-        },
-    ]
-});
-let spot = spots[0];
 /**
  * Wrapper
  */

@@ -1,20 +1,14 @@
-let spots: ISpot[] = [];
+let spots = [];
 
-//depan ok
+//depan
 spots.push({
-	img: {
-		x: 0,
-		y: 0,
-		// startX: 0,
-		img: null,
+	gbr: {
 		url: "./img/depan.jpg"
 	},
 	tbl: [
 		{
 			x: 1280,
 			y: 200,
-			//dragX: 1280,
-			img: null,
 			url: "./img/box.png",
 			target: './img/lompongan_kanan_1.jpg',
 			geser: -1860
@@ -22,8 +16,6 @@ spots.push({
 		{
 			x: 1950,
 			y: 200,
-			// dragX: 1950,
-			img: null,
 			url: "./img/box.png",
 			target: './img/ruang_tamu.jpg',
 			geser: 0
@@ -31,8 +23,6 @@ spots.push({
 		{
 			x: 2950,
 			y: 200,
-			// dragX: 2950,
-			img: null,
 			url: "./img/box.png",
 			target: './img/lompongan_kiri.jpg',
 			geser: -51
@@ -43,18 +33,13 @@ spots.push({
 
 //ruang tamu ok
 spots.push({
-	img: {
-		x: 0,
-		y: 0,
-		// startX: 0,
-		img: null,
+	gbr: {
 		url: "./img/ruang_tamu.jpg"
 	},
 	tbl: [
 		{
 			x: 1530,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/depan.jpg',
 			geser: 0
@@ -63,29 +48,22 @@ spots.push({
 		{
 			x: 130,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/tengah.jpg',
 			geser: -513
 		},
-
-		//ke arah dapur
 	]
 });
 
 //ruang tamu 2 ok
 spots.push({
-	img: {
-		x: 0,
-		y: 0,
-		img: null,
+	gbr: {
 		url: "./img/tengah.jpg"
 	},
 	tbl: [
 		{
 			x: 2578,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/ruang_tamu.jpg',
 			geser: -970
@@ -94,7 +72,6 @@ spots.push({
 		{
 			x: 1020,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/dapur_1.jpg',
 			geser: -3222
@@ -103,7 +80,6 @@ spots.push({
 		{
 			x: 60,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/lompongan_kanan_2.jpg',
 			geser: 0
@@ -115,17 +91,13 @@ spots.push({
 
 //dapur 1 ok
 spots.push({
-	img: {
-		x: 0,
-		y: 0,
-		img: null,
+	gbr: {
 		url: "./img/dapur_1.jpg"
 	},
 	tbl: [
 		{
 			x: 1050,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/tengah.jpg',
 			geser: -2140
@@ -133,7 +105,6 @@ spots.push({
 		{
 			x: 190,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/dapur_2.jpg',
 			geser: 0
@@ -141,7 +112,6 @@ spots.push({
 		{
 			x: 3620,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/musholla.jpg',
 			geser: 0
@@ -151,17 +121,13 @@ spots.push({
 
 //musholla ok
 spots.push({
-	img: {
-		x: 0,
-		y: 0,
-		img: null,
+	gbr: {
 		url: "./img/musholla.jpg"
 	},
 	tbl: [
 		{
 			x: 2950,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/dapur_1.jpg',
 			geser: - 589
@@ -171,17 +137,13 @@ spots.push({
 
 //dapur 2 ok
 spots.push({
-	img: {
-		x: 0,
-		y: 0,
-		img: null,
+	gbr: {
 		url: "./img/dapur_2.jpg"
 	},
 	tbl: [
 		{
 			x: 1930,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/dapur_1.jpg',
 			geser: -1699
@@ -190,7 +152,6 @@ spots.push({
 		{
 			x: 2890,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/sumur.jpg',
 			geser: 0
@@ -200,17 +161,13 @@ spots.push({
 
 //sumur ok
 spots.push({
-	img: {
-		x: 0,
-		y: 0,
-		img: null,
+	gbr: {
 		url: "./img/sumur.jpg"
 	},
 	tbl: [
 		{
 			x: 1850,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/dapur_2.jpg',
 			geser: 0
@@ -221,17 +178,13 @@ spots.push({
 
 //lompongan kiri depan ok
 spots.push({
-	img: {
-		x: 0,
-		y: 0,
-		img: null,
+	gbr: {
 		url: "./img/lompongan_kiri.jpg"
 	},
 	tbl: [
 		{
 			x: 3100,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/depan.jpg',
 			geser: -450
@@ -242,19 +195,13 @@ spots.push({
 
 //lompongan kanan depan ok
 spots.push({
-	img: {
-		x: 0,
-		y: 0,
-		// startX: 0,
-		img: null,
+	gbr: {
 		url: "./img/lompongan_kanan_1.jpg"
 	},
 	tbl: [
 		{
 			x: 140,
 			y: 200,
-			// dragX: 140,
-			img: null,
 			url: "./img/box.png",
 			target: './img/depan.jpg',
 			geser: -2410
@@ -262,8 +209,6 @@ spots.push({
 		{
 			x: 2580,
 			y: 200,
-			// dragX: 2580,
-			img: null,
 			url: "./img/box.png",
 			target: './img/lompongan_kanan_2.jpg',
 			geser: -928
@@ -273,17 +218,13 @@ spots.push({
 
 //lompongan kanan belakang ok
 spots.push({
-	img: {
-		x: 0,
-		y: 0,
-		img: null,
+	gbr: {
 		url: "./img/lompongan_kanan_2.jpg"
 	},
 	tbl: [
 		{
 			x: 2310,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/tengah.jpg',
 			geser: -1600
@@ -291,7 +232,6 @@ spots.push({
 		{
 			x: 3450,
 			y: 200,
-			img: null,
 			url: "./img/box.png",
 			target: './img/lompongan_kanan_1.jpg',
 			geser: 0
@@ -300,4 +240,4 @@ spots.push({
 });
 
 
-let spot: ISpot = spots[0];
+let spot = spots[0];

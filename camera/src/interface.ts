@@ -1,8 +1,7 @@
 interface ITombol {
 	x: number,
 	y: number,
-	// dragX: number,
-	img: IBuffer,
+	img?: IBuffer,
 	url: string,
 	target: string,
 	geser: number
@@ -10,14 +9,11 @@ interface ITombol {
 
 interface IGbr {
 	x: number,
-	y: number,
-	// startX: number,
-	// dragY: number,
-	img: IBuffer
+	img?: IBuffer
 	url: string,
 }
 
 interface ISpot {
-	img: IGbr,
+	gbr: IGbr,
 	tbl: ITombol[]
 }

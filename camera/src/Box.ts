@@ -1,3 +1,6 @@
+declare var spot: ISpot;
+declare var spots: ISpot[];
+
 let imgDrag: boolean = false;	//img is dragged or not
 let imgDragX: number = 0;		//img x position when dragged
 let imgDragY: number = 0;		//img y position when dragged
@@ -24,8 +27,8 @@ function normalize(): void {
 	// let b: boolean = true;
 	// if (b) return;
 
-	if (spot.img.x > gw) {
-		spot.img.x -= w2;
+	if (spot.gbr.x > gw) {
+		spot.gbr.x -= w2;
 
 		// for (let i: number = 0; i < spot.tbl.length; i++) {
 		// 	let tbl: ITombol = spot.tbl[i];
@@ -34,10 +37,10 @@ function normalize(): void {
 
 		console.log('normalize >');
 		console.log('w2 ' + w2);
-		console.log('img x ' + spot.img.x);
+		console.log('img x ' + spot.gbr.x);
 	}
-	else if ((spot.img.x + w2) < 0) {
-		spot.img.x += w2;
+	else if ((spot.gbr.x + w2) < 0) {
+		spot.gbr.x += w2;
 
 		// for (let i: number = 0; i < spot.tbl.length; i++) {
 		// 	let tbl: ITombol = spot.tbl[i];
@@ -46,7 +49,7 @@ function normalize(): void {
 
 		console.log('normalize <');
 		console.log('w2 ' + w2);
-		console.log('img x ' + spot.img.x);
+		console.log('img x ' + spot.gbr.x);
 	}
 }
 
@@ -63,15 +66,15 @@ async function Loop(): Promise<void> {
 
 	if (InputDown()) {
 		imgDrag = true;
-		imgDragX = spot.img.x;
-		imgDragY = spot.img.y;
+		imgDragX = spot.gbr.x;
+		// imgDragY = spot.img.y;
 	}
 	else {
 		if (imgDrag) {
 			imgDrag = false;
 			imgDrag = false;
-			spot.img.x = imgDragX;
-			spot.img.y = imgDragY;
+			spot.gbr.x = imgDragX;
+			// spot.img.y = imgDragY;
 			normalize();
 		}
 	}
@@ -79,14 +82,14 @@ async function Loop(): Promise<void> {
 	// Input
 
 	if (InputDrag() && imgDrag) {
-		imgDragX = spot.img.x + InputDragX();
-		imgDragY = spot.img.y + InputDragY();
+		imgDragX = spot.gbr.x + InputDragX();
+		// imgDragY = spot.img.y + InputDragY();
 	}
 
 	gambar();
 
 	if (InputHit() > 0) {
-		console.log('hit: x: ' + (InputX() - spot.img.x) + '/y: ' + InputY());
+		console.log('hit: x: ' + (InputX() - spot.gbr.x) + '/y: ' + InputY());
 		await checkHit();
 	}
 
@@ -104,8 +107,8 @@ function geser(jml: number): void {
 
 	console.log('geser' + jml);
 
-	spot.img.x = jml;
-	imgDragX = spot.img.x;
+	spot.gbr.x = jml;
+	imgDragX = spot.gbr.x;
 	imgDragY = 0;
 
 	// for (let i: number = 0; i < spot.tbl.length; i++) {
@@ -118,9 +121,9 @@ function geser(jml: number): void {
 
 async function load(): Promise<void> {
 
-	if (!spot.img.img) {
+	if (!spot.gbr.img) {
 		ha.comp.loading.tampil();
-		spot.img.img = await LoadImage(spot.img.url);
+		spot.gbr.img = await LoadImage(spot.gbr.url);
 		await ha.comp.Util.delay(500);
 	}
 
@@ -134,17 +137,17 @@ async function load(): Promise<void> {
 		}
 	}
 
-	ratio = gh / spot.img.img.height;
-	ResizeImage(spot.img.img, Math.ceil(spot.img.img.width * ratio), Math.ceil(spot.img.img.height * ratio));
-	w2 = Math.ceil(spot.img.img.width * ratio);
+	ratio = gh / spot.gbr.img.height;
+	ResizeImage(spot.gbr.img, Math.ceil(spot.gbr.img.width * ratio), Math.ceil(spot.gbr.img.height * ratio));
+	w2 = Math.ceil(spot.gbr.img.width * ratio);
 
 }
 
 function gambar() {
 
-	DrawImage(spot.img.img, imgDragX, 0);
-	DrawImage(spot.img.img, imgDragX - w2, 0);
-	DrawImage(spot.img.img, imgDragX + w2, 0);
+	DrawImage(spot.gbr.img, imgDragX, 0);
+	DrawImage(spot.gbr.img, imgDragX - w2, 0);
+	DrawImage(spot.gbr.img, imgDragX + w2, 0);
 
 	for (let i: number = 0; i < spot.tbl.length; i++) {
 		let tbl: ITombol = spot.tbl[i];
@@ -163,7 +166,7 @@ function gambar() {
 async function checkHit(): Promise<void> {
 	for (let i: number = 0; i < spot.tbl.length; i++) {
 		let tbl: ITombol = spot.tbl[i];
-		let inputX: number = InputX() - spot.img.x;
+		let inputX: number = InputX() - spot.gbr.x;
 
 		if (ImageDotCollide(tbl.img, tbl.x, tbl.y, inputX, InputY())) {
 
@@ -190,7 +193,8 @@ async function checkHit(): Promise<void> {
 async function gantiGambar(gbr: string, geserJml: number): Promise<void> {
 	for (let i: number = 0; i < spots.length; i++) {
 		let spotItem: ISpot = spots[i];
-		if (spotItem.img.url == gbr) {
+		spotItem.gbr.x = 0;
+		if (spotItem.gbr.url == gbr) {
 			spot = spotItem;
 			await load();
 			geser(geserJml);
