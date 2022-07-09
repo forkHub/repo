@@ -1,50 +1,50 @@
 class Data {
 
-    static deleteVarIsi(id: number): void {
-        for (let i: number = 0; i < Stmt.daftar.length; i++) {
-            if (Stmt.daftar[i].id == id) {
-                Stmt.daftar.splice(i, 1);
-                return;
-            }
-        }
-    }
+	static deleteVarIsi(id: number): void {
+		for (let i: number = 0; i < Stmt.daftar.length; i++) {
+			if (Stmt.daftar[i].id == id) {
+				Stmt.daftar.splice(i, 1);
+				return;
+			}
+		}
+	}
 
-    static getArg(id: number): IArg {
-        let hasil: IArg;
+	static getArg(id: number): IArg {
+		let hasil: IArg;
 
-        dataObj.argAr.forEach((item: IArg) => {
-            if (item.id == id) {
-                hasil = item;
-            }
-        })
+		dataObj.argAr.forEach((item: IArg) => {
+			if (item.id == id) {
+				hasil = item;
+			}
+		})
 
-        if (!hasil) {
-            throw new Error('');
-        }
+		if (!hasil) {
+			throw new Error('');
+		}
 
-        return hasil;
-    }
+		return hasil;
+	}
 
-    static buatArg(type: string, indukId: number): IArg {
-        let argObj: IArg;
-        argObj = {
-            id: Id.id,
-            refParamId: 0,
-            indukId: indukId,
-            nama: '',
-            type: TY_ARG,
-            tipeArg: type,
-            value: '0',
-            ket: ''
-        }
+	static buatArg(type: string, indukId: number): IArg {
+		let argObj: IArg;
+		argObj = {
+			id: Id.id,
+			refParamId: 0,
+			indukId: indukId,
+			nama: '',
+			type: TY_ARG,
+			tipeArg: type,
+			value: '0',
+			ket: ''
+		}
 
-        if (type == ARG_REF) {
-            argObj.value = '-1';
-        }
+		if (type == ARG_REF_VAR) {
+			argObj.value = '-1';
+		}
 
-        dataObj.argAr.push(argObj);
-        dataObj.simpan();
+		dataObj.argAr.push(argObj);
+		dataObj.simpan();
 
-        return argObj;
-    }
+		return argObj;
+	}
 }

@@ -51,10 +51,10 @@ class VarisiViewItem extends ha.comp.BaseComponent {
 			e.stopPropagation();
 			expForm.attach(document.body);
 			expForm.selesai = () => {
-				if (expForm.tipeArg == ARG_REF) {
-					this.varCont.innerText = Variable.nama(parseInt(expForm.ref));
-					this._item.expValue = expForm.ref
-					this._item.expTipe = ARG_REF;
+				if (expForm.tipeArg == ARG_REF_VAR) {
+					this.varCont.innerText = Variable.nama((expForm.ref));
+					this._item.varId = expForm.ref;
+					this._item.expTipe = ARG_REF_VAR;
 				}
 				else if (expForm.tipeArg == ARG_VALUE) {
 					this.varCont.innerText = expForm.value;
@@ -167,7 +167,7 @@ class VarisiViewItem extends ha.comp.BaseComponent {
 		if (this._item.expTipe == ARG_VALUE) {
 			this.expCont.innerText = this._item.expValue;
 		}
-		else if (this._item.expTipe == ARG_REF) {
+		else if (this._item.expTipe == ARG_REF_VAR) {
 			this.expCont.innerText = Variable.nama(this._item.expId);
 		}
 		else {

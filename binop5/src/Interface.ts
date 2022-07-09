@@ -29,6 +29,7 @@ interface IExp extends IData {
 	varId: number,
 	fungId: number,
 	binopId: number
+	tipeExp: string,
 }
 
 interface IValue extends IData {

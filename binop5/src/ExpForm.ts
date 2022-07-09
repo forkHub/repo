@@ -7,7 +7,12 @@ class ExpForm extends ha.comp.BaseComponent {
 	readonly terima: string[] = [];
 	private _tipeArg: string;
 	private _value: string;
-	private _ref: string;
+	private _ref: number;
+	private _binop: number;
+
+	public get binop(): number {
+		return this._binop;
+	}
 
 	private _selesai: () => void;
 
@@ -15,7 +20,7 @@ class ExpForm extends ha.comp.BaseComponent {
 		this._selesai = value;
 	}
 
-	public get ref(): string {
+	public get ref(): number {
 		return this._ref;
 	}
 
@@ -35,7 +40,51 @@ class ExpForm extends ha.comp.BaseComponent {
 
 	constructor() {
 		super();
-		this._elHtml = this.getTemplate('div.edit-arg');
+
+		this._template = `
+			<div class="edit-arg edit-exp pos-abs top-0 left-0 back-color-white padding-8">
+				<form>
+					<div>
+						<div>Type exp:</div>
+
+						<div class='literal-cont>
+							<input type="radio" name="tipe_arg" class="" value="${ARG_VALUE}" checked><label>literal</label><br />
+							<div class="padding">
+								<input type="text" name="literal" placeholder="0">
+							</div>
+						</div>
+
+						<div class='var-cont'>
+							<input type="radio" name="tipe_arg" class="" value="${ARG_REF_VAR}"><label>ref var</label><br />
+							<div class="padding">
+								<input type="text" name="ref" placeholder="0">
+								<button type='button' class="browse">browse</button>
+							</div>
+						</div>
+
+						<div class='fung-cont'>
+							<input type="radio" name="tipe_arg" class="" value="${ARG_REF_FUNGSI}"><label>ref fungsi</label><br />
+							<div class="padding fungsi-cont">
+							</div>
+						</div>
+
+						<div class='binop-cont'>
+							<input type="radio" name="tipe_arg" class="" value="${ARG_BINOP}"><label>binop</label><br />
+							<div class="padding binop-cont">
+							</div>
+						</div>
+
+					</div>
+
+					<div>
+						<button type="submit" class="ok">ok</button>
+						<button type="button" class="batal">batal</button>
+					</div>
+				</form>		
+			</div>
+		`;
+
+		this.build();
 
 		this.form.onsubmit = (e: Event) => {
 			e.preventDefault();
@@ -46,7 +95,7 @@ class ExpForm extends ha.comp.BaseComponent {
 				if (this._tipeArg == ARG_VALUE) {
 					this._value = this.literalHtml.value;
 				}
-				else if (this._tipeArg == ARG_REF) {
+				else if (this._tipeArg == ARG_REF_VAR) {
 
 				}
 				else if (this._tipeArg == ARG_REF_FUNGSI) {
@@ -60,6 +109,8 @@ class ExpForm extends ha.comp.BaseComponent {
 				}
 
 				this.detach();
+
+				//bersihkan object tidak dipakai
 
 				console.group('form on submit:');
 				console.log('tipe: ' + this._tipeArg);
@@ -76,26 +127,12 @@ class ExpForm extends ha.comp.BaseComponent {
 			return false;
 		}
 
-		// this.literalHtml.onchange = (e: Event) => {
-		// 	console.log(e.currentTarget);
-		// }
-
-		// this.literalHtml.oninput = (e: Event) => {
-		// console.log(e.currentTarget);
-		// e;
-		// console.log(this.literalHtml.value);
-		// }
-
 		this.browse.onclick = (e: MouseEvent) => {
 			e.stopPropagation();
 			console.log('browse click');
 			dlgPilihVariable.finish = () => {
-				// this._value = dlgPilihVariable.varDipilih + '';
-				this._ref = dlgPilihVariable.varDipilih + '';
+				this._ref = dlgPilihVariable.varDipilih;
 				this.refHtml.value = Variable.nama(dlgPilihVariable.varDipilih);
-
-				// this.literalHtml.value = Variable.nama(dlgPilihVariable.varDipilih);
-				// this.literalHtml.innerText = this.namaVar(pilihVariable.varDipilih);
 
 				console.log('pilih var finish: ' + dlgPilihVariable.varDipilih);
 				console.log(this.literalHtml);
@@ -113,19 +150,39 @@ class ExpForm extends ha.comp.BaseComponent {
 		};
 
 		// BinopEditor.attacth(this.binopCont);
-		binopEd.tampil(() => {
-			//TODO:
-		}, this.binopCont);
+		binopEd.attach(this.binopCont);
 	}
 
 
-	setTerima(terima: string[]): void {
-		terima; //TODO:
-	}
+	tampil(f: () => void, p: HTMLElement, terima: string[]): void {
 
-	tampil(f: () => void, p: HTMLElement): void {
+		while (this.terima.length > 0) {
+			this.terima.pop();
+		}
+
+		this.litCont.style.display = 'none';
+		//TODO:
+
+		terima.forEach((item: string) => {
+			this.terima.push(item);
+		});
+
+		this.terima.forEach((item: string) => {
+			if (ARG_VALUE == item) {
+				this.litCont.style.display = 'block';
+			}
+			else {
+				//TODO:
+			}
+		})
+
+
 		this._selesai = f;
 		this.attach(p);
+	}
+
+	private get litCont(): HTMLElement {
+		return this.getEl('div.lit-cont');
 	}
 
 	private get form(): HTMLFormElement {

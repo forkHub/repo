@@ -13,7 +13,8 @@ class Exp {
 			nama: '',
 			type: TY_EXP,
 			value: '',
-			varId: 0
+			varId: 0,
+			tipeExp: ARG_VALUE
 		}
 
 		if (simpan) {
