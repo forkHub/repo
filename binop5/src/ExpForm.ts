@@ -1,7 +1,7 @@
 ///<reference path="./comp/BaseComponent.ts"/>
 
 /**
- * Form untuk edit argument property
+ * Form untuk edit exp property
  */
 class ExpForm extends ha.comp.BaseComponent {
 	readonly terima: string[] = [];
@@ -112,7 +112,10 @@ class ExpForm extends ha.comp.BaseComponent {
 			this.detach();
 		};
 
-		BinopEditor.attacth(this.binopCont);
+		// BinopEditor.attacth(this.binopCont);
+		binopEd.tampil(() => {
+			//TODO:
+		}, this.binopCont);
 	}
 
 
@@ -120,8 +123,9 @@ class ExpForm extends ha.comp.BaseComponent {
 		terima; //TODO:
 	}
 
-	tampil(): void {
-		//TODO:atur tampilan sesuai dengan terima
+	tampil(f: () => void, p: HTMLElement): void {
+		this._selesai = f;
+		this.attach(p);
 	}
 
 	private get form(): HTMLFormElement {
