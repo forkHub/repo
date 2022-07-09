@@ -1,19 +1,18 @@
-let spots = [];
+let spots: ISpot[] = [];
 
-//halaman depan
+//depan
 spots.push({
 	gbr: {
-		url: "./img/depan.jpg"	//url gambar background
+		x: 0,
+		url: "./img/depan.jpg"
 	},
-
-	//data tombol
 	tbl: [
 		{
-			x: 1280,								//posisi x dihitung dari pojok kiri gambar background
-			y: 200,									//posisi y
-			url: "./img/box.png",					//gambar tombol
-			target: './img/lompongan_kanan_1.jpg',	//target background
-			geser: -1860							//jumlah background digeser ketika ditampilkan setelah tombol ini dipencet
+			x: 1280,
+			y: 200,
+			url: "./img/box.png",
+			target: './img/lompongan_kanan_1.jpg',
+			geser: -1860
 		},
 		{
 			x: 1950,
@@ -33,9 +32,10 @@ spots.push({
 	]
 });
 
-//ruang tamu
+//ruang tamu ok
 spots.push({
 	gbr: {
+		x: 0,
 		url: "./img/ruang_tamu.jpg"
 	},
 	tbl: [
@@ -57,9 +57,10 @@ spots.push({
 	]
 });
 
-//ruang tamu 2
+//ruang tamu 2 ok
 spots.push({
 	gbr: {
+		x: 0,
 		url: "./img/tengah.jpg"
 	},
 	tbl: [
@@ -91,9 +92,10 @@ spots.push({
 	]
 });
 
-//dapur 1
+//dapur 1 ok
 spots.push({
 	gbr: {
+		x: 0,
 		url: "./img/dapur_1.jpg"
 	},
 	tbl: [
@@ -121,9 +123,11 @@ spots.push({
 	]
 });
 
-//musholla
+//musholla ok
 spots.push({
 	gbr: {
+		x: 0,
+		img: null,
 		url: "./img/musholla.jpg"
 	},
 	tbl: [
@@ -137,9 +141,11 @@ spots.push({
 	]
 });
 
-//dapur 2
+//dapur 2 ok
 spots.push({
 	gbr: {
+		x: 0,
+		img: null,
 		url: "./img/dapur_2.jpg"
 	},
 	tbl: [
@@ -161,9 +167,10 @@ spots.push({
 	]
 });
 
-//sumur
+//sumur ok
 spots.push({
 	gbr: {
+		x: 0,
 		url: "./img/sumur.jpg"
 	},
 	tbl: [
@@ -178,9 +185,10 @@ spots.push({
 
 });
 
-//lompongan kiri depan
+//lompongan kiri depan ok
 spots.push({
 	gbr: {
+		x: 0,
 		url: "./img/lompongan_kiri.jpg"
 	},
 	tbl: [
@@ -195,9 +203,10 @@ spots.push({
 	]
 });
 
-//lompongan kanan depan
+//lompongan kanan depan ok
 spots.push({
 	gbr: {
+		x: 0,
 		url: "./img/lompongan_kanan_1.jpg"
 	},
 	tbl: [
@@ -218,9 +227,10 @@ spots.push({
 	]
 });
 
-//lompongan kanan belakang
+//lompongan kanan belakang ok
 spots.push({
 	gbr: {
+		x: 0,
 		url: "./img/lompongan_kanan_2.jpg"
 	},
 	tbl: [
@@ -241,4 +251,5 @@ spots.push({
 	]
 });
 
-let spot = spots[0];
+
+let spot: ISpot = spots[0];

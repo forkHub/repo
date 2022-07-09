@@ -12,6 +12,13 @@ let gw: number = 800;
 let gh: number = 400;
 let boxIdx: number = 0;
 
+const M_IDLE: string = 'idle';
+const M_PENCET: string = 'pencet';
+const M_DRAG: string = 'drag';
+// const M_DRAG: string = 'drag';
+
+let mouseState: string = '';
+
 let debugEl: HTMLElement;
 
 async function Start(): Promise<void> {
@@ -35,9 +42,9 @@ function normalize(): void {
 		// 	tbl.x -= w2;
 		// }
 
-		console.log('normalize >');
-		console.log('w2 ' + w2);
-		console.log('img x ' + spot.gbr.x);
+		// console.log('normalize >');
+		// console.log('w2 ' + w2);
+		// console.log('img x ' + spot.gbr.x);
 	}
 	else if ((spot.gbr.x + w2) < 0) {
 		spot.gbr.x += w2;
@@ -47,9 +54,9 @@ function normalize(): void {
 		// 	tbl.x += w2;
 		// }
 
-		console.log('normalize <');
-		console.log('w2 ' + w2);
-		console.log('img x ' + spot.gbr.x);
+		// console.log('normalize <');
+		// console.log('w2 ' + w2);
+		// console.log('img x ' + spot.gbr.x);
 	}
 }
 
@@ -58,18 +65,26 @@ function getBox(): void {
 	if (boxIdx >= spot.tbl.length) {
 		boxIdx = 0;
 	}
-	console.log('get box ' + boxIdx);
+
+	// console.log('get box ' + boxIdx);
 }
 
 async function Loop(): Promise<void> {
 	Cls();
 
 	if (InputDown()) {
+		mouseState = M_PENCET;
+
 		imgDrag = true;
 		imgDragX = spot.gbr.x;
-		// imgDragY = spot.img.y;
 	}
 	else {
+		if (mouseState == M_PENCET) {
+			mouseState = M_IDLE;
+			// console.log('hit');
+			// await checkHit();
+		}
+
 		if (imgDrag) {
 			imgDrag = false;
 			imgDrag = false;
@@ -83,7 +98,9 @@ async function Loop(): Promise<void> {
 
 	if (InputDrag() && imgDrag) {
 		imgDragX = spot.gbr.x + InputDragX();
-		// imgDragY = spot.img.y + InputDragY();
+		if (mouseState == M_PENCET) {
+			mouseState = M_DRAG;
+		}
 	}
 
 	gambar();
@@ -105,7 +122,7 @@ function geser(jml: number): void {
 	// let b: boolean = true;
 	// if (b) return;
 
-	console.log('geser' + jml);
+	// console.log('geser' + jml);
 
 	spot.gbr.x = jml;
 	imgDragX = spot.gbr.x;

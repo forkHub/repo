@@ -1,0 +1,2 @@
+taruh gambar di folder img
+buka file Data.js dan masukkan data sesuai contoh yang sudah ada

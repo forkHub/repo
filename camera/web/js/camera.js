@@ -7,6 +7,11 @@ let normalFl = false;
 let gw = 800;
 let gh = 400;
 let boxIdx = 0;
+const M_IDLE = 'idle';
+const M_PENCET = 'pencet';
+const M_DRAG = 'drag';
+// const M_DRAG: string = 'drag';
+let mouseState = '';
 let debugEl;
 async function Start() {
     Graphics(gw, gh);
@@ -23,9 +28,9 @@ function normalize() {
         // 	let tbl: ITombol = spot.tbl[i];
         // 	tbl.x -= w2;
         // }
-        console.log('normalize >');
-        console.log('w2 ' + w2);
-        console.log('img x ' + spot.gbr.x);
+        // console.log('normalize >');
+        // console.log('w2 ' + w2);
+        // console.log('img x ' + spot.gbr.x);
     }
     else if ((spot.gbr.x + w2) < 0) {
         spot.gbr.x += w2;
@@ -33,9 +38,9 @@ function normalize() {
         // 	let tbl: ITombol = spot.tbl[i];
         // 	tbl.x += w2;
         // }
-        console.log('normalize <');
-        console.log('w2 ' + w2);
-        console.log('img x ' + spot.gbr.x);
+        // console.log('normalize <');
+        // console.log('w2 ' + w2);
+        // console.log('img x ' + spot.gbr.x);
     }
 }
 function getBox() {
@@ -43,16 +48,21 @@ function getBox() {
     if (boxIdx >= spot.tbl.length) {
         boxIdx = 0;
     }
-    console.log('get box ' + boxIdx);
+    // console.log('get box ' + boxIdx);
 }
 async function Loop() {
     Cls();
     if (InputDown()) {
+        mouseState = M_PENCET;
         imgDrag = true;
         imgDragX = spot.gbr.x;
-        // imgDragY = spot.img.y;
     }
     else {
+        if (mouseState == M_PENCET) {
+            mouseState = M_IDLE;
+            // console.log('hit');
+            // await checkHit();
+        }
         if (imgDrag) {
             imgDrag = false;
             imgDrag = false;
@@ -64,7 +74,9 @@ async function Loop() {
     // Input
     if (InputDrag() && imgDrag) {
         imgDragX = spot.gbr.x + InputDragX();
-        // imgDragY = spot.img.y + InputDragY();
+        if (mouseState == M_PENCET) {
+            mouseState = M_DRAG;
+        }
     }
     gambar();
     if (InputHit() > 0) {
@@ -79,7 +91,7 @@ async function Loop() {
 function geser(jml) {
     // let b: boolean = true;
     // if (b) return;
-    console.log('geser' + jml);
+    // console.log('geser' + jml);
     spot.gbr.x = jml;
     imgDragX = spot.gbr.x;
     imgDragY = 0;
