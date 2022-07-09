@@ -16,10 +16,24 @@ function init(): void {
 }
 
 function test(): void {
-	dataObj.load();
-	expForm.attach(document.body);
+	// dataObj.load();
+	window.localStorage.clear();
+	let expForm: ExpForm = new ExpForm();
+	let expObj: IExp;
+
+	expObj = exp.buat(0, true);
+	expForm.tampil(() => {
+		console.log('exp form selesai');
+	}, document.body, [
+		ARG_VALUE,
+		ARG_BINOP,
+		ARG_REF_VAR,
+		ARG_REF_FUNGSI
+	], expObj);
+	// expForm.attach(document.body);
 }
 
 window.onload = () => {
-	init();
+	// init();
+	test();
 }

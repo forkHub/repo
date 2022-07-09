@@ -40,21 +40,26 @@ class BinopEditorFragment extends ha.comp.BaseComponent {
 
 		this.exp1Div.onclick = (e: MouseEvent) => {
 			e.stopPropagation();
-			expForm.tampil(() => {
-				this.exp1.tipeExp = expForm.tipeArg;
-				if (ARG_VALUE == this.exp1.tipeExp) {
-					this.exp1.value = expForm.value;
-				}
-				else if (ARG_BINOP == this.exp1.tipeExp) {
-					this.exp1.binopId = expForm.binop;
-				}
-				else {
-					//TODO:
-				}
-			}, document.body, [
-				ARG_VALUE,
-				ARG_REF_VAR
-			]);
+			let expForm: ExpForm = new ExpForm();
+			expForm.tampil(
+				() => {
+					this.exp1.tipeExp = expForm.tipeArg;
+					if (ARG_VALUE == this.exp1.tipeExp) {
+						this.exp1.value = expForm.value;
+					}
+					else if (ARG_BINOP == this.exp1.tipeExp) {
+						this.exp1.binopId = expForm.binopId;
+					}
+					else {
+						//TODO:
+					}
+				},
+				document.body,
+				[
+					ARG_VALUE,
+					ARG_REF_VAR
+				],
+				this.exp1);
 		}
 	}
 

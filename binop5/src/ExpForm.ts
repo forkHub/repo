@@ -7,11 +7,13 @@ class ExpForm extends ha.comp.BaseComponent {
 	readonly terima: string[] = [];
 	private _tipeArg: string;
 	private _value: string;
-	private _ref: number;
-	private _binop: number;
+	private _refVarId: number;
+	private _binopId: number;
+	private exp: IExp;
+	// private binop
 
-	public get binop(): number {
-		return this._binop;
+	public get binopId(): number {
+		return this._binopId;
 	}
 
 	private _selesai: () => void;
@@ -21,7 +23,7 @@ class ExpForm extends ha.comp.BaseComponent {
 	}
 
 	public get ref(): number {
-		return this._ref;
+		return this._refVarId;
 	}
 
 	public get value(): string {
@@ -43,40 +45,49 @@ class ExpForm extends ha.comp.BaseComponent {
 
 		this._template = `
 			<div class="edit-arg edit-exp pos-abs top-0 left-0 back-color-white padding-8">
-				<form>
+				<form class='padding border'>
 					<div>
 						<div>Type exp:</div>
-
-						<div class='literal-cont>
-							<input type="radio" name="tipe_arg" class="" value="${ARG_VALUE}" checked><label>literal</label><br />
-							<div class="padding">
-								<input type="text" name="literal" placeholder="0">
+						<div class='padding'></div>
+						<div class='lit-cont'>
+							<div class='padding-4'>
+								<input type="radio" name="tipe_arg" class="" value="${ARG_VALUE}" checked> <label>literal</label>&nbsp;<br />
+							</div>
+							<div class="padding-4">
+								<input type="text" name="literal" class='padding' placeholder="0">
 							</div>
 						</div>
 
 						<div class='var-cont'>
-							<input type="radio" name="tipe_arg" class="" value="${ARG_REF_VAR}"><label>ref var</label><br />
-							<div class="padding">
-								<input type="text" name="ref" placeholder="0">
+							<div class='padding-4'>
+								<input type="radio" name="tipe_arg" class="" value="${ARG_REF_VAR}"> <label>ref var</label><br />
+							</div>
+							<div class="padding-4">
+								<input type="text" name="ref" class='padding' placeholder="0">
 								<button type='button' class="browse">browse</button>
 							</div>
 						</div>
 
 						<div class='fung-cont'>
-							<input type="radio" name="tipe_arg" class="" value="${ARG_REF_FUNGSI}"><label>ref fungsi</label><br />
-							<div class="padding fungsi-cont">
+							<div class='padding-4'>
+								<input type="radio" name="tipe_arg" class="" value="${ARG_REF_FUNGSI}"> <label>ref fungsi</label><br />
+							</div>
+							<div class="fung-fragment-cont">
 							</div>
 						</div>
 
 						<div class='binop-cont'>
-							<input type="radio" name="tipe_arg" class="" value="${ARG_BINOP}"><label>binop</label><br />
-							<div class="padding binop-cont">
+							<div class='padding-4'>
+								<input type="radio" name="tipe_arg" class="" value="${ARG_BINOP}"> <label>binop</label><br />
+							</div>
+							<div class="binop-fragment-cont">
 							</div>
 						</div>
 
 					</div>
+					<div class='padding'></div>
 
-					<div>
+					<div class=''>
 						<button type="submit" class="ok">ok</button>
 						<button type="button" class="batal">batal</button>
 					</div>
@@ -94,12 +105,15 @@ class ExpForm extends ha.comp.BaseComponent {
 
 				if (this._tipeArg == ARG_VALUE) {
 					this._value = this.literalHtml.value;
+					this.exp.value = this.literalHtml.value;
+					this.exp.tipeExp = ARG_VALUE;
 				}
 				else if (this._tipeArg == ARG_REF_VAR) {
-
+					this.exp.varId = this._refVarId;
+					this.exp.tipeExp = ARG_REF_VAR;
 				}
 				else if (this._tipeArg == ARG_REF_FUNGSI) {
-
+					//TODO: ref fungsi 
 				}
 				else if (this._tipeArg == ARG_BINOP) {
 					// console.log('binop')
@@ -127,11 +141,12 @@ class ExpForm extends ha.comp.BaseComponent {
 			return false;
 		}
 
-		this.browse.onclick = (e: MouseEvent) => {
+		//browse variable
+		this.browseVarTbl.onclick = (e: MouseEvent) => {
 			e.stopPropagation();
 			console.log('browse click');
 			dlgPilihVariable.finish = () => {
-				this._ref = dlgPilihVariable.varDipilih;
+				this._refVarId = dlgPilihVariable.varDipilih;
 				this.refHtml.value = Variable.nama(dlgPilihVariable.varDipilih);
 
 				console.log('pilih var finish: ' + dlgPilihVariable.varDipilih);
@@ -146,22 +161,25 @@ class ExpForm extends ha.comp.BaseComponent {
 
 		(this.getEl('button.batal') as HTMLButtonElement).onclick = (e: MouseEvent) => {
 			e.stopPropagation();
+			//TODO: hapus object gak dipakai
 			this.detach();
 		};
 
-		// BinopEditor.attacth(this.binopCont);
-		binopEd.attach(this.binopCont);
+		binopEd.attach(this.getEl('div.binop-fragment-cont'));
 	}
 
 
-	tampil(f: () => void, p: HTMLElement, terima: string[]): void {
+	tampil(f: () => void, p: HTMLElement, terima: string[], exp: IExp): void {
+		this.exp = exp;
 
 		while (this.terima.length > 0) {
 			this.terima.pop();
 		}
 
 		this.litCont.style.display = 'none';
-		//TODO:
+		this.varCont.style.display = 'none';
+		this.fungsiCont.style.display = 'none';
+		this.binopCont.style.display = 'none';
 
 		terima.forEach((item: string) => {
 			this.terima.push(item);
@@ -171,11 +189,19 @@ class ExpForm extends ha.comp.BaseComponent {
 			if (ARG_VALUE == item) {
 				this.litCont.style.display = 'block';
 			}
+			else if (ARG_BINOP == item) {
+				this.binopCont.style.display = 'block';
+			}
+			else if (ARG_REF_FUNGSI == item) {
+				this.fungsiCont.style.display = 'block';
+			}
+			else if (ARG_REF_VAR == item) {
+				this.varCont.style.display = 'block';
+			}
 			else {
-				//TODO:
+				throw Error('terima value error: ' + item);
 			}
 		})
-
 
 		this._selesai = f;
 		this.attach(p);
@@ -183,6 +209,18 @@ class ExpForm extends ha.comp.BaseComponent {
 
 	private get litCont(): HTMLElement {
 		return this.getEl('div.lit-cont');
+	}
+
+	private get varCont(): HTMLElement {
+		return this.getEl('div.var-cont');
+	}
+
+	private get fungsiCont(): HTMLElement {
+		return this.getEl('div.fung-cont');
+	}
+
+	private get binopCont(): HTMLElement {
+		return this.getEl('div.binop-cont');
 	}
 
 	private get form(): HTMLFormElement {
@@ -201,13 +239,8 @@ class ExpForm extends ha.comp.BaseComponent {
 		return this.getEl('input.ref') as HTMLInputElement;
 	}
 
-	private get browse(): HTMLButtonElement {
+	private get browseVarTbl(): HTMLButtonElement {
 		return this.getEl('button.browse') as HTMLButtonElement;
 	}
 
-	private get binopCont(): HTMLElement {
-		return this.getEl('div.binop-cont');
-	}
-
 }
-const expForm: ExpForm = new ExpForm();

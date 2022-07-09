@@ -38,11 +38,11 @@ interface IValue extends IData {
 }
 
 interface IBinop extends IData {
-	exp1: string
-	exp1Tipe: string;	//ref, value
+	exp1Id: number,
+	exp2Id: number,
+	// exp1: string
+	// exp1Tipe: string;	//ref variable, value
 
-	exp2: string
-	exp2Tipe: string;
-
-
+	// exp2: string
+	// exp2Tipe: string;
 }

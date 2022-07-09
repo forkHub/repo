@@ -49,6 +49,7 @@ class VarisiViewItem extends ha.comp.BaseComponent {
 
 		this.expCont.onclick = (e: MouseEvent) => {
 			e.stopPropagation();
+			let expForm: ExpForm = new ExpForm();
 			expForm.attach(document.body);
 			expForm.selesai = () => {
 				if (expForm.tipeArg == ARG_REF_VAR) {

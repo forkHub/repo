@@ -15,7 +15,9 @@ class DataObj {
 		return this._halFungsi;
 	}
 
-
+	hapus(): void {
+		window.localStorage.clear();
+	}
 
 	initHalaman(): void {
 		this._halFungsi = new DekFungsiEditor();
