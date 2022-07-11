@@ -9,9 +9,7 @@ interface IPanggilFungsi extends IStmt {
 
 interface IVarIsi extends IStmt {
 	varId: number,
-	expId: number,
-	expTipe: string,
-	expValue: string	//bila exp adalah value maka diisi dengan value
+	value: string
 }
 
 interface IVarIsiBinop extends IStmt {

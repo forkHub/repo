@@ -11,16 +11,16 @@ class VarisiViewItem extends ha.comp.BaseComponent {
 			<div class='var-isi padding-4'>
 				<div class='border padding-4 wbreak-keep-all wspace-nowrap'>
 
-					<div class='padding disp-inline-block'>
+					<div class='disp-inline-block'>
 						<button class='menu'>|||</button>
 					</div>
 
-					<div class='padding disp-inline-block wspace-nowrap'>
-						<div class='var-cont disp-inline-block'>
+					<div class='disp-inline-block wspace-nowrap'>
+						<div class='var-cont disp-inline-block border padding'>
 						</div>
-						<div class='sama-dengan disp-inline-block padding'>=
+						<div class='sama-dengan disp-inline-block padding border'>=
 						</div>
-						<div class='exp-cont disp-inline-block'>
+						<div class='exp-cont disp-inline-block border padding'>
 						</div>
 					</div>
 
@@ -103,20 +103,7 @@ class VarisiViewItem extends ha.comp.BaseComponent {
 	}
 
 	private setupExp(): void {
-		if (this._item.expTipe == ARG_VALUE) {
-			this.expCont.innerText = this._item.expValue;
-		}
-		else if (this._item.expTipe == ARG_REF_VAR) {
-			this.expCont.innerText = Variable.nama(this._item.expId);
-		}
-		else {
-			throw Error('');
-		}
-
-		console.log('this._item.expTipe: ' + this._item.expTipe);
-		console.log('this._item.expValue: ' + this._item.expValue);
-		console.log('this.expCont.innerText ' + this.expCont.innerText);
-
+		this.expCont.innerText = this._item.value;
 	}
 
 	private setupVar(): void {
@@ -130,13 +117,5 @@ class VarisiViewItem extends ha.comp.BaseComponent {
 			this.varCont.innerText = '---';
 		}
 	}
-
-	// get varCont(): HTMLDivElement {
-	// 	return this.getEl('div.var-cont') as HTMLDivElement;
-	// }
-
-	// get argCont(): HTMLDivElement {
-	// 	return this.getEl('div.arg-cont') as HTMLDivElement;
-	// }
 
 }

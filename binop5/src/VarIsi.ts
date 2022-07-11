@@ -17,13 +17,11 @@ class VarIsi {
 					indukId: varIsi.indukId,
 					nama: varIsi.nama,
 					prevIdx: varIsi.prevIdx,
-					expId: varIsi.expId,
 					varId: varIsi.varId,
 					stmtType: varIsi.stmtType,
 					type: varIsi.type,
-					expTipe: varIsi.expTipe,
-					expValue: varIsi.expValue,
-					ket: item.ket
+					ket: varIsi.ket,
+					value: varIsi.value,
 				};
 				Stmt.daftar.push(obj);
 			}
@@ -41,12 +39,10 @@ class VarIsi {
 			nama: '',
 			prevIdx: 0,
 			varId: -1,
-			expId: -1,
 			stmtType: STMT_VAR_ISI,
 			type: TY_STMT,
-			expTipe: ARG_VALUE,
-			expValue: '0',
-			ket: ''
+			ket: '',
+			value: '0'
 		}
 
 		Stmt.daftar.push(obj);
@@ -60,26 +56,14 @@ class VarIsi {
 	static terj(obj: IVarIsi): string {
 		let hasil: string = Variable.nama(obj.varId) + " = ";
 
-		if (obj.expTipe == ARG_REF_VAR) {
-			hasil += Variable.nama(obj.expId);
-		}
-		else if (obj.expTipe == ARG_VALUE) {
-			hasil += obj.expValue;
-		}
-		else {
-			throw Error('');
-		}
+		hasil += obj.value;
 
 		return hasil;
 	}
 
 	static validasi(obj: IVarIsi): void {
 		if (obj.indukId > 0) {
-			//masih ambigue tidak bisa dideteksi tipe dari induk
-		}
-
-		if (obj.expId > 0) {
-			//kemungkinan dihapus karena var isi biasa hanya berisi value
+			//masih ambigue tidak bisa dideteksi tipe dari induk apakah fungsi ataukah modul
 		}
 
 		if (obj.varId > 0) {
