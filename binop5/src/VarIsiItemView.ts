@@ -51,22 +51,6 @@ class VarisiViewItem extends ha.comp.BaseComponent {
 			e.stopPropagation();
 			let expForm: ExpForm = new ExpForm();
 			expForm.attach(document.body);
-			expForm.selesai = () => {
-				if (expForm.tipeArg == ARG_REF_VAR) {
-					this.varCont.innerText = Variable.nama((expForm.ref));
-					this._item.varId = expForm.ref;
-					this._item.expTipe = ARG_REF_VAR;
-				}
-				else if (expForm.tipeArg == ARG_VALUE) {
-					this.varCont.innerText = expForm.value;
-					this._item.expTipe = ARG_VALUE;
-					this._item.expValue = expForm.value;
-				}
-				else {
-					throw new Error(expForm.tipeArg);
-				}
-				dataObj.simpan();
-			}
 		}
 
 		this.varCont.onclick = (e: MouseEvent) => {
@@ -94,12 +78,6 @@ class VarisiViewItem extends ha.comp.BaseComponent {
 
 	}
 
-	// static buat(obj: IVarIsi): VarisiViewItem {
-	// 	let hasil: VarisiViewItem = new VarisiViewItem(obj);
-	// 	hasil.init();
-	// 	return hasil;
-	// }
-
 	destroy(): void {
 		super.destroy();
 		this._item = null;
@@ -123,46 +101,6 @@ class VarisiViewItem extends ha.comp.BaseComponent {
 		this.setupExp();
 		this.setupMenu();
 	}
-
-	/*
-	setupWadah(): void {
-		let argObj: IArg;
-		let argView: ViewWadah;
-
-		console.group('setup wadah:');
-
-		//nama variable
-		argObj = this.revNamaVar();
-		argView = new ViewWadah();
-		argView.item = argObj;
-		argView.attach(this.varCont);
-		argView.terima.push(TY_VARIABLE);
-		argView.diupdate = () => {
-			dataObj.simpan();
-		}
-		// this._item.refVarId = argObj.id;
-		VarIsi.varRef(this._item, argObj.id);
-
-		//value/referensi/fungsi
-		//value/referensi
-		argObj = this.argVar();
-		argView = new ViewWadah();
-		argView.item = argObj;
-		argView.attach(this.argCont);
-		argView.terima.push(TY_VARIABLE);
-		argView.terima.push(TY_VALUE);
-		argView.diupdate = () => {
-			dataObj.simpan();
-		}
-		this._item.refExpId = argObj.id;
-
-		//value/referensi
-		//bila binop
-
-		console.log('setup wadah 2');
-		console.groupEnd();
-	}
-	*/
 
 	private setupExp(): void {
 		if (this._item.expTipe == ARG_VALUE) {

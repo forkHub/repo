@@ -42,18 +42,6 @@ class BinopEditorFragment extends ha.comp.BaseComponent {
 			e.stopPropagation();
 			let expForm: ExpForm = new ExpForm();
 			expForm.tampil(
-				() => {
-					this.exp1.tipeExp = expForm.tipeArg;
-					if (ARG_VALUE == this.exp1.tipeExp) {
-						this.exp1.value = expForm.value;
-					}
-					else if (ARG_BINOP == this.exp1.tipeExp) {
-						this.exp1.binopId = expForm.binopId;
-					}
-					else {
-						//TODO:
-					}
-				},
 				document.body,
 				[
 					ARG_VALUE,
