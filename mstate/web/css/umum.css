@@ -196,7 +196,9 @@ a.bersih {
 	text-overflow: ellipsis;
 }
 
-
+.overflow-x-auto {
+	overflow-x: auto;
+}
 
 .float {
 	float: left;

@@ -1,0 +1,3 @@
+Poligon.onBuat = () => {
+	flRender = true;
+}

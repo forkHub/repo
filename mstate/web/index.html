@@ -7,9 +7,14 @@
         target-densityDpi=device-dpi">
 
 	<title>Mouse State</title>
+	<link href="css/umum.css" rel="stylesheet" />
+
 	<style>
 		* {
 			box-sizing: border-box;
+			padding: 0px;
+			margin: 0px;
+			touch-action: none;
 		}
 
 		html,
@@ -25,15 +30,32 @@
 			height: 100%;
 			touch-action: none;
 			user-select: none;
+			position: absolute;
+		}
+
+		canvas {
+			border: 1px solid;
 		}
 	</style>
 </head>
 
 <body>
-	<div class="debug">
+	<div class="pos-rel">
+		<div>
+			<canvas></canvas>
+		</div>
+		<div class="state-cont">
 
+		</div>
+		<div class="tombol-cont wspace-nowrap">
+
+		</div>
+
+		<div class="debug pos-abs">
+
+		</div>
 	</div>
-	<script src="./js/camera.js"></script>
+	<script src="./js/Index.js"></script>
 </body>
 
 </html>
