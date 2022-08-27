@@ -1,12 +1,25 @@
 class Tombol {
+    static DOT = 'dot';
+    static POLIGON = 'poligon';
+    static PILIH = 'pilih';
+    static DEBUG = 'debug';
+    static OK = 'ok';
+    static BATAL = 'batal';
+    static GESER = 'geser';
+    static SKALA = 'skala';
+    static PUTAR = 'putar';
+    static PIVOT = 'pivot';
+    static daftar = [];
+    _label = '';
+    _view;
     constructor(label) {
-        this._label = '';
         this._view = document.createElement('button');
         this._view.innerText = label;
         this._label = label;
     }
     static init() {
         this.buat(this.DOT);
+        this.buat(this.POLIGON);
         this.buat(this.DEBUG);
         this.buat(this.PILIH);
         this.buat(this.OK);
@@ -52,27 +65,15 @@ class Tombol {
         this._view = value;
     }
 }
-Tombol.DOT = 'dot';
-Tombol.PILIH = 'pilih';
-Tombol.DEBUG = 'debug';
-Tombol.OK = 'ok';
-Tombol.BATAL = 'batal';
-Tombol.GESER = 'geser';
-Tombol.SKALA = 'skala';
-Tombol.PUTAR = 'putar';
-Tombol.PIVOT = 'pivot';
-Tombol.daftar = [];
 class Point {
-    constructor() {
-        this._x = 0;
-        this._y = 0;
-    }
+    _x = 0;
     get x() {
         return this._x;
     }
     set x(value) {
         this._x = value;
     }
+    _y = 0;
     get y() {
         return this._y;
     }
@@ -88,11 +89,14 @@ class Point {
 }
 ///<reference path="Point.ts"/>
 class Geom {
-    constructor() {
-        Geom.RAD2DEG; //TODO:
-    }
+    static RAD2DEG = 180.0 / Math.PI;
+    static DEG2RAD = Math.PI / 180.0;
+    static _hasil = new Point();
     static get hasil() {
         return Geom._hasil;
+    }
+    constructor() {
+        Geom.RAD2DEG; //TODO:
     }
     static rotateRel(p, t, deg = 10) {
         let xr = p.x - t.x;
@@ -110,16 +114,23 @@ class Geom {
         // console.groupEnd();
     }
 }
-Geom.RAD2DEG = 180.0 / Math.PI;
-Geom.DEG2RAD = Math.PI / 180.0;
-Geom._hasil = new Point();
 ///<reference path="Geom.ts"/>
 ///<reference path="Point.ts"/>
 class Dot {
+    static _daftar = [];
+    static _onTambah;
+    static _dipilih;
+    static _target;
+    // private static posRel: IPoint = new Point();
+    _pos;
+    _id = 0;
+    _indukId = 0;
+    _skala;
+    _rotasi = 0;
+    _posGlobal;
+    _skalaGlobal;
+    _rotasiGlobal;
     constructor() {
-        this._id = 0;
-        this._indukId = 0;
-        this._rotasi = 0;
         this._pos = new Point();
         this._id = Id.id;
         this._posGlobal = new Point();
@@ -347,8 +358,8 @@ class Dot {
         this._posGlobal = value;
     }
 }
-Dot._daftar = [];
 class Id {
+    static _base = 0;
     static get id() {
         if (this._base <= 0) {
             this._base = Date.now();
@@ -357,13 +368,23 @@ class Id {
         return this._base;
     }
 }
-Id._base = 0;
 ///<reference path="./Id.ts"/>
 class State {
+    static IDLE = 'idle';
+    static PILIH = 'pilih';
+    static DIPILIH = 'dipilih';
+    static GESER = 'geser';
+    static SKALA = 'skala';
+    static PUTAR = 'putar';
+    static PILIH_PIVOT = 'pilih_pivot';
+    static _daftar = [];
+    static _history = [];
+    static _aktif;
+    static _onChange;
+    _id = 0;
+    _nama = '';
+    _trans = [];
     constructor(nama) {
-        this._id = 0;
-        this._nama = '';
-        this._trans = [];
         this._id = Id.id;
         this._nama = nama;
     }
@@ -422,6 +443,18 @@ class State {
             this._onChange();
         }, 0);
     }
+    static refresh() {
+        setTimeout(() => {
+            this._onChange();
+        }, 0);
+    }
+    static geser(state) {
+        this._history.pop();
+        this._history.push(state);
+        setTimeout(() => {
+            this._onChange();
+        }, 0);
+    }
     static get slice() {
         return this._daftar.slice();
     }
@@ -453,16 +486,17 @@ class State {
         this._id = value;
     }
 }
-State.IDLE = 'idle';
-State.PILIH = 'pilih';
-State.DIPILIH = 'dipilih';
-State.GESER = 'geser';
-State.SKALA = 'skala';
-State.PUTAR = 'putar';
-State.PILIH_PIVOT = 'pilih_pivot';
-State._daftar = [];
-State._history = [];
 class Input {
+    static M_IDLE = 'idle';
+    static M_PENCET = 'pencet';
+    static M_GERAK = 'gerak';
+    static M_DRAG = 'drag';
+    static M_TAP = 'tap';
+    static _mState = Input.M_IDLE;
+    static _onStateChange;
+    static _onDrag;
+    static _onTap;
+    static _onPencet;
     static get onPencet() {
         return Input._onPencet;
     }
@@ -487,6 +521,12 @@ class Input {
     static set onStateChange(value) {
         Input._onStateChange = value;
     }
+    static mPencetX = 0;
+    static mPencetY = 0;
+    static _mDragX = 0;
+    static _mDragY = 0;
+    static _clientX = 0;
+    static _clientY = 0;
     static init(kanvas) {
         kanvas.onpointerdown = (e) => {
             Input._mState = Input.M_PENCET;
@@ -572,18 +612,6 @@ class Input {
         return Input._mDragY;
     }
 }
-Input.M_IDLE = 'idle';
-Input.M_PENCET = 'pencet';
-Input.M_GERAK = 'gerak';
-Input.M_DRAG = 'drag';
-Input.M_TAP = 'tap';
-Input._mState = Input.M_IDLE;
-Input.mPencetX = 0;
-Input.mPencetY = 0;
-Input._mDragX = 0;
-Input._mDragY = 0;
-Input._clientX = 0;
-Input._clientY = 0;
 ///<reference path="ent/Tombol.ts"/>
 ///<reference path="ent/Dot.ts"/>
 ///<reference path="ent/State.ts"/>
@@ -612,6 +640,10 @@ Input.init(canvas);
 Tombol.getById(Tombol.DOT).view.onclick = (e) => {
     e.stopPropagation();
     Dot.buat(100, 100, 0);
+};
+Tombol.getById(Tombol.POLIGON).view.onclick = (e) => {
+    e.stopPropagation();
+    Poligon.buatKotak(100, 100);
 };
 Tombol.getById(Tombol.DEBUG).view.onclick = (e) => {
     e.stopPropagation();
@@ -682,6 +714,7 @@ Tombol.getById(Tombol.PUTAR).view.onclick = (e) => {
 ///<reference path="../OnCreate.ts"/>
 //event
 Dot.onTambah = () => {
+    State.refresh();
     flRender = true;
 };
 ///<reference path="../OnCreate.ts"/>
@@ -693,8 +726,9 @@ State.onChange = () => {
     stateCont.innerHTML = State.getHistory();
     if (nama == State.IDLE) {
         tbhTombol(Tombol.DOT);
+        tbhTombol(Tombol.POLIGON);
         //ada dot
-        if (Dot.jml > 0) {
+        if (Dot.jml > 0 || (Poligon.jml > 0)) {
             tbhTombol(Tombol.PILIH);
         }
         //ada yang dipilih
@@ -760,10 +794,10 @@ Input.onDrag = () => {
     else if (State.PUTAR == State.aktif) {
         let drag = (Input.mDragX / canvas.width) * 45;
         dot.rotasi = rotasiAwal + drag;
-        let d2 = Dot.getById(id2);
-        let d3 = Dot.getById(id3);
-        let msg = 'd2: ' + d2.rotasiGlobal + '/d3: ' + d3.rotasiGlobal;
-        debug(msg);
+        // let d2: IDot = Dot.getById(id2);
+        // let d3: IDot = Dot.getById(id3);
+        // let msg: string = 'd2: ' + d2.rotasiGlobal + '/d3: ' + d3.rotasiGlobal;
+        // debug(msg);
         flRender = true;
     }
 };
@@ -804,7 +838,7 @@ Input.onTap = () => {
 //flow
 State.ganti(State.IDLE);
 requestAnimationFrame(update);
-test();
+// test();
 //function
 function debug(msg) {
     debugCont.innerHTML = msg;
@@ -822,6 +856,9 @@ function render() {
     Dot.daftar.forEach((item) => {
         Dot.render(item, ctx);
     });
+    Poligon.slice().forEach((item) => {
+        Poligon.render(item, ctx);
+    });
 }
 function test() {
     id1 = Dot.buat(100, 100, 0);
@@ -838,6 +875,78 @@ function test() {
     // dot3.indukId = id2;
     Dot.setPivot(dot3.id, id2);
 }
+var kanvas;
+(function (kanvas_1) {
+    class Input {
+        static M_IDLE = 'idle';
+        static M_PENCET = 'pencet';
+        static M_GERAK = 'gerak';
+        static M_DRAG = 'drag';
+        static M_TAP = 'tap';
+        static _mState = Input.M_IDLE;
+        static mPencetX = 0;
+        static mPencetY = 0;
+        static mDragX = 0;
+        static mDragY = 0;
+        static _clientX = 0;
+        static _clientY = 0;
+        static init(kanvas) {
+            kanvas.onpointerdown = (e) => {
+                Input._mState = Input.M_PENCET;
+                Input.mPencetX = e.clientX;
+                Input.mPencetY = e.clientY;
+                Input._clientX = e.clientX;
+                Input._clientY = e.clientY;
+            };
+            kanvas.onpointermove = (e) => {
+                Input._clientX = e.clientX;
+                Input._clientY = e.clientY;
+                if (Input._mState == Input.M_PENCET) {
+                    Input.mDragX = e.clientX - Input.mPencetX;
+                    Input.mDragY = e.clientY - Input.mPencetY;
+                    let p = (Math.abs(Input.mDragX) + Math.abs(Input.mDragY));
+                    if (p > 5) {
+                        Input._mState = Input.M_DRAG;
+                    }
+                }
+                else if (Input._mState == Input.M_DRAG) {
+                    Input.mDragX = e.clientX - Input.mPencetX;
+                    Input.mDragY = e.clientY - Input.mPencetY;
+                    Input._clientX = e.clientX;
+                }
+                else if (Input._mState == Input.M_IDLE) {
+                    Input._mState = Input.M_GERAK;
+                }
+            };
+            kanvas.onpointerleave = () => {
+                Input._mState = Input.M_IDLE;
+            };
+            kanvas.onpointerenter = () => {
+                Input._mState = Input.M_IDLE;
+            };
+            kanvas.onpointerover = () => {
+            };
+            kanvas.onpointerup = () => {
+                if (Input._mState == Input.M_DRAG) {
+                    Input._mState = Input.M_IDLE;
+                }
+                else if (Input._mState == Input.M_PENCET) {
+                    Input._mState = Input.M_TAP;
+                }
+            };
+        }
+        static get state() {
+            return Input._mState;
+        }
+        static get clientX() {
+            return Input._clientX;
+        }
+        static get clientY() {
+            return Input._clientY;
+        }
+    }
+    kanvas_1.Input = Input;
+})(kanvas || (kanvas = {}));
 var ha;
 (function (ha) {
     var comp;
@@ -849,10 +958,9 @@ var ha;
         // 	return comp;
         // }
         class BaseComponent {
-            constructor() {
-                this._template = '';
-                this._elHtml = document.createElement('div');
-            }
+            _template = '';
+            _elHtml = document.createElement('div');
+            _parent;
             // protected get template(): string {
             // 	return this._template;
             // }
@@ -1015,8 +1123,8 @@ var ha;
     var comp;
     (function (comp) {
         class MenuKontek {
+            view = new View();
             constructor() {
-                this.view = new View();
             }
             buatTombol(t) {
                 let button = document.createElement('button');
@@ -1053,8 +1161,8 @@ var ha;
     var comp;
     (function (comp) {
         class MenuPopup {
+            view = new View();
             constructor() {
-                this.view = new View();
             }
             destroy() {
                 this.view.destroy();
@@ -1109,6 +1217,10 @@ var ha;
     var comp;
     (function (comp) {
         class Util {
+            static sUserId = 'user_id';
+            static sLevel = 'level';
+            static sFilter = 'filter';
+            static storageId = 'xyz.hagarden.tugas';
             static createEl(str) {
                 let div = document.createElement('div');
                 let el;
@@ -1270,17 +1382,12 @@ var ha;
                 });
             }
         }
-        Util.sUserId = 'user_id';
-        Util.sLevel = 'level';
-        Util.sFilter = 'filter';
-        Util.storageId = 'xyz.hagarden.tugas';
         comp.Util = Util;
     })(comp = ha.comp || (ha.comp = {}));
 })(ha || (ha = {}));
 class Poligon {
-    static get onBuat() {
-        return Poligon._onBuat;
-    }
+    static daftar = [];
+    static _onBuat;
     static set onBuat(value) {
         Poligon._onBuat = value;
     }
@@ -1288,10 +1395,10 @@ class Poligon {
         return this.daftar;
     }
     static render(p, ctx) {
-        p.dot.forEach((n) => {
-            let dot = Dot.getById(n);
-            Dot.render(dot, ctx);
-        });
+        // p.dot.forEach((n: number) => {
+        // 	let dot: IDot = Dot.getById(n);
+        // 	Dot.render(dot, ctx);
+        // });
         ctx.beginPath();
         p.dot.forEach((n, idx) => {
             let dot = Dot.getById(n);
@@ -1302,11 +1409,14 @@ class Poligon {
                 ctx.lineTo(dot.posGlobal.x, dot.posGlobal.y);
             }
         });
+        let dot = Dot.getById(p.dot[1]);
+        ctx.lineTo(dot.posGlobal.x, dot.posGlobal.y);
         ctx.stroke();
     }
     static buatKotak(x, y) {
         let id;
         let p;
+        let rad = 50;
         p = {
             id: Id.id,
             dot: []
@@ -1315,13 +1425,13 @@ class Poligon {
         id = Dot.buat(x, y, 0);
         p.dot.push(id);
         //
-        id = Dot.buat(-10, -10, id);
+        id = Dot.buat(-rad, -rad, id);
         p.dot.push(id);
-        id = Dot.buat(10, -10, id);
+        id = Dot.buat(rad * 2, 0, id);
         p.dot.push(id);
-        id = Dot.buat(10, 10, id);
+        id = Dot.buat(0, rad * 2, id);
         p.dot.push(id);
-        id = Dot.buat(-10, 10, id);
+        id = Dot.buat(-rad * 2, 0, id);
         p.dot.push(id);
         this.daftar.push(p);
         setTimeout(() => {
@@ -1329,4 +1439,34 @@ class Poligon {
         }, 0);
         return 0;
     }
+    //TODO: belum selesai
+    static minX(p) {
+        if (p.dot.length == 0)
+            return null;
+        let dot0 = Dot.getById(p.dot[0]);
+        let hasil = {
+            p1: {
+                x: dot0.posGlobal.x,
+                y: dot0.posGlobal.y
+            },
+            p2: {
+                x: dot0.posGlobal.x,
+                y: dot0.posGlobal.y
+            }
+        };
+        p.dot.forEach((id) => {
+            let dot = Dot.getById(id);
+            if (dot.posGlobal.x < hasil.p1.x) {
+                hasil.p1.x = dot.posGlobal.x;
+            }
+        });
+        return hasil;
+    }
+    static get jml() {
+        return this.daftar.length;
+    }
 }
+Poligon.onBuat = () => {
+    State.refresh();
+    flRender = true;
+};

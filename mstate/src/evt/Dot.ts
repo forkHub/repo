@@ -2,5 +2,6 @@
 
 //event
 Dot.onTambah = () => {
+	State.refresh();
 	flRender = true;
 }

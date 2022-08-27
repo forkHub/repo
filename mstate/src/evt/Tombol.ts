@@ -11,7 +11,6 @@ Tombol.getById(Tombol.POLIGON).view.onclick = (e: MouseEvent) => {
 	Poligon.buatKotak(100, 100);
 }
 
-
 Tombol.getById(Tombol.DEBUG).view.onclick = (e: MouseEvent) => {
 	e.stopPropagation();
 

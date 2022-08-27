@@ -6,7 +6,7 @@
 //flow
 State.ganti(State.IDLE);
 requestAnimationFrame(update);
-test();
+// test();
 
 //function
 function debug(msg: string) {

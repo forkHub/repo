@@ -95,6 +95,21 @@ class State implements IState {
 		}, 0);
 	}
 
+	static refresh(): void {
+		setTimeout(() => {
+			this._onChange();
+		}, 0);
+	}
+
+	static geser(state: string): void {
+		this._history.pop();
+		this._history.push(state);
+
+		setTimeout(() => {
+			this._onChange();
+		}, 0);
+	}
+
 	public static get slice(): IState[] {
 		return this._daftar.slice();
 	}

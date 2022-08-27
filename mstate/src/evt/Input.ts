@@ -33,11 +33,11 @@ Input.onDrag = () => {
 		let drag: number = (Input.mDragX / canvas.width) * 45;
 		dot.rotasi = rotasiAwal + drag;
 
-		let d2: IDot = Dot.getById(id2);
-		let d3: IDot = Dot.getById(id3);
-		let msg: string = 'd2: ' + d2.rotasiGlobal + '/d3: ' + d3.rotasiGlobal;
+		// let d2: IDot = Dot.getById(id2);
+		// let d3: IDot = Dot.getById(id3);
+		// let msg: string = 'd2: ' + d2.rotasiGlobal + '/d3: ' + d3.rotasiGlobal;
 
-		debug(msg);
+		// debug(msg);
 
 		flRender = true;
 	}

@@ -12,9 +12,10 @@ State.onChange = () => {
 	if (nama == State.IDLE) {
 
 		tbhTombol(Tombol.DOT);
+		tbhTombol(Tombol.POLIGON);
 
 		//ada dot
-		if (Dot.jml > 0) {
+		if (Dot.jml > 0 || (Poligon.jml > 0)) {
 			tbhTombol(Tombol.PILIH);
 		}
 

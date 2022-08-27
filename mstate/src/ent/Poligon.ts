@@ -1,5 +1,5 @@
 class Poligon {
-	private static daftar: IPoligon[];
+	private static daftar: IPoligon[] = [];
 	private static _onBuat: () => void;
 
 	public static set onBuat(value: () => void) {
@@ -11,6 +11,7 @@ class Poligon {
 	}
 
 	static render(p: IPoligon, ctx: CanvasRenderingContext2D): void {
+
 		// p.dot.forEach((n: number) => {
 		// 	let dot: IDot = Dot.getById(n);
 		// 	Dot.render(dot, ctx);
@@ -29,12 +30,16 @@ class Poligon {
 
 		});
 
+		let dot: IDot = Dot.getById(p.dot[1]);
+		ctx.lineTo(dot.posGlobal.x, dot.posGlobal.y);
+
 		ctx.stroke();
 	}
 
 	static buatKotak(x: number, y: number): number {
 		let id: number;
 		let p: IPoligon;
+		let rad: number = 50;
 
 		p = {
 			id: Id.id,
@@ -46,16 +51,16 @@ class Poligon {
 		p.dot.push(id);
 
 		//
-		id = Dot.buat(-10, -10, id);
+		id = Dot.buat(-rad, -rad, id);
 		p.dot.push(id);
 
-		id = Dot.buat(10, -10, id);
+		id = Dot.buat(rad * 2, 0, id);
 		p.dot.push(id);
 
-		id = Dot.buat(10, 10, id);
+		id = Dot.buat(0, rad * 2, id);
 		p.dot.push(id);
 
-		id = Dot.buat(-10, 10, id);
+		id = Dot.buat(-rad * 2, 0, id);
 		p.dot.push(id);
 
 		this.daftar.push(p);
@@ -67,7 +72,8 @@ class Poligon {
 		return 0;
 	}
 
-	private static minX(p: IPoligon): IBound {
+	//TODO: belum selesai
+	static minX(p: IPoligon): IBound {
 		if (p.dot.length == 0) return null;
 
 		let dot0: IDot = Dot.getById(p.dot[0]);
@@ -93,5 +99,9 @@ class Poligon {
 		})
 
 		return hasil;
+	}
+
+	static get jml(): number {
+		return this.daftar.length;
 	}
 }
