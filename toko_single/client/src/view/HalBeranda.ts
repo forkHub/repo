@@ -23,14 +23,9 @@ export class HalBeranda {
 
         console.log(viewEl);
 
-        view = new Item(viewEl);
+        view = new Item(viewEl, barang);
 
         view.barang = barang;
-
-        // view.tblBeli.onclick = (e: MouseEvent) => {
-        //     e.stopPropagation();
-        //     //tambah ke keranjang //TODO:
-        // }
 
         this.daftarCont.appendChild(view.view);
         console.log(this.daftarCont);
@@ -45,9 +40,22 @@ class Item {
     private ketEl: HTMLElement;
     private hargaEl: HTMLElement;
 
-    constructor(view: HTMLElement) {
+    constructor(view: HTMLElement, barang: IBarang) {
         this._view = view;
         this._view.classList.remove('template');
+
+        this.namaEl = Util.getEl("div.nama", this._view) as HTMLElement;
+        this.ketEl = Util.getEl("div.keterangan", this._view) as HTMLElement;
+        this.hargaEl = Util.getEl("div.harga", this._view) as HTMLElement;
+
+        this.barang = barang;
+        this.refresh();
+    }
+
+    private refresh(): void {
+        this.namaEl.innerHTML = this.barang.nama;
+        this.ketEl.innerHTML = this.barang.deskripsi;
+        this.hargaEl.innerHTML = this.barang.harga + '';
     }
 
     public get barang(): IBarang {
@@ -55,6 +63,7 @@ class Item {
     }
     public set barang(value: IBarang) {
         this._barang = value;
+        this.refresh;
     }
 
     public get view(): HTMLElement {

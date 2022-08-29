@@ -1,0 +1,79 @@
+html {
+	min-height: 100%;
+}
+
+html, body, div, header {
+	box-sizing: border-box;
+	padding: 0px;
+	font-family: sans-serif;
+}
+
+button.tbl-blok {
+	display: block;
+	margin-bottom: 8px;
+}
+
+div.forum a.tambah,
+div.daftar-proyek
+a.tambah,
+div.lihat-proyek
+a.tambah {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    padding: 16px;
+    background-color: cornflowerblue;
+    border-radius: 50%;
+    color: white;
+    padding-right: 24px;
+    padding-left: 24px;
+	text-align: center;
+}
+
+div.komentar.isi {
+	white-space: pre;
+}
+
+/*BOOTSTRAP*/
+a.nav-link.active {
+	font-weight: bold;
+}
+
+/*LIHAT TUGAS*/
+div.lihat-tugas
+div.daftar-komentar
+div.item
+div.tanggal {
+	text-align: right;
+	font-size: smaller;
+	font-style: italic;
+}
+
+div.lihat-tugas
+div.daftar-komentar
+div.item
+div.nama {
+	font-weight: bold;
+}
+
+/*HAL DAFTAR TUGAS*/
+div.daftar-tugas
+div.tombol-cont
+{	
+	text-align: right;
+	margin: 16px;;
+}
+
+div.daftar-tugas 
+div.tanggal {
+	text-align: right;
+	font-style: italic;
+}
+
+/* HAL DAFTAR PROYEK */
+
+/* HAL LIHAT PROYEK */
+div.lihat-proyek
+div.tugas.cont {
+	margin-bottom: 128px;
+}

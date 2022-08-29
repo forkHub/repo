@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <link rel="apple-touch-icon" type="image/png"
+        href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="shortcut icon" type="image/x-icon"
+        href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon"
+        href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg"
+        color="#111" />
+
+
+    <title>CodePen - A Pen by Victor Widell</title>
+
+
+
+
+    <style>
+        .flex-container {
+            display: flex;
+            overflow: hidden;
+        }
+
+        .flex-container>* {
+            flex: 0 0 auto;
+            overflow: scroll;
+        }
+
+        .stretchy {
+            flex: 1 1 auto;
+        }
+
+        .column {
+            flex-direction: column;
+        }
+
+        html,
+        body,
+        .full-screen {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .full-screen {
+            display: flex;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .full-screen>* {
+            flex: 0 0 auto;
+            overflow: scroll;
+        }
+
+        .full-screen>.header,
+        .full-screen>.footer {
+            height: 50px;
+            background: #555;
+            color: white;
+        }
+
+        .full-screen>.main {
+            flex: 1 1 auto;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .full-screen>.main>* {
+            flex: 0 0 auto;
+            overflow: scroll;
+        }
+
+        .full-screen>.main>.left,
+        .full-screen>.main>.right {
+            width: 200px;
+            background: #eee;
+        }
+
+        .full-screen>.main>.middle {
+            flex: 1 1 auto;
+        }
+    </style>
+
+    <script>
+        window.console = window.console || function (t) { };
+    </script>
+
+
+
+    <script>
+        if (document.location.search.match(/type=embed/gi)) {
+            window.parent.postMessage("resize", "*");
+        }
+    </script>
+
+
+</head>
+
+<body translate="no">
+    <div class="full-screen">
+        <div class="header">Header</div>
+        <div class="main">
+            <div class="left">Menu-stuff here. No way this will fit.
+                <ul>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                    <li>Menu Entry</li>
+                </ul>
+            </div>
+            <div class="middle">Large stuff here</div>
+            <div class="right">Another sidebar</div>
+        </div>
+        <div class="footer">Footer </div>
+    </div>
+
+
+
+
+
+</body>
+
+</html>

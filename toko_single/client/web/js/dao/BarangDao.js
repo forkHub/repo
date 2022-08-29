@@ -37,8 +37,16 @@ class BarangDao {
         }
     }
     getById(id) {
-        id;
-        return null;
+        let hasil;
+        this.daftar.forEach((item) => {
+            if (item.id == id) {
+                hasil = item;
+            }
+        });
+        if (!hasil) {
+            throw Error('tidak ketemu');
+        }
+        return hasil;
     }
     toDbo(barang) {
         return {

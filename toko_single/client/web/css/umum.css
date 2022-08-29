@@ -213,6 +213,18 @@ a.bersih {
 	clear: both;
 }
 
+.disp-table {
+	display: table;
+}
+
+.disp-cell {
+	display: table-cell;
+}
+
+.disp-row {
+	display: table-row;
+}
+
 /*FLEX*/
 .display-flex,
 .disp-flex {
