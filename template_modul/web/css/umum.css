@@ -1,3 +1,8 @@
+html,
+body {
+	height: 100%;
+}
+
 * {
 	margin: 0px;
 	padding: 0px;
@@ -5,7 +10,25 @@
 }
 
 button {
+	padding: 8px;
+}
+
+.back {
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	position: absolute;
+	background-color: rgba(0, 0, 0, .1);
 	padding: 16px;
+}
+
+.back-putih,
+.back-white,
+.back-color-white {
+	background-color: white;
 }
 
 /* dialog */
@@ -46,7 +69,11 @@ div.loading {
 	bottom: 0px;
 	background-color: rgba(0, 0, 0, .1);
 	z-index: 100;
+	font-weight: bolder;
 	text-align: center;
+	text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
+	user-select: none;
+	/* select */
 }
 
 div.loading div.box {
@@ -64,6 +91,19 @@ div.clear {
 /* FRAMEWORK */
 html {
 	font-family: Arial, Helvetica, sans-serif;
+}
+
+.pos-rel,
+.relative {
+	position: relative;
+}
+
+.pos-abs {
+	position: absolute;
+}
+
+.pos-fixed {
+	position: fixed;
 }
 
 a.tambah {
@@ -97,6 +137,16 @@ a.bersih {
 	font-weight: bold;
 }
 
+
+/* layout */
+.disp-inline-block {
+	display: inline-block;
+}
+
+.disp-block {
+	display: block;
+}
+
 .border {
 	border: 1px solid grey;
 }
@@ -112,6 +162,10 @@ a.bersih {
 
 .margin {
 	margin: 8px;
+}
+
+.margin-auto {
+	margin: auto;
 }
 
 .margin-bottom-8 {
@@ -142,9 +196,7 @@ a.bersih {
 	text-overflow: ellipsis;
 }
 
-.white-space-nowrap {
-	white-space: nowrap;
-}
+
 
 .float {
 	float: left;
@@ -155,11 +207,21 @@ a.bersih {
 }
 
 /*FLEX*/
-.display-flex {
+.display-flex,
+.disp-flex {
 	display: flex
 }
 
-.flex-grow-1 {
+.flex-dir-row {
+	flex-direction: row;
+}
+
+.flex-dir-col {
+	flex-direction: column;
+}
+
+.flex-grow-1,
+.flex-grow-12 {
 	flex-grow: 1
 }
 
@@ -171,4 +233,43 @@ a.bersih {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.left-0 {
+	left: 0px;
+}
+
+.top-0 {
+	top: 0px
+}
+
+
+
+.min-height-12 {
+	min-height: 100%;
+}
+
+.min-height-6 {
+	min-height: 50%;
+}
+
+.wbreak-keep-all {
+	word-break: keep-all;
+}
+
+.white-space-nowrap,
+.wspace-nowrap {
+	white-space: nowrap;
+}
+
+.width-3 {
+	width: 25%;
+}
+
+.width-6 {
+	width: 50%;
+}
+
+.width-12 {
+	width: 100%;
 }
