@@ -1,2 +1,0 @@
-v02:
-ALTER TABLE `sl_anggota` ADD `bani` INT NULL AFTER `hapus`;
