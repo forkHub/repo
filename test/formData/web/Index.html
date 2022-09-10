@@ -1,0 +1,22 @@
+<html>
+
+<body>
+    <form>
+        <input type="text" name="field1" />
+        <input type="text" name="field2" />
+        <input type="text" name="field3" />
+        <input type="text" name="field4" />
+        <input type="text" name="field5" />
+        <input type="text" name="field6" />
+    </form>
+
+    <script>
+        let formData = new FormData(document.querySelector('form'));
+        console.log(formData);
+        console.log(formData.entries().);
+        console.log(formData.keys);
+        console.log(formData.values);
+    </script>
+</body>
+
+</html>
