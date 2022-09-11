@@ -1,8 +1,9 @@
 
-export function kalendar(bulan: number, tahun: number): Date[] {
+export function daftarTanggal(bulan: number, tahun: number): Date[] {
 	let date: Date = new Date(Date.now());
 	let tanggalAr: Date[] = [];
-	date.setFullYear(tahun, bulan - 1, 1);
+
+	date.setFullYear(tahun, bulan, 1);
 	date.setHours(0, 0, 0, 0);
 	tanggalAr.push(date);
 
@@ -70,19 +71,20 @@ export function kalendar(bulan: number, tahun: number): Date[] {
 	return tanggalAr;
 }
 
-export function table(bulan: number, tahun: number, renderHari: boolean): HTMLElement {
+export function table(bulan: number, tahun: number, renderNamaHari: boolean): HTMLElement {
 	let hasil: HTMLElement = document.createElement('div');
 	let row: HTMLElement;
 	let namaHari: string[] = ['ahad', 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
-	let dateAr: Date[] = kalendar(bulan, tahun);
+	let dateAr: Date[] = daftarTanggal(bulan, tahun);
 
 	hasil.classList.add('table-bulan');
 
 	//render daftar hari
-	if (renderHari) {
+	if (renderNamaHari) {
 
 		row = document.createElement('div');
 		row.classList.add('minggu');
+		row.classList.add('judul');
 		hasil.appendChild(row);
 
 		for (let i: number = 0; i < 7; i++) {
@@ -90,6 +92,7 @@ export function table(bulan: number, tahun: number, renderHari: boolean): HTMLEl
 
 			cell.classList.add('tanggal');
 			row.appendChild(cell);
+
 
 			cell.innerText = namaHari[i];
 		}
@@ -110,7 +113,16 @@ export function table(bulan: number, tahun: number, renderHari: boolean): HTMLEl
 		cell.classList.add('tanggal');
 		row.appendChild(cell);
 
-		cell.innerText = dateAr[i].getDate() + '';
+		let tgl: number = dateAr[i].getDate();
+		let bln: number = dateAr[i].getMonth();
+		cell.innerText = tgl + '';
+		if (bln < bulan) {
+			cell.classList.add('sebelum');
+		}
+		else if (bln > bulan) {
+			cell.classList.add('sesudah');
+		}
+		// if 
 	}
 
 	return hasil;
@@ -118,27 +130,15 @@ export function table(bulan: number, tahun: number, renderHari: boolean): HTMLEl
 
 export function widget(bulan: number, tahun: number): HTMLElement {
 	let tableEl: HTMLElement = table(bulan, tahun, true);
-	let tahunEl: HTMLElement;
-	let bulanEl: HTMLSelectElement;
 	let widget: HTMLElement;
 	let namaBulan: string[] = ['Januari', 'Pebruari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
 
 	widget = document.createElement('div');
+	widget.classList.add('widget');
 
-	//buat tahun
-	tahunEl = document.createElement('div');
-	tahunEl.innerText = tahun + '';
-	widget.appendChild(tahunEl);
-
-	//buat bulan
-	bulanEl = document.createElement('select') as HTMLSelectElement;
-	for (let i: number = 0; i < 12; i++) {
-		let optionEl: HTMLOptionElement = document.createElement('option') as HTMLOptionElement;
-		optionEl.innerText = namaBulan[i];
-		optionEl.value = i + '';
-		bulanEl.appendChild(optionEl);
-	}
-	widget.appendChild(bulanEl);
+	let judul: HTMLElement = document.createElement('h2');
+	judul.innerText = namaBulan[bulan] + ' - ' + tahun;
+	widget.appendChild(judul);
 
 	widget.appendChild(tableEl)
 

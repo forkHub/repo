@@ -7,23 +7,38 @@
         target-densityDpi=device-dpi">
 
 	<style>
-		.table-bulan {
+		div.widget {
+			border: 1px solid;
+			width: fit-content;
+			padding: 8px;
+		}
+
+		div.table-bulan {
 			display: table;
 		}
 
-		.minggu {
+		div.minggu {
 			display: table-row;
 		}
 
-		.tanggal {
+		div.minggu.judul {
+			background-color: lightgray;
+		}
+
+		div.tanggal {
 			display: table-cell;
 			padding: 8px;
+		}
+
+		.tanggal.sebelum,
+		.tanggal.sesudah {
+			opacity: .5;
 		}
 	</style>
 </head>
 
 <body>
-	<script type="module" src="./js/Index.js"></script>
+	<script type="module" src="./js/Demo.js"></script>
 </body>
 
 </html>

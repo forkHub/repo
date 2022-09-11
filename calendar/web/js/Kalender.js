@@ -1,7 +1,7 @@
-export function kalendar(bulan, tahun) {
+export function daftarTanggal(bulan, tahun) {
     let date = new Date(Date.now());
     let tanggalAr = [];
-    date.setFullYear(tahun, bulan - 1, 1);
+    date.setFullYear(tahun, bulan, 1);
     date.setHours(0, 0, 0, 0);
     tanggalAr.push(date);
     while (true) {
@@ -58,16 +58,17 @@ export function kalendar(bulan, tahun) {
     }
     return tanggalAr;
 }
-export function table(bulan, tahun, renderHari) {
+export function table(bulan, tahun, renderNamaHari) {
     let hasil = document.createElement('div');
     let row;
     let namaHari = ['ahad', 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
-    let dateAr = kalendar(bulan, tahun);
+    let dateAr = daftarTanggal(bulan, tahun);
     hasil.classList.add('table-bulan');
     //render daftar hari
-    if (renderHari) {
+    if (renderNamaHari) {
         row = document.createElement('div');
         row.classList.add('minggu');
+        row.classList.add('judul');
         hasil.appendChild(row);
         for (let i = 0; i < 7; i++) {
             let cell = document.createElement('div');
@@ -87,30 +88,28 @@ export function table(bulan, tahun, renderHari) {
         let cell = document.createElement('div');
         cell.classList.add('tanggal');
         row.appendChild(cell);
-        cell.innerText = dateAr[i].getDate() + '';
+        let tgl = dateAr[i].getDate();
+        let bln = dateAr[i].getMonth();
+        cell.innerText = tgl + '';
+        if (bln < bulan) {
+            cell.classList.add('sebelum');
+        }
+        else if (bln > bulan) {
+            cell.classList.add('sesudah');
+        }
+        // if 
     }
     return hasil;
 }
 export function widget(bulan, tahun) {
     let tableEl = table(bulan, tahun, true);
-    let tahunEl;
-    let bulanEl;
     let widget;
     let namaBulan = ['Januari', 'Pebruari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     widget = document.createElement('div');
-    //buat tahun
-    tahunEl = document.createElement('div');
-    tahunEl.innerText = tahun + '';
-    widget.appendChild(tahunEl);
-    //buat bulan
-    bulanEl = document.createElement('select');
-    for (let i = 0; i < 12; i++) {
-        let optionEl = document.createElement('option');
-        optionEl.innerText = namaBulan[i];
-        optionEl.value = i + '';
-        bulanEl.appendChild(optionEl);
-    }
-    widget.appendChild(bulanEl);
+    widget.classList.add('widget');
+    let judul = document.createElement('h2');
+    judul.innerText = namaBulan[bulan] + ' - ' + tahun;
+    widget.appendChild(judul);
     widget.appendChild(tableEl);
     return widget;
 }
