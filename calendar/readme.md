@@ -12,3 +12,15 @@ Menghasilkan sebuah element html berupa table tanggal
 
 **widget(bulan: number, tahun: number): HTMLElement**
 Menghasilkan sebuah element html berupa sebuah widget yang bisa dipasang pada halaman web.
+
+Cara pakai sangat sederhana. Untuk membuat widget secara langsung tanpa kustomisasi maka bisa langsung panggil fungsi widget.
+
+```
+import * as kalender from "./Kalender.js";
+
+window.onload = () => {
+	document.body.appendChild(kalender.widget(8, 2022));
+}
+```
+
+Bila ingin hasil yang lebih bisa di kustom, maka tinggal panggil fungsi yang lain.
