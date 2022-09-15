@@ -1,0 +1,30 @@
+html,
+body {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+body {
+    padding: 16px;
+}
+
+div.cont {
+    max-width: 100vh;
+    /* border: 1px solid; */
+}
+
+div.chat-cont {
+    overflow-y: auto;
+    border: 1px solid;
+}
+
+div.balas {
+    border: 1px solid;
+}
+
+div.chat-bot {
+    border: 1px solid;
+    width: 75%;
+    max-width: 75%;
+}
