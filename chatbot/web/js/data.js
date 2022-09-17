@@ -1,3 +1,6 @@
+/**
+ * data untuk chatbot
+ */
 const data = [
     //menu utama
     {
@@ -10,15 +13,18 @@ const data = [
         `,
         gotoDef: ['pilih']
     },
+    //pilih pelajaran
     {
         label: 'pilih',
         isi: `
             Silahkan pilih pelajaran yang ingin dipelajari:
+            <br/>
+            <br/>
         `,
         menu: [
             {
                 judul: 'matematika',
-                goto: ['matematika']
+                goto: ['matematika', 'soal-1']
             },
             {
                 judul: 'bahasa indonesia',
@@ -49,12 +55,12 @@ const data = [
     {
         label: 'kosong',
         isi: `
-            Wah, maaf. <br/>
+            Waaaah, maaf!!. 😥 <br/> 
             Pelajaran tersebut belum tersedia. <br/> 
             Pilih yang lain aja ya
         `
     },
-    //pelajaran
+    //pelajaran ada
     {
         label: 'matematika',
         isi: `
@@ -63,6 +69,7 @@ const data = [
         `,
         gotoDef: ['soal-1']
     },
+    //soal 1
     {
         label: 'soal-1',
         isi: `
@@ -72,12 +79,13 @@ const data = [
         `,
         resp: [
             {
-                judul: '1',
+                judul: '2',
                 goto: ['benar', 'soal-2']
             }
         ],
-        gotoDef: ['salah']
+        gotoDef: ['salah', 'soal-1']
     },
+    //soal 2
     {
         label: 'soal-2',
         isi: `
@@ -91,8 +99,9 @@ const data = [
                 goto: ['benar', 'soal-3']
             }
         ],
-        gotoDef: ['salah']
+        gotoDef: ['salah', 'soal-2']
     },
+    //soal - 3
     {
         label: 'soal-3',
         isi: `
@@ -106,8 +115,9 @@ const data = [
                 goto: ['benar', 'selesai', 'pilih']
             }
         ],
-        gotoDef: ['salah']
+        gotoDef: ['salah', 'soal-3']
     },
+    //selesai
     {
         label: 'selesai',
         isi: `

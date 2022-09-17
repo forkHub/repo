@@ -4,6 +4,7 @@ export function daftarTanggal(bulan, tahun) {
     date.setFullYear(tahun, bulan, 1);
     date.setHours(0, 0, 0, 0);
     tanggalAr.push(date);
+    console.log(date);
     while (true) {
         date = tanggalAr[0];
         if (date.getDate() != 1) {
@@ -97,7 +98,17 @@ export function table(bulan, tahun, renderNamaHari) {
         else if (bln > bulan) {
             cell.classList.add('sesudah');
         }
-        // if 
+        cell.classList.add('tgl-' + tgl);
+        cell.setAttribute('data-tgl', tgl + '');
+        cell.setAttribute('data-bln', bln + '');
+        let date = new Date();
+        if (date.getDate() == tgl) {
+            if (date.getMonth() == bln) {
+                if (date.getFullYear() == tahun) {
+                    cell.classList.add('hari-ini');
+                }
+            }
+        }
     }
     return hasil;
 }

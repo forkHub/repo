@@ -47,11 +47,19 @@ class Chat {
 
 		tbl = document.createElement('button');
 		tbl.classList.add('padding');
-		tbl.classList.add('inline-block')
+		tbl.classList.add('inline-block');
+		tbl.style.marginBottom = '4px';
 		tbl.innerHTML = menu.judul;
-		tbl.onclick = (e: MouseEvent) => {
+		tbl.onclick = async (e: MouseEvent): Promise<void> => {
 			e.stopPropagation();
-			this.kirim(menu.judul);
+
+			jawabTxt.value = menu.judul;
+			chatCont.scrollTop = chatCont.scrollHeight;
+			await ha.comp.Util.delay(500);
+			await this.kirim(menu.judul);
+
+			jawabTxt.value = '';
+			chatCont.scrollTop = chatCont.scrollHeight;
 		}
 
 		hasil.appendChild(tbl);
@@ -61,11 +69,14 @@ class Chat {
 
 	static render(data: IChat, jawab: boolean = false): void {
 		let div: HTMLElement = this.renderText(data.isi, chatCont, jawab);
+		let menuEl: HTMLElement = div.querySelector('div.chat-bot');
 
 		if (data.menu) {
 			data.menu.forEach((item: IMenu) => {
 				//render menu
-				div.appendChild(this.renderMenu(item));
+				menuEl.appendChild(this.renderMenu(item));
+
+				//padding
 			})
 		}
 	}
@@ -79,14 +90,16 @@ class Chat {
 
 		if (test == teks) return true;
 
-		if (test.includes(teks)) return true;
+		// if (test.includes(teks)) return true;
 
-		if (teks.includes(test)) return true;
+		// if (teks.includes(test)) return true;
+
+		//75%
 
 		return false;
 	}
 
-	static getGoto(teks: string): string[] {
+	static async getGoto(teks: string): Promise<string[]> {
 		let hasil: string[] = [];
 
 		console.group('get goto');
@@ -127,28 +140,34 @@ class Chat {
 
 		console.groupEnd();
 
+		chatCont.scrollTop = chatCont.scrollHeight;
+		await ha.comp.Util.delay(500);
+
 		return hasil;
 	}
 
-	static kirim(teks: string): void {
+	static async kirim(teks: string = ''): Promise<void> {
+		teks = teks.trim();
+		if (teks.length == 0) return;
 
 		this.renderText(teks, chatCont, true);
 
-		let hasil: string[] = this.getGoto(teks);
+		let goto: string[] = await this.getGoto(teks);
 
-		if (hasil.length == 0) {
+		if (goto.length == 0) {
 			let chat: IChat = this._chatAktif;
 			// chat = this.getByLabel(item);
 			this.render(chat);
 			return;
 		}
 
-		hasil.forEach((item: string) => {
+		goto.forEach((item: string) => {
 			let chat: IChat;
 			chat = this.getByLabel(item);
 			this._chatAktif = chat;
 			this.render(chat);
 		});
+
 
 	}
 
@@ -165,12 +184,17 @@ class Chat {
 const chatCont: HTMLElement = ha.comp.Util.getEl('div.chat-cont');
 const kirimTbl: HTMLButtonElement = ha.comp.Util.getEl('button.kirim') as HTMLButtonElement;
 const jawabTxt: HTMLInputElement = ha.comp.Util.getEl('input.jawab') as HTMLInputElement;
+const formBalas: HTMLFormElement = ha.comp.Util.getEl('form.balas') as HTMLFormElement;
 
 Chat.chatAktif = data[0];
 Chat.render(data[0]);
 // Chat.render(data[1]);
 
-kirimTbl.onclick = (e: MouseEvent) => {
+formBalas.onsubmit = async (e: Event): Promise<void> => {
 	e.stopPropagation();
-	Chat.kirim(jawabTxt.value);
+	e.preventDefault();
+
+	await Chat.kirim(jawabTxt.value);
+	jawabTxt.value = '';
+	chatCont.scrollTop = chatCont.scrollHeight;
 }

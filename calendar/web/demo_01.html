@@ -7,6 +7,14 @@
         target-densityDpi=device-dpi">
 
 	<style>
+		div {
+			box-sizing: border-box;
+		}
+
+		div.padding {
+			padding: 8px;
+		}
+
 		div.widget {
 			border: 1px solid;
 			width: fit-content;
@@ -26,19 +34,30 @@
 		}
 
 		div.tanggal {
+			border: 1px solid white;
+			box-sizing: border-box;
 			display: table-cell;
 			padding: 8px;
+			text-align: center;
+		}
+
+		div.tanggal:hover {
+			border: 1px solid;
 		}
 
 		.tanggal.sebelum,
 		.tanggal.sesudah {
 			opacity: .5;
 		}
+
+		div.tanggal.hari-ini {
+			border: 1px solid red;
+		}
 	</style>
 </head>
 
 <body>
-	<script type="module" src="./js/Demo.js"></script>
+	<script type="module" src="./js/Demo_01.js"></script>
 </body>
 
 </html>

@@ -7,6 +7,8 @@ export function daftarTanggal(bulan: number, tahun: number): Date[] {
 	date.setHours(0, 0, 0, 0);
 	tanggalAr.push(date);
 
+	console.log(date);
+
 	while (true) {
 		date = tanggalAr[0];
 		if (date.getDate() != 1) {
@@ -116,13 +118,27 @@ export function table(bulan: number, tahun: number, renderNamaHari: boolean): HT
 		let tgl: number = dateAr[i].getDate();
 		let bln: number = dateAr[i].getMonth();
 		cell.innerText = tgl + '';
+
 		if (bln < bulan) {
 			cell.classList.add('sebelum');
 		}
 		else if (bln > bulan) {
 			cell.classList.add('sesudah');
 		}
-		// if 
+
+		cell.classList.add('tgl-' + tgl);
+		cell.setAttribute('data-tgl', tgl + '');
+		cell.setAttribute('data-bln', bln + '');
+
+		let date: Date = new Date();
+
+		if (date.getDate() == tgl) {
+			if (date.getMonth() == bln) {
+				if (date.getFullYear() == tahun) {
+					cell.classList.add('hari-ini');
+				}
+			}
+		}
 	}
 
 	return hasil;

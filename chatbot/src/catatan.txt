@@ -1,0 +1,9 @@
+
+
+
+backlog:
+========
+ada timer
+saat pilih menu, tulis di text message, trus ada delay
+ai dibikin lebih strict:
+ai ada error treshold 75%

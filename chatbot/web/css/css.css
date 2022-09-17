@@ -24,7 +24,13 @@ div.balas {
 }
 
 div.chat-bot {
-    border: 1px solid;
+    background-color: antiquewhite;
+    border: 1px solid rgba(0, 0, 0, .5);
     width: 75%;
     max-width: 75%;
+    border-radius: 10px;
+}
+
+div.jawab div.chat-bot {
+    background-color: aqua;
 }
