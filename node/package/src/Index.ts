@@ -1,27 +1,76 @@
 import fs from "fs";
 
-let fileStr: string = fs.readFileSync('index.html', "utf-8");
+let fileStr: string = fs.readFileSync('data/index.html', "utf-8");
+let baseDir: string = 'data/';
 let content: string = '';
 
-//ambil script
-while (true) {
-    let tag: string = ambilScriptTag(fileStr);
+fileStr = ubahCss(fileStr);
+fileStr = ubahScript(fileStr);
+fs.writeFileSync('output.html', fileStr);
 
-    if (tag != '') {
-        content = fs.readFileSync(ambilScriptUrl(tag), 'utf-8');
-        fileStr = fileStr.replace(/<script.*<\/script>/, content);
-    }
-    else {
-        break;
-    }
-}
+//ambil css
+function ubahCss(data: string): string {
+    let hasil: string = data;
 
-function ambilScriptTag(src: string): string {
-    let reg: RegExpExecArray = /<script.*<\/script>/.exec(src);
+    while (true) {
+        console.log('ambil css tag:');
+        // console.log(hasil);
+
+        let tag: string = ambilTag(hasil, /<link href=".*>/);
+        console.log('tag: ' + tag);
+
+        if (tag != '') {
+            let url: string = ambilTag(tag, /".*.css"/).slice(1);
+            console.log('url: ' + url);
+            url = url.slice(0, url.length - 1);
+            console.log('url:' + url);
+
+            content = fs.readFileSync(baseDir + url, 'utf-8');
+            content = `\n<!-- ${url} mulai: -->\n <style>\n ${content} \n</style> \n<!-- ${url} selesai -->\n`;
+            hasil = hasil.replace(/<link href=".*>/, content);
+        }
+        else {
+            break;
+        }
+        console.log('/ambil css tag')
+    }
+
+    return hasil;
+};
+
+function ambilTag(src: string, reg: RegExp): string {
+    let regHasil: RegExpExecArray = reg.exec(src);
     let hasil: string = '';
 
-    if (reg) {
-        hasil = reg[0];
+    if (regHasil) {
+        hasil = regHasil[0];
+    }
+
+    return hasil;
+}
+
+//ambil script
+function ubahScript(data: string): string {
+    let hasil: string = data;
+
+    while (true) {
+        console.log('ambil tag:');
+
+        let tag: string = ambilTag(hasil, /<script.*<\/script>/);
+        console.log('tag: ' + tag);
+
+        if (tag != '') {
+            let url: string = ambilScriptUrl(tag);
+            console.log('url:' + url);
+
+            content = fs.readFileSync(baseDir + url, 'utf-8');
+            content = `\n<!-- ${url} mulai: -->\n <script>\n ${content} \n</script> \n<!-- ${url} selesai -->\n`;
+            hasil = hasil.replace(/<script.*<\/script>/, content);
+        }
+        else {
+            break;
+        }
+        console.log('/ambil tag')
     }
 
     return hasil;
