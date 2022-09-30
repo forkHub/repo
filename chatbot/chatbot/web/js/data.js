@@ -36,7 +36,8 @@ const data = [
             },
         ],
     },
-    //benar salah
+
+    //jawaban benar
     {
         label: 'benar',
         isi: `
@@ -44,6 +45,8 @@ const data = [
             jawaban kamu benar
         `
     },
+
+    //jawaban salah
     {
         label: 'salah',
         isi: `
@@ -69,6 +72,7 @@ const data = [
         `,
         gotoDef: ['soal-1']
     },
+
     //soal 1
     {
         label: 'soal-1',
@@ -85,6 +89,7 @@ const data = [
         ],
         gotoDef: ['salah', 'soal-1']
     },
+
     //soal 2
     {
         label: 'soal-2',
