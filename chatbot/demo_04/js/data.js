@@ -42,6 +42,23 @@ const data = [
         gotoDef: ['soal-1']
     },
 
+    //benar salah
+    {
+        label: 'benar',
+        isi: `
+            Hebat!<br/>
+            jawaban kamu benar
+        `
+    },
+
+    {
+        label: 'salah',
+        isi: `
+            Jawaban kamu salah!<br/>
+            Tidak mengapa, jangan menyerah<br/>
+        `
+    },
+
     //soal 1
     {
         label: 'soal-1',
@@ -53,10 +70,10 @@ const data = [
         resp: [
             {
                 judul: '2',
-                goto: ['benar', 'soal-2']
+                goto: ['benar', 'soal-1']
             }
         ],
-        gotoDef: ['soal-1']
+        gotoDef: ['salah', 'soal-1']
     },
 
 
