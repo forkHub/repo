@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+
+	<title>CORS Test</title>
+	<link href="./css/bootstrap.min.css" rel="stylesheet">
+	<link href="./css/umum.css" rel="stylesheet">
+	<link href="./css/css.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="container">
+		<h1>EXP</h1>
+		<br />
+		<form>
+
+			<div class="padding border">
+				<h3>type:</h3>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="type" id="type-literal" value="0">
+					<label class="form-check-label" for="type-literal">
+						Literal
+					</label>
+				</div>
+
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="type" id="type-var-ref" value="1">
+					<label class="form-check-label" for="type-var-ref">
+						Variable
+					</label>
+				</div>
+
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="type" id="type-var-ref" value="2">
+					<label class="form-check-label" for="type-var-ref">
+						Binop
+					</label>
+				</div>
+			</div>
+
+			<div class="padding"></div>
+			<div class="padding border">
+
+				<div class="mb-3">
+					<label for="literal-value" class="form-label">Literal</label>
+					<input type="text" class="form-control" id="value-literal" placeholder="literal">
+				</div>
+
+				<div class="mb-3">
+					<label for="literal-value" class="form-label">Variable</label>
+					<div class="input-group mb-3">
+						<input type="text" class="form-control" placeholder="variable" id="value-variable">
+						<button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+						<button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+					</div>
+				</div>
+
+				<div class="mb-3">
+					<label for="literal-value" class="form-label">Binop</label>
+					<div class="input-group mb-3">
+						<input type="text" class="form-control" placeholder="variable" id="value-variable">
+						<button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+						<button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+					</div>
+				</div>
+
+
+			</div>
+			<br />
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+		<br />
+		<div class="response padding border disp-none">
+
+		</div>
+	</div>
+
+	<script src="./js/index.js"></script>
+</body>
+
+</html>
