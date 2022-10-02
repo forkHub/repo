@@ -6,33 +6,6 @@ namespace ha.comp {
 		static readonly sFilter: string = 'filter';
 		static readonly storageId: string = 'xyz.hagarden.tugas';
 
-		static createEl(str: string): HTMLElement {
-			let div: HTMLElement = document.createElement('div');
-			let el: HTMLElement;
-
-			div.innerHTML = str;
-
-			el = div.firstElementChild as HTMLElement;
-
-			if (!el) {
-				console.log(div);
-				console.log(str);
-				throw new Error('');
-			}
-
-			return el;
-		}
-
-		static getTemplate(query: string): HTMLElement {
-			try {
-				let template: DocumentFragment = document.body.querySelector('template').content;
-				return template.querySelector(query).cloneNode(true) as HTMLElement;
-			} catch (e) {
-				console.log('template:' + query);
-				throw Error(e);
-			}
-		}
-
 		static getEl(query: string, parent: HTMLElement = null, err: boolean = true): HTMLElement {
 			let el: HTMLElement;
 			if (!parent) parent = document.body;
@@ -53,10 +26,6 @@ namespace ha.comp {
 			}
 		}
 
-		static id(): number {
-			return Date.now();
-		}
-
 		static async delay(m: number = 10): Promise<void> {
 			return new Promise((resolve) => {
 				setTimeout(() => {
@@ -65,25 +34,10 @@ namespace ha.comp {
 			})
 		}
 
-		static stackTrace(): void {
-			try {
-				throw Error('');
-			}
-			catch (e) {
-				console.error(e);
-			}
-		}
-
-		static bersihDiv(div: HTMLElement): void {
-			while (div.firstChild) {
-				div.removeChild(div.firstChild);
-			}
-		}
-
 		//default error
 		static error(e: Error): void {
 			console.error(e);
-			dialog.tampil(e.stack);
+			dialog.tampil(e.message);
 		}
 
 		//shared
@@ -111,26 +65,6 @@ namespace ha.comp {
 			return urlHasil;
 		}
 
-		static build(temp: string): HTMLElement {
-			let div: HTMLElement = document.createElement('div');
-			let el: HTMLElement;
-
-			div.innerHTML = temp;
-
-			el = div.firstElementChild as HTMLElement;
-
-			// this._elHtml = el;
-
-			if (!el) {
-				console.log(div);
-				console.log(temp);
-				throw new Error('');
-			}
-
-			return el;
-
-		}
-
 		static async AjaxLogin(type: string, urlServer: string, dataStr: string, loginUrl: string, pf: (p: ProgressEvent) => void = null): Promise<XMLHttpRequest> {
 			let xml: XMLHttpRequest;
 
@@ -153,6 +87,12 @@ namespace ha.comp {
 			console.log('error status code: ' + x.status);
 
 			throw Error(x.responseText);
+		}
+
+		//TODO: hapus
+		static async sql(query: string,): Promise<any[]> {
+			query;
+			return [];
 		}
 
 

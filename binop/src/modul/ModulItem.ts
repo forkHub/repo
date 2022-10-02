@@ -2,10 +2,10 @@ namespace md {
 	export class ModulItemView extends ha.comp.BaseComponent {
 		private item: IModul;
 		private namaSpan: HTMLSpanElement;
+		static readonly daftar: ModulItemView[] = [];
 
 		constructor(item: IModul) {
 			super();
-
 			this.item = item;
 		}
 
@@ -41,10 +41,48 @@ namespace md {
 			console.groupEnd();
 		}
 
-		hapus(modul: IModul): void {
-			if (modul.id == this.item.id) {
-				this.item = null;
-				this.destroy();
+		update(): void {
+			this.namaSpan.innerHTML = this.item.nama;
+		}
+
+		static reset(): void {
+			while (this.daftar.length > 0) {
+				let view: ModulItemView;
+				view = this.daftar.pop();
+				view.destroy();
+			}
+		}
+
+		static async buat(item: IModul, wadah: HTMLElement): Promise<ModulItemView> {
+			let hasil: ModulItemView;
+
+			hasil = new ModulItemView(item);
+			await hasil.init();
+			this.daftar.push(hasil);
+
+			if (wadah) {
+				hasil.attach(wadah);
+			}
+
+			return hasil;
+		}
+
+		static update(modul: IModul): void {
+			this.daftar.forEach((view: ModulItemView) => {
+				if (view.item.id == modul.id) {
+					view.update();
+				}
+			});
+		}
+
+		static hapus(modul: IModul): void {
+			for (let i: number = 0; i < this.daftar.length; i++) {
+				let view: ModulItemView;
+				view = this.daftar[i];
+				if (view.item.id == modul.id) {
+					view.destroy();
+					this.daftar.splice(i, 1);
+				}
 			}
 		}
 	}

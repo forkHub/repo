@@ -8,15 +8,7 @@ var md;
             this._nama = "modul_default";
             this._anak = [];
         }
-        // private static _onBuat: (modul: IModul) => void;
-        // public static get onBuat(): (modul: IModul) => void {
-        // 	return Modul._onBuat;
-        // }
-        // public static set onBuat(value: (modul: IModul) => void) {
-        // 	Modul._onBuat = value;
-        // }
         static load(data) {
-            //TODO:
             data.forEach((item) => {
                 if ('modul' == item.type) {
                     console.group('load modul ' + item.id);
@@ -26,13 +18,21 @@ var md;
                 }
             });
         }
+        static hapusAktif() {
+            for (let i = 0; i < this.daftar.length; i++) {
+                if (this.daftar[i].id == this.modulAktif.id) {
+                    this.daftar.splice(i, 1);
+                }
+            }
+            this.modulAktif = null;
+        }
         static reset() {
             while (this.daftar.length > 0) {
                 this.daftar.pop();
             }
             this._modulAktif = null;
         }
-        static simpan(data) {
+        static toDao(data) {
             this.daftar.forEach((item) => {
                 let obj = {
                     id: item.id,

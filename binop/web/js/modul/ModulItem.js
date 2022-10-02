@@ -29,12 +29,44 @@ var md;
             console.log('item init ends');
             console.groupEnd();
         }
-        hapus(modul) {
-            if (modul.id == this.item.id) {
-                this.item = null;
-                this.destroy();
+        update() {
+            this.namaSpan.innerHTML = this.item.nama;
+        }
+        static reset() {
+            while (this.daftar.length > 0) {
+                let view;
+                view = this.daftar.pop();
+                view.destroy();
+            }
+        }
+        static async buat(item, wadah) {
+            let hasil;
+            hasil = new ModulItemView(item);
+            await hasil.init();
+            this.daftar.push(hasil);
+            if (wadah) {
+                hasil.attach(wadah);
+            }
+            return hasil;
+        }
+        static update(modul) {
+            this.daftar.forEach((view) => {
+                if (view.item.id == modul.id) {
+                    view.update();
+                }
+            });
+        }
+        static hapus(modul) {
+            for (let i = 0; i < this.daftar.length; i++) {
+                let view;
+                view = this.daftar[i];
+                if (view.item.id == modul.id) {
+                    view.destroy();
+                    this.daftar.splice(i, 1);
+                }
             }
         }
     }
+    ModulItemView.daftar = [];
     md.ModulItemView = ModulItemView;
 })(md || (md = {}));

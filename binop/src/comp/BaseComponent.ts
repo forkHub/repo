@@ -20,12 +20,12 @@ namespace ha.comp {
 		// 	this._template = value;
 		// }
 
-		static buat(temp: string): ha.comp.BaseComponent {
-			let view: ha.comp.BaseComponent = new BaseComponent();
-			view.build(temp);
+		// static buat(temp: string): ha.comp.BaseComponent {
+		// 	let view: ha.comp.BaseComponent = new BaseComponent();
+		// 	view.build(temp);
 
-			return view;
-		}
+		// 	return view;
+		// }
 
 		protected async loadTemplate(f: string): Promise<string> {
 			let http: XMLHttpRequest = await Util.Ajax('get', f, '');

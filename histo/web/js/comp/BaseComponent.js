@@ -1,37 +1,23 @@
+"use strict";
 var ha;
 (function (ha) {
     var comp;
     (function (comp) {
-        // export function createComponent(template: string): BaseComponent {
-        // 	let comp: BaseComponent = new BaseComponent();
-        // 	comp.template = template;
-        // 	comp.build();
-        // 	return comp;
-        // }
         class BaseComponent {
             constructor() {
                 this._template = '';
                 this._elHtml = document.createElement('div');
             }
-            // protected get template(): string {
-            // 	return this._template;
-            // }
-            // protected set template(value: string) {
-            // 	this._template = value;
-            // }
-            // static buat(temp: string): ha.comp.BaseComponent {
-            // 	let view: ha.comp.BaseComponent = new BaseComponent();
-            // 	view.build(temp);
-            // 	return view;
-            // }
-            async loadTemplate(f) {
-                let http = await comp.Util.Ajax('get', f, '');
-                if (200 == http.status) {
-                    return http.responseText;
-                }
-                else {
-                    throw new Error(http.responseText);
-                }
+            onRender() {
+            }
+            onAttach() {
+            }
+            onBuild() {
+            }
+            onDetach() {
+            }
+            mulai(...params) {
+                params;
             }
             destroy() {
                 this.detach();
@@ -43,15 +29,30 @@ var ha;
             attach(parent) {
                 parent.appendChild(this._elHtml);
                 this._parent = parent;
+                this.onAttach();
             }
             detach() {
                 // console.log('loading detach');
                 // console.log(this._elHtml.parentElement);
                 if (this._elHtml.parentElement) {
                     this._elHtml.parentElement.removeChild(this._elHtml);
+                    this.onDetach();
                     return true;
                 }
+                this.onDetach();
                 return false;
+            }
+            show(el) {
+                if (!el) {
+                    el = this._elHtml;
+                }
+                el.style.display = 'block';
+            }
+            hide(el) {
+                if (!el) {
+                    el = this._elHtml;
+                }
+                el.style.display = 'none';
             }
             getEl(query) {
                 let el;
@@ -65,37 +66,27 @@ var ha;
                     throw new Error('query not found ');
                 }
             }
-            build(temp = '') {
+            build() {
                 let div = document.createElement('div');
                 let el;
-                if (temp && temp != '') {
-                    this._template = temp;
-                }
                 div.innerHTML = this._template;
                 el = div.firstElementChild;
                 this._elHtml = el;
-                if (!this._elHtml) {
-                    console.log(div);
-                    console.log(this._template);
+                if (!this._elHtml)
                     throw new Error('');
-                }
+                this.onBuild();
             }
             getTemplate(query) {
-                try {
-                    let template = document.body.querySelector('template').content;
-                    return template.querySelector(query).cloneNode(true);
-                }
-                catch (e) {
-                    console.log('template:' + query);
-                    throw Error(e);
-                }
+                let template = document.body.querySelector('template').content;
+                return template.querySelector(query).cloneNode(true);
             }
-            // getElFromDoc(query: string): HTMLElement {
-            // 	let el: HTMLElement;
-            // 	el = document.querySelector(query);
-            // 	if (!el) throw new Error();
-            // 	return el;
-            // }
+            getElFromDoc(query) {
+                let el;
+                el = document.querySelector(query);
+                if (!el)
+                    throw new Error();
+                return el;
+            }
             get elHtml() {
                 return this._elHtml;
             }

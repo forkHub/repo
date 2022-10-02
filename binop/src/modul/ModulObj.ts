@@ -8,19 +8,9 @@ namespace md {
 		private _anak: number[] = [];
 		static readonly daftar: IModul[] = [];
 
-		// private static _tambahEvt: IModulEvt[] = [];
 		private static _modulAktif: IModul;
 
-		// private static _onBuat: (modul: IModul) => void;
-		// public static get onBuat(): (modul: IModul) => void {
-		// 	return Modul._onBuat;
-		// }
-		// public static set onBuat(value: (modul: IModul) => void) {
-		// 	Modul._onBuat = value;
-		// }
-
 		static load(data: IData[]): void {
-			//TODO:
 			data.forEach((item: IData) => {
 				if ('modul' == item.type) {
 					console.group('load modul ' + item.id);
@@ -31,6 +21,15 @@ namespace md {
 			});
 		}
 
+		static hapusAktif(): void {
+			for (let i: number = 0; i < this.daftar.length; i++) {
+				if (this.daftar[i].id == this.modulAktif.id) {
+					this.daftar.splice(i, 1);
+				}
+			}
+			this.modulAktif = null;
+		}
+
 		static reset(): void {
 			while (this.daftar.length > 0) {
 				this.daftar.pop();
@@ -38,7 +37,7 @@ namespace md {
 			this._modulAktif = null;
 		}
 
-		static simpan(data: IData[]): void {
+		static toDao(data: IData[]): void {
 			this.daftar.forEach((item: IModul) => {
 
 				let obj: IModul = {

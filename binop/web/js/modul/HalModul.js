@@ -4,26 +4,32 @@ var md;
         constructor() {
             super();
         }
-        async baru(modul) {
-            console.group('item baru');
-            await this.daftarView.baru(modul);
-            console.groupEnd();
+        get daftarWdh() {
+            return this._daftarWdh;
         }
+        set daftarWdh(value) {
+            this._daftarWdh = value;
+        }
+        // async baru(modul: IModul): Promise<void> {
+        // 	console.group('item baru');
+        // 	await this.daftarView.baru(modul);
+        // 	console.groupEnd();
+        // }
         //pindah modul/load modul
-        reset() {
-            this.daftarView.reset();
-        }
-        load() {
-            this.reset();
-        }
+        // reset(): void {
+        // this.daftarView.reset();
+        // }
+        // load(): void {
+        // this.reset();
+        // }
         async init() {
             console.group('hal modul init:');
             this._template = await this.loadTemplate('./template/md_hal_modul.html');
             this.build();
             this.daftarWdh = this.getEl('div.daftar-cont');
-            this.daftarView = new md.DaftarModulView();
-            await this.daftarView.init();
-            this.daftarView.attach(this.daftarWdh);
+            // this.daftarView = new DaftarModulView();
+            // await this.daftarView.init();
+            // this.daftarView.attach(this.daftarWdh);
             this.initTombol();
             console.groupEnd();
         }
@@ -73,11 +79,6 @@ var md;
             });
             console.log(this.tombolWdh);
         }
-        tambahModulKlik() {
-            let nama;
-            nama = window.prompt('Nama Modul');
-            md.Modul.buat(nama, ha.comp.Id.id);
-        }
         get tombolWdh() {
             return this._tombolWdh;
         }
@@ -98,14 +99,37 @@ var md;
             let nama;
             nama = window.prompt('Nama Modul');
             let modul = md.Modul.buat(nama, ha.comp.Id.id);
-            await md.halModul.baru(modul);
+            await md.ModulItemView.buat(modul, md.halModul.daftarWdh);
             simpan();
         }
         else if (Kons.TBL_EDIT == label) {
+            if (md.Modul.modulAktif) {
+                let nama;
+                nama = window.prompt('Nama Modul');
+                md.Modul.modulAktif.nama = nama;
+                md.ModulItemView.update(md.Modul.modulAktif);
+                simpan();
+            }
+            else {
+                ha.comp.dialog.tampil('tidak ada item dipilih');
+            }
         }
         else if (Kons.TBL_PROP == label) {
+            console.log('prop di klik');
         }
         else if (Kons.TBL_HAPUS == label) {
+            console.log('hapus di klik');
+            if (md.Modul.modulAktif) {
+                md.ModulItemView.hapus(md.Modul.modulAktif);
+                md.Modul.hapusAktif();
+                simpan();
+            }
+            else {
+                ha.comp.Util.error(new Error('tidak ada modul aktif'));
+            }
+        }
+        else {
+            ha.comp.Util.error(new Error('label tidak terdaftar: ' + label));
         }
     };
 })(md || (md = {}));

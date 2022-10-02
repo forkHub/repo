@@ -1,30 +1,9 @@
+"use strict";
 var ha;
 (function (ha) {
     var comp;
     (function (comp) {
         class Util {
-            static createEl(str) {
-                let div = document.createElement('div');
-                let el;
-                div.innerHTML = str;
-                el = div.firstElementChild;
-                if (!el) {
-                    console.log(div);
-                    console.log(str);
-                    throw new Error('');
-                }
-                return el;
-            }
-            static getTemplate(query) {
-                try {
-                    let template = document.body.querySelector('template').content;
-                    return template.querySelector(query).cloneNode(true);
-                }
-                catch (e) {
-                    console.log('template:' + query);
-                    throw Error(e);
-                }
-            }
             static getEl(query, parent = null, err = true) {
                 let el;
                 if (!parent)
@@ -44,9 +23,6 @@ var ha;
                     }
                 }
             }
-            static id() {
-                return Date.now();
-            }
             static async delay(m = 10) {
                 return new Promise((resolve) => {
                     setTimeout(() => {
@@ -54,23 +30,10 @@ var ha;
                     }, m);
                 });
             }
-            static stackTrace() {
-                try {
-                    throw Error('');
-                }
-                catch (e) {
-                    console.error(e);
-                }
-            }
-            static bersihDiv(div) {
-                while (div.firstChild) {
-                    div.removeChild(div.firstChild);
-                }
-            }
             //default error
             static error(e) {
                 console.error(e);
-                comp.dialog.tampil(e.stack);
+                comp.dialog.tampil(e.message);
             }
             //shared
             static kirimWa(teks) {
@@ -91,19 +54,6 @@ var ha;
                 console.groupEnd();
                 return urlHasil;
             }
-            static build(temp) {
-                let div = document.createElement('div');
-                let el;
-                div.innerHTML = temp;
-                el = div.firstElementChild;
-                // this._elHtml = el;
-                if (!el) {
-                    console.log(div);
-                    console.log(temp);
-                    throw new Error('');
-                }
-                return el;
-            }
             static async AjaxLogin(type, urlServer, dataStr, loginUrl, pf = null) {
                 let xml;
                 xml = await this.Ajax(type, urlServer, dataStr, pf);
@@ -122,6 +72,11 @@ var ha;
                 }
                 console.log('error status code: ' + x.status);
                 throw Error(x.responseText);
+            }
+            //TODO: hapus
+            static async sql(query) {
+                query;
+                return [];
             }
             static async Ajax(type, url, dataStr, pf = null) {
                 return new Promise((resolve, reject) => {

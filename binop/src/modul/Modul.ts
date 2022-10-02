@@ -8,14 +8,15 @@ namespace md {
 
 	export function reset(): void {
 		Modul.reset();
-		halModul.reset();
+		ModulItemView.reset();
+		// halModul.reset();
 	}
 
 	export async function load(data: IData[]): Promise<void> {
 		reset();
 		Modul.load(data);
 		for (let i: number = 0; i < Modul.daftar.length; i++) {
-			await halModul.baru(Modul.daftar[i]);
+			await ModulItemView.buat(Modul.daftar[i], halModul.daftarWdh);
 		}
 	}
 
