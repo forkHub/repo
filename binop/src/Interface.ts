@@ -1,5 +1,5 @@
 interface ITombol {
 	label: string,
 	el?: HTMLButtonElement;
-	klik?: () => void;
+	klik?: (e: MouseEvent) => void;
 }

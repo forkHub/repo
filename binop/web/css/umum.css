@@ -273,3 +273,16 @@ a.bersih {
 .width-12 {
 	width: 100%;
 }
+
+.cursor,
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.user-select {
+	user-select: none;
+}
+
+.height-12 {
+	height: 100%;
+}

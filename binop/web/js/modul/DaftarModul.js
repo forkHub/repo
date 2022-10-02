@@ -8,11 +8,26 @@ var md;
         async init() {
             this._template = await this.loadTemplate("./template/md_daftar_modul.html");
             this.build();
+            this.wadah = this.getEl('div.wadah');
         }
-        baru(modul) {
-            let item = new md.ModulItemView(modul);
-            item.attach(this._elHtml);
+        reset() {
+            let view;
+            while (this.daftarItem.length > 0) {
+                view = this.daftarItem.pop();
+                view.destroy();
+            }
+        }
+        async baru(modul) {
+            let item;
+            console.group('daftar modul: baru');
+            // item;
+            // modul;
+            // this.wadah;
+            item = new md.ModulItemView(modul);
+            await item.init();
+            item.attach(this.wadah);
             this.daftarItem.push(item);
+            console.groupEnd();
         }
     }
     md.DaftarModulView = DaftarModulView;

@@ -1,44 +1,22 @@
 var md;
 (function (md) {
-    class Modul {
-        constructor() {
-            this._id = 0;
-            this._nama = "modul_default";
-            this._anak = [];
-        }
-        static get tambahEvt() {
-            return Modul._tambahEvt;
-        }
-        static set tambahEvt(value) {
-            Modul._tambahEvt = value;
-        }
-        get id() {
-            return this._id;
-        }
-        set id(value) {
-            this._id = value;
-        }
-        get nama() {
-            return this._nama;
-        }
-        set nama(value) {
-            this._nama = value;
-        }
-        get anak() {
-            return this._anak;
-        }
-        set anak(value) {
-            this._anak = value;
-        }
-        static buat(nama) {
-            let hasil = new Modul();
-            hasil.id = ha.comp.Id.id;
-            hasil.nama = nama;
-            this.tambahEvt.forEach((item) => {
-                item.baru(hasil);
-            });
-            return hasil;
+    async function init() {
+        await md.halModul.init();
+        menuWdh.appendChild(md.halModul.tombolWdh);
+        md.halModul.attach(halWdh);
+    }
+    md.init = init;
+    function reset() {
+        md.Modul.reset();
+        md.halModul.reset();
+    }
+    md.reset = reset;
+    async function load(data) {
+        reset();
+        md.Modul.load(data);
+        for (let i = 0; i < md.Modul.daftar.length; i++) {
+            await md.halModul.baru(md.Modul.daftar[i]);
         }
     }
-    md.Modul = Modul;
+    md.load = load;
 })(md || (md = {}));

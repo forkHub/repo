@@ -1,8 +1,10 @@
 namespace md {
 	export interface IModul {
 		id: number,
+		type: string;
 		nama: string,
-		anak: number[]
+		anak: number[],
+		induk: number
 	}
 
 	export interface IModulEvt {
