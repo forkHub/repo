@@ -17,7 +17,7 @@ function simpan() {
         Data.simpan();
     }
     catch (e) {
-        ha.comp.dialog.tampil(e);
+        ha.comp.dialog.tampil(e.stack);
     }
 }
 let halWdh = ha.comp.Util.getEl('div.cont div.hal-cont');

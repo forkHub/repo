@@ -21,7 +21,7 @@ function simpan(): void {
 		Data.simpan();
 	}
 	catch (e) {
-		ha.comp.dialog.tampil(e);
+		ha.comp.dialog.tampil(e.stack);
 	}
 }
 
