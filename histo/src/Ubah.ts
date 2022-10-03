@@ -31,7 +31,7 @@ window.onload = () => {
 		b[i] = 0;
 	}
 
-	initCanvasR();
+	initCanvasHisto();
 
 	histo(ctx)
 		.catch((e) => {
@@ -39,7 +39,7 @@ window.onload = () => {
 		});
 }
 
-function initCanvasR(): void {
+function initCanvasHisto(): void {
 	canvasR = document.createElement('canvas');
 	ctxR = canvasR.getContext('2d');
 	document.body.appendChild(canvasR);
@@ -50,14 +50,44 @@ function initCanvasR(): void {
 
 async function gambarHisto(ctx: CanvasRenderingContext2D): Promise<void> {
 
+	//cari warna maksimal
+	let max: number = 0;
 	for (let i: number = 0; i < r.length; i++) {
-		ctx.beginPath();
-		ctx.moveTo(i, 0);
-		ctx.lineTo(i, r[i]);
-		ctx.stroke();
+		if (r[i] > max) max = r[i];
+		if (g[i] > max) max = g[i];
+		if (b[i] > max) max = b[i];
 	}
 
+	ctx.clearRect(0, 0, 255, 255);
+
+	ctx.beginPath();
+	ctx.strokeStyle = '#ff0000';
+	ctx.moveTo(0, 0);
+	for (let i: number = 0; i < r.length; i++) {
+		ctx.lineTo(i, 255 - (r[i] / max) * 255);
+	}
+	ctx.stroke();
+
+	//gambar green
+	ctx.beginPath();
+	ctx.strokeStyle = '#00ff00';
+	ctx.moveTo(0, 0);
+	for (let i: number = 0; i < g.length; i++) {
+		ctx.lineTo(i, 255 - (g[i] / max) * 255);
+	}
+	ctx.stroke();
+
+	//gambar blue
+	ctx.beginPath();
+	ctx.strokeStyle = '#00ff';
+	ctx.moveTo(0, 0);
+	for (let i: number = 0; i < b.length; i++) {
+		ctx.lineTo(i, 255 - (b[i] / max) * 255);
+	}
+	ctx.stroke();
+
 }
+
 
 async function histo(ctx: CanvasRenderingContext2D): Promise<void> {
 	for (let i: number = 0; i < pj; i++) {
@@ -76,7 +106,7 @@ async function proses(ctx: CanvasRenderingContext2D, i: number, j: number): Prom
 	b[warna.data[2]]++;
 
 	ctr++;
-	if (ctr > 500) {
+	if (ctr > 100) {
 		await gambarHisto(ctxR);
 		await ha.comp.Util.delay(0);
 		ctr = 0;

@@ -4,10 +4,9 @@ var ha;
     var comp;
     (function (comp) {
         class BaseComponent {
-            constructor() {
-                this._template = '';
-                this._elHtml = document.createElement('div');
-            }
+            _template = '';
+            _elHtml = document.createElement('div');
+            _parent;
             onRender() {
             }
             onAttach() {

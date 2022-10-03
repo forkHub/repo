@@ -24,13 +24,13 @@ window.onload = () => {
         g[i] = 0;
         b[i] = 0;
     }
-    initCanvasR();
+    initCanvasHisto();
     histo(ctx)
         .catch((e) => {
         console.error(e);
     });
 };
-function initCanvasR() {
+function initCanvasHisto() {
     canvasR = document.createElement('canvas');
     ctxR = canvasR.getContext('2d');
     document.body.appendChild(canvasR);
@@ -38,12 +38,40 @@ function initCanvasR() {
     canvasR.setAttribute('height', '255');
 }
 async function gambarHisto(ctx) {
+    //cari warna maksimal
+    let max = 0;
     for (let i = 0; i < r.length; i++) {
-        ctx.beginPath();
-        ctx.moveTo(i, 0);
-        ctx.lineTo(i, r[i]);
-        ctx.stroke();
+        if (r[i] > max)
+            max = r[i];
+        if (g[i] > max)
+            max = g[i];
+        if (b[i] > max)
+            max = b[i];
     }
+    ctx.clearRect(0, 0, 255, 255);
+    ctx.beginPath();
+    ctx.strokeStyle = '#ff0000';
+    ctx.moveTo(0, 0);
+    for (let i = 0; i < r.length; i++) {
+        ctx.lineTo(i, 255 - (r[i] / max) * 255);
+    }
+    ctx.stroke();
+    //gambar green
+    ctx.beginPath();
+    ctx.strokeStyle = '#00ff00';
+    ctx.moveTo(0, 0);
+    for (let i = 0; i < g.length; i++) {
+        ctx.lineTo(i, 255 - (g[i] / max) * 255);
+    }
+    ctx.stroke();
+    //gambar blue
+    ctx.beginPath();
+    ctx.strokeStyle = '#00ff';
+    ctx.moveTo(0, 0);
+    for (let i = 0; i < b.length; i++) {
+        ctx.lineTo(i, 255 - (b[i] / max) * 255);
+    }
+    ctx.stroke();
 }
 async function histo(ctx) {
     for (let i = 0; i < pj; i++) {
@@ -59,7 +87,7 @@ async function proses(ctx, i, j) {
     g[warna.data[1]]++;
     b[warna.data[2]]++;
     ctr++;
-    if (ctr > 500) {
+    if (ctr > 100) {
         await gambarHisto(ctxR);
         await ha.comp.Util.delay(0);
         ctr = 0;

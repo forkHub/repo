@@ -4,8 +4,8 @@ var ha;
     var comp;
     (function (comp) {
         class MenuPopup {
+            view = new View();
             constructor() {
-                this.view = new View();
             }
             tampil(tombol) {
                 while (this.view.box.firstChild) {
