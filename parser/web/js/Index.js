@@ -1,5 +1,10 @@
 const parser = new Parser();
-parser.kataCadangan.push('><');
-parser.kataCadangan.push('[{');
-parser.pecah('131233=>/?><[{ ]}-313131');
-console.log(parser.kata);
+push(cadangan);
+push(stmtOpr);
+push(binopOpr);
+push(pintasan);
+load().then((hasil) => {
+    parser.pecah(hasil);
+    console.log(token);
+    Grammar.check();
+});
