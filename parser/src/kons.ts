@@ -1,11 +1,13 @@
 class Kons {
-    static readonly ANGKA: string = '_angka_';
-    static readonly TEKS: string = '_teks_';
-    static readonly EXP: string = '_exp_';
-    static readonly KOM_AWAL: string = '_/*_';
-    static readonly KOM_AKHIR: string = '_*/_';
-    static readonly KOMENTAR: string = '_komentar_';
-    static readonly SIMBOL: string = '_simbol_';
+    static readonly ANGKA: string = 'angka';
+    static readonly TEKS: string = 'teks';
+    static readonly EXP: string = 'exp';
+    static readonly KOM_AWAL: string = '/*';
+    static readonly KOM_AKHIR: string = '*/';
+    static readonly KOMENTAR: string = 'komentar';
+    static readonly OPR: string = 'opr';
+    static readonly SIMBOL: string = 'simbol';
+    static readonly BINOP: string = 'binop';
 
     private static _dataStr: string = '';
     // static readonly kata: string[] = [];

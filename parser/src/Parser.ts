@@ -2,6 +2,7 @@ let tokenCtr: number = 0;
 
 class Parser {
     readonly kataCadangan: string[] = [];
+    readonly binopOpr: string[] = [];
 
     pecah(str: string): void {
 
@@ -50,15 +51,17 @@ class Parser {
 
             }
 
-            //cadangan
-            else if (this.ambilCadangan()) {
+            else if (this.ambilCadangan(this.binopOpr, 'opr')) {
+
+            }
+
+            else if (this.ambilCadangan(this.kataCadangan, 'opr')) {
 
             }
 
             //kata include kata.dot
             else if (this.checkHuruf(char)) {
                 let str2: string = this.ambilHuruf(Kons.dataStr);
-                // Kons.kata.push(str2);
                 Kons.dataStr = Kons.dataStr.slice(str2.length);
             }
 
@@ -67,7 +70,7 @@ class Parser {
                 if (this.checkSimbol(char)) {
                     // Kons.kata.push(char);
                     token.push({
-                        nama: Kons.SIMBOL,
+                        nama: char,
                         nilai: [char],
                         token: []
                     })
@@ -108,17 +111,22 @@ class Parser {
         return this.ambilReg(/^'[a-zA-Z_][\.a-zA-Z0-9_$%#@]*'/, Kons.TEKS);
     }
 
-    private ambilCadangan(): boolean {
+    private ambilCadangan(dataAr: string[], namaToken: string): boolean {
 
-        for (let i: number = 0; i < parser.kataCadangan.length; i++) {
+        for (let i: number = 0; i < dataAr.length; i++) {
 
-            let item: string = parser.kataCadangan[i].toLowerCase();
+            let item: string = dataAr[i].toLowerCase();
             let str: string = Kons.dataStr.slice(0, item.length)
 
             if (item == str) {
-                // Kons.kata.push(item);
+                // Kons..push(item);
+                token.push({
+                    nama: namaToken,
+                    nilai: [item],
+                    token: []
+                })
+
                 Kons.dataStr = Kons.dataStr.slice(item.length);
-                // console.log(item + ' / ' + str + ' /oke ' + Kons.dataStr);
                 return true;
             }
             else {
@@ -184,21 +192,25 @@ class Grammar {
         let batas: number = 0;
 
         while (true) {
-            this.check_grammar();
-            // break;
+            if (this.check_grammar()) {
+
+            } else {
+                break;
+            }
 
             batas++;
-            if (batas > 30) break;
+            if (batas > 5) break;
         }
     }
 
     private static check_grammar(): boolean {
 
-        console.group('check token dengan rumus yang ada, ctr: ' + tokenCtr);
+        // console.group('check token dengan rumus yang ada, ctr: ' + tokenCtr);
         for (let i: number = 0; i < grammar.length; i++) {
 
             if (this.check_rumus(tokenCtr, grammar[i].rumus)) {
 
+                /*
                 //lolos
                 //packaging
                 console.log('check token pada ctr ' + tokenCtr + ' cocok dengan rumus: ' + grammar[i].nama);
@@ -211,12 +223,12 @@ class Grammar {
                 }
 
                 let rl: number = grammar[i].rumus.length;
-                for (let i: number = 0; i < rl - 2; i++) {
-                    tokenBaru.token.push(token[tokenCtr + i]);
+                for (let j: number = 0; j < rl - 2; j++) {
+                    tokenBaru.token.push(token[tokenCtr + j]);
                 }
 
-                let kiri: IToken[] = token.slice(0, i);
-                let kanan: IToken[] = token.slice(i + grammar[i].rumus.length - 2);
+                let kiri: IToken[] = token.slice(0, tokenCtr);
+                let kanan: IToken[] = token.slice(tokenCtr + grammar[i].rumus.length - 2);
 
                 console.groupCollapsed()
                 console.log('token:');
@@ -241,12 +253,16 @@ class Grammar {
 
                 tokenCtr = 0;
                 console.groupEnd();
+                */
+
+                this.tokenBaru(i);
+
                 return true;
             }
         }
 
-        console.log('gak ada yang cocok');
-        console.groupEnd();
+        // console.log('gak ada yang cocok');
+        // console.groupEnd();
 
         tokenCtr++;
         if (tokenCtr >= token.length) {
@@ -254,8 +270,53 @@ class Grammar {
             return false;
         }
 
-        console.groupEnd();
+        // console.groupEnd();
         return true;
+    }
+
+    private static tokenBaru(i: number): void {
+        //lolos
+        //packaging
+        console.log('check token pada ctr ' + tokenCtr + ' cocok dengan rumus: ' + grammar[i].nama);
+
+        // buat token
+        let tokenBaru: IToken = {
+            nama: grammar[i].nama,
+            nilai: [],
+            token: []
+        }
+
+        let rl: number = grammar[i].rumus.length;
+        for (let j: number = 0; j < rl - 2; j++) {
+            tokenBaru.token.push(token[tokenCtr + j]);
+        }
+
+        let kiri: IToken[] = token.slice(0, tokenCtr);
+        let kanan: IToken[] = token.slice(tokenCtr + grammar[i].rumus.length - 2);
+
+        // console.groupCollapsed()
+        // console.log('token:');
+        // console.log(this.renderToken(token));
+        // console.log('kiri:');
+        // console.log(this.renderToken(kiri));
+        // console.log('kanan:');
+        // console.log(this.renderToken(kanan));
+        // console.log('token baru:');
+        // console.log(this.renderToken([tokenBaru]));
+        // console.groupEnd();
+
+        while (token.length > 0) {
+            token.pop();
+        }
+
+        this.tambah(token, kiri);
+        this.tambah(token, [tokenBaru]);
+        this.tambah(token, kanan);
+
+        console.log('token: ' + this.renderToken(token));
+
+        tokenCtr = 0;
+        // console.groupEnd();
     }
 
     private static renderToken(token: IToken[]): string {
@@ -277,8 +338,8 @@ class Grammar {
 
     private static check_rumus(mulai: number, rumus: string[][]): boolean {
         let awal: string[] = rumus[0];
-        let inti: string[][] = rumus.slice(1, rumus.length - 1);
-        let akhir: string[] = rumus[rumus.length - 1]
+        let inti: string[] = rumus[1];
+        let akhir: string[] = rumus[2]
 
         console.groupCollapsed('check token = rumus');
         console.log('rumus:');
@@ -320,12 +381,20 @@ class Grammar {
         return true;
     }
 
-    private static cocok(diCheck: string, check: string[]) {
+    private static cocok(diCheck: string, check: string) {
 
         console.group('cocok:');
         console.log('check:');
         console.log(check);
         console.log('dicheck: ' + diCheck);
+
+        let hasil: boolean = true;
+
+        if (check.length == 0) {
+            console.log('kosong, false');
+            console.groupEnd();
+            return false;
+        }
 
         for (let i: number = 0; i < check.length; i++) {
 
@@ -333,14 +402,17 @@ class Grammar {
 
             if (diCheck == check[i]) {
 
-                console.log('hasil: true');
-                console.groupEnd();
-                return true;
+                // console.log('hasil: true');
+                // console.groupEnd();
+
+            }
+            else {
+                hasil = false;
             }
         }
 
-        console.log('hasil: false');
+        console.log('hasil: ' + hasil);
         console.groupEnd();
-        return false;
+        return hasil;
     }
 }

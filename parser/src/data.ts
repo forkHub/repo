@@ -31,8 +31,13 @@ const grammar: IRumus[] = [
         nama: Kons.EXP,
         rumus: [[], [Kons.ANGKA], []]
     },
-    // {
-    //     nama: Kons.EXP,
-    //     rumus: [[], [Kons.TEKS], []]
-    // },
+    {
+        nama: Kons.EXP,
+        rumus: [[], [Kons.TEKS], []]
+    },
+    {
+        nama: Kons.BINOP,
+        rumus: [[], [Kons.EXP, Kons.OPR, Kons.EXP], []]
+    },
+
 ]
