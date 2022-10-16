@@ -1,15 +1,8 @@
 class Kons {
-    static ANGKA = 'angka';
-    static TEKS = 'teks';
-    static EXP = 'exp';
-    static KOM_AWAL = '/*';
-    static KOM_AKHIR = '*/';
-    static KOMENTAR = 'komentar';
-    static OPR = 'opr';
-    static SIMBOL = 'simbol';
-    static BINOP = 'binop';
-    static _dataStr = '';
-    // static readonly kata: string[] = [];
+    constructor() {
+        this.kataCadangan = [];
+        this.binopOpr = [];
+    }
     static get dataStr() {
         return this._dataStr;
     }
@@ -17,3 +10,33 @@ class Kons {
         this._dataStr = value;
     }
 }
+Kons.ANGKA = 'angka';
+Kons.TEKS = 'teks';
+Kons.EXP = 'exp';
+Kons.OPR = 'opr';
+Kons.BINOP = 'binop';
+Kons.MIN = 'min';
+Kons.KATA = 'kata';
+Kons.KATA_CADANGAN = '_kata_cadangan_';
+Kons.KURUNG = '()';
+Kons.AKSES_ARRAY = 'kata[]';
+//stmt
+Kons.STMT2 = 'stmt_stmt';
+Kons.STMT = 'stmt';
+Kons.RETURN_STMT = 'return_stmt';
+Kons.WHILE = 'while_stmt';
+Kons.IF = 'if{}';
+Kons.IF_ELSE = 'if_else{}';
+Kons.ELSE_IF = 'else_if{}';
+Kons.ELSE_IF2 = 'else_if{}2';
+Kons.ELSE_IF_ELSE = 'else_if{}else{}';
+Kons.ELSE = 'else{}';
+Kons.DEK_VAR = 'var_a';
+Kons.DEK_FUNGSI1 = 'dek_fungsi1';
+Kons.DEK_FUNGSI = 'dek_fungsi';
+Kons.VAR_ISI = 'a=b';
+Kons.FOR_STMT = 'for_stmt';
+Kons.ARG1 = 'arg1';
+Kons.ARG2 = 'arg2';
+Kons.ARG = 'arg'; //argument secara umum
+Kons._dataStr = '';

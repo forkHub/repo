@@ -1,418 +1,412 @@
+
 let tokenCtr: number = 0;
 
-class Parser {
-    readonly kataCadangan: string[] = [];
-    readonly binopOpr: string[] = [];
+class Leksikal {
+	readonly kataCadangan: string[] = [];
+	readonly binopOpr: string[] = [];
 
-    pecah(str: string): void {
+	async pecah(str: string): Promise<void> {
 
-        console.group('pecah');
-        let ctr: number = 0;
-        Kons.dataStr = str;
+		console.group('pecah');
+		Kons.dataStr = str;
 
-        while (Kons.dataStr.length > 0) {
-            let char: string = Kons.dataStr.charAt(0);
+		while (Kons.dataStr.length > 0) {
+			let char: string = Kons.dataStr.charAt(0);
 
-            //string ""
-            if (char == '\"') {
-                let str2: string = this.ambilString(Kons.dataStr);
-                // Kons.kata.push(str2);
-                token.push({
-                    nama: Kons.TEKS,
-                    nilai: [str2],
-                    token: []
-                });
-                Kons.dataStr = Kons.dataStr.slice(str2.length);
-            }
+			//string ""
+			if (char == '\"') {
+				let str2: string = this.ambilString(Kons.dataStr);
+				// Kons.kata.push(str2);
+				token.push({
+					nama: Kons.TEKS,
+					nilai: [str2],
+					token: []
+				});
+				Kons.dataStr = Kons.dataStr.slice(str2.length);
+			}
 
-            //string '
-            else if (this.ambilStringQuoteSatu()) {
+			//string '
+			else if (this.ambilStringQuoteSatu()) {
 
-            }
+			}
 
-            //komentar
-            else if (this.ambilReg(/^\/\*.*/, Kons.KOM_AWAL)) {
+			//komentar
+			else if (this.ambilKomentar()) {
 
-            }
+			}
 
-            //komentar tutup
-            else if (this.ambilReg(/^\*\//, Kons.KOM_AKHIR)) {
+			//komentar segaris
+			else if (this.ambilReg(/^\/\/.*/, '')) {
 
-            }
+			}
 
-            //komentar segaris
-            else if (this.ambilReg(/^\/\/.*/, Kons.KOMENTAR)) {
+			//angka => minus titik minus-titik
+			else if (this.ambilReg(/^[0-9]*\.*[0-9]+/, Kons.ANGKA)) {
 
-            }
+			}
 
+			else if (this.ambilCadangan(this.binopOpr, Kons.OPR)) {
 
-            //angka => minus titik minus-titik
-            else if (this.ambilReg(/^[+-]*[0-9]*\.*[0-9]+/, Kons.ANGKA)) {
+			}
 
-            }
+			else if (this.ambilCadangan(this.kataCadangan, Kons.KATA_CADANGAN)) {
 
-            else if (this.ambilCadangan(this.binopOpr, 'opr')) {
+			}
 
-            }
+			//kata include kata.dot
+			else if (this.checkHuruf(char)) {
+				let str2: string = this.ambilHuruf(Kons.dataStr);
+				token.push({
+					nama: Kons.KATA,
+					nilai: [str2],
+					token: []
+				})
+				Kons.dataStr = Kons.dataStr.slice(str2.length);
+			}
 
-            else if (this.ambilCadangan(this.kataCadangan, 'opr')) {
+			//simbol
+			else if (this.checkSimbol(char)) {
+				token.push({
+					nama: char,
+					nilai: [char],
+					token: []
+				})
+				Kons.dataStr = Kons.dataStr.slice(1);
+			}
 
-            }
+			//ignore
+			else if (!this.checkSimbol(char)) {
+				Kons.dataStr = Kons.dataStr.slice(1);
+			}
 
-            //kata include kata.dot
-            else if (this.checkHuruf(char)) {
-                let str2: string = this.ambilHuruf(Kons.dataStr);
-                Kons.dataStr = Kons.dataStr.slice(str2.length);
-            }
+			else {
+				console.log(renderToken(token));
+				console.log(Kons.dataStr);
+				throw Error('');
+			}
 
-            else {
-                //validate
-                if (this.checkSimbol(char)) {
-                    // Kons.kata.push(char);
-                    token.push({
-                        nama: char,
-                        nilai: [char],
-                        token: []
-                    })
-                }
-                Kons.dataStr = Kons.dataStr.slice(1);
-            }
+		}
 
-            ctr++;
-            if (ctr > 1000) {
-                console.log('break');
-                // console.log('data str: ' + Kons.dataStr);
-                break;
-            }
+		debugGroup('');
+	}
 
-        }
+	private ambilKomentar(): boolean {
+		if (Kons.dataStr.slice(0, 2) != '/*') return false;
 
-        console.groupEnd();
-    }
+		let idx: number;
 
-    private ambilReg(reg: RegExp, namaToken: string): boolean {
-        let hsl: RegExpMatchArray = (Kons.dataStr.match(reg));
+		idx = Kons.dataStr.indexOf('*/', 2);
 
-        if (hsl && hsl.length > 0) {
-            // Kons.kata.push(hsl[0]);
-            Kons.dataStr = Kons.dataStr.slice(hsl[0].length);
-            token.push({
-                nama: namaToken,
-                nilai: [hsl[0]],
-                token: []
-            })
-            return true;
-        }
+		if (idx < 0) return false;
 
-        return false;
-    }
+		console.log('komentar: ' + Kons.dataStr.slice(0, idx + 2));
 
-    private ambilStringQuoteSatu(): boolean {
-        return this.ambilReg(/^'[a-zA-Z_][\.a-zA-Z0-9_$%#@]*'/, Kons.TEKS);
-    }
+		Kons.dataStr = Kons.dataStr.slice(idx + 2);
 
-    private ambilCadangan(dataAr: string[], namaToken: string): boolean {
+		console.log(Kons.dataStr);
 
-        for (let i: number = 0; i < dataAr.length; i++) {
+		return true;
+	}
 
-            let item: string = dataAr[i].toLowerCase();
-            let str: string = Kons.dataStr.slice(0, item.length)
+	private ambilReg(reg: RegExp, namaToken: string = ''): boolean {
+		let hsl: RegExpMatchArray = (Kons.dataStr.match(reg));
 
-            if (item == str) {
-                // Kons..push(item);
-                token.push({
-                    nama: namaToken,
-                    nilai: [item],
-                    token: []
-                })
+		if (hsl && hsl.length > 0) {
+			Kons.dataStr = Kons.dataStr.slice(hsl[0].length);
+			if (namaToken != '') {
+				token.push({
+					nama: namaToken,
+					nilai: [hsl[0]],
+					token: []
+				})
+			}
+			return true;
+		}
 
-                Kons.dataStr = Kons.dataStr.slice(item.length);
-                return true;
-            }
-            else {
-                // console.log(item + ' / ' + str);
-            }
+		return false;
+	}
 
-        }
+	private ambilStringQuoteSatu(): boolean {
+		return this.ambilReg(/^'[a-zA-Z_][\.a-zA-Z0-9_$%#@]*'/, Kons.TEKS);
+	}
 
-        return false;
-    }
+	private ambilCadangan(dataAr: string[], namaToken: string): boolean {
 
-    private checkSimbol(char: string): boolean {
-        if (char == ' ') return false;
-        if (char == '\t') return false;
-        if (char == '\r') return false;
-        if (char == '\n') return false;
+		for (let i: number = 0; i < dataAr.length; i++) {
 
-        return true;
-    }
+			let item: string = dataAr[i].toLowerCase();
+			let str: string = Kons.dataStr.slice(0, item.length)
 
-    private checkHuruf(char: string): boolean {
-        if (char >= "A" && char <= "Z") return true;
-        if (char >= "a" && char <= "z") return true;
-        return false;
-    }
+			if (item == str) {
+				let tokenBaru: IToken = {
+					nama: namaToken,
+					nilai: [item],
+					token: []
+				}
 
-    //ambil kata include kata.dot
-    private ambilHuruf(str: string) {
-        let hasil: string = '';
-        let hurufReg: RegExp = /^[a-zA-Z_][\.a-zA-Z0-9_$%#@]*/;
-        let hsl: RegExpMatchArray = (str.match(hurufReg));
+				if (namaToken == Kons.KATA_CADANGAN) {
+					tokenBaru.nama = item;
+				}
 
-        if (hsl) {
-            hasil = hsl + '';
-        }
-        else {
-            console.log('data: ' + str.slice(0, 100));
-            throw Error('huruf tidak cocok');
-        }
+				token.push(tokenBaru)
 
-        return hasil;
-    }
+				Kons.dataStr = Kons.dataStr.slice(item.length);
+				return true;
+			}
+			else {
+				// debugLog(item + ' / ' + str);
+			}
 
-    //ambil simbol
+		}
 
-    private ambilString(str: string): string {
-        let hasil: string;
+		return false;
+	}
 
-        let idx: number = str.indexOf('"', 1);
-        if (idx > 0) {
-            hasil = str.slice(0, idx + 1);
-        }
-        else {
-            throw Error('string unterminated');
-        }
+	private checkSimbol(char: string): boolean {
+		if (char == ' ') return false;
+		if (char == '\t') return false;
+		if (char == '\r') return false;
+		if (char == '\n') return false;
 
-        return hasil;
-    }
+		return true;
+	}
+
+	private checkHuruf(char: string): boolean {
+		if (char >= "A" && char <= "Z") return true;
+		if (char >= "a" && char <= "z") return true;
+		return false;
+	}
+
+	//ambil kata include kata.dot
+	private ambilHuruf(str: string) {
+		let hasil: string = '';
+		let hurufReg: RegExp = /^[a-zA-Z_][\.a-zA-Z0-9_$%#@]*/;
+		let hsl: RegExpMatchArray = (str.match(hurufReg));
+
+		if (hsl) {
+			hasil = hsl + '';
+		}
+		else {
+			debugLog('data: ' + str.slice(0, 100));
+			throw Error('huruf tidak cocok');
+		}
+
+		return hasil;
+	}
+
+	//ambil simbol
+
+	private ambilString(str: string): string {
+		let hasil: string;
+
+		let idx: number = str.indexOf('"', 1);
+		if (idx > 0) {
+			hasil = str.slice(0, idx + 1);
+		}
+		else {
+			throw Error('string unterminated');
+		}
+
+		return hasil;
+	}
 }
 
 class Grammar {
-    static check(): void {
-        let batas: number = 0;
+	static async check(): Promise<void> {
+		let batas: number = 0;
 
-        while (true) {
-            if (this.check_grammar()) {
+		while (true) {
 
-            } else {
-                break;
-            }
+			debugGroupCollapsed('check grammar, ctr: ' + tokenCtr);
+			let hasil: boolean = await this.check_grammar();
+			debugGroupEnd();
 
-            batas++;
-            if (batas > 5) break;
-        }
-    }
+			if (hasil) {
+				tokenCtr = 0;
+				if (token.length == 1) break;
+			} else {
+				// debugLog('check grammar gak ada hasil')
+				tokenCtr++;
+				if (tokenCtr >= token.length) {
+					debugOn();
+					debugLog('HABIS');
+					break;
+				}
+			}
 
-    private static check_grammar(): boolean {
+			batas++;
+			if (batas > 5000) break;
+		}
 
-        // console.group('check token dengan rumus yang ada, ctr: ' + tokenCtr);
-        for (let i: number = 0; i < grammar.length; i++) {
+		debugOn();
+		debugLog('selesai:');
+		debugLog(this.renderToken(token));
+	}
 
-            if (this.check_rumus(tokenCtr, grammar[i].rumus)) {
+	private static async check_grammar(): Promise<boolean> {
+		let adaTokenBaru: boolean = false;
 
-                /*
-                //lolos
-                //packaging
-                console.log('check token pada ctr ' + tokenCtr + ' cocok dengan rumus: ' + grammar[i].nama);
+		debugOff();
 
-                // buat token
-                let tokenBaru: IToken = {
-                    nama: grammar[i].nama,
-                    nilai: [],
-                    token: []
-                }
+		// console.group('check token dengan rumus yang ada, ctr: ' + tokenCtr);
+		for (let i: number = 0; i < grammarAr.length; i++) {
 
-                let rl: number = grammar[i].rumus.length;
-                for (let j: number = 0; j < rl - 2; j++) {
-                    tokenBaru.token.push(token[tokenCtr + j]);
-                }
+			debugGroupCollapsed('check rumus, idx ' + i)
+			let hasil: boolean = await this.check_rumus(grammarAr[i].rumus);
+			debugGroupEnd();
 
-                let kiri: IToken[] = token.slice(0, tokenCtr);
-                let kanan: IToken[] = token.slice(tokenCtr + grammar[i].rumus.length - 2);
+			if (hasil) {
+				this.tokenBaru(i);
+				adaTokenBaru = true;
+				return true;
+			}
+		}
 
-                console.groupCollapsed()
-                console.log('token:');
-                console.log(this.renderToken(token));
-                console.log('kiri:');
-                console.log(this.renderToken(kiri));
-                console.log('kanan:');
-                console.log(this.renderToken(kanan));
-                console.log('token baru:');
-                console.log(this.renderToken([tokenBaru]));
-                console.groupEnd();
 
-                while (token.length > 0) {
-                    token.pop();
-                }
+		// debugGroup();
+		return adaTokenBaru;
+	}
 
-                this.tambah(token, kiri);
-                this.tambah(token, [tokenBaru]);
-                this.tambah(token, kanan);
+	private static tokenBaru(i: number): void {
 
-                console.log('token: ' + this.renderToken(token));
+		// debugLog('token: ' + grammarAr[i].nama + '/index rumus: ' + i, true);
+		debugLog('[0]: ' + this.renderToken(token.slice(Math.max(tokenCtr - 1, 0), tokenCtr + 5)), true);
 
-                tokenCtr = 0;
-                console.groupEnd();
-                */
+		//lolos
+		//packaging
+		// debugOff();
+		// debugGroup('token baru');
+		// debugLog('check token pada ctr ' + tokenCtr + ' cocok dengan rumus: ' + grammarAr[i].nama);
 
-                this.tokenBaru(i);
+		// buat token
+		let tokenBaru: IToken = {
+			nama: grammarAr[i].nama,
+			nilai: [],
+			token: []
+		}
 
-                return true;
-            }
-        }
+		let rl: number = grammarAr[i].rumus[1].length;
+		for (let j: number = 0; j < rl; j++) {
+			tokenBaru.token.push(token[tokenCtr + j]);
+		}
+		// debugger;
 
-        // console.log('gak ada yang cocok');
-        // console.groupEnd();
+		let kiri: IToken[] = token.slice(0, tokenCtr);
+		let kanan: IToken[] = token.slice(tokenCtr + grammarAr[i].rumus[1].length);
 
-        tokenCtr++;
-        if (tokenCtr >= token.length) {
-            console.log('HABIS');
-            return false;
-        }
+		// debugOn();
+		// debugGroupCollapsed('')
+		// debugLog('token:');
+		// debugLog(this.renderToken(token));
+		// debugLog('kiri:');
+		// debugLog(this.renderToken(kiri));
+		// debugLog('kanan:');
+		// debugLog(this.renderToken(kanan));
+		// debugLog('token baru:');
+		// debugLog(this.renderToken([tokenBaru]));
+		// debugLog(tokenBaru);
+		// debugGroupEnd();
+		// debugOff();
 
-        // console.groupEnd();
-        return true;
-    }
+		while (token.length > 0) {
+			token.pop();
+		}
 
-    private static tokenBaru(i: number): void {
-        //lolos
-        //packaging
-        console.log('check token pada ctr ' + tokenCtr + ' cocok dengan rumus: ' + grammar[i].nama);
+		this.tambah(token, kiri);
+		this.tambah(token, [tokenBaru]);
+		this.tambah(token, kanan);
 
-        // buat token
-        let tokenBaru: IToken = {
-            nama: grammar[i].nama,
-            nilai: [],
-            token: []
-        }
+		// debugLog('token: ' + this.renderToken(token));
+		// debugGroupEnd();
 
-        let rl: number = grammar[i].rumus.length;
-        for (let j: number = 0; j < rl - 2; j++) {
-            tokenBaru.token.push(token[tokenCtr + j]);
-        }
+		// tokenCtr = 0;
+		// debugGroup();
+		debugLog('[1]: ' + this.renderToken(token.slice(Math.max(tokenCtr - 1, 0), tokenCtr + 5)), true);
+		// debugLog('', true);
+	}
 
-        let kiri: IToken[] = token.slice(0, tokenCtr);
-        let kanan: IToken[] = token.slice(tokenCtr + grammar[i].rumus.length - 2);
+	private static renderToken(token: IToken[]): string {
+		let hasil: string = '';
 
-        // console.groupCollapsed()
-        // console.log('token:');
-        // console.log(this.renderToken(token));
-        // console.log('kiri:');
-        // console.log(this.renderToken(kiri));
-        // console.log('kanan:');
-        // console.log(this.renderToken(kanan));
-        // console.log('token baru:');
-        // console.log(this.renderToken([tokenBaru]));
-        // console.groupEnd();
+		token.forEach((item: IToken) => {
+			hasil += item.nama;
+			hasil += ' ';
+		})
 
-        while (token.length > 0) {
-            token.pop();
-        }
+		return hasil;
+	}
 
-        this.tambah(token, kiri);
-        this.tambah(token, [tokenBaru]);
-        this.tambah(token, kanan);
+	private static tambah(sumber: IToken[], tambahan: IToken[]) {
+		tambahan.forEach((item: IToken) => {
+			sumber.push(item);
+		});
+	}
 
-        console.log('token: ' + this.renderToken(token));
+	private static async check_rumus(rumus: string[][]): Promise<boolean> {
+		let rumusAwal: string[] = rumus[0];
+		let inti: string[] = rumus[1];
+		let akhir: string[] = rumus[2]
 
-        tokenCtr = 0;
-        // console.groupEnd();
-    }
+		debugOff();
+		debugGroupCollapsed('check token = rumus');
+		debugLog('rumus:');
+		debugLog(rumus);
+		debugLog('awal ');
+		debugLog(rumusAwal);
+		debugLog('inti:');
+		debugLog(inti);
+		debugLog('akhir:');
+		debugLog(akhir);
+		debugLog('mulai: ' + tokenCtr);
+		debugGroupEnd();
 
-    private static renderToken(token: IToken[]): string {
-        let hasil: string = '';
 
-        token.forEach((item: IToken) => {
-            hasil += item.nama;
-            hasil += ' ';
-        })
+		//check awal
+		debugLog('check awal');
+		for (let i: number = 0; i < rumusAwal.length; i++) {
+			if (tokenCtr > 0) {
+				if (token[tokenCtr - 1].nama == rumusAwal[i]) {
+					debugLog('awal salah, token: ' + token[tokenCtr - 1].nama);
+					return false;
+				}
+				else {
+					debugLog('awal gak di check');
+				}
+			}
+		}
 
-        return hasil;
-    }
+		//check inti
+		debugLog('check inti');
+		for (let i: number = 0; i < inti.length; i++) {
 
-    private static tambah(sumber: IToken[], tambahan: IToken[]) {
-        tambahan.forEach((item: IToken) => {
-            sumber.push(item);
-        });
-    }
+			if (tokenCtr + i >= token.length) {
+				return false;
+			}
 
-    private static check_rumus(mulai: number, rumus: string[][]): boolean {
-        let awal: string[] = rumus[0];
-        let inti: string[] = rumus[1];
-        let akhir: string[] = rumus[2]
+			if (token[tokenCtr + i].nama != inti[i]) {
+				debugLog('token tidak sama, token: ' + token[tokenCtr + i].nama + '/rumus: ' + inti[i]);
+				return false;
+			}
+		}
 
-        console.groupCollapsed('check token = rumus');
-        console.log('rumus:');
-        console.log(rumus);
-        console.log('awal ');
-        console.log(awal);
-        console.log('inti:');
-        console.log(inti);
-        console.log('akhir:');
-        console.log(akhir);
-        console.log('mulai: ' + mulai);
+		//check akhir
+		debugLog('check akhir');
 
-        //check awal
-        console.log('check awal');
-        if (this.cocok(token[mulai].nama, awal)) {
-            console.groupEnd();
-            return false;
-        }
+		if (tokenCtr + inti.length < token.length) {
+			let idx: number = tokenCtr + inti.length;
+			for (let i: number = 0; i < akhir.length; i++) {
+				if (token[idx].nama == akhir[i]) {
+					debugLog('akhir cocok return false');
+					return false;
+				}
+			}
+		}
+		else {
+			debugLog('check akhir gak di check: tokenCtr ' + tokenCtr + '/dataStr pjg: ' + token.length);
+		}
 
-        //check inti
-        console.log('check inti');
-        for (let i: number = 0; i < inti.length; i++) {
-            if (!this.cocok(token[mulai + i].nama, inti[i])) {
-                console.groupEnd();
-                return false;
-            }
-        }
+		// debugGroup();
+		return true;
+	}
 
-        //check akhir
-        console.log('check akhir');
-        if (mulai + rumus.length <= token.length - 1) {
-            if (this.cocok(token[mulai + rumus.length].nama, akhir)) {
-                console.groupEnd();
-                return false;
-            }
-        }
-
-        console.groupEnd();
-        return true;
-    }
-
-    private static cocok(diCheck: string, check: string) {
-
-        console.group('cocok:');
-        console.log('check:');
-        console.log(check);
-        console.log('dicheck: ' + diCheck);
-
-        let hasil: boolean = true;
-
-        if (check.length == 0) {
-            console.log('kosong, false');
-            console.groupEnd();
-            return false;
-        }
-
-        for (let i: number = 0; i < check.length; i++) {
-
-            console.log('check: idx ' + i + '/value: ' + check[i]);
-
-            if (diCheck == check[i]) {
-
-                // console.log('hasil: true');
-                // console.groupEnd();
-
-            }
-            else {
-                hasil = false;
-            }
-        }
-
-        console.log('hasil: ' + hasil);
-        console.groupEnd();
-        return hasil;
-    }
 }
