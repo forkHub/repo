@@ -13,6 +13,10 @@ binopOpr.forEach((item) => {
 async function init() {
     let cache = window.localStorage.getItem('parse');
     let file = await load();
+    let reload = true;
+    if (reload) {
+        cache = '';
+    }
     if (cache && cache != '') {
         let data = JSON.parse(cache);
         let terj = await Terjemah.terjemah(data[0]);
@@ -30,6 +34,7 @@ async function init() {
 }
 init().then(() => {
     console.log('selesai');
+    console.log(Terjemah.kedalaman);
 }).catch((e) => {
     console.log(e);
 });

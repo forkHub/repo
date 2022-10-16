@@ -1,61 +1,37 @@
 class Terjemah {
+	static readonly kedalaman: string[] = [];
+	static readonly kurungStak: number[] = [];
+	static readonly kontek: string[] = [];
+	private static kontekBinopMin: boolean = false;
+	private static tab: number = 0;
 
 	static async terjemah(data: IToken): Promise<string> {
 		let hasil: string = '';
 
-		debugOn();
+		this.kedalaman.push(data.nama);
+
 		if (data.nama == Kons.STMT) {
-			debugLog('');
+			console.log('');
 		}
-		debugLog('terjemah ' + data.nama);
-		// debugLog(data);
+		console.log('terjemah ' + data.nama);
 
-		if (data.nama == Kons.STMT2) {
-			hasil += await this.terjmahStmt2(data)
-		}
-
-		// else if (data.nama == Kons.STMT) {
-		// 	hasil += await this.terjemahStmt(data);
-		// }
-
-		else if (data.nama == Kons.IF_ELSE) {
-			hasil += await this.terjemahIfElse(data);
-		}
-
-		else if (data.nama == Kons.IF) {
-			hasil += await this.terjmahIf(data);
-		}
-
-		// else if (data.nama == '{}') {
-		// 	hasil += await this.terjemahKurungKeriting(data);
-		// }
-
-		//exp
-		else if (data.nama == Kons.EXP) {
-			// debugLog('exp__');
-			hasil += await this.terjemahExp(data);
-		}
-
-		else if (data.nama == '()') {
-			hasil += await this.terjemahKurung(data);
-		}
-
-		// else if (data.nama == Kons.BINOP) {
-		// 	hasil += await this.terjemahBinop(data);
-		// }
-
-		else if (data.nilai.length > 0) {
-
+		if (data.nilai.length > 0) {
 			let kata: string = data.nilai[0];
 
-			hasil += kata + ' ';
+			if (data.nama == Kons.OPR) {
+				hasil += ' ' + kata + ' ';
+			}
+			else {
+				hasil += this.terjemahKata(kata);
+			}
 
-			if (kata == '{') {
-				hasil += '\n';
-			}
-			else if (kata == '}') {
-				hasil += '\n';
-			}
+			// if (kata == '{') {
+			// 	hasil += '\n';
+			// }
+			// else if (kata == '}') {
+			// 	hasil += '\n';
+			// }
+
 		}
 
 		else if (data.token.length > 0) {
@@ -66,75 +42,57 @@ class Terjemah {
 			throw Error('item belum di kerjakan: ' + data.nama);
 		}
 
+		this.kedalaman.pop();
 		return hasil;
 	}
 
 	private static async terjemahGenerik(data: IToken): Promise<string> {
 		let hasil: string = '';
 
-		for (let i: number = 0; i < data.token.length; i++) {
-			hasil += await this.terjemah(data.token[i]);
-		}
+		if (data.nama == Kons.FOR_STMT) {
 
-		return hasil;
-	}
+			let varIsi: IToken[] = [];
+			let varIsiStr: string;
+			this.getVarIsi(data, varIsi);
+			varIsiStr = await this.terjemah(varIsi[0]);
 
-	// private static async terjemahKurungKeriting(data: IToken): Promise<string> {
-	// 	let hasil: string = '';
+			let binop: IToken[] = [];
+			this.getToken(data, binop, Kons.BINOP);
 
-	// 	if (data.token.length == 2) {
-	// 		hasil += '{}';
-	// 	}
-	// 	else if (data.token.length == 3) {
-	// 		hasil += '{' + await this.terjemah(data.token[1]) + '}';
-	// 	}
-	// 	else {
-	// 		debugger;
-	// 	}
+			this.kontek.push(data.nama);
 
-	// 	return hasil;
-	// }
+			let hasil: string = this.spasiTab() + 'for ' + varIsiStr + ' to ' + (await this.terjemah(binop[0].token[2])) + '';
 
-	// private static async terjemahBinop(data: IToken): Promise<string> {
-	// 	let hasil: string = '';
-
-	// 	for (let i: number = 0; i < data.token.length; i++) {
-	// 		hasil += await this.terjemah(data.token[i]);
-	// 	}
-
-	// 	return hasil;
-	// }
-
-	private static async terjemahKurung(data: IToken): Promise<string> {
-		if (data.token.length == 1) {
-			return await this.terjemah(data.token[0]);
-		}
-		else {
-			let hasil: string = '';
-
-			for (let i: number = 0; i < data.token.length; i++) {
-				hasil += await this.terjemah(data.token[i]);
-			}
+			let kr: IToken[] = [];
+			this.getToken(data, kr, '{}');
+			hasil += await this.terjemah(kr[0]);
 
 			return hasil;
 		}
-	}
 
-	private static async terjemahExp(data: IToken): Promise<string> {
-		return await this.terjemah(data.token[0]);
-	}
+		if (data.nama == Kons.BINOP) {
+			if (data.token.length == 2) {
+				let hasil: string = '';
+				hasil += await this.terjemah(data.token[0]);
+				hasil += ' ';
+				this.kontekBinopMin = true;
+				hasil += await this.terjemah(data.token[1]);
+				this.kontekBinopMin = false;
 
-	//'if', Kons.EXP, '{}'
-	private static async terjmahIf(data: IToken): Promise<string> {
-		let hasil: string = '';
+				return hasil;
+			}
+		}
 
-		hasil += 'if ' + await this.terjemah(data.token[1]) + await this.terjemah(data.token[2]);
-
-		return hasil;
-	}
-
-	private static async terjemahIfElse(data: IToken): Promise<string> {
-		let hasil: string = '';
+		if (data.nama == Kons.MIN) {
+			if (this.kontekBinopMin) {
+				debugger;
+				let hasil: string = '';
+				hasil += await this.terjemah(data.token[0]);
+				hasil += ' ';
+				hasil += await this.terjemah(data.token[1]);
+				return hasil;
+			}
+		}
 
 		for (let i: number = 0; i < data.token.length; i++) {
 			hasil += await this.terjemah(data.token[i]);
@@ -143,116 +101,158 @@ class Terjemah {
 		return hasil;
 	}
 
-	// private static async terjemahStmt(data: IToken): Promise<string> {
-	// 	let hasil: string = '';
-
-	// 	if (data.nama != Kons.STMT) throw Error('');
-
-	// 	for (let i: number = 0; i < data.token.length; i++) {
-	// 		hasil += await this.terjemah(data.token[i]);
-	// 	}
-
-	// 	return hasil;
-	// }
-
-	private static async terjmahStmt2(data: IToken): Promise<string> {
-		if (data.nama != Kons.STMT2) throw Error('');
-		let stmtAr: IToken[] = [];
+	private static spasiTab(): string {
 		let hasil: string = '';
 
-		//pecah statement
-		this.pecahStmt(data, stmtAr);
-
-		for (let i: number = 0; i < stmtAr.length; i++) {
-			hasil += await this.terjemah(stmtAr[i]);
+		for (let i: number = 0; i < this.tab; i++) {
+			hasil += '    ';
 		}
 
 		return hasil;
 	}
 
-	private static pecahStmt(data: IToken, hasil: IToken[]): void {
-		if (data.nama != Kons.STMT2) throw Error('');
+	private static terjemahKata(kata: string): string {
 
-		let tokenAr: IToken[] = data.token;
+		if (kata == '=') {
+			return ' = ';
+		}
 
-		// debugger;
+		if (kata == 'while') {
+			this.kontek.push(kata);
+		}
 
-		hasil.unshift(tokenAr[1]);
-		if (tokenAr[0].nama == Kons.STMT) {
-			hasil.unshift(tokenAr[0]);
-			return;
+		if (kata == 'else') {
+			this.kontek.push(kata);
 		}
-		else if (tokenAr[0].nama == Kons.STMT2) {
-			this.pecahStmt(tokenAr[0], hasil);
+
+		if (kata == 'else if') {
+			this.kontek.push(kata);
+			return 'ElseIf '
 		}
-		else {
-			throw Error('');
+
+		if (kata == '(') {
+			this.kurungStak.push(0);
+			console.log('push: ' + this.kurungStak.length);
 		}
+
+		if (kata == ')') {
+			this.kurungStak.pop();
+			console.log('pop: ' + this.kurungStak.length);
+		}
+
+		if (kata == '{') {
+			this.tab++;
+
+			if (this.kontek.length > 0) {
+				let kontekStr = this.kontek[this.kontek.length - 1];
+				if (kontekStr == 'function') {
+					return '\n';
+				}
+				else if (kontekStr == 'while') {
+					return '\n';
+				}
+				else if (kontekStr == 'else if') {
+					return '\n';
+				}
+				else if (kontekStr == 'else') {
+					return '\n';
+				}
+				else if (kontekStr == Kons.FOR_STMT) {
+					return '\n';
+				}
+				else if (kontekStr == 'if') {
+					return ' Then\n';
+				}
+			}
+		}
+
+		if (kata == '}') {
+			this.tab--;
+
+			let kstr: string = this.kontek.pop();
+			if (kstr == 'if') {
+				return this.spasiTab() + 'EndIf\n';
+			}
+			else if (kstr == 'while') {
+				return this.spasiTab() + 'Wend\n';
+			}
+			else if (kstr == 'else if') {
+				return '\n';
+			}
+			else if (kstr == 'else') {
+				return this.spasiTab() + 'EndIf\n';
+			}
+			else if (kstr == Kons.FOR_STMT) {
+				return this.spasiTab() + 'Next\n';
+			}
+			else if (kstr == 'function') {
+				return this.spasiTab() + 'EndFunction\n';
+			}
+		}
+
+		if (kata == 'function') {
+			this.kontek.push(kata);
+			return this.spasiTab() + 'Function ';
+		}
+
+		if (kata == 'if') {
+			this.kontek.push(kata);
+			return this.spasiTab() + 'If ';
+		}
+
+		if (kata == ';') {
+			console.log('stack lengh ' + this.kurungStak.length);
+
+			// debugger;
+			if (this.kurungStak.length > 0) {
+				return '; ';
+			}
+			else {
+				return '\n';
+			}
+		}
+
+		//check spasi
+		let spasi: boolean = this.checkSpasi(kata)
+		if (spasi) {
+			kata += ' ';
+		}
+
+		kata = this.spasiTab() + kata;
+
+		return kata;
 	}
 
-}
+	private static checkSpasi(kata: string): boolean {
+		for (let i: number = 0; i < parser.kataCadangan.length; i++) {
+			if (kata == parser.kataCadangan[i]) {
+				if (kata == 'true') return false;
+				if (kata == 'false') return false;
+				return true;
+			}
+		}
 
-class Kondisi {
-
-	static async check(data: IToken): Promise<boolean> {
-		data;
-
-		// if (data.nama = Kons.ELSE_IF_ELSE) {
-		// 	Terjemah.hasil += await this.terjemahElseIfElse(data);
-		// }
-		// if (data.nama = Kons.ELSE) {
-		// 	return false;
-		// 	// Terjemah.hasil += await this.terjemahElseIfElse(data);
-		// }
-		// if (data.nama = Kons.ELSE_IF) {
-		// 	return false;
-		// 	// Terjemah.hasil += await this.terjemahElseIfElse(data);
-		// }
-		// if (data.nama = Kons.ELSE_IF2) {
-		// 	return false;
-		// 	// Terjemah.hasil += await this.terjemahElseIfElse(data);
-		// }
-		// if (data.nama = Kons.IF) {
-		// 	return false;
-		// 	// Terjemah.hasil += await this.terjemahElseIfElse(data);
-		// }
-		// else {
-		// 	return false;
-		// }
+		if (kata == ',') return true;
 
 		return false;
 	}
 
-	//Kons.ELSE_IF2, Kons.ELSE
-	//Kons.ELSE_IF, Kons.ELSE
-	static async terjemahElseIfElse(data: IToken): Promise<string> {
-		let hasil: string = '';
+	private static getVarIsi(token: IToken, hasil: IToken[]): void {
+		this.getToken(token, hasil, Kons.VAR_ISI);
+	}
 
-		for (let i: number = 0; i < data.token.length; i++) {
-			hasil += await Terjemah.terjemah(data.token[i]);
+	private static getToken(tokenSumber: IToken, hasil: IToken[], namaToken: string): void {
+		if (hasil.length > 0) {
+			return;
 		}
 
-		return hasil;
-	}
-
-	static async terjemahElseIf(data: IToken): Promise<string> {
-		let hasil: string = '';
-
-		for (let i: number = 0; i < data.token.length; i++) {
-			hasil += await Terjemah.terjemah(data.token[i]);
+		if (tokenSumber.nama == namaToken) {
+			hasil.push(tokenSumber);
+			return;
 		}
 
-		return hasil;
+		for (let i: number = 0; i < tokenSumber.token.length; i++) {
+			this.getToken(tokenSumber.token[i], hasil, namaToken);
+		}
 	}
-
-	//'else', '{}'
-	static async terjemahElse(data: IToken): Promise<string> {
-		let hasil: string = '';
-
-		hasil += ' else ' + await Terjemah.terjemah(data.token[1]);
-
-		return hasil;
-	}
-
-
 }

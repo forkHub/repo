@@ -17,6 +17,11 @@ binopOpr.forEach((item) => {
 async function init(): Promise<void> {
 	let cache: string = window.localStorage.getItem('parse');
 	let file: string = await load();
+	let reload: boolean = true;
+
+	if (reload) {
+		cache = '';
+	}
 
 	if (cache && cache != '') {
 
@@ -43,6 +48,7 @@ async function init(): Promise<void> {
 
 init().then(() => {
 	console.log('selesai');
+	console.log(Terjemah.kedalaman);
 }).catch((e) => {
 	console.log(e);
 })

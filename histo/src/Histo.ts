@@ -1,17 +1,39 @@
+//panjang dan lebar gambar
 let pj: number = 0;
 let lb: number = 0;
 
+//data warna merah, hijau dan biru
 let r: number[] = new Array(255);
 let g: number[] = new Array(255);
 let b: number[] = new Array(255);
 
-let canvasR: HTMLCanvasElement;
-let ctxR: CanvasRenderingContext2D;
-let ctr: number = 0;
+let canvasH: HTMLCanvasElement;	//canvas untuk menggambar histogram
+let ctxH: CanvasRenderingContext2D;	//context dari canvas histogram
+
+let ctx: CanvasRenderingContext2D	//context dari gambar sumber
+
+let ctr: number = 0;	//counter untuk menghitung sebelum menggambar
 
 window.onload = () => {
+
+	//inisialisasi warna awal
+	for (let i: number = 0; i < 255; i++) {
+		r[i] = 0;
+		g[i] = 0;
+		b[i] = 0;
+	}
+
+	initCanvas();
+	initCanvasHisto();
+	histo(ctx)
+		.catch((e) => {
+			console.error(e);
+		});
+}
+
+//inisialisasi canvas buat gambar
+function initCanvas(): void {
 	let canvas: HTMLCanvasElement = document.createElement('canvas');
-	let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
 	let img: HTMLImageElement = document.getElementById('gbr') as HTMLImageElement;
 
 	canvas.style.width = img.naturalWidth + 'px';
@@ -22,30 +44,18 @@ window.onload = () => {
 	pj = img.naturalWidth;
 	lb = img.naturalHeight;
 
-	document.body.appendChild(canvas);
+	ctx = canvas.getContext('2d');
 	ctx.drawImage(img, 0, 0);
-
-	for (let i: number = 0; i < 255; i++) {
-		r[i] = 0;
-		g[i] = 0;
-		b[i] = 0;
-	}
-
-	initCanvasHisto();
-
-	histo(ctx)
-		.catch((e) => {
-			console.error(e);
-		});
 }
 
+//inisialiasi canvas untuk menggambar histogram
 function initCanvasHisto(): void {
-	canvasR = document.createElement('canvas');
-	ctxR = canvasR.getContext('2d');
-	document.body.appendChild(canvasR);
+	canvasH = document.createElement('canvas');
+	ctxH = canvasH.getContext('2d');
+	document.body.appendChild(canvasH);
 
-	canvasR.setAttribute('width', '255');
-	canvasR.setAttribute('height', '255');
+	canvasH.setAttribute('width', '255');
+	canvasH.setAttribute('height', '255');
 }
 
 async function gambarHisto(ctx: CanvasRenderingContext2D): Promise<void> {
@@ -58,8 +68,10 @@ async function gambarHisto(ctx: CanvasRenderingContext2D): Promise<void> {
 		if (b[i] > max) max = b[i];
 	}
 
+	//bersihkan layar
 	ctx.clearRect(0, 0, 255, 255);
 
+	//gambar red
 	ctx.beginPath();
 	ctx.strokeStyle = '#ff0000';
 	ctx.moveTo(0, 0);
@@ -85,19 +97,17 @@ async function gambarHisto(ctx: CanvasRenderingContext2D): Promise<void> {
 		ctx.lineTo(i, 255 - (b[i] / max) * 255);
 	}
 	ctx.stroke();
-
 }
-
 
 async function histo(ctx: CanvasRenderingContext2D): Promise<void> {
 	for (let i: number = 0; i < pj; i++) {
 		for (let j: number = 0; j < lb; j++) {
-			await proses(ctx, i, j);
+			await prosesPixel(ctx, i, j);
 		}
 	}
 }
 
-async function proses(ctx: CanvasRenderingContext2D, i: number, j: number): Promise<void> {
+async function prosesPixel(ctx: CanvasRenderingContext2D, i: number, j: number): Promise<void> {
 	let warna: ImageData;	//rgba
 
 	warna = ctx.getImageData(i, j, 1, 1);
@@ -107,8 +117,16 @@ async function proses(ctx: CanvasRenderingContext2D, i: number, j: number): Prom
 
 	ctr++;
 	if (ctr > 100) {
-		await gambarHisto(ctxR);
-		await ha.comp.Util.delay(0);
+		await gambarHisto(ctxH);
+		await delay(0);
 		ctr = 0;
 	}
+}
+
+async function delay(m: number = 10): Promise<void> {
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve()
+		}, m);
+	})
 }

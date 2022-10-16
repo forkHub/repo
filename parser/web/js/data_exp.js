@@ -66,12 +66,8 @@ const expToken = [
     },
     {
         nama: Kons.MIN,
-        rumus: [[], ['-', Kons.EXP], []]
-    },
-    {
-        nama: Kons.MIN,
-        rumus: [[], ['+', Kons.EXP], []]
-    },
+        rumus: [[Kons.EXP, Kons.ANGKA, Kons.TEKS, Kons.KATA, ')', Kons.KURUNG], ['-', Kons.EXP], []]
+    }
 ];
 const rumusBinop = [
     {
@@ -81,6 +77,14 @@ const rumusBinop = [
     {
         nama: Kons.BINOP,
         rumus: [['typeof'], [Kons.EXP, Kons.OPR, Kons.EXP], []]
+    },
+    {
+        nama: Kons.BINOP,
+        rumus: [[], [Kons.EXP, '+', Kons.EXP], []]
+    },
+    {
+        nama: Kons.BINOP,
+        rumus: [[], [Kons.EXP, '-', Kons.EXP], []]
     },
 ];
 const rumusKurung = [

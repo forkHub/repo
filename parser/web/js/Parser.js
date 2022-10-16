@@ -256,7 +256,7 @@ class Grammar {
         // tokenCtr = 0;
         // debugGroup();
         debugLog('[1]: ' + this.renderToken(token.slice(Math.max(tokenCtr - 1, 0), tokenCtr + 5)), true);
-        // debugLog('', true);
+        debugLog('', true);
     }
     static renderToken(token) {
         let hasil = '';
@@ -271,27 +271,33 @@ class Grammar {
             sumber.push(item);
         });
     }
-    static async check_rumus(rumus) {
+    static async check_rumus(rumus, caseSensitif = false) {
         let rumusAwal = rumus[0];
         let inti = rumus[1];
         let akhir = rumus[2];
-        debugOff();
-        debugGroupCollapsed('check token = rumus');
-        debugLog('rumus:');
-        debugLog(rumus);
-        debugLog('awal ');
-        debugLog(rumusAwal);
-        debugLog('inti:');
-        debugLog(inti);
-        debugLog('akhir:');
-        debugLog(akhir);
-        debugLog('mulai: ' + tokenCtr);
-        debugGroupEnd();
+        // debugOff();
+        // debugGroupCollapsed('check token = rumus');
+        // debugLog('rumus:');
+        // debugLog(rumus);
+        // debugLog('awal ');
+        // debugLog(rumusAwal);
+        // debugLog('inti:');
+        // debugLog(inti);
+        // debugLog('akhir:');
+        // debugLog(akhir);
+        // debugLog('mulai: ' + tokenCtr);
+        // debugGroupEnd();
         //check awal
         debugLog('check awal');
         for (let i = 0; i < rumusAwal.length; i++) {
             if (tokenCtr > 0) {
-                if (token[tokenCtr - 1].nama == rumusAwal[i]) {
+                let namaToken = token[tokenCtr - 1].nama;
+                let rumusAwalTeks = rumusAwal[i];
+                if (!caseSensitif) {
+                    namaToken = namaToken.toLowerCase();
+                    rumusAwalTeks = rumusAwalTeks.toLowerCase();
+                }
+                if (namaToken == rumusAwalTeks) {
                     debugLog('awal salah, token: ' + token[tokenCtr - 1].nama);
                     return false;
                 }

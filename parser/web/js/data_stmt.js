@@ -59,7 +59,7 @@ const rumusStmt = [
     //assignment
     {
         nama: Kons.VAR_ISI,
-        rumus: [['var'], [Kons.KATA, '=', Kons.EXP], []]
+        rumus: [['var'], [Kons.KATA, '=', Kons.EXP], [Kons.MIN, Kons.OPR, '+', '-']]
     },
     {
         nama: Kons.VAR_ISI,
@@ -71,7 +71,7 @@ const rumusStmt = [
     },
     {
         nama: Kons.DEK_VAR,
-        rumus: [[], ['var', Kons.KATA, '=', Kons.EXP], [Kons.OPR]]
+        rumus: [[], ['var', Kons.KATA, '=', Kons.EXP], [Kons.OPR, '+', '-', Kons.MIN]]
     },
     {
         nama: '{}',
@@ -102,12 +102,8 @@ const rumusStmt = [
         rumus: [[], [Kons.DEK_FUNGSI1, '{}'], []]
     },
     {
-        nama: Kons.DEK_VAR,
-        rumus: [[], ['var', Kons.KATA, '=', Kons.EXP], []]
-    },
-    {
         nama: Kons.RETURN_STMT,
-        rumus: [[], ['return', Kons.EXP], [Kons.OPR]]
+        rumus: [[], ['return', Kons.EXP], [Kons.OPR, '+', '-', Kons.MIN]]
     },
     //stmt convert
     {
@@ -146,9 +142,9 @@ const rumusStmt = [
     {
         nama: Kons.STMT,
         rumus: [
-            [Kons.OPR, ',', '=', 'return', 'if', 'else if', 'while', 'for'],
+            [Kons.OPR, ',', '=', 'return', 'if', 'else if', 'while', 'for', '+', '-'],
             [Kons.EXP],
-            [Kons.OPR, ',', '=', Kons.OPR, '+', '-']
+            [Kons.OPR, ',', '=', '+', '-', Kons.MIN]
         ]
     },
 ];

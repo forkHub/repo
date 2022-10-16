@@ -322,7 +322,7 @@ class Grammar {
 		// tokenCtr = 0;
 		// debugGroup();
 		debugLog('[1]: ' + this.renderToken(token.slice(Math.max(tokenCtr - 1, 0), tokenCtr + 5)), true);
-		// debugLog('', true);
+		debugLog('', true);
 	}
 
 	private static renderToken(token: IToken[]): string {
@@ -342,30 +342,38 @@ class Grammar {
 		});
 	}
 
-	private static async check_rumus(rumus: string[][]): Promise<boolean> {
+	private static async check_rumus(rumus: string[][], caseSensitif: boolean = false): Promise<boolean> {
 		let rumusAwal: string[] = rumus[0];
 		let inti: string[] = rumus[1];
 		let akhir: string[] = rumus[2]
 
-		debugOff();
-		debugGroupCollapsed('check token = rumus');
-		debugLog('rumus:');
-		debugLog(rumus);
-		debugLog('awal ');
-		debugLog(rumusAwal);
-		debugLog('inti:');
-		debugLog(inti);
-		debugLog('akhir:');
-		debugLog(akhir);
-		debugLog('mulai: ' + tokenCtr);
-		debugGroupEnd();
+		// debugOff();
+		// debugGroupCollapsed('check token = rumus');
+		// debugLog('rumus:');
+		// debugLog(rumus);
+		// debugLog('awal ');
+		// debugLog(rumusAwal);
+		// debugLog('inti:');
+		// debugLog(inti);
+		// debugLog('akhir:');
+		// debugLog(akhir);
+		// debugLog('mulai: ' + tokenCtr);
+		// debugGroupEnd();
 
 
 		//check awal
 		debugLog('check awal');
 		for (let i: number = 0; i < rumusAwal.length; i++) {
 			if (tokenCtr > 0) {
-				if (token[tokenCtr - 1].nama == rumusAwal[i]) {
+				let namaToken: string = token[tokenCtr - 1].nama;
+				let rumusAwalTeks: string = rumusAwal[i]
+
+				if (!caseSensitif) {
+					namaToken = namaToken.toLowerCase();
+					rumusAwalTeks = rumusAwalTeks.toLowerCase();
+				}
+
+				if (namaToken == rumusAwalTeks) {
 					debugLog('awal salah, token: ' + token[tokenCtr - 1].nama);
 					return false;
 				}
