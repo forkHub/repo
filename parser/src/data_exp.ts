@@ -53,7 +53,7 @@ const expToken: IRumus[] = [
 	//exp dari kata
 	{
 		nama: Kons.EXP,
-		rumus: [['var'], [Kons.KATA], ['=', '(', Kons.KURUNG, '[', '[]', '{', '{}']]
+		rumus: [['var', 'let', 'const'], [Kons.KATA], ['=', '(', Kons.KURUNG, '[', '[]', '{', '{}']]
 	},
 
 	//kata - kurung => func() => exp
