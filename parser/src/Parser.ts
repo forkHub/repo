@@ -377,6 +377,10 @@ class Grammar {
             }
         }
 
+        window.onload = async () => {
+
+        }
+
         console.groupEnd();
         return true;
     }
