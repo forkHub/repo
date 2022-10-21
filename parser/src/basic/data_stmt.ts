@@ -1,144 +1,70 @@
 namespace ha.parse.basic {
+
 	export const rumusStmt: IRumus[] = [
+		//while exp
 		{
 			nama: Kons.WHILE,
-			rumus: [[], ['while', Kons.EXP, '{}'], []]
+			rumus: [[], ['while', Kons.EXP], [Kons.OPR, '+', '-', ',', '(', Kons.KURUNG, Kons.MIN]]
 		},
 
-		//if then 
+		//if exp then 
 		{
 			nama: Kons.IF,
-			rumus: [[], ['if', Kons.EXP, '{}'], []]
+			rumus: [[], ['if', Kons.EXP, 'then', Kons.EXP], []]
 		},
 
+		//else if exp then
 		{
 			nama: Kons.ELSE_IF,
-			rumus: [[], ['else if', Kons.EXP, '{}'], []]
-		},
-
-		{
-			nama: Kons.ELSE_IF2,
-			rumus: [[Kons.ELSE_IF2], [Kons.ELSE_IF, Kons.ELSE_IF], []]
-		},
-
-		{
-			nama: Kons.ELSE_IF2,
-			rumus: [[], [Kons.ELSE_IF2, Kons.ELSE_IF], []]
-		},
-
-		{
-			nama: Kons.ELSE_IF_ELSE,
-			rumus: [[], [Kons.ELSE_IF2, Kons.ELSE], []]
-		},
-
-		{
-			nama: Kons.ELSE_IF_ELSE,
-			rumus: [[Kons.ELSE_IF, Kons.ELSE_IF2], [Kons.ELSE_IF, Kons.ELSE], []]
+			rumus: [[], ['else if', Kons.EXP, 'then'], []]
 		},
 
 		{
 			nama: Kons.ELSE,
-			rumus: [[], ['else', '{}'], []]
-		},
-
-		{
-			nama: Kons.IF_ELSE,
-			rumus: [
-				[],
-				[Kons.IF, Kons.ELSE],
-				[]
-			]
-		},
-
-		{
-			nama: Kons.IF_ELSE,
-			rumus: [
-				[],
-				[Kons.IF, Kons.ELSE_IF_ELSE],
-				[]
-			]
+			rumus: [[], ['else'], []]
 		},
 
 		{
 			nama: Kons.FOR_STMT,
 			rumus: [
 				[],
-				['for', '(', Kons.STMT2, ')', '{}'],
-				[]
+				['for', Kons.VAR_ISI, 'to', Kons.EXP],
+				[Kons.EXP, '+', '-', '(', Kons.MIN]
 			]
 		},
 
 		//assignment
+		//a = 1
 		{
 			nama: Kons.VAR_ISI,
 			rumus: [['var'], [Kons.KATA, '=', Kons.EXP], [Kons.MIN, Kons.OPR, '+', '-']]
 		},
-		{
-			nama: Kons.VAR_ISI,
-			rumus: [['='], [Kons.EXP, '++'], []]
-		},
 
+		//var a
 		{
 			nama: Kons.DEK_VAR,
 			rumus: [[], ['var', Kons.KATA], ['=']]
 		},
+
+		//var a = exp
 		{
 			nama: Kons.DEK_VAR,
 			rumus: [[], ['var', Kons.KATA, '=', Kons.EXP], [Kons.OPR, '+', '-', Kons.MIN]]
 		},
-		{
-			nama: '{}',
-			rumus: [[], ['{', '}'], []]
-		},
-		{
-			nama: '{}',
-			rumus: [[], ['{', Kons.STMT, '}'], []]
-		},
-		{
-			nama: '{}',
-			rumus: [[], ['{', Kons.STMT2, '}'], []]
-		},
-		{
-			nama: Kons.STMT2,
-			rumus: [[Kons.STMT], [Kons.STMT, Kons.STMT], [';']]
-		},
-		{
-			nama: Kons.STMT2,
-			rumus: [[Kons.STMT], [Kons.STMT2, Kons.STMT], [';']]
-		},
-		{
-			nama: Kons.DEK_FUNGSI1,
-			rumus: [[], ['function', Kons.KATA, Kons.KURUNG], []]
-		},
+
 		{
 			nama: Kons.DEK_FUNGSI,
-			rumus: [[], [Kons.DEK_FUNGSI1, '{}'], []]
+			rumus: [[], ['function', Kons.KATA, Kons.KURUNG], []]
 		},
 
 		{
 			nama: Kons.RETURN_STMT,
-			rumus: [[], ['return', Kons.EXP], [Kons.OPR, '+', '-', Kons.MIN]]
-		},
-
-		//stmt convert
-		{
-			nama: Kons.STMT,
-			rumus: [[], [Kons.STMT, ';'], []]
+			rumus: [[], ['return', Kons.EXP], [Kons.OPR, '+', '-', Kons.MIN, Kons.KURUNG]]
 		},
 
 		{
 			nama: Kons.STMT,
 			rumus: [[], [Kons.RETURN_STMT], []]
-		},
-
-		{
-			nama: Kons.STMT,
-			rumus: [[], [Kons.IF_ELSE], []]
-		},
-
-		{
-			nama: Kons.STMT,
-			rumus: [[], [Kons.WHILE], []]
 		},
 
 		{
@@ -160,15 +86,6 @@ namespace ha.parse.basic {
 			nama: Kons.STMT,
 			rumus: [[], [Kons.VAR_ISI], []]
 		},
-
-		//stmt dar exp
-		{
-			nama: Kons.STMT,
-			rumus: [
-				[Kons.OPR, ',', '=', 'return', 'if', 'else if', 'while', 'for', '+', '-'],
-				[Kons.EXP],
-				[Kons.OPR, ',', '=', '+', '-', Kons.MIN]
-			]
-		},
 	]
+
 }

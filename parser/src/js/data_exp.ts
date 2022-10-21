@@ -1,4 +1,4 @@
-namespace ha.parse.basic {
+namespace ha.parse.js {
 	export const expToken: IRumus[] = [
 		{
 			nama: Kons.EXP,
@@ -87,11 +87,15 @@ namespace ha.parse.basic {
 		},
 		{
 			nama: Kons.BINOP,
-			rumus: [["-", '+'], [Kons.EXP, '+', Kons.EXP], []]
+			rumus: [['typeof'], [Kons.EXP, Kons.OPR, Kons.EXP], []]
 		},
 		{
 			nama: Kons.BINOP,
-			rumus: [['-', '+'], [Kons.EXP, '-', Kons.EXP], []]
+			rumus: [[], [Kons.EXP, '+', Kons.EXP], []]
+		},
+		{
+			nama: Kons.BINOP,
+			rumus: [[], [Kons.EXP, '-', Kons.EXP], []]
 		},
 	];
 
@@ -122,7 +126,7 @@ namespace ha.parse.basic {
 		},
 	];
 
-	const rumusArray: IRumus[] = [
+	export const rumusArray: IRumus[] = [
 		{
 			nama: '[]',
 			rumus: [[], ['[', ']'], []]

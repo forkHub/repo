@@ -1,4 +1,5 @@
 namespace ha.parse.basic {
+
 	export const cadangan: string[] = [
 		"elseif", "if", "endif", "then", "else",
 		"function", "endfunction",
@@ -20,4 +21,5 @@ namespace ha.parse.basic {
 		'!', '&', '|', '~', '^',
 		"and", "or"
 	];
+
 }

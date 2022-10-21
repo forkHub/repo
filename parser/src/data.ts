@@ -1,2 +1,4 @@
-const token: IToken[] = [];
-const grammarAr: IRumus[] = [];
+namespace ha.parse {
+    export const token: IToken[] = [];
+    export const grammarAr: IRumus[] = [];
+}
