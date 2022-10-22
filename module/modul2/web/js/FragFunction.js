@@ -58,6 +58,10 @@ class FragFunction {
     static tombolViewKlik() {
     }
     static tombolEditKlik() {
+        if (!this.dipilih) {
+            console.error('tidak ada yang dipilih');
+        }
+        //halaman edit fungsi
     }
 }
 FragFunction._cont = ha.comp.Util.getEl('div.fungsi div.daftar', document.body);

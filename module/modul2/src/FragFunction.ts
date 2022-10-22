@@ -80,6 +80,10 @@ class FragFunction {
 	}
 
 	static tombolEditKlik(): void {
+		if (!this.dipilih) {
+			console.error('tidak ada yang dipilih');
+		}
 
+		//halaman edit fungsi
 	}
 }
