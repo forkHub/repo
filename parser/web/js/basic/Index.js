@@ -8,17 +8,22 @@ var ha;
                 let file = await parse.load('./data/test_js.vb');
                 let barisAr = file.split('\n');
                 for (let i = 0; i < barisAr.length; i++) {
-                    console.group('parse ' + barisAr[i]);
-                    while (parse.token.length > 0) {
-                        parse.token.pop();
+                    console.group('parse ' + barisAr[i] + '|');
+                    if (barisAr[i].length > 0) {
+                        while (parse.token.length > 0) {
+                            parse.token.pop();
+                        }
+                        await parse.parser.pecah(barisAr[i]);
+                        console.log(parse.renderToken(parse.token));
+                        if (parse.token.length > 0) {
+                            await parse.Grammar.check();
+                            console.log(parse.renderToken(parse.token));
+                            if (parse.token.length > 1) {
+                                throw Error('');
+                            }
+                        }
                     }
-                    await parse.parser.pecah(barisAr[i]);
-                    await parse.Grammar.check();
-                    console.log(parse.token);
                     console.groupEnd();
-                    if (parse.token.length > 1) {
-                        throw Error('');
-                    }
                 }
                 window.localStorage.setItem('parse', JSON.stringify(parse.token));
             }

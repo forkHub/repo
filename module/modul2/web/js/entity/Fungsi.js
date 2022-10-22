@@ -1,5 +1,8 @@
 class Fungsi {
     constructor(id, judul) {
+        this.variable = [];
+        this.stmt = [];
+        this.param = [];
         this._id = id;
         this._judul = judul;
     }
@@ -9,18 +12,29 @@ class Fungsi {
             judul: obj.judul,
             param: obj.param,
             stmt: obj.stmt,
+            variable: obj.variable
         };
     }
     static fromObj(obj) {
         let hasil = new Fungsi(obj.id, obj.judul);
         //param
-        obj.param.forEach((id) => {
-            hasil.param.push(id);
-        });
+        if (obj.param) {
+            obj.param.forEach((id) => {
+                hasil.param.push(id);
+            });
+        }
+        //variable
+        if (obj.variable) {
+            obj.variable.forEach((id) => {
+                hasil.variable.push(id);
+            });
+        }
         //stmt
-        obj.stmt.forEach((id) => {
-            hasil.stmt.push(id);
-        });
+        if (obj.stmt) {
+            obj.stmt.forEach((id) => {
+                hasil.stmt.push(id);
+            });
+        }
         return hasil;
     }
     static hapus(id) {
@@ -29,6 +43,9 @@ class Fungsi {
                 this.daftar.splice(i, 1);
             }
         }
+    }
+    static getDipilih() {
+        return this.getId(Kontek.fungsiId);
     }
     static getId(id) {
         let hasil;

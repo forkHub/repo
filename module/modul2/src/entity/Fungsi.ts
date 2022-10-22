@@ -4,8 +4,10 @@ class Fungsi implements IFungsi {
 	private _id: number;
 	private _judul: string;
 
-	readonly stmt: number[];
-	readonly param: number[];
+
+	readonly variable: number[] = [];
+	readonly stmt: number[] = [];
+	readonly param: number[] = [];
 
 	constructor(id: number, judul: string) {
 		this._id = id;
@@ -18,6 +20,7 @@ class Fungsi implements IFungsi {
 			judul: obj.judul,
 			param: obj.param,
 			stmt: obj.stmt,
+			variable: obj.variable
 		}
 	}
 
@@ -25,14 +28,25 @@ class Fungsi implements IFungsi {
 		let hasil: IFungsi = new Fungsi(obj.id, obj.judul);
 
 		//param
-		obj.param.forEach((id: number) => {
-			hasil.param.push(id);
-		});
+		if (obj.param) {
+			obj.param.forEach((id: number) => {
+				hasil.param.push(id);
+			});
+		}
+
+		//variable
+		if (obj.variable) {
+			obj.variable.forEach((id: number) => {
+				hasil.variable.push(id);
+			});
+		}
 
 		//stmt
-		obj.stmt.forEach((id: number) => {
-			hasil.stmt.push(id);
-		});
+		if (obj.stmt) {
+			obj.stmt.forEach((id: number) => {
+				hasil.stmt.push(id);
+			});
+		}
 
 		return hasil;
 	}
@@ -43,6 +57,10 @@ class Fungsi implements IFungsi {
 				this.daftar.splice(i, 1);
 			}
 		}
+	}
+
+	static getDipilih(): IFungsi {
+		return this.getId(Kontek.fungsiId);
 	}
 
 	static getId(id: number): IFungsi {
@@ -85,7 +103,8 @@ class Fungsi implements IFungsi {
 
 interface IFungsi {
 	id: number
-	param: number[]
 	judul: string
+	param: number[]
+	variable: number[];
 	stmt: number[]
 }

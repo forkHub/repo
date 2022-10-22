@@ -6,27 +6,34 @@ namespace ha.parse.basic {
 		let barisAr: string[] = file.split('\n');
 
 		for (let i: number = 0; i < barisAr.length; i++) {
-			console.group('parse ' + barisAr[i]);
 
-			while (token.length > 0) {
-				token.pop();
+			console.group('parse ' + barisAr[i] + '|');
+
+			if (barisAr[i].length > 0) {
+
+				while (token.length > 0) {
+					token.pop();
+				}
+
+				await parser.pecah(barisAr[i]);
+				console.log(renderToken(token));
+
+				if (token.length > 0) {
+					await Grammar.check();
+
+					console.log(renderToken(token));
+
+					if (token.length > 1) {
+						throw Error('');
+					}
+
+				}
+
 			}
-
-			await parser.pecah(barisAr[i]);
-
-			await Grammar.check();
-			console.log(token);
 
 			console.groupEnd();
 
-			if (token.length > 1) {
-				throw Error('');
-			}
-
-
 		}
-
-
 
 		window.localStorage.setItem('parse', JSON.stringify(token));
 

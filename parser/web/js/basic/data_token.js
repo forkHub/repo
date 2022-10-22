@@ -13,7 +13,8 @@ var ha;
                 "false", "true",
                 "let",
                 "return",
-                "while", "wend"
+                "while", "wend",
+                "var"
             ];
             basic.binopOpr = [
                 '!==', '===', '>>>',

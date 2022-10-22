@@ -13,12 +13,12 @@ var ha;
                 //if exp then 
                 {
                     nama: parse.Kons.IF,
-                    rumus: [[], ['if', parse.Kons.EXP, 'then', parse.Kons.EXP], []]
+                    rumus: [[], ['if', parse.Kons.EXP, 'then'], []]
                 },
                 //else if exp then
                 {
                     nama: parse.Kons.ELSE_IF,
-                    rumus: [[], ['else if', parse.Kons.EXP, 'then'], []]
+                    rumus: [[], ['elseif', parse.Kons.EXP], [parse.Kons.OPR, '+', '-', ',', parse.Kons.KURUNG, parse.Kons.MIN, '(']]
                 },
                 {
                     nama: parse.Kons.ELSE,
@@ -55,26 +55,6 @@ var ha;
                 {
                     nama: parse.Kons.RETURN_STMT,
                     rumus: [[], ['return', parse.Kons.EXP], [parse.Kons.OPR, '+', '-', parse.Kons.MIN, parse.Kons.KURUNG]]
-                },
-                {
-                    nama: parse.Kons.STMT,
-                    rumus: [[], [parse.Kons.RETURN_STMT], []]
-                },
-                {
-                    nama: parse.Kons.STMT,
-                    rumus: [[], [parse.Kons.FOR_STMT], []]
-                },
-                {
-                    nama: parse.Kons.EXP,
-                    rumus: [[], [parse.Kons.DEK_FUNGSI], []]
-                },
-                {
-                    nama: parse.Kons.STMT,
-                    rumus: [[], [parse.Kons.DEK_VAR], []]
-                },
-                {
-                    nama: parse.Kons.STMT,
-                    rumus: [[], [parse.Kons.VAR_ISI], []]
                 },
             ];
         })(basic = parse.basic || (parse.basic = {}));

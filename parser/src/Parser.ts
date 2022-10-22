@@ -153,7 +153,7 @@ namespace ha.parse {
 					return true;
 				}
 				else {
-					// debugLog(item + ' / ' + str);
+					// console.log(item + ' / ' + str);
 				}
 
 			}
@@ -186,7 +186,7 @@ namespace ha.parse {
 				hasil = hsl + '';
 			}
 			else {
-				ha.parse.debugLog('data: ' + str.slice(0, 100));
+				console.log('data: ' + str.slice(0, 100));
 				throw Error('huruf tidak cocok');
 			}
 
@@ -216,19 +216,22 @@ namespace ha.parse {
 
 			while (true) {
 
-				debugGroupCollapsed('check grammar, ctr: ' + tokenCtr);
+				console.groupCollapsed('check grammar, ctr: ' + tokenCtr);
 				let hasil: boolean = await this.check_grammar();
-				ha.parse.debugGroupEnd();
+				console.groupEnd();
 
 				if (hasil) {
 					tokenCtr = 0;
-					if (token.length == 1) break;
+					if (token.length == 1) {
+						break;
+					}
+
 				} else {
-					// debugLog('check grammar gak ada hasil')
+					// console.log('check grammar gak ada hasil')
 					tokenCtr++;
 					if (tokenCtr >= token.length) {
 						ha.parse.debugOn();
-						ha.parse.debugLog('HABIS');
+						console.log('HABIS');
 						break;
 					}
 				}
@@ -238,21 +241,19 @@ namespace ha.parse {
 			}
 
 			ha.parse.debugOn();
-			ha.parse.debugLog('selesai:');
-			ha.parse.debugLog(this.renderToken(token));
+			console.log('selesai:');
+			console.log(this.renderToken(token));
 		}
 
 		private static async check_grammar(): Promise<boolean> {
 			let adaTokenBaru: boolean = false;
 
-			debugOff();
-
 			// console.group('check token dengan rumus yang ada, ctr: ' + tokenCtr);
 			for (let i: number = 0; i < grammarAr.length; i++) {
 
-				debugGroupCollapsed('check rumus, idx ' + i)
+				console.groupCollapsed('check rumus, idx ' + i + '/rumus ' + grammarAr[i].rumus);
 				let hasil: boolean = await this.check_rumus(grammarAr[i].rumus);
-				debugGroupEnd();
+				console.groupEnd();
 
 				if (hasil) {
 					this.tokenBaru(i);
@@ -268,14 +269,14 @@ namespace ha.parse {
 
 		private static tokenBaru(i: number): void {
 
-			// debugLog('token: ' + grammarAr[i].nama + '/index rumus: ' + i, true);
-			debugLog('[0]: ' + this.renderToken(token.slice(Math.max(tokenCtr - 1, 0), tokenCtr + 5)), true);
+			// console.log('token: ' + grammarAr[i].nama + '/index rumus: ' + i, true);
+			console.log('[0]: ' + this.renderToken(token.slice(Math.max(tokenCtr - 1, 0), tokenCtr + 5)), true);
 
 			//lolos
 			//packaging
 			// debugOff();
 			// debugGroup('token baru');
-			// debugLog('check token pada ctr ' + tokenCtr + ' cocok dengan rumus: ' + grammarAr[i].nama);
+			// console.log('check token pada ctr ' + tokenCtr + ' cocok dengan rumus: ' + grammarAr[i].nama);
 
 			// buat token
 			let tokenBaru: IToken = {
@@ -295,15 +296,15 @@ namespace ha.parse {
 
 			// debugOn();
 			// debugGroupCollapsed('')
-			// debugLog('token:');
-			// debugLog(this.renderToken(token));
-			// debugLog('kiri:');
-			// debugLog(this.renderToken(kiri));
-			// debugLog('kanan:');
-			// debugLog(this.renderToken(kanan));
-			// debugLog('token baru:');
-			// debugLog(this.renderToken([tokenBaru]));
-			// debugLog(tokenBaru);
+			// console.log('token:');
+			// console.log(this.renderToken(token));
+			// console.log('kiri:');
+			// console.log(this.renderToken(kiri));
+			// console.log('kanan:');
+			// console.log(this.renderToken(kanan));
+			// console.log('token baru:');
+			// console.log(this.renderToken([tokenBaru]));
+			// console.log(tokenBaru);
 			// debugGroupEnd();
 			// debugOff();
 
@@ -315,13 +316,13 @@ namespace ha.parse {
 			this.tambah(token, [tokenBaru]);
 			this.tambah(token, kanan);
 
-			// debugLog('token: ' + this.renderToken(token));
+			// console.log('token: ' + this.renderToken(token));
 			// debugGroupEnd();
 
 			// tokenCtr = 0;
 			// debugGroup();
-			debugLog('[1]: ' + this.renderToken(token.slice(Math.max(tokenCtr - 1, 0), tokenCtr + 5)), true);
-			debugLog('', true);
+			console.log('[1]: ' + this.renderToken(token.slice(Math.max(tokenCtr - 1, 0), tokenCtr + 5)), true);
+			console.log('', true);
 		}
 
 		private static renderToken(token: IToken[]): string {
@@ -348,21 +349,22 @@ namespace ha.parse {
 
 			// debugOff();
 			// debugGroupCollapsed('check token = rumus');
-			// debugLog('rumus:');
-			// debugLog(rumus);
-			// debugLog('awal ');
-			// debugLog(rumusAwal);
-			// debugLog('inti:');
-			// debugLog(inti);
-			// debugLog('akhir:');
-			// debugLog(akhir);
-			// debugLog('mulai: ' + tokenCtr);
+			// console.log('rumus:');
+			// console.log(rumus);
+			// console.log('awal ');
+			// console.log(rumusAwal);
+			// console.log('inti:');
+			// console.log(inti);
+			// console.log('akhir:');
+			// console.log(akhir);
+			// console.log('mulai: ' + tokenCtr);
 			// debugGroupEnd();
 
 
 			//check awal
-			debugLog('check awal');
+			console.log('check awal');
 			for (let i: number = 0; i < rumusAwal.length; i++) {
+
 				if (tokenCtr > 0) {
 					let namaToken: string = token[tokenCtr - 1].nama;
 					let rumusAwalTeks: string = rumusAwal[i]
@@ -373,17 +375,17 @@ namespace ha.parse {
 					}
 
 					if (namaToken == rumusAwalTeks) {
-						debugLog('awal salah, token: ' + token[tokenCtr - 1].nama);
+						console.log('awal salah, token: ' + namaToken + '/rumus token: ' + rumusAwalTeks);
 						return false;
 					}
 					else {
-						debugLog('awal gak di check');
+						console.log('awal gak di check');
 					}
 				}
 			}
 
 			//check inti
-			debugLog('check inti');
+			console.log('check inti');
 			for (let i: number = 0; i < inti.length; i++) {
 
 				if (tokenCtr + i >= token.length) {
@@ -399,14 +401,14 @@ namespace ha.parse {
 				}
 
 				if (namaToken != namaInti) {
-					debugLog('token tidak sama, token: ' + token[tokenCtr + i].nama + '/rumus: ' + inti[i]);
+					console.log('token tidak sama, token: ' + namaToken + '/rumus: ' + namaInti + '/i: ' + i);
 					return false;
 				}
 
 			}
 
 			//check akhir
-			debugLog('check akhir');
+			console.log('check akhir');
 
 			if (tokenCtr + inti.length < token.length) {
 				let idx: number = tokenCtr + inti.length;
@@ -421,14 +423,14 @@ namespace ha.parse {
 					}
 
 					if (namaToken == namaAkhir) {
-						debugLog('akhir cocok return false');
+						console.log('akhir cocok return false');
 						return false;
 					}
 
 				}
 			}
 			else {
-				debugLog('check akhir gak di check: tokenCtr ' + tokenCtr + '/dataStr pjg: ' + token.length);
+				console.log('check akhir gak di check: tokenCtr ' + tokenCtr + '/dataStr pjg: ' + token.length);
 			}
 
 			// debugGroup();

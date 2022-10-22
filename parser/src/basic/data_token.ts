@@ -9,7 +9,8 @@ namespace ha.parse.basic {
 		"false", "true",
 		"let",
 		"return",
-		"while", "wend"
+		"while", "wend",
+		"var"
 	]
 
 	export const binopOpr: string[] = [

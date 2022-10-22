@@ -1,3 +1,5 @@
+var a
+
 If (a == 2) Then
     stmt1
     stmt1

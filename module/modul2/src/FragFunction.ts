@@ -59,6 +59,8 @@ class FragFunction {
 
 		this.dipilih = el;
 		this.dipilih.classList.add('dipilih');
+
+		Kontek.fungsiId = parseInt(el.getAttribute('id'));
 	}
 
 	static tombolHapusKlik(el: HTMLElement): void {

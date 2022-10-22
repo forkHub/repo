@@ -1,6 +1,7 @@
 class HalModul {
     static init() {
         this.namaModulEl.innerHTML = Modul.getAktif().judul;
+        this.el; //TODO:
     }
     static itemKlik(e) {
         console.log(e);
