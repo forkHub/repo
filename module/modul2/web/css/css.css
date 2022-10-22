@@ -1,0 +1,7 @@
+div.item.dipilih {
+	background-color: lightgray;
+}
+
+div.item {
+	border: 1px solid gray;
+}

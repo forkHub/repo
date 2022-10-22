@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+
+	<title>Modul</title>
+	<link href="./css/umum.css" rel="stylesheet">
+	<link href="./css/css.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="cont">
+	</div>
+
+	<div class="menu">
+		<button class="tambah" onclick="HalModul.tombolTambahKlik()">tambah</button>
+		<button class="hapus" onclick="HalModul.tombolHapusKlik(this)">hapus</button>
+		<button class="view" onclick="HalModul.tombolViewKlik(this)">view</button>
+		<button class="edit" onclick="HalModul.tombolEditKlik(this)">edit</button>
+	</div>
+
+	<template>
+
+		<div class="item user-select-none cursor-pointer" onclick="HalModul.itemKlik(this)">
+			<span class="nama"></span>
+		</div>
+
+	</template>
+
+	<script src="./js/comp/Util.js"></script>
+
+
+	<script src="./js/data.js"></script>
+	<script src="./js/Modul.js"></script>
+	<script src="./js/HalModul.js"></script>
+	<script src="./js/index.js"></script>
+</body>
+
+</html>

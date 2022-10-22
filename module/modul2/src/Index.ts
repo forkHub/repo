@@ -1,0 +1,34 @@
+const VARIABLE: string = 'variable';
+const FUNGSI: string = 'fungsi';
+const MODUL: string = 'modul';
+
+function buatDefault() {
+	Modul.buat('utama');
+	Data.simpan();
+	Kontek.modulId = Modul.daftar[0].id;
+}
+
+//init
+try {
+	Data.load();
+	Modul.load(Data.data);
+	Variable.load(Data.data);
+
+	if (Modul.daftar.length > 0) {
+		Kontek.modulId = Modul.daftar[0].id;
+	}
+	else {
+		buatDefault();
+	}
+
+	HalModul.load();
+	HalModul.init();
+}
+catch (e) {
+	console.log(e);
+
+	//buat baru
+	buatDefault();
+	HalModul.load();
+	HalModul.init();
+}

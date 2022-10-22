@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+
+	<title>View Modul</title>
+
+	<link href="./css/umum.css" rel="stylesheet">
+	<link href="./css/css.css" rel="stylesheet">
+</head>
+
+<body class="padding">
+	<div class="cont">
+
+		<div class="header">
+			Modul <span class="nama"></span>
+		</div>
+		<div class="padding-4"></div>
+
+		<!-- sub modul -->
+		<div class="sub-modul padding border">
+			<div class="header">
+				<span>sub Modul</span>
+			</div>
+			<div class="padding-4"></div>
+			<div class="daftar">
+
+			</div>
+			<div class="menu">
+				<div class="padding-4"></div>
+				<button class="tambah" onclick="FragModul.tombolTambahKlik()">tambah</button>
+				<button class="hapus" onclick="FragModul.tombolHapusKlik(this)">hapus</button>
+				<button class="view" onclick="FragModul.tombolViewKlik(this)">view</button>
+				<button class="edit" onclick="FragModul.tombolEditKlik(this)">edit</button>
+			</div>
+		</div>
+
+		<!-- variable -->
+		<div class="variable padding">
+			<div class="header">
+				<span>variable</span>
+			</div>
+			<div class="daftar">
+
+			</div>
+			<div class="menu padding">
+				<button class="tambah" onclick="FragVariable.tombolTambahKlik()">tambah</button>
+				<button class="hapus" onclick="FragVariable.tombolHapusKlik(this)">hapus</button>
+				<button class="view" onclick="FragVariable.tombolViewKlik(this)">view</button>
+				<button class="edit" onclick="FragVariable.tombolEditKlik(this)">edit</button>
+			</div>
+		</div>
+
+		<!-- method  -->
+		<div class="fungsi padding">
+			<div class="header">
+				<span>Method</span>
+			</div>
+			<div class="daftar">
+
+			</div>
+			<div class="menu padding">
+				<button class="tambah" onclick="FragFunction.tombolTambahKlik()">tambah</button>
+				<button class="hapus" onclick="FragFunction.tombolHapusKlik(this)">hapus</button>
+				<button class="view" onclick="FragFunction.tombolViewKlik(this)">view</button>
+				<button class="edit" onclick="FragFunction.tombolEditKlik(this)">edit</button>
+			</div>
+		</div>
+	</div>
+
+	<template>
+
+		<div class="item user-select-none cursor-pointer">
+			<span class="nama"></span>
+		</div>
+
+	</template>
+
+	<script src="./js/comp/Util.js"></script>
+
+	<script src="./js/Kontek.js"></script>
+	<script src="./js/data.js"></script>
+	<script src="./js/entity/Variable.js"></script>
+	<script src="./js/Modul.js"></script>
+	<script src="./js/FragVariable.js"></script>
+	<script src="./js/FragModul.js"></script>
+	<script src="./js/FragFunction.js"></script>
+	<script src="./js/HalModul.js"></script>
+
+	<script src="./js/index.js"></script>
+</body>
+
+</html>
