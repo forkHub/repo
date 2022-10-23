@@ -147,9 +147,13 @@ namespace ha.comp {
 		static async Ajax2(type: string, url: string, dataStr: string, pf: (p: ProgressEvent) => void = null): Promise<string> {
 
 			let x: XMLHttpRequest = await this.Ajax(type, url, dataStr, pf);
+
 			if (x.status == 200 || x.status == 0) {
+				console.log('loaded: ');
+				console.log(x.responseText);
 				return x.responseText;
 			}
+
 			console.log('error status code: ' + x.status);
 
 			throw Error(x.responseText);

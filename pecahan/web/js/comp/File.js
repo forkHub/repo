@@ -5,11 +5,11 @@ var ha;
         class File {
             static async load(url) {
                 let str = '';
-                console.log('load: ' + url);
+                //console.log('load: ' + url);
                 this.cacheStr.forEach((item) => {
                     if (item.url == url) {
                         str = item.str;
-                        console.log('cached');
+                        //console.log('cached');
                     }
                 });
                 if (str && str != '') {
@@ -20,7 +20,7 @@ var ha;
                     url: url,
                     str: str
                 });
-                console.log('str ' + str);
+                // console.log('str ' + str);
                 return str;
             }
         }

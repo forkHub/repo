@@ -1,12 +1,10 @@
 class FragVariable {
     static load() {
+        let modul = Modul.getAktif();
         this.cont.innerHTML = '';
-        let modul = Modul.getId(Kontek.modulId);
-        Variable.daftar.forEach((item) => {
-            if (modul.variable.indexOf(item.id) >= 0) {
-                let view = this.buatView(item);
-                this.cont.appendChild(view);
-            }
+        modul.variable.forEach((id) => {
+            let variable = Variable.getId(id);
+            this.buatView(variable);
         });
     }
     static tombolTambahKlik() {

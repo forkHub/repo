@@ -12,6 +12,7 @@ function buatDefault() {
 try {
 	Data.load();
 	Modul.load(Data.data);
+	Fungsi.load(Data.data);
 	Variable.load(Data.data);
 
 	if (Modul.daftar.length > 0) {

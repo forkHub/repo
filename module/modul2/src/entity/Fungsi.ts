@@ -4,7 +4,6 @@ class Fungsi implements IFungsi {
 	private _id: number;
 	private _judul: string;
 
-
 	readonly variable: number[] = [];
 	readonly stmt: number[] = [];
 	readonly param: number[] = [];
@@ -13,6 +12,22 @@ class Fungsi implements IFungsi {
 		this._id = id;
 		this._judul = judul;
 	}
+
+	static load(data: IData[]): void {
+		while (this.daftar.length > 0) {
+			this.daftar.pop();
+		}
+
+		data.forEach((data: IData) => {
+			if (data.type == FUNGSI) {
+				let obj: IFungsi = JSON.parse(data.data);
+				let fungsi: IFungsi = this.fromObj(obj);
+				this.daftar.push(fungsi);
+			}
+		})
+	}
+
+
 
 	static toObj(obj: IFungsi): IFungsi {
 		return {
@@ -72,6 +87,10 @@ class Fungsi implements IFungsi {
 			}
 		})
 
+		if (!hasil) {
+			throw Error('fungsi tidak ketemu, id ' + id);
+		}
+
 		return hasil;
 	}
 
@@ -80,6 +99,12 @@ class Fungsi implements IFungsi {
 		this.daftar.push(hasil);
 
 		return hasil;
+	}
+
+	static toData(data: IData[]): void {
+		Fungsi.daftar.forEach((item: IFungsi) => {
+			data.push(Data.toObj(new Data(item.id, FUNGSI, JSON.stringify(Fungsi.toObj(item)))));
+		});
 	}
 
 	public get id(): number {
@@ -96,9 +121,6 @@ class Fungsi implements IFungsi {
 	public set judul(value: string) {
 		this._judul = value;
 	}
-
-
-
 }
 
 interface IFungsi {

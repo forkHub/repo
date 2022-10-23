@@ -3,6 +3,18 @@ class Variable {
         this._id = id;
         this._judul = judul;
     }
+    static getId(id) {
+        let hasil;
+        this.daftar.forEach((item) => {
+            if (item.id == id) {
+                hasil = item;
+            }
+        });
+        if (!hasil) {
+            throw Error('fungsi tidak ketemu, id ' + id);
+        }
+        return hasil;
+    }
     static buat(judul) {
         let hasil = new Variable(ha.comp.Util.id(), judul);
         this.daftar.push(hasil);

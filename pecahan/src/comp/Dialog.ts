@@ -18,7 +18,7 @@ namespace ha.comp {
 		}
 
 		tampil(pesan: string = '', def: boolean = true): void {
-			ha.comp.Util.stackTrace();
+			// ha.comp.Util.stackTrace();
 
 			this.p.innerHTML = pesan;
 

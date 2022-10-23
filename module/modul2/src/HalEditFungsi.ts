@@ -1,7 +1,7 @@
 class HalEditFungsi {
-	private el: HTMLElement;
+	private static el: HTMLElement;
 
-	async tampil(): Promise<void> {
+	static async tampil(): Promise<void> {
 		if (!this.el) {
 			this.el = ha.comp.Util.createEl(await ha.comp.File.load('./data/hal-edit-fungsi.html'));
 		}
@@ -23,5 +23,10 @@ class HalEditFungsi {
 			id: number) => {
 			id; //TODO:
 		})
+	}
+
+	static klikTombolKembali(): void {
+		this.el.parentElement.removeChild(this.el);
+		HalModul.tampil();
 	}
 }

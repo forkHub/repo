@@ -1,11 +1,15 @@
 class HalModul {
-	private static el: HTMLElement;
+	static readonly el: HTMLElement = ha.comp.Util.getEl('div.hal-modul');
 
 	private static readonly namaModulEl: HTMLElement = ha.comp.Util.getEl('div.header span.nama', document.body);
 
 	static init(): void {
 		this.namaModulEl.innerHTML = Modul.getAktif().judul;
-		this.el; //TODO:
+	}
+
+	static tampil(): void {
+		document.body.appendChild(HalModul.el);
+		this.load();
 	}
 
 	static itemKlik(e: HTMLElement): void {
@@ -30,6 +34,7 @@ class HalModul {
 	static load(): void {
 		FragModul.load();
 		FragVariable.load();
+		FragFunction.load();
 	}
 
 }

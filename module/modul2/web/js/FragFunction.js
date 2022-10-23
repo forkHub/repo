@@ -6,18 +6,19 @@ class FragFunction {
         this._dipilih = value;
     }
     static load() {
-        let modul = Modul.getId(Kontek.modulId);
+        let modul = Modul.getAktif();
+        this._cont.innerHTML = '';
         modul.fungsi.forEach((id) => {
             let fungsi = Fungsi.getId(id);
             this.buatView(fungsi);
         });
     }
-    static buatView(hasil) {
+    static buatView(fungsi) {
         let view;
         view = ha.comp.Util.getTemplate('div.item');
-        view.setAttribute('id', hasil.id + '');
+        view.setAttribute('id', fungsi.id + '');
         view.setAttribute('type', FUNGSI);
-        view.querySelector('span.nama').innerHTML = hasil.judul;
+        view.querySelector('span.nama').innerHTML = fungsi.judul;
         view.onclick = () => {
             FragFunction.itemKlik(view);
         };
@@ -61,8 +62,12 @@ class FragFunction {
     static tombolEditKlik() {
         if (!this.dipilih) {
             console.error('tidak ada yang dipilih');
+            return;
         }
-        //halaman edit fungsi
+        HalModul.el.parentElement.removeChild(HalModul.el);
+        HalEditFungsi.tampil().catch((e) => {
+            console.error(e);
+        });
     }
 }
 FragFunction._cont = ha.comp.Util.getEl('div.fungsi div.daftar', document.body);

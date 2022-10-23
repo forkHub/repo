@@ -1,9 +1,8 @@
-import { BaseComponent } from "./BaseComponent.js";
-
-class Dialog extends BaseComponent {
-	constructor() {
-		super();
-		this._template = `
+namespace ha.comp {
+	class Dialog extends BaseComponent {
+		constructor() {
+			super();
+			this._template = `
 				<div class='comp dialog'>
 					<div class='box'>
 						<p class='deskripsi'>Contoh dialog </p>
@@ -11,37 +10,38 @@ class Dialog extends BaseComponent {
 					</div>
 				</div>
 				`;
-		this.build();
-	}
-
-	init(): void {
-		this.detach();
-	}
-
-	tampil(pesan: string = '', def: boolean = true): void {
-		// ha.comp.Util.stackTrace();
-
-		this.p.innerHTML = pesan;
-
-		if (def) {
-			this.okTbl.onclick = () => {
-				this.detach();
-			}
+			this.build();
 		}
 
-		this.attach(document.body);
-		this._elHtml.style.display = 'block';
+		init(): void {
+			this.detach();
+		}
 
+		tampil(pesan: string = '', def: boolean = true): void {
+			ha.comp.Util.stackTrace();
+
+			this.p.innerHTML = pesan;
+
+			if (def) {
+				this.okTbl.onclick = () => {
+					this.detach();
+				}
+			}
+
+			this.attach(document.body);
+			this._elHtml.style.display = 'block';
+
+		}
+
+		get okTbl(): HTMLButtonElement {
+			return this.getEl('button.ok') as HTMLButtonElement;
+		}
+
+		get p(): HTMLParagraphElement {
+			return this.getEl('p') as HTMLParagraphElement;
+		}
 	}
 
-	get okTbl(): HTMLButtonElement {
-		return this.getEl('button.ok') as HTMLButtonElement;
-	}
-
-	get p(): HTMLParagraphElement {
-		return this.getEl('p') as HTMLParagraphElement;
-	}
+	export var dialog: Dialog = new Dialog();
 }
-
-export var dialog: Dialog = new Dialog();
 

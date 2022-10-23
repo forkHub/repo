@@ -1,38 +1,46 @@
-class Data {
+class Data implements IData {
+
+	private _id: number;
+	private _type: string;
+	private _data: string;
+
 	static readonly data: IData[] = [];
 	static readonly namaDb: string = 'ha.modul.data';
+
+	constructor(id: number, type: string, data: string) {
+		this.id = id;
+		this.type = type;
+		this.data = data;
+	}
+
+	static toObj(data: IData): IData {
+		return {
+			id: data.id,
+			type: data.type,
+			data: data.data
+		}
+	}
 
 	static simpan(): void {
 		let obj: IData[] = [];
 
 		//modul
 		Modul.daftar.forEach((item: IModul) => {
-			obj.push({
-				id: item.id,
-				type: 'modul',
-				data: JSON.stringify(Modul.toObj(item))
-			});
-
+			let data: IData = Data.toObj(new Data(item.id, MODUL, JSON.stringify(Modul.toObj(item))));
+			obj.push(data);
 		});
 
 		//variable
 		Variable.daftar.forEach((item: IVariable) => {
-			obj.push({
-				id: item.id,
-				type: 'variable',
-				data: JSON.stringify(Variable.toObj(item))
-			});
+			obj.push(Data.toObj(new Data(
+				item.id,
+				VARIABLE,
+				JSON.stringify(Variable.toObj(item))
+			)));
 		});
 
 		//fungsi
-		Fungsi.daftar.forEach((item: IFungsi) => {
-			obj.push({
-				id: item.id,
-				type: FUNGSI,
-				data: JSON.stringify(Fungsi.toObj(item))
-			});
-		});
-
+		Fungsi.toData(obj);
 
 		window.localStorage.setItem(this.namaDb, JSON.stringify(obj));
 	}
@@ -46,14 +54,36 @@ class Data {
 		}
 
 		obj.forEach((obj: IData) => {
-			this.data.push({
-				id: obj.id,
-				type: obj.type,
-				data: obj.data
-			})
-		})
+			this.data.push(new Data(obj.id, obj.type, obj.data));
+			// id: obj.id,
+			// 	type: obj.type,
+			// 		data: obj.data
+		});
+	};
 
+	public get id(): number {
+		return this._id;
 	}
+	public set id(value: number) {
+		this._id = value;
+	}
+	public get type(): string {
+		return this._type;
+	}
+	public set type(value: string) {
+		this._type = value;
+		// if (value == MODUL) {
+		// 	ha.comp.Util.stackTrace();
+		// }
+	}
+
+	public get data(): string {
+		return this._data;
+	}
+	public set data(value: string) {
+		this._data = value;
+	}
+
 }
 
 interface IData {

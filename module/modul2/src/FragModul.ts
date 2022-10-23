@@ -12,13 +12,12 @@ class FragModul {
 	static load(): void {
 		let modul: IModul = Modul.getId(Kontek.modulId);
 
+		this._cont.innerHTML = '';
+
 		modul.sub.forEach((id: number) => {
 			let sub: IModul = Modul.getId(id);
 			this.buatView(sub);
 		});
-
-		//
-
 	}
 
 	private static buatView(hasil: IModul): void {

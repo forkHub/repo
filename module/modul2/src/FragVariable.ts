@@ -3,17 +3,13 @@ class FragVariable {
 	private static dipilih: HTMLElement;
 
 	static load(): void {
+		let modul: IModul = Modul.getAktif();
+
 		this.cont.innerHTML = '';
 
-		let modul: IModul = Modul.getId(Kontek.modulId);
-
-		Variable.daftar.forEach((item: IVariable) => {
-
-			if (modul.variable.indexOf(item.id) >= 0) {
-				let view: HTMLElement = this.buatView(item);
-				this.cont.appendChild(view);
-			}
-
+		modul.variable.forEach((id: number) => {
+			let variable: IVariable = Variable.getId(id);
+			this.buatView(variable);
 		});
 
 	}

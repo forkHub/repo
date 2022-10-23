@@ -10,6 +10,23 @@ class Variable {
 		this._judul = judul;
 	}
 
+	static getId(id: number): IVariable {
+		let hasil: IVariable;
+
+		this.daftar.forEach((item: IVariable) => {
+			if (item.id == id) {
+				hasil = item;
+			}
+		})
+
+		if (!hasil) {
+			throw Error('fungsi tidak ketemu, id ' + id);
+		}
+
+		return hasil;
+	}
+
+
 	static buat(judul: string): IVariable {
 		let hasil: IVariable = new Variable(ha.comp.Util.id(), judul);
 		this.daftar.push(hasil);

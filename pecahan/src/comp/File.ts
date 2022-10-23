@@ -5,12 +5,12 @@ namespace ha.comp {
 		static async load(url: string): Promise<string> {
 			let str: string = '';
 
-			console.log('load: ' + url);
+			//console.log('load: ' + url);
 
 			this.cacheStr.forEach((item: ICache) => {
 				if (item.url == url) {
 					str = item.str;
-					console.log('cached');
+					//console.log('cached');
 				}
 			});
 
@@ -24,7 +24,7 @@ namespace ha.comp {
 				str: str
 			});
 
-			console.log('str ' + str);
+			// console.log('str ' + str);
 			return str;
 		}
 

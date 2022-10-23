@@ -117,8 +117,9 @@ class Modul implements IModul {
 		}
 
 		data.forEach((item: IData) => {
-			if (item.type == 'modul') {
+			if (item.type == MODUL) {
 				this.daftar.push(this.fromObj(JSON.parse(item.data)));
+				console.log('modul push');
 			}
 		})
 	}

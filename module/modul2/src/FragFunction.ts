@@ -10,7 +10,9 @@ class FragFunction {
 	}
 
 	static load(): void {
-		let modul: IModul = Modul.getId(Kontek.modulId);
+		let modul: IModul = Modul.getAktif();
+
+		this._cont.innerHTML = '';
 
 		modul.fungsi.forEach((id: number) => {
 			let fungsi: IFungsi = Fungsi.getId(id);
@@ -19,13 +21,13 @@ class FragFunction {
 
 	}
 
-	private static buatView(hasil: IFungsi): void {
+	private static buatView(fungsi: IFungsi): void {
 		let view: HTMLElement;
 
 		view = ha.comp.Util.getTemplate('div.item');
-		view.setAttribute('id', hasil.id + '');
+		view.setAttribute('id', fungsi.id + '');
 		view.setAttribute('type', FUNGSI);
-		view.querySelector('span.nama').innerHTML = hasil.judul;
+		view.querySelector('span.nama').innerHTML = fungsi.judul;
 
 		view.onclick = () => {
 			FragFunction.itemKlik(view);
@@ -82,10 +84,17 @@ class FragFunction {
 	}
 
 	static tombolEditKlik(): void {
+
 		if (!this.dipilih) {
 			console.error('tidak ada yang dipilih');
+			return;
 		}
 
-		//halaman edit fungsi
+		HalModul.el.parentElement.removeChild(HalModul.el);
+
+		HalEditFungsi.tampil().catch((e) => {
+			console.error(e);
+		});
+
 	}
 }

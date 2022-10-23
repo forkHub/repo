@@ -1,7 +1,10 @@
 class HalModul {
     static init() {
         this.namaModulEl.innerHTML = Modul.getAktif().judul;
-        this.el; //TODO:
+    }
+    static tampil() {
+        document.body.appendChild(HalModul.el);
+        this.load();
     }
     static itemKlik(e) {
         console.log(e);
@@ -19,6 +22,8 @@ class HalModul {
     static load() {
         FragModul.load();
         FragVariable.load();
+        FragFunction.load();
     }
 }
+HalModul.el = ha.comp.Util.getEl('div.hal-modul');
 HalModul.namaModulEl = ha.comp.Util.getEl('div.header span.nama', document.body);

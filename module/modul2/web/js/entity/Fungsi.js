@@ -6,6 +6,18 @@ class Fungsi {
         this._id = id;
         this._judul = judul;
     }
+    static load(data) {
+        while (this.daftar.length > 0) {
+            this.daftar.pop();
+        }
+        data.forEach((data) => {
+            if (data.type == FUNGSI) {
+                let obj = JSON.parse(data.data);
+                let fungsi = this.fromObj(obj);
+                this.daftar.push(fungsi);
+            }
+        });
+    }
     static toObj(obj) {
         return {
             id: obj.id,
@@ -54,12 +66,20 @@ class Fungsi {
                 hasil = item;
             }
         });
+        if (!hasil) {
+            throw Error('fungsi tidak ketemu, id ' + id);
+        }
         return hasil;
     }
     static buat(judul) {
         let hasil = new Fungsi(ha.comp.Util.id(), judul);
         this.daftar.push(hasil);
         return hasil;
+    }
+    static toData(data) {
+        Fungsi.daftar.forEach((item) => {
+            data.push(Data.toObj(new Data(item.id, FUNGSI, JSON.stringify(Fungsi.toObj(item)))));
+        });
     }
     get id() {
         return this._id;

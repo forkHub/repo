@@ -19,7 +19,7 @@ var ha;
                 this.detach();
             }
             tampil(pesan = '', def = true) {
-                ha.comp.Util.stackTrace();
+                // ha.comp.Util.stackTrace();
                 this.p.innerHTML = pesan;
                 if (def) {
                     this.okTbl.onclick = () => {

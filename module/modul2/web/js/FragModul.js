@@ -7,11 +7,11 @@ class FragModul {
     }
     static load() {
         let modul = Modul.getId(Kontek.modulId);
+        this._cont.innerHTML = '';
         modul.sub.forEach((id) => {
             let sub = Modul.getId(id);
             this.buatView(sub);
         });
-        //
     }
     static buatView(hasil) {
         let view;

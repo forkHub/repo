@@ -6,6 +6,12 @@ namespace ha.comp {
 		static readonly sFilter: string = 'filter';
 		static readonly storageId: string = 'xyz.hagarden.tugas';
 
+		static print(teks: string): void {
+			let view: HTMLElement = document.createElement('div');
+			view.innerText = teks;
+			document.body.appendChild(view);
+		}
+
 		static createEl(str: string): HTMLElement {
 			let div: HTMLElement = document.createElement('div');
 			let el: HTMLElement;
