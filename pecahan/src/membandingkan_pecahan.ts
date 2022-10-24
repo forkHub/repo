@@ -1,3 +1,7 @@
+function tombolTutupKlik(): void {
+	window.top.location.href = urlHalUtama;
+}
+
 function buatSoal(): ISoal {
 	let soal: ISoal = {
 		pecahan: []

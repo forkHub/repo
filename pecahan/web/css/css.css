@@ -1,13 +1,13 @@
 div.progress-bar {
 	width: 100%;
-	height: 32px;
+	height: 37px;
 	border: 1px solid darkgreen;
 	position: relative;
 }
 
 div.progress-bar div.counter {
 	position: absolute;
-	height: 32px;
+	height: 37px;
 	top: 0px;
 	left: 0px;
 	bottom: 0px;

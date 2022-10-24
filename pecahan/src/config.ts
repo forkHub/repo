@@ -1,1 +1,1 @@
-let urlHalUtama: string = '../';
+let urlHalUtama: string = 'http://localhost/cemcem/pecahan/web/';

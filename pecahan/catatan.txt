@@ -1,5 +1,3 @@
-ada tombol kembali
-progress bar diberi background
 saat salah gak bisa maju, kembali lagi
     variable jml_salah, jml_benar
 
