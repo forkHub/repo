@@ -1,4 +1,14 @@
-membandingkan pecahan
+ada tombol kembali
+progress bar diberi background
+saat salah gak bisa maju, kembali lagi
+    variable jml_salah, jml_benar
+
+soal diganti reference idx
+    bank soal
+    soal aktif
+    soal idx
+
+membandingkan pecahan:
 - pecahan biasa
 - pecahan campuran
 - biasa dan campuran
