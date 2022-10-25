@@ -1,3 +1,6 @@
+refaktor struktur pakai delegate
+    buttonklik
+
 saat salah gak bisa maju, kembali lagi
     variable jml_salah, jml_benar
 
@@ -10,3 +13,7 @@ membandingkan pecahan:
 - pecahan biasa
 - pecahan campuran
 - biasa dan campuran
+- mengisi kekosongan
+    - biasa
+    - campuran
+    - biasa-campuran
