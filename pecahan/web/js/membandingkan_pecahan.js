@@ -29,7 +29,7 @@ function soalMaju() {
     if (soalIdx >= soals.length) {
         //render halaman akhir
         el.parentElement.removeChild(el);
-        HalSelesai.tampil(document.body, Math.floor((nilai / soals.length) * 100)).catch((e) => {
+        HalSelesai.tampil(document.body, Math.floor((jmlBenar / (jmlBenar + jmlSalah)) * 100)).catch((e) => {
             console.error(e);
         });
     }
@@ -47,7 +47,7 @@ function checkSoal(jawaban) {
 		`);
         ha.comp.dialog.okTbl.onclick = () => {
             ha.comp.dialog.detach();
-            nilai++;
+            jmlBenar++;
             soalMaju();
         };
     }
@@ -61,6 +61,7 @@ function checkSoal(jawaban) {
             ha.comp.dialog.detach();
             renderSoal(soals[soalIdx]);
             pg.progress(Math.floor((soalIdx / soals.length) * 100));
+            jmlSalah++;
         };
     }
 }
@@ -73,12 +74,14 @@ function tombolSamaDenganKlik() {
 function tombolKurangDariKlik() {
     checkSoal('<');
 }
-let nilai = 0;
+// let nilai: number = 0;
 let pg = new ProgressBar();
 let soals = [];
 let soalIdx = 0;
 let el = ha.comp.Util.getEl('div.hal-soal');
 let maks = 20;
+let jmlBenar = 0;
+let jmlSalah = 0;
 let soal1Cont = ha.comp.Util.getEl('div.soal-1');
 let soal2Cont = ha.comp.Util.getEl('div.soal-2');
 document.body.querySelector('div.progress-cont').appendChild(pg.el);

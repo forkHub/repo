@@ -37,7 +37,7 @@ function soalMaju(): void {
 	if (soalIdx >= soals.length) {
 		//render halaman akhir
 		el.parentElement.removeChild(el);
-		HalSelesai.tampil(document.body, Math.floor((nilai / soals.length) * 100)).catch((e) => {
+		HalSelesai.tampil(document.body, Math.floor((jmlBenar / (jmlBenar + jmlSalah)) * 100)).catch((e) => {
 			console.error(e);
 		})
 	}
@@ -56,9 +56,10 @@ function checkSoal(jawaban: string): void {
 		ha.comp.dialog.tampil(`
 			Jawaban Benar!<br/>
 		`);
+
 		ha.comp.dialog.okTbl.onclick = () => {
 			ha.comp.dialog.detach();
-			nilai++;
+			jmlBenar++;
 			soalMaju();
 		}
 	}
@@ -68,10 +69,12 @@ function checkSoal(jawaban: string): void {
 			Jawaban yang benar adalah <br/><br/>
 			<span class="font-x-large">${soal.jawaban}</span>
 		`);
+
 		ha.comp.dialog.okTbl.onclick = () => {
 			ha.comp.dialog.detach();
 			renderSoal(soals[soalIdx]);
 			pg.progress(Math.floor((soalIdx / soals.length) * 100));
+			jmlSalah++;
 		}
 	}
 
@@ -89,12 +92,14 @@ function tombolKurangDariKlik(): void {
 	checkSoal('<');
 }
 
-let nilai: number = 0;
+// let nilai: number = 0;
 let pg: ProgressBar = new ProgressBar();
 let soals: ISoal[] = [];
 let soalIdx: number = 0;
 let el: HTMLElement = ha.comp.Util.getEl('div.hal-soal');
 let maks: number = 20;
+let jmlBenar: number = 0;
+let jmlSalah: number = 0;
 
 let soal1Cont: HTMLElement = ha.comp.Util.getEl('div.soal-1');
 let soal2Cont: HTMLElement = ha.comp.Util.getEl('div.soal-2');
