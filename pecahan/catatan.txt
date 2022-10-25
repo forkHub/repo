@@ -1,5 +1,4 @@
-penghitungan niai mengikuti:
-    variable jml_salah, jml_benar 
+progress ada tulisan buat memberitahu progress sampai membandingkan
 
 refaktor struktur pakai delegate
     buttonklik
