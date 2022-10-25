@@ -9,10 +9,9 @@ var ha;
         // 	return comp;
         // }
         class BaseComponent {
-            constructor() {
-                this._template = '';
-                this._elHtml = document.createElement('div');
-            }
+            _template = '';
+            _elHtml = document.createElement('div');
+            _parent;
             // protected get template(): string {
             // 	return this._template;
             // }

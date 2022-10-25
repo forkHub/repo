@@ -59,7 +59,8 @@ function checkSoal(jawaban) {
 		`);
         ha.comp.dialog.okTbl.onclick = () => {
             ha.comp.dialog.detach();
-            soalMaju();
+            renderSoal(soals[soalIdx]);
+            pg.progress(Math.floor((soalIdx / soals.length) * 100));
         };
     }
 }
@@ -78,7 +79,6 @@ let soals = [];
 let soalIdx = 0;
 let el = ha.comp.Util.getEl('div.hal-soal');
 let maks = 20;
-let jmlSoal = 2;
 let soal1Cont = ha.comp.Util.getEl('div.soal-1');
 let soal2Cont = ha.comp.Util.getEl('div.soal-2');
 document.body.querySelector('div.progress-cont').appendChild(pg.el);

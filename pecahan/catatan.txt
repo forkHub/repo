@@ -1,13 +1,15 @@
+penghitungan niai mengikuti:
+    variable jml_salah, jml_benar 
+
 refaktor struktur pakai delegate
     buttonklik
-
-saat salah gak bisa maju, kembali lagi
-    variable jml_salah, jml_benar
 
 soal diganti reference idx
     bank soal
     soal aktif
     soal idx
+
+dialog tidak dibuat full saat landscape
 
 membandingkan pecahan:
 - pecahan biasa

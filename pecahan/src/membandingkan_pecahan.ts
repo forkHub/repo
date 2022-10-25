@@ -70,7 +70,8 @@ function checkSoal(jawaban: string): void {
 		`);
 		ha.comp.dialog.okTbl.onclick = () => {
 			ha.comp.dialog.detach();
-			soalMaju();
+			renderSoal(soals[soalIdx]);
+			pg.progress(Math.floor((soalIdx / soals.length) * 100));
 		}
 	}
 
@@ -94,7 +95,6 @@ let soals: ISoal[] = [];
 let soalIdx: number = 0;
 let el: HTMLElement = ha.comp.Util.getEl('div.hal-soal');
 let maks: number = 20;
-let jmlSoal: number = 2;
 
 let soal1Cont: HTMLElement = ha.comp.Util.getEl('div.soal-1');
 let soal2Cont: HTMLElement = ha.comp.Util.getEl('div.soal-2');
