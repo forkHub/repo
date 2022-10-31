@@ -1,8 +1,8 @@
 class Pecahan {
-    _angka = 0;
-    _pembilang = 0;
-    _penyebut = 0;
     constructor(a, bilang, sebut) {
+        this._angka = 0;
+        this._pembilang = 0;
+        this._penyebut = 0;
         this.angka = a;
         this.pembilang = bilang;
         this.penyebut = sebut;
@@ -77,21 +77,31 @@ class Pecahan {
     static buatAcak(mak = 100) {
         let pembilang;
         let penyebut;
-        pembilang = Math.floor(Math.random() * mak) + 1;
-        penyebut = Math.floor(Math.random() * mak) + 1;
+        pembilang = Math.floor(Math.random() * (mak - 1)) + 1;
+        penyebut = Math.floor(Math.random() * (mak - 1)) + 1;
         return this.buat(0, pembilang, penyebut);
+    }
+    static toString(p) {
+        return p.angka + " " + p.pembilang + '/' + p.penyebut;
     }
     static keBentukCampuran(p) {
         if (p.angka > 0)
             return p;
+        console.log(this.toString(p));
         p.angka = Math.floor(p.pembilang / p.penyebut);
         p.pembilang = p.pembilang % p.penyebut;
+        console.log(this.toString(p));
+        console.log('');
         return p;
     }
     static keBentukBiasa(p) {
         if (p.angka == 0)
             return p;
-        p.pembilang = p.penyebut * p.angka + p.pembilang;
+        console.log(this.toString(p));
+        p.pembilang = (p.penyebut * p.angka) + p.pembilang;
+        p.angka = 0;
+        console.log(this.toString(p));
+        console.log('');
         return p;
     }
     static buatCampuran(mak = 30) {

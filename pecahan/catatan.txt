@@ -1,18 +1,15 @@
-progress ada tulisan buat memberitahu progress sampai membandingkan
+pecahan ditukar (untuk pecahan biasa dan campuran)
 
 refaktor struktur pakai delegate
     buttonklik
 
-soal diganti reference idx
-    bank soal
-    soal aktif
-    soal idx
-
 dialog tidak dibuat full saat landscape
 
 membandingkan pecahan:
-- pecahan biasa
-- pecahan campuran
+- bisa ke campuran 
+- campuran ke biasa
+- pecahan biasa [x]
+- pecahan campuran 
 - biasa dan campuran
 - mengisi kekosongan
     - biasa
