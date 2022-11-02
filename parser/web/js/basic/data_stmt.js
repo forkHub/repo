@@ -56,6 +56,26 @@ var ha;
                     nama: parse.Kons.RETURN_STMT,
                     rumus: [[], ['return', parse.Kons.EXP], [parse.Kons.OPR, '+', '-', parse.Kons.MIN, parse.Kons.KURUNG]]
                 },
+                // {
+                // 	nama: Kons.STMT,
+                // 	rumus: [[], [Kons.RETURN_STMT], []]
+                // },
+                // {
+                // 	nama: Kons.STMT,
+                // 	rumus: [[], [Kons.FOR_STMT], []]
+                // },
+                // {
+                // 	nama: Kons.EXP,
+                // 	rumus: [[], [Kons.DEK_FUNGSI], []]
+                // },
+                // {
+                // 	nama: Kons.STMT,
+                // 	rumus: [[], [Kons.DEK_VAR], []]
+                // },
+                // {
+                // 	nama: Kons.STMT,
+                // 	rumus: [[], [Kons.VAR_ISI], []]
+                // },
             ];
         })(basic = parse.basic || (parse.basic = {}));
     })(parse = ha.parse || (ha.parse = {}));

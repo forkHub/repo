@@ -3,8 +3,8 @@ var ha;
     var comp;
     (function (comp) {
         class MenuPopup {
+            view = new View();
             constructor() {
-                this.view = new View();
             }
             destroy() {
                 this.view.destroy();

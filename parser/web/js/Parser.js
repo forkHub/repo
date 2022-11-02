@@ -3,10 +3,8 @@ var ha;
     var parse;
     (function (parse) {
         class Leksikal {
-            constructor() {
-                this.kataCadangan = [];
-                this.binopOpr = [];
-            }
+            kataCadangan = [];
+            binopOpr = [];
             async pecah(str) {
                 console.group('pecah');
                 ha.parse.Kons.dataStr = str;
@@ -173,19 +171,19 @@ var ha;
             static async check() {
                 let batas = 0;
                 while (true) {
-                    console.groupCollapsed('check grammar, ctr: ' + parse.tokenCtr);
+                    console.groupCollapsed('check grammar, ctr: ' + parse.tokenDataCtr);
                     let hasil = await this.check_grammar();
                     console.groupEnd();
                     if (hasil) {
-                        parse.tokenCtr = 0;
+                        parse.tokenDataCtr = 0;
                         if (parse.token.length == 1) {
                             break;
                         }
                     }
                     else {
                         // console.log('check grammar gak ada hasil')
-                        parse.tokenCtr++;
-                        if (parse.tokenCtr >= parse.token.length) {
+                        parse.tokenDataCtr++;
+                        if (parse.tokenDataCtr >= parse.token.length) {
                             ha.parse.debugOn();
                             console.log('HABIS');
                             break;
@@ -199,6 +197,9 @@ var ha;
                 console.log('selesai:');
                 console.log(this.renderToken(parse.token));
             }
+            // private static renderRumus(rumus: string[][]): void {
+            // 	rumus;
+            // }
             static async check_grammar() {
                 let adaTokenBaru = false;
                 // console.group('check token dengan rumus yang ada, ctr: ' + tokenCtr);
@@ -217,7 +218,7 @@ var ha;
             }
             static tokenBaru(i) {
                 // console.log('token: ' + grammarAr[i].nama + '/index rumus: ' + i, true);
-                console.log('[0]: ' + this.renderToken(parse.token.slice(Math.max(parse.tokenCtr - 1, 0), parse.tokenCtr + 5)), true);
+                console.log('[0]: ' + this.renderToken(parse.token.slice(Math.max(parse.tokenDataCtr - 1, 0), parse.tokenDataCtr + 5)), true);
                 //lolos
                 //packaging
                 // debugOff();
@@ -231,11 +232,11 @@ var ha;
                 };
                 let rl = parse.grammarAr[i].rumus[1].length;
                 for (let j = 0; j < rl; j++) {
-                    tokenBaru.token.push(parse.token[parse.tokenCtr + j]);
+                    tokenBaru.token.push(parse.token[parse.tokenDataCtr + j]);
                 }
                 // debugger;
-                let kiri = parse.token.slice(0, parse.tokenCtr);
-                let kanan = parse.token.slice(parse.tokenCtr + parse.grammarAr[i].rumus[1].length);
+                let kiri = parse.token.slice(0, parse.tokenDataCtr);
+                let kanan = parse.token.slice(parse.tokenDataCtr + parse.grammarAr[i].rumus[1].length);
                 // debugOn();
                 // debugGroupCollapsed('')
                 // console.log('token:');
@@ -259,7 +260,7 @@ var ha;
                 // debugGroupEnd();
                 // tokenCtr = 0;
                 // debugGroup();
-                console.log('[1]: ' + this.renderToken(parse.token.slice(Math.max(parse.tokenCtr - 1, 0), parse.tokenCtr + 5)), true);
+                console.log('[1]: ' + this.renderToken(parse.token.slice(Math.max(parse.tokenDataCtr - 1, 0), parse.tokenDataCtr + 5)), true);
                 console.log('', true);
             }
             static renderToken(token) {
@@ -294,8 +295,8 @@ var ha;
                 //check awal
                 console.log('check awal');
                 for (let i = 0; i < rumusAwal.length; i++) {
-                    if (parse.tokenCtr > 0) {
-                        let namaToken = parse.token[parse.tokenCtr - 1].nama;
+                    if (parse.tokenDataCtr > 0) {
+                        let namaToken = parse.token[parse.tokenDataCtr - 1].nama;
                         let rumusAwalTeks = rumusAwal[i];
                         if (!caseSensitif) {
                             namaToken = namaToken.toLowerCase();
@@ -313,15 +314,20 @@ var ha;
                 //check inti
                 console.log('check inti');
                 for (let i = 0; i < inti.length; i++) {
-                    if (parse.tokenCtr + i >= parse.token.length) {
+                    if (parse.tokenDataCtr + i >= parse.token.length) {
+                        console.log('token index lebih, tokenCtr: ' + parse.tokenDataCtr + '/i: ' + i + '/token.length: ' + parse.token.length);
                         return false;
                     }
-                    let namaToken = parse.token[parse.tokenCtr + i].nama;
+                    let namaToken = parse.token[parse.tokenDataCtr + i].nama;
                     let namaInti = inti[i];
                     if (!caseSensitif) {
                         namaToken = namaToken.toLowerCase();
                         namaInti = namaInti.toLowerCase();
                     }
+                    console.log('nama token ' + namaToken);
+                    console.log('namaInti ' + namaInti);
+                    console.log('tokenCtr ' + parse.tokenDataCtr);
+                    console.log('i: ' + i);
                     if (namaToken != namaInti) {
                         console.log('token tidak sama, token: ' + namaToken + '/rumus: ' + namaInti + '/i: ' + i);
                         return false;
@@ -329,8 +335,8 @@ var ha;
                 }
                 //check akhir
                 console.log('check akhir');
-                if (parse.tokenCtr + inti.length < parse.token.length) {
-                    let idx = parse.tokenCtr + inti.length;
+                if (parse.tokenDataCtr + inti.length < parse.token.length) {
+                    let idx = parse.tokenDataCtr + inti.length;
                     for (let i = 0; i < akhir.length; i++) {
                         let namaToken = parse.token[idx].nama;
                         let namaAkhir = akhir[i];
@@ -345,14 +351,14 @@ var ha;
                     }
                 }
                 else {
-                    console.log('check akhir gak di check: tokenCtr ' + parse.tokenCtr + '/dataStr pjg: ' + parse.token.length);
+                    console.log('check akhir gak di check: tokenCtr ' + parse.tokenDataCtr + '/dataStr pjg: ' + parse.token.length);
                 }
                 // debugGroup();
                 return true;
             }
         }
         parse.Grammar = Grammar;
-        parse.tokenCtr = 0;
+        parse.tokenDataCtr = 0;
         parse.parser = new Leksikal();
     })(parse = ha.parse || (ha.parse = {}));
 })(ha || (ha = {}));

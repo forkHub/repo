@@ -16,6 +16,7 @@ var ha;
                         await parse.parser.pecah(barisAr[i]);
                         console.log(parse.renderToken(parse.token));
                         if (parse.token.length > 0) {
+                            parse.tokenDataCtr = 0;
                             await parse.Grammar.check();
                             console.log(parse.renderToken(parse.token));
                             if (parse.token.length > 1) {
