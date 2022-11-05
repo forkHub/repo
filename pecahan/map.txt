@@ -1,0 +1,27 @@
+pecahan
+membandingkan
+    campuran - campuran
+        penyebut sama
+        penyebut acak   
+    biasa - biasa
+        penyebut sama
+        penyebut acak   01
+    biasa - campuran
+        penyebut sama
+        penyebut acak   02
+
+mengurutkan
+    awal/tengah/akhir
+        campuran semua
+        sama semua
+        campuran + sama
+
+pecahan setara 
+    skala keatas
+        campuran
+        biasa
+    skala ke bawah
+
+menambahkan pecahan
+
+mengalikan pecahan
