@@ -1,12 +1,17 @@
 import fs from "fs";
+import path from "path";
 
-let fileStr: string = fs.readFileSync('data/index.html', "utf-8");
-let baseDir: string = 'data/';
+let fileStr: string = fs.readFileSync('index.html', "utf-8");
+let baseDir: string = '';
 let content: string = '';
+let config: IConfigFile[] = []
 
 fileStr = ubahCss(fileStr);
 fileStr = ubahScript(fileStr);
 fs.writeFileSync('output.html', fileStr);
+
+//tambahin config
+
 
 //ambil css
 function ubahCss(data: string): string {
@@ -38,6 +43,7 @@ function ubahCss(data: string): string {
     return hasil;
 };
 
+
 function ambilTag(src: string, reg: RegExp): string {
     let regHasil: RegExpExecArray = reg.exec(src);
     let hasil: string = '';
@@ -63,8 +69,15 @@ function ubahScript(data: string): string {
             let url: string = ambilScriptUrl(tag);
             console.log('url:' + url);
 
-            content = fs.readFileSync(baseDir + url, 'utf-8');
+            if (url == './js/config.js') {
+                content = ambilFile();
+                content = "\n let fileCache = " + content + " \n";
+            }
+            else {
+                content = fs.readFileSync(baseDir + url, 'utf-8');
+            }
             content = `\n<!-- ${url} mulai: -->\n <script>\n ${content} \n</script> \n<!-- ${url} selesai -->\n`;
+
             hasil = hasil.replace(/<script.*<\/script>/, content);
         }
         else {
@@ -86,4 +99,39 @@ function ambilScriptUrl(src: string): string {
     }
 
     throw Error('');
+}
+
+function ambilFile(): string {
+    let p: string = path.join(__dirname + '/template');
+    let dir: string[] = fs.readdirSync(p);
+
+
+    console.log("");
+    console.log('ambil file');
+    console.log("p: " + p);
+    console.log("dir " + dir);
+    console.log("");
+
+    if (!dir) return '';
+
+    for (let i: number = 0; i < dir.length; i++) {
+        let fileStr: string = dir[i];
+
+
+        let file2: string = fs.readFileSync(path.join(__dirname + '/template/' + fileStr), "utf-8");
+        console.log('ambil file: ' + file2.slice(0, 10));
+
+        config.push({
+            path: dir[i],
+            file: file2
+        });
+    }
+
+    fs.writeFileSync("temp_file.txt", JSON.stringify(config));
+    return fs.readFileSync("temp_file.txt", "utf-8");
+}
+
+interface IConfigFile {
+    path?: string,
+    file?: string
 }
