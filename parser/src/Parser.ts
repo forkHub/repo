@@ -216,20 +216,20 @@ namespace ha.parse {
 
 			while (true) {
 
-				console.groupCollapsed('check grammar, ctr: ' + tokenCtr);
+				console.groupCollapsed('check grammar, ctr: ' + tokenDataCtr);
 				let hasil: boolean = await this.check_grammar();
 				console.groupEnd();
 
 				if (hasil) {
-					tokenCtr = 0;
+					tokenDataCtr = 0;
 					if (token.length == 1) {
 						break;
 					}
 
 				} else {
 					// console.log('check grammar gak ada hasil')
-					tokenCtr++;
-					if (tokenCtr >= token.length) {
+					tokenDataCtr++;
+					if (tokenDataCtr >= token.length) {
 						ha.parse.debugOn();
 						console.log('HABIS');
 						break;
@@ -244,6 +244,11 @@ namespace ha.parse {
 			console.log('selesai:');
 			console.log(this.renderToken(token));
 		}
+
+		// private static renderRumus(rumus: string[][]): void {
+		// 	rumus;
+
+		// }
 
 		private static async check_grammar(): Promise<boolean> {
 			let adaTokenBaru: boolean = false;
@@ -270,7 +275,7 @@ namespace ha.parse {
 		private static tokenBaru(i: number): void {
 
 			// console.log('token: ' + grammarAr[i].nama + '/index rumus: ' + i, true);
-			console.log('[0]: ' + this.renderToken(token.slice(Math.max(tokenCtr - 1, 0), tokenCtr + 5)), true);
+			console.log('[0]: ' + this.renderToken(token.slice(Math.max(tokenDataCtr - 1, 0), tokenDataCtr + 5)), true);
 
 			//lolos
 			//packaging
@@ -287,12 +292,12 @@ namespace ha.parse {
 
 			let rl: number = grammarAr[i].rumus[1].length;
 			for (let j: number = 0; j < rl; j++) {
-				tokenBaru.token.push(token[tokenCtr + j]);
+				tokenBaru.token.push(token[tokenDataCtr + j]);
 			}
 			// debugger;
 
-			let kiri: IToken[] = token.slice(0, tokenCtr);
-			let kanan: IToken[] = token.slice(tokenCtr + grammarAr[i].rumus[1].length);
+			let kiri: IToken[] = token.slice(0, tokenDataCtr);
+			let kanan: IToken[] = token.slice(tokenDataCtr + grammarAr[i].rumus[1].length);
 
 			// debugOn();
 			// debugGroupCollapsed('')
@@ -321,7 +326,7 @@ namespace ha.parse {
 
 			// tokenCtr = 0;
 			// debugGroup();
-			console.log('[1]: ' + this.renderToken(token.slice(Math.max(tokenCtr - 1, 0), tokenCtr + 5)), true);
+			console.log('[1]: ' + this.renderToken(token.slice(Math.max(tokenDataCtr - 1, 0), tokenDataCtr + 5)), true);
 			console.log('', true);
 		}
 
@@ -365,8 +370,8 @@ namespace ha.parse {
 			console.log('check awal');
 			for (let i: number = 0; i < rumusAwal.length; i++) {
 
-				if (tokenCtr > 0) {
-					let namaToken: string = token[tokenCtr - 1].nama;
+				if (tokenDataCtr > 0) {
+					let namaToken: string = token[tokenDataCtr - 1].nama;
 					let rumusAwalTeks: string = rumusAwal[i]
 
 					if (!caseSensitif) {
@@ -388,17 +393,23 @@ namespace ha.parse {
 			console.log('check inti');
 			for (let i: number = 0; i < inti.length; i++) {
 
-				if (tokenCtr + i >= token.length) {
+				if (tokenDataCtr + i >= token.length) {
+					console.log('token index lebih, tokenCtr: ' + tokenDataCtr + '/i: ' + i + '/token.length: ' + token.length);
 					return false;
 				}
 
-				let namaToken: string = token[tokenCtr + i].nama;
+				let namaToken: string = token[tokenDataCtr + i].nama;
 				let namaInti: string = inti[i];
 
 				if (!caseSensitif) {
 					namaToken = namaToken.toLowerCase();
 					namaInti = namaInti.toLowerCase();
 				}
+
+				console.log('nama token ' + namaToken);
+				console.log('namaInti ' + namaInti);
+				console.log('tokenCtr ' + tokenDataCtr);
+				console.log('i: ' + i);
 
 				if (namaToken != namaInti) {
 					console.log('token tidak sama, token: ' + namaToken + '/rumus: ' + namaInti + '/i: ' + i);
@@ -410,8 +421,8 @@ namespace ha.parse {
 			//check akhir
 			console.log('check akhir');
 
-			if (tokenCtr + inti.length < token.length) {
-				let idx: number = tokenCtr + inti.length;
+			if (tokenDataCtr + inti.length < token.length) {
+				let idx: number = tokenDataCtr + inti.length;
 				for (let i: number = 0; i < akhir.length; i++) {
 
 					let namaToken = token[idx].nama;
@@ -430,7 +441,7 @@ namespace ha.parse {
 				}
 			}
 			else {
-				console.log('check akhir gak di check: tokenCtr ' + tokenCtr + '/dataStr pjg: ' + token.length);
+				console.log('check akhir gak di check: tokenCtr ' + tokenDataCtr + '/dataStr pjg: ' + token.length);
 			}
 
 			// debugGroup();
@@ -439,6 +450,6 @@ namespace ha.parse {
 
 	}
 
-	export let tokenCtr: number = 0;
+	export let tokenDataCtr: number = 0;
 	export const parser: Leksikal = new Leksikal();
 }

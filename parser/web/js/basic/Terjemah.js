@@ -5,6 +5,11 @@ var ha;
         var basic;
         (function (basic) {
             class Terjemah {
+                static kedalaman = [];
+                static kurungStak = [];
+                static kontek = [];
+                static kontekBinopMin = false;
+                static tab = 0;
                 static async terjemah(data) {
                     let hasil = '';
                     this.kedalaman.push(data.nama);
@@ -203,11 +208,6 @@ var ha;
                     }
                 }
             }
-            Terjemah.kedalaman = [];
-            Terjemah.kurungStak = [];
-            Terjemah.kontek = [];
-            Terjemah.kontekBinopMin = false;
-            Terjemah.tab = 0;
             basic.Terjemah = Terjemah;
         })(basic = parse.basic || (parse.basic = {}));
     })(parse = ha.parse || (ha.parse = {}));

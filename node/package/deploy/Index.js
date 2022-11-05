@@ -4,12 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
-let fileStr = fs_1.default.readFileSync('data/index.html', "utf-8");
-let baseDir = 'data/';
+const path_1 = __importDefault(require("path"));
+let fileStr = fs_1.default.readFileSync('index.html', "utf-8");
+let baseDir = '';
 let content = '';
+let config = [];
 fileStr = ubahCss(fileStr);
 fileStr = ubahScript(fileStr);
 fs_1.default.writeFileSync('output.html', fileStr);
+//tambahin config
 //ambil css
 function ubahCss(data) {
     let hasil = data;
@@ -53,7 +56,13 @@ function ubahScript(data) {
         if (tag != '') {
             let url = ambilScriptUrl(tag);
             console.log('url:' + url);
-            content = fs_1.default.readFileSync(baseDir + url, 'utf-8');
+            if (url == './js/config.js') {
+                content = ambilFile();
+                content = "\n let fileCache = " + content + " \n";
+            }
+            else {
+                content = fs_1.default.readFileSync(baseDir + url, 'utf-8');
+            }
             content = `\n<!-- ${url} mulai: -->\n <script>\n ${content} \n</script> \n<!-- ${url} selesai -->\n`;
             hasil = hasil.replace(/<script.*<\/script>/, content);
         }
@@ -72,4 +81,26 @@ function ambilScriptUrl(src) {
         return str;
     }
     throw Error('');
+}
+function ambilFile() {
+    let p = path_1.default.join(__dirname + '/template');
+    let dir = fs_1.default.readdirSync(p);
+    console.log("");
+    console.log('ambil file');
+    console.log("p: " + p);
+    console.log("dir " + dir);
+    console.log("");
+    if (!dir)
+        return '';
+    for (let i = 0; i < dir.length; i++) {
+        let fileStr = dir[i];
+        let file2 = fs_1.default.readFileSync(path_1.default.join(__dirname + '/template/' + fileStr), "utf-8");
+        console.log('ambil file: ' + file2.slice(0, 10));
+        config.push({
+            path: dir[i],
+            file: file2
+        });
+    }
+    fs_1.default.writeFileSync("temp_file.txt", JSON.stringify(config));
+    return fs_1.default.readFileSync("temp_file.txt", "utf-8");
 }

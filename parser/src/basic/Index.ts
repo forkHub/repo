@@ -19,6 +19,7 @@ namespace ha.parse.basic {
 				console.log(renderToken(token));
 
 				if (token.length > 0) {
+					tokenDataCtr = 0;
 					await Grammar.check();
 
 					console.log(renderToken(token));
