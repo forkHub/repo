@@ -1,3 +1,4 @@
+/** INPUT.TS */
 namespace ha {
 	class Input {
 		private _inputs: IInput[] = [];	//any input,
@@ -266,10 +267,22 @@ namespace ha {
 				input.xDrag = input.x - input.xStart;
 				input.yDrag = input.y - input.yStart;
 			}
+
+			//sprite	
+			//sprite move
+			ha.blitz.Sprite.daftar.forEach((item: ha.blitz.ISprite) => {
+				if (item.down && item.dragable) {
+					item.dragged = true;
+					item.x = pos.x - item.dragStartX
+					item.y = pos.y - item.dragStartY
+				}
+			});
+
 		}
 
 		down(input: IInput, key: string, type: string, pos: IV2D): void {
 
+			//TODO: refaktor 
 			if (!input.isDown) {
 				input.hit++;
 			}
@@ -284,14 +297,34 @@ namespace ha {
 			input.key = key;
 			input.type = type;
 			input.timerStart = Date.now();
+
+			//sprite down
+			ha.blitz.Sprite.daftar.forEach((item: ha.blitz.ISprite) => {
+				if (ImageDotCollide(item.buffer, item.x, item.y, pos.x, pos.y)) {
+					item.down = true;
+					item.dragStartX = pos.x;
+					item.dragStartY = pos.y
+				}
+			});
 		}
 
 		up(input2: IInput): void {
-			// input2.id = e.pointerId;
 			input2.isDown = false;
 			input2.isDrag = false;
 			input2.timerEnd = Date.now();
 			input2.isTap = ((input2.timerEnd - input2.timerStart) < 500);
+
+			//sprite up
+			//sprite hit
+			ha.blitz.Sprite.daftar.forEach((item: ha.blitz.ISprite) => {
+				if (item.down) {
+					item.hit++;
+				}
+
+				item.down = false;
+				item.dragged = false;
+			});
+
 		}
 
 	}

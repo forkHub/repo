@@ -2,7 +2,7 @@
 ///<reference path="../ha/blitz/Image.ts"/>
 
 /*
- * INPUT
+ * BLITZ-INPUT.TS
  */
 
 const Prompt = (m: string, def: string): string => {

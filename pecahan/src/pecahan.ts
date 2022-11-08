@@ -2,18 +2,29 @@ class Pecahan implements IPecahan {
 	private _angka: number = 0;
 	private _pembilang: number = 0;
 	private _penyebut: number = 0;
+	private _dec: number;
+
+
 
 	constructor(a: number, bilang: number, sebut: number) {
 		this.angka = a;
 		this.pembilang = bilang;
 		this.penyebut = sebut;
+
+		if (a == 0) {
+			this._dec = this.pembilang / this.penyebut;
+		}
+		else {
+			this._dec = (this.penyebut * this.angka + this.pembilang) / this.penyebut;
+		}
 	}
 
 	static clone(p: IPecahan): IPecahan {
 		return {
 			angka: p.angka,
 			pembilang: p.pembilang,
-			penyebut: p.penyebut
+			penyebut: p.penyebut,
+			dec: p.dec
 		}
 	}
 
@@ -37,17 +48,8 @@ class Pecahan implements IPecahan {
 		return (p.angka > 0);
 	}
 
-	static toDesimal(p: IPecahan): number {
-		return p.pembilang / p.penyebut;
-	}
-
-	static checkSama(p1: IPecahan, p2: IPecahan): boolean {
-		this.keBentukBiasa(p1);
-		this.keBentukBiasa(p2);
-
-		if (this.toDesimal(p1) != this.toDesimal(p2)) return false;
-
-		return true;
+	static checkSetara(p1: IPecahan, p2: IPecahan): boolean {
+		return p1.dec == p2.dec;
 	}
 
 	static render(p: IPecahan): HTMLElement {
@@ -81,14 +83,8 @@ class Pecahan implements IPecahan {
 		return view;
 	}
 
-	static lebihBesar(p1: IPecahan, p2: IPecahan): boolean {
-		this.keBentukBiasa(p1);
-		this.keBentukBiasa(p2);
-
-		let a1: number = p1.pembilang * p2.penyebut;
-		let a2: number = p2.pembilang * p1.penyebut;
-
-		return a1 > a2;
+	static checkLebihBesar(p1: IPecahan, p2: IPecahan): boolean {
+		return p1.dec > p2.dec;
 	}
 
 	static buatAcak(mak: number = 100): IPecahan {
@@ -107,6 +103,7 @@ class Pecahan implements IPecahan {
 
 	static keBentukCampuran(p: IPecahan): IPecahan {
 		if (p.angka > 0) return p;
+		if (p.penyebut > p.pembilang) return p;
 
 		console.log(this.toString(p));
 
@@ -116,6 +113,19 @@ class Pecahan implements IPecahan {
 		console.log(this.toString(p));
 		console.log('');
 
+		return p;
+	}
+
+	static tukar(p: IPecahan): IPecahan {
+		let a: number;
+
+		this.keBentukBiasa(p);
+
+		a = p.pembilang;
+		p.pembilang = p.penyebut;
+		p.penyebut = a;
+
+		p.dec = p.pembilang / p.penyebut;
 		return p;
 	}
 
@@ -138,9 +148,7 @@ class Pecahan implements IPecahan {
 
 			p = this.buatAcak(mak);
 			if (p.pembilang < p.penyebut) {
-				let pembilang: number = p.pembilang;
-				p.pembilang = p.penyebut;
-				p.penyebut = pembilang;
+				this.tukar(p);
 			}
 
 			if (p.pembilang % p.penyebut != 0) {
@@ -171,7 +179,7 @@ class Pecahan implements IPecahan {
 			//check sama
 			sama = false;
 			sudahAda.forEach((item: IPecahan) => {
-				if (Pecahan.checkSama(item, hasil)) {
+				if (Pecahan.checkSetara(item, hasil)) {
 					sama = true;
 				}
 			})
@@ -216,11 +224,20 @@ class Pecahan implements IPecahan {
 		this._penyebut = value;
 	}
 
+	public get dec(): number {
+		return this._dec;
+	}
+
+	public set dec(p: number) {
+		this._dec = p;
+	}
+
 }
 
 
 interface IPecahan {
 	angka: number,
 	pembilang: number,
-	penyebut: number
+	penyebut: number,
+	dec: number
 }

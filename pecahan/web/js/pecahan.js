@@ -1,17 +1,25 @@
 class Pecahan {
+    _angka = 0;
+    _pembilang = 0;
+    _penyebut = 0;
+    _dec;
     constructor(a, bilang, sebut) {
-        this._angka = 0;
-        this._pembilang = 0;
-        this._penyebut = 0;
         this.angka = a;
         this.pembilang = bilang;
         this.penyebut = sebut;
+        if (a == 0) {
+            this._dec = this.pembilang / this.penyebut;
+        }
+        else {
+            this._dec = (this.penyebut * this.angka + this.pembilang) / this.penyebut;
+        }
     }
     static clone(p) {
         return {
             angka: p.angka,
             pembilang: p.pembilang,
-            penyebut: p.penyebut
+            penyebut: p.penyebut,
+            dec: p.dec
         };
     }
     static skala(p, n) {
@@ -30,15 +38,8 @@ class Pecahan {
     static checkCampuran(p) {
         return (p.angka > 0);
     }
-    static toDesimal(p) {
-        return p.pembilang / p.penyebut;
-    }
-    static checkSama(p1, p2) {
-        this.keBentukBiasa(p1);
-        this.keBentukBiasa(p2);
-        if (this.toDesimal(p1) != this.toDesimal(p2))
-            return false;
-        return true;
+    static checkSetara(p1, p2) {
+        return p1.dec == p2.dec;
     }
     static render(p) {
         let view;
@@ -67,12 +68,8 @@ class Pecahan {
         view.querySelector('div.angka span').innerHTML = (p.angka != 0 ? p.angka : '') + '';
         return view;
     }
-    static lebihBesar(p1, p2) {
-        this.keBentukBiasa(p1);
-        this.keBentukBiasa(p2);
-        let a1 = p1.pembilang * p2.penyebut;
-        let a2 = p2.pembilang * p1.penyebut;
-        return a1 > a2;
+    static checkLebihBesar(p1, p2) {
+        return p1.dec > p2.dec;
     }
     static buatAcak(mak = 100) {
         let pembilang;
@@ -87,11 +84,22 @@ class Pecahan {
     static keBentukCampuran(p) {
         if (p.angka > 0)
             return p;
+        if (p.penyebut > p.pembilang)
+            return p;
         console.log(this.toString(p));
         p.angka = Math.floor(p.pembilang / p.penyebut);
         p.pembilang = p.pembilang % p.penyebut;
         console.log(this.toString(p));
         console.log('');
+        return p;
+    }
+    static tukar(p) {
+        let a;
+        this.keBentukBiasa(p);
+        a = p.pembilang;
+        p.pembilang = p.penyebut;
+        p.penyebut = a;
+        p.dec = p.pembilang / p.penyebut;
         return p;
     }
     static keBentukBiasa(p) {
@@ -109,9 +117,7 @@ class Pecahan {
         while (true) {
             p = this.buatAcak(mak);
             if (p.pembilang < p.penyebut) {
-                let pembilang = p.pembilang;
-                p.pembilang = p.penyebut;
-                p.penyebut = pembilang;
+                this.tukar(p);
             }
             if (p.pembilang % p.penyebut != 0) {
                 break;
@@ -134,7 +140,7 @@ class Pecahan {
             //check sama
             sama = false;
             sudahAda.forEach((item) => {
-                if (Pecahan.checkSama(item, hasil)) {
+                if (Pecahan.checkSetara(item, hasil)) {
                     sama = true;
                 }
             });
@@ -172,5 +178,11 @@ class Pecahan {
             ha.comp.Util.stackTrace();
         }
         this._penyebut = value;
+    }
+    get dec() {
+        return this._dec;
+    }
+    set dec(p) {
+        this._dec = p;
     }
 }

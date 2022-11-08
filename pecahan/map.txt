@@ -1,14 +1,16 @@
 pecahan
 membandingkan
     campuran - campuran
-        penyebut sama
+        penyebut sama   
         penyebut acak   
     biasa - biasa
-        penyebut sama
+        penyebut sama   03
         penyebut acak   01
     biasa - campuran
-        penyebut sama
+        penyebut sama   04
         penyebut acak   02
+    biasa - angka
+    angka - campuran
 
 mengurutkan
     awal/tengah/akhir
@@ -23,5 +25,4 @@ pecahan setara
     skala ke bawah
 
 menambahkan pecahan
-
 mengalikan pecahan

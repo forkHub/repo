@@ -21,10 +21,10 @@ function buatSoal(soal1Pecahan = false, soal2Pecahan = false) {
     else {
         soal.pecahan.push(Pecahan.buatAcak(angkMaks));
     }
-    if (Pecahan.checkSama(Pecahan.clone(soal.pecahan[0]), Pecahan.clone(soal.pecahan[1]))) {
+    if (Pecahan.checkSetara(Pecahan.clone(soal.pecahan[0]), Pecahan.clone(soal.pecahan[1]))) {
         soal.jawaban = '=';
     }
-    else if (Pecahan.lebihBesar(Pecahan.clone(soal.pecahan[0]), Pecahan.clone(soal.pecahan[1]))) {
+    else if (Pecahan.checkLebihBesar(Pecahan.clone(soal.pecahan[0]), Pecahan.clone(soal.pecahan[1]))) {
         soal.jawaban = '>';
     }
     else {
@@ -55,6 +55,10 @@ function soalMaju() {
 }
 function checkSoal(jawaban) {
     let soal = soals[soalIdx];
+    console.log('check soal:');
+    console.log(soal);
+    console.log('soal idx ' + soalIdx);
+    console.log('jawaban: ' + jawaban);
     if (soal.jawaban == jawaban) {
         ha.comp.dialog.tampil(`
 			Jawaban Benar!<br/>
@@ -80,7 +84,9 @@ function checkSoal(jawaban) {
     }
 }
 function tombolLebihDariKlik() {
+    console.group();
     checkSoal('>');
+    console.groupEnd();
 }
 function tombolSamaDenganKlik() {
     checkSoal('=');
@@ -88,11 +94,11 @@ function tombolSamaDenganKlik() {
 function tombolKurangDariKlik() {
     checkSoal('<');
 }
-let pg = new ProgressBar();
-let soals = [];
+const pg = new ProgressBar();
+const soals = [];
 let soalIdx = 0;
 let el = ha.comp.Util.getEl('div.hal-soal');
 let jmlBenar = 0;
 let jmlSalah = 0;
-let soal1Cont = ha.comp.Util.getEl('div.soal-1');
-let soal2Cont = ha.comp.Util.getEl('div.soal-2');
+const soal1Cont = ha.comp.Util.getEl('div.soal-1');
+const soal2Cont = ha.comp.Util.getEl('div.soal-2');

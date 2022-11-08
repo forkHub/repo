@@ -4,14 +4,3 @@ refaktor struktur pakai delegate
     buttonklik
 
 dialog tidak dibuat full saat landscape
-
-membandingkan pecahan:
-- bisa ke campuran 
-- campuran ke biasa
-- pecahan biasa [x]
-- pecahan campuran 
-- biasa dan campuran
-- mengisi kekosongan
-    - biasa
-    - campuran
-    - biasa-campuran
