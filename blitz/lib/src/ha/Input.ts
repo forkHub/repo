@@ -35,6 +35,9 @@ namespace ha {
 		}
 
 		init(buffer: IBuffer): void {
+			console.log('input init');
+			console.log('buffer');
+			console.log(buffer);
 
 			buffer.canvas.onpointerdown = (e: PointerEvent) => {
 				e.stopPropagation();
@@ -49,6 +52,23 @@ namespace ha {
 
 				if ("mouse" == e.pointerType) ha.input.event.down(this._mouseGlobal, key, 'mouse', pos);
 				if ("touch" == e.pointerType) ha.input.event.down(this._touchGlobal, key, 'touch', pos);
+
+				//sprite down
+				ha_blitz.Sprite.daftar.forEach((item: ha_blitz.ISprite) => {
+					item.down = false;
+
+					console.log('item down');
+
+					if (ImageDotCollide(item.buffer, item.x, item.y, pos.x, pos.y)) {
+						item.down = true;
+						item.dragStartX = pos.x - item.x;
+						item.dragStartY = pos.y - item.y
+
+						console.log('item drag start');
+						console.log(item);
+					}
+
+				});
 			}
 
 			buffer.canvas.onpointermove = (e: PointerEvent) => {
@@ -60,6 +80,19 @@ namespace ha {
 				ha.input.event.move(this.inputGlobal, buffer, e);
 				if (e.pointerType == 'touch') ha.input.event.move(ha.input.touchGlobal, buffer, e);
 				if (e.pointerType == 'mouse') ha.input.event.move(ha.input.mouseGlobal, buffer, e);
+
+				//sprite	
+				//sprite move
+				ha_blitz.Sprite.daftar.forEach((item: ha_blitz.ISprite) => {
+					let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.scaleX, buffer.scaleY);
+
+					if (item.down && item.dragable) {
+						item.dragged = true;
+						item.x = pos.x - item.dragStartX
+						item.y = pos.y - item.dragStartY
+					}
+				});
+
 			}
 
 			buffer.canvas.onpointerout = (e: PointerEvent) => {
@@ -81,12 +114,27 @@ namespace ha {
 			buffer.canvas.onpointerup = (e: PointerEvent) => {
 				e.stopPropagation();
 
+				console.log('on pointer up');
+
 				let input: IInput = ha.input.baru(e.button + '', e.pointerType);
 
 				ha.input.event.up(input);
 				ha.input.event.up(this.inputGlobal);
 				if (e.pointerType == 'touch') ha.input.event.up(ha.input.touchGlobal);
 				if (e.pointerType == 'mouse') ha.input.event.up(ha.input.mouseGlobal);
+
+				//sprite up
+				//sprite hit
+				ha_blitz.Sprite.daftar.forEach((item: ha_blitz.ISprite) => {
+					if (item.down) {
+						item.hit++;
+					}
+
+					item.down = false;
+					item.dragged = false;
+
+					console.log("item drag end");
+				});
 			}
 
 			window.onkeydown = (e: KeyboardEvent) => {
@@ -256,8 +304,9 @@ namespace ha {
 	}
 
 	class EventHandler {
-		move(input: IInput, canvas: IBuffer, e: PointerEvent): void {
-			let pos: any = ha.input.pos(e.clientX, e.clientY, canvas, canvas.scaleX, canvas.scaleY);
+
+		move(input: IInput, buffer: IBuffer, e: PointerEvent): void {
+			let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.scaleX, buffer.scaleY);
 			input.x = pos.x;
 			input.y = pos.y;
 			input.id = e.pointerId;
@@ -268,15 +317,6 @@ namespace ha {
 				input.yDrag = input.y - input.yStart;
 			}
 
-			//sprite	
-			//sprite move
-			ha.blitz.Sprite.daftar.forEach((item: ha.blitz.ISprite) => {
-				if (item.down && item.dragable) {
-					item.dragged = true;
-					item.x = pos.x - item.dragStartX
-					item.y = pos.y - item.dragStartY
-				}
-			});
 
 		}
 
@@ -297,15 +337,6 @@ namespace ha {
 			input.key = key;
 			input.type = type;
 			input.timerStart = Date.now();
-
-			//sprite down
-			ha.blitz.Sprite.daftar.forEach((item: ha.blitz.ISprite) => {
-				if (ImageDotCollide(item.buffer, item.x, item.y, pos.x, pos.y)) {
-					item.down = true;
-					item.dragStartX = pos.x;
-					item.dragStartY = pos.y
-				}
-			});
 		}
 
 		up(input2: IInput): void {
@@ -314,16 +345,7 @@ namespace ha {
 			input2.timerEnd = Date.now();
 			input2.isTap = ((input2.timerEnd - input2.timerStart) < 500);
 
-			//sprite up
-			//sprite hit
-			ha.blitz.Sprite.daftar.forEach((item: ha.blitz.ISprite) => {
-				if (item.down) {
-					item.hit++;
-				}
 
-				item.down = false;
-				item.dragged = false;
-			});
 
 		}
 

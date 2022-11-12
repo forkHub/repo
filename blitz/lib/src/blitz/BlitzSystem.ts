@@ -10,9 +10,9 @@ const Delay = async (m: number = 0): Promise<void> => {
 }
 
 const FPS = (n: number) => {
-	ha.blitz.main.fps = Math.floor(1000 / n);
+	ha_blitz.main.fps = Math.floor(1000 / n);
 	if (n >= 60) {
-		ha.blitz.main.fps = 0;
+		ha_blitz.main.fps = 0;
 	}
 }
 

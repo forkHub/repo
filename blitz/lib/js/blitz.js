@@ -1,125 +1,119 @@
-var ha;
-(function (ha) {
-    var blitz;
-    (function (blitz) {
-        class Main {
-            _fps = 1000 / 30;
-            _origin;
-            _canvasAr = [];
-            _canvasAktif;
-            buatCanvas(canvasEl) {
-                // let canvasEl: HTMLCanvasElement = window.document.body.querySelector(`canvas.${buffer}`);
-                let canvas = {
-                    canvas: canvasEl,
-                    ctx: canvasEl.getContext('2d'),
-                    height: canvasEl.height,
-                    scaleX: 1,
-                    scaleY: 1,
-                    width: canvasEl.width,
-                    frameH: canvasEl.height,
-                    frameW: canvasEl.width,
-                    handleX: 0,
-                    handleY: 0,
-                    img: null,
-                    isAnim: false,
-                    rotation: 0,
-                    rect: ha.rect.create()
-                };
-                return canvas;
-            }
-            init(canvasBelakang, canvasDepan) {
-                let canvas = this.buatCanvas(canvasBelakang);
-                this._canvasAr.push(canvas);
-                canvas = this.buatCanvas(canvasDepan);
-                this._canvasAr.push(canvas);
-                ha.blitz.main.canvasAktif = canvas;
-            }
-            get canvasAktif() {
-                return this._canvasAktif;
-            }
-            set canvasAktif(value) {
-                this._canvasAktif = value;
-            }
-            get canvasAr() {
-                return this._canvasAr;
-            }
-            set canvasAr(value) {
-                this._canvasAr = value;
-            }
-            get origin() {
-                return this._origin;
-            }
-            set origin(value) {
-                this._origin = value;
-            }
-            get fps() {
-                return this._fps;
-            }
-            set fps(value) {
-                this._fps = value;
-            }
-        }
-        blitz.main = new Main();
-    })(blitz = ha.blitz || (ha.blitz = {}));
-})(ha || (ha = {}));
-var ha;
-(function (ha) {
-    var blitz;
-    (function (blitz) {
-        class Image {
-            loadImage = async (url) => {
-                return new Promise((resolve, reject) => {
-                    let image2 = document.createElement('img');
-                    image2.onload = () => {
-                        resolve(image2);
-                    };
-                    image2.src = url;
-                    image2.onerror = (e) => {
-                        reject(e);
-                    };
-                });
+var ha_blitz;
+(function (ha_blitz) {
+    class Main {
+        _fps = 1000 / 30;
+        _origin;
+        _canvasAr = [];
+        _canvasAktif;
+        buatCanvas(canvasEl) {
+            // let canvasEl: HTMLCanvasElement = window.document.body.querySelector(`canvas.${buffer}`);
+            let canvas = {
+                canvas: canvasEl,
+                ctx: canvasEl.getContext('2d'),
+                height: canvasEl.height,
+                scaleX: 1,
+                scaleY: 1,
+                width: canvasEl.width,
+                frameH: canvasEl.height,
+                frameW: canvasEl.width,
+                handleX: 0,
+                handleY: 0,
+                img: null,
+                isAnim: false,
+                rotation: 0,
+                rect: ha.rect.create()
             };
-            resetImageRect(img) {
-                let rect = img.rect;
-                let p;
-                p = rect.vs[0];
-                p.x = 0;
-                p.y = 0;
-                p = rect.vs[1];
-                p.x = img.frameW;
-                p.y = 0;
-                p = rect.vs[2];
-                p.x = img.frameW;
-                p.y = img.frameH;
-                p = rect.vs[3];
-                p.x = 0;
-                p.y = img.frameH;
-            }
-            rectToImageTransform(image, x, y) {
-                let rect = image.rect;
-                let p;
-                let x2 = image.frameW * image.scaleX;
-                let y2 = image.frameH * image.scaleY;
-                //scale
-                p = rect.vs[1];
-                p.x = x2;
-                p.y = 0;
-                p = rect.vs[2];
-                p.x = x2;
-                p.y = y2;
-                p = rect.vs[3];
-                p.x = 0;
-                p.y = y2;
-                //translate
-                ha.rect.translate(rect, x, y);
-                ha.rect.translate(rect, -image.handleX, -image.handleY);
-                //rotate
-                ha.rect.rotate(rect, image.rotation, x, y);
-            }
+            return canvas;
         }
-        blitz.image = new Image();
-    })(blitz = ha.blitz || (ha.blitz = {}));
-})(ha || (ha = {}));
+        init(canvasBelakang, canvasDepan) {
+            let canvas = this.buatCanvas(canvasBelakang);
+            this._canvasAr.push(canvas);
+            canvas = this.buatCanvas(canvasDepan);
+            this._canvasAr.push(canvas);
+            ha_blitz.main.canvasAktif = canvas;
+        }
+        get canvasAktif() {
+            return this._canvasAktif;
+        }
+        set canvasAktif(value) {
+            this._canvasAktif = value;
+        }
+        get canvasAr() {
+            return this._canvasAr;
+        }
+        set canvasAr(value) {
+            this._canvasAr = value;
+        }
+        get origin() {
+            return this._origin;
+        }
+        set origin(value) {
+            this._origin = value;
+        }
+        get fps() {
+            return this._fps;
+        }
+        set fps(value) {
+            this._fps = value;
+        }
+    }
+    ha_blitz.main = new Main();
+})(ha_blitz || (ha_blitz = {}));
+var ha_blitz;
+(function (ha_blitz) {
+    class Image {
+        loadImage = async (url) => {
+            return new Promise((resolve, reject) => {
+                let image2 = document.createElement('img');
+                image2.onload = () => {
+                    resolve(image2);
+                };
+                image2.src = url;
+                image2.onerror = (e) => {
+                    reject(e);
+                };
+            });
+        };
+        resetImageRect(img) {
+            let rect = img.rect;
+            let p;
+            p = rect.vs[0];
+            p.x = 0;
+            p.y = 0;
+            p = rect.vs[1];
+            p.x = img.frameW;
+            p.y = 0;
+            p = rect.vs[2];
+            p.x = img.frameW;
+            p.y = img.frameH;
+            p = rect.vs[3];
+            p.x = 0;
+            p.y = img.frameH;
+        }
+        rectToImageTransform(image, x, y) {
+            let rect = image.rect;
+            let p;
+            let x2 = image.frameW * image.scaleX;
+            let y2 = image.frameH * image.scaleY;
+            //scale
+            p = rect.vs[1];
+            p.x = x2;
+            p.y = 0;
+            p = rect.vs[2];
+            p.x = x2;
+            p.y = y2;
+            p = rect.vs[3];
+            p.x = 0;
+            p.y = y2;
+            //translate
+            ha.rect.translate(rect, x, y);
+            ha.rect.translate(rect, -image.handleX, -image.handleY);
+            //rotate
+            ha.rect.rotate(rect, image.rotation, x, y);
+        }
+    }
+    ha_blitz.image = new Image();
+})(ha_blitz || (ha_blitz = {}));
 ///<reference path="../ha/blitz/Main.ts"/>
 ///<reference path="../ha/blitz/Image.ts"/>
 /**
@@ -173,7 +167,7 @@ const CopyImage = (src) => {
  * image blitting
 */
 const DrawImage = (img, x = 0, y = 0, frame = 0) => {
-    let ctx = ha.blitz.main.canvasAktif.ctx;
+    let ctx = ha_blitz.main.canvasAktif.ctx;
     let jmlH;
     let jmlV;
     let frameX;
@@ -206,7 +200,7 @@ const DrawImage = (img, x = 0, y = 0, frame = 0) => {
 };
 //TODO: test
 const GrabImage = (img, x = 0, y = 0) => {
-    img.ctx.drawImage(ha.blitz.main.canvasAktif.canvas, x, y, img.width, img.height, 0, 0, img.width, img.height);
+    img.ctx.drawImage(ha_blitz.main.canvasAktif.canvas, x, y, img.width, img.height, 0, 0, img.width, img.height);
 };
 const HandleImage = (img, x = 0, y = 0) => {
     img.handleX = x;
@@ -219,15 +213,15 @@ const ImageYHandle = (img) => { return img.handleY; };
 //TODO:
 const ImageOverlap = () => { };
 const ImageCollide = (img1, x1, y1, img2, x2, y2) => {
-    ha.blitz.image.resetImageRect(img1);
-    ha.blitz.image.rectToImageTransform(img1, x1, y1);
-    ha.blitz.image.resetImageRect(img2);
-    ha.blitz.image.rectToImageTransform(img2, x2, y2);
+    ha_blitz.image.resetImageRect(img1);
+    ha_blitz.image.rectToImageTransform(img1, x1, y1);
+    ha_blitz.image.resetImageRect(img2);
+    ha_blitz.image.rectToImageTransform(img2, x2, y2);
     return ha.rect.collide(img1.rect, img2.rect);
 };
 const ImageDotCollide = (img1, x1, y1, x2, y2) => {
-    ha.blitz.image.resetImageRect(img1);
-    ha.blitz.image.rectToImageTransform(img1, x1, y1);
+    ha_blitz.image.resetImageRect(img1);
+    ha_blitz.image.rectToImageTransform(img1, x1, y1);
     return ha.rect.collideDot(img1.rect, x2, y2);
 };
 //
@@ -239,7 +233,7 @@ const MidHandle = (img) => {
     img.handleY = Math.floor((img.frameH * img.scaleY) / 2);
 };
 const LoadImage = async (url) => {
-    let img = await ha.blitz.image.loadImage(url);
+    let img = await ha_blitz.image.loadImage(url);
     let canvas = document.createElement('canvas');
     let ctx = canvas.getContext('2d');
     let rect;
@@ -267,7 +261,7 @@ const LoadImage = async (url) => {
     };
 };
 const LoadAnimImage = async (url, fw = 32, fh = 32) => {
-    let img = await ha.blitz.image.loadImage(url);
+    let img = await ha_blitz.image.loadImage(url);
     let canvas = document.createElement('canvas');
     let ctx = canvas.getContext('2d');
     let rect;
@@ -308,8 +302,8 @@ const TileImage = (img, x = 0, y = 0, frame = 0) => {
     x -= w2;
     y -= h2;
     frame = Math.floor(frame);
-    jmlH = Math.ceil((ha.blitz.main.canvasAktif.width + Math.abs(x)) / w2);
-    jmlV = Math.ceil((ha.blitz.main.canvasAktif.height + Math.abs(y)) / h2);
+    jmlH = Math.ceil((ha_blitz.main.canvasAktif.width + Math.abs(x)) / w2);
+    jmlV = Math.ceil((ha_blitz.main.canvasAktif.height + Math.abs(y)) / h2);
     for (let i = 0; i < jmlH; i++) {
         for (let j = 0; j < jmlV; j++) {
             DrawImage(img, x + (i * w2), y + (j * h2), frame);
@@ -330,7 +324,7 @@ const ScaleImage = (img, xScale = 1, yScale = 1) => {
 };
 const GetPixel = (x = 0, y = 0) => {
     try {
-        let data = ha.blitz.main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
+        let data = ha_blitz.main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
         let hasil = [];
         hasil.push(data[0]);
         hasil.push(data[1]);
@@ -348,7 +342,7 @@ const SetColor = (r = 255, g = 255, b = 255, a = 1) => {
     Color(r, g, b, a);
 };
 const SetPixel = (x = 0, y = 0) => {
-    ha.blitz.main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
+    ha_blitz.main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
 };
 //TODO: next
 const ImagePivot = () => { };
@@ -499,13 +493,13 @@ const FlushMouse = () => {
  */
 //TODO: dipindahin ke tempat yang bener
 const Cls = (r = 0, g = 0, b = 0, alpha = 1) => {
-    let ctx = ha.blitz.main.canvasAktif.ctx;
+    let ctx = ha_blitz.main.canvasAktif.ctx;
     ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    ctx.fillRect(0, 0, ha.blitz.main.canvasAktif.width, ha.blitz.main.canvasAktif.height);
+    ctx.fillRect(0, 0, ha_blitz.main.canvasAktif.width, ha_blitz.main.canvasAktif.height);
 };
 const BackBuffer = () => { };
 const Color = (r = 0, g = 0, b = 0, a = 1) => {
-    let ctx = ha.blitz.main.canvasAktif.ctx;
+    let ctx = ha_blitz.main.canvasAktif.ctx;
     ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
     ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 };
@@ -518,25 +512,25 @@ const CopyRect = () => { };
 const FrontBuffer = () => { };
 const GetColor = () => { };
 const Graphics = (width = 320, height = 240, gl = true, pixel = true) => {
-    let canvas = ha.blitz.main.canvasAktif;
+    let canvas = ha_blitz.main.canvasAktif;
     canvas.canvas.width = width;
     canvas.canvas.height = height;
     canvas.width = width;
     canvas.height = height;
     if (gl) {
-        ha.blitz.main.canvasAktif.canvas.classList.add('gl');
+        ha_blitz.main.canvasAktif.canvas.classList.add('gl');
     }
     else {
-        ha.blitz.main.canvasAktif.canvas.classList.remove('gl');
+        ha_blitz.main.canvasAktif.canvas.classList.remove('gl');
     }
     if (pixel) {
-        ha.blitz.main.canvasAktif.canvas.classList.add('pixel');
+        ha_blitz.main.canvasAktif.canvas.classList.add('pixel');
     }
-    // ha.blitz.main.windowResize();
+    // ha_blitz.main.windowResize();
 };
 const GraphicsBuffer = () => { };
 const Line = (x1, y1, x2, y2) => {
-    let ctx = ha.blitz.main.canvasAktif.ctx;
+    let ctx = ha_blitz.main.canvasAktif.ctx;
     x1 = Math.floor(x1);
     y1 = Math.floor(y1);
     x2 = Math.floor(x2);
@@ -549,11 +543,11 @@ const Line = (x1, y1, x2, y2) => {
 const Origin = () => { };
 const Oval = () => { };
 const Rect = (x1, y1, x2, y2) => {
-    let ctx = ha.blitz.main.canvasAktif.ctx;
+    let ctx = ha_blitz.main.canvasAktif.ctx;
     ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
 };
 const SetBuffer = (buffer) => {
-    ha.blitz.main.canvasAktif = buffer;
+    ha_blitz.main.canvasAktif = buffer;
 };
 //TODO: dep
 const WritePixel = () => { };
@@ -563,7 +557,12 @@ const Plot = () => { };
 ///<reference path="../ha/blitz/Image.ts"/>
 /** BLITZ-SPRITE.TS */
 const CreateSprite = (image, dragable = false) => {
-    return ha.blitz.Sprite.buat(image, dragable);
+    // console.log('create sprite');
+    return ha_blitz.Sprite.buat(image, dragable);
+};
+const PositionSprite = (sprite, x = 0, y = 0) => {
+    sprite.x = x;
+    sprite.y = y;
 };
 const DrawSprite = (sprite, frame = 0) => {
     DrawImage(sprite.buffer, sprite.x, sprite.y, frame);
@@ -580,9 +579,9 @@ const Delay = async (m = 0) => {
     });
 };
 const FPS = (n) => {
-    ha.blitz.main.fps = Math.floor(1000 / n);
+    ha_blitz.main.fps = Math.floor(1000 / n);
     if (n >= 60) {
-        ha.blitz.main.fps = 0;
+        ha_blitz.main.fps = 0;
     }
 };
 //TODO: kemungkinan diganti buat nyesuain sama blitz
@@ -700,6 +699,9 @@ var ha;
             throw Error('');
         }
         init(buffer) {
+            console.log('input init');
+            console.log('buffer');
+            console.log(buffer);
             buffer.canvas.onpointerdown = (e) => {
                 e.stopPropagation();
                 // e.preventDefault();
@@ -712,6 +714,18 @@ var ha;
                     ha.input.event.down(this._mouseGlobal, key, 'mouse', pos);
                 if ("touch" == e.pointerType)
                     ha.input.event.down(this._touchGlobal, key, 'touch', pos);
+                //sprite down
+                ha_blitz.Sprite.daftar.forEach((item) => {
+                    item.down = false;
+                    console.log('item down');
+                    if (ImageDotCollide(item.buffer, item.x, item.y, pos.x, pos.y)) {
+                        item.down = true;
+                        item.dragStartX = pos.x - item.x;
+                        item.dragStartY = pos.y - item.y;
+                        console.log('item drag start');
+                        console.log(item);
+                    }
+                });
             };
             buffer.canvas.onpointermove = (e) => {
                 e.stopPropagation();
@@ -722,6 +736,16 @@ var ha;
                     ha.input.event.move(ha.input.touchGlobal, buffer, e);
                 if (e.pointerType == 'mouse')
                     ha.input.event.move(ha.input.mouseGlobal, buffer, e);
+                //sprite	
+                //sprite move
+                ha_blitz.Sprite.daftar.forEach((item) => {
+                    let pos = ha.input.pos(e.clientX, e.clientY, buffer, buffer.scaleX, buffer.scaleY);
+                    if (item.down && item.dragable) {
+                        item.dragged = true;
+                        item.x = pos.x - item.dragStartX;
+                        item.y = pos.y - item.dragStartY;
+                    }
+                });
             };
             buffer.canvas.onpointerout = (e) => {
                 e.stopPropagation();
@@ -739,6 +763,7 @@ var ha;
             };
             buffer.canvas.onpointerup = (e) => {
                 e.stopPropagation();
+                console.log('on pointer up');
                 let input = ha.input.baru(e.button + '', e.pointerType);
                 ha.input.event.up(input);
                 ha.input.event.up(this.inputGlobal);
@@ -746,6 +771,16 @@ var ha;
                     ha.input.event.up(ha.input.touchGlobal);
                 if (e.pointerType == 'mouse')
                     ha.input.event.up(ha.input.mouseGlobal);
+                //sprite up
+                //sprite hit
+                ha_blitz.Sprite.daftar.forEach((item) => {
+                    if (item.down) {
+                        item.hit++;
+                    }
+                    item.down = false;
+                    item.dragged = false;
+                    console.log("item drag end");
+                });
             };
             window.onkeydown = (e) => {
                 // e.stopPropagation();
@@ -888,8 +923,8 @@ var ha;
         }
     }
     class EventHandler {
-        move(input, canvas, e) {
-            let pos = ha.input.pos(e.clientX, e.clientY, canvas, canvas.scaleX, canvas.scaleY);
+        move(input, buffer, e) {
+            let pos = ha.input.pos(e.clientX, e.clientY, buffer, buffer.scaleX, buffer.scaleY);
             input.x = pos.x;
             input.y = pos.y;
             input.id = e.pointerId;
@@ -898,15 +933,6 @@ var ha;
                 input.xDrag = input.x - input.xStart;
                 input.yDrag = input.y - input.yStart;
             }
-            //sprite	
-            //sprite move
-            ha.blitz.Sprite.daftar.forEach((item) => {
-                if (item.down && item.dragable) {
-                    item.dragged = true;
-                    item.x = pos.x - item.dragStartX;
-                    item.y = pos.y - item.dragStartY;
-                }
-            });
         }
         down(input, key, type, pos) {
             //TODO: refaktor 
@@ -923,29 +949,12 @@ var ha;
             input.key = key;
             input.type = type;
             input.timerStart = Date.now();
-            //sprite down
-            ha.blitz.Sprite.daftar.forEach((item) => {
-                if (ImageDotCollide(item.buffer, item.x, item.y, pos.x, pos.y)) {
-                    item.down = true;
-                    item.dragStartX = pos.x;
-                    item.dragStartY = pos.y;
-                }
-            });
         }
         up(input2) {
             input2.isDown = false;
             input2.isDrag = false;
             input2.timerEnd = Date.now();
             input2.isTap = ((input2.timerEnd - input2.timerStart) < 500);
-            //sprite up
-            //sprite hit
-            ha.blitz.Sprite.daftar.forEach((item) => {
-                if (item.down) {
-                    item.hit++;
-                }
-                item.down = false;
-                item.dragged = false;
-            });
         }
     }
     ha.input = new Input();
@@ -1691,89 +1700,87 @@ var ha;
     ha.trans = new Transform();
 })(ha || (ha = {}));
 /** SPRITE.TS */
-var ha;
-(function (ha) {
-    var blitz;
-    (function (blitz) {
-        class Sprite {
-            static daftar = [];
-            _buffer;
-            _x = 0;
-            _y = 0;
-            _dragged = false;
-            _down = false;
-            _hit = 0;
-            _dragStartY = 0;
-            _dragStartX = 0;
-            _dragable = false;
-            constructor(buffer, dragable = false) {
-                this.buffer = buffer;
-                this.dragable = dragable;
-            }
-            get dragable() {
-                return this._dragable;
-            }
-            set dragable(value) {
-                this._dragable = value;
-            }
-            static buat(image, dragable = false) {
-                let hasil;
-                hasil = new Sprite(image, dragable);
-                this.daftar.push(hasil);
-                return hasil;
-            }
-            static gambar(sprite) {
-                DrawImage(sprite.buffer, sprite.x, sprite.y);
-            }
-            get dragStartX() {
-                return this._dragStartX;
-            }
-            set dragStartX(value) {
-                this._dragStartX = value;
-            }
-            get dragStartY() {
-                return this._dragStartY;
-            }
-            set dragStartY(value) {
-                this._dragStartY = value;
-            }
-            get dragged() {
-                return this._dragged;
-            }
-            set dragged(value) {
-                this._dragged = value;
-            }
-            get buffer() {
-                return this._buffer;
-            }
-            set buffer(value) {
-                this._buffer = value;
-            }
-            get x() {
-                return this._x;
-            }
-            set x(value) {
-                this._x = value;
-            }
-            get y() {
-                return this._y;
-            }
-            set y(value) {
-                this._y = value;
-            }
-            get hit() {
-                return this._hit;
-            }
-            set hit(value) {
-                this._hit = value;
-            }
-            get down() {
-                return this._down;
-            }
-            set down(value) {
-                this._down = value;
-            }
+var ha_blitz;
+(function (ha_blitz) {
+    class Sprite {
+        static daftar = [];
+        _buffer;
+        _x = 0;
+        _y = 0;
+        _dragged = false;
+        _down = false;
+        _hit = 0;
+        _dragStartY = 0;
+        _dragStartX = 0;
+        _dragable = false;
+        constructor(buffer, dragable = false) {
+            this.buffer = buffer;
+            this.dragable = dragable;
         }
-        blitz.Sprite = Sprite;
-    })(blitz = ha.blitz || (ha.blitz = {}));
-})(ha || (ha = {}));
+        get dragable() {
+            return this._dragable;
+        }
+        set dragable(value) {
+            this._dragable = value;
+        }
+        static buat(image, dragable = false) {
+            let hasil;
+            hasil = new Sprite(image, dragable);
+            this.daftar.push(hasil);
+            console.log('buat sprite');
+            return hasil;
+        }
+        static gambar(sprite) {
+            DrawImage(sprite.buffer, sprite.x, sprite.y);
+        }
+        get dragStartX() {
+            return this._dragStartX;
+        }
+        set dragStartX(value) {
+            this._dragStartX = value;
+        }
+        get dragStartY() {
+            return this._dragStartY;
+        }
+        set dragStartY(value) {
+            this._dragStartY = value;
+        }
+        get dragged() {
+            return this._dragged;
+        }
+        set dragged(value) {
+            this._dragged = value;
+        }
+        get buffer() {
+            return this._buffer;
+        }
+        set buffer(value) {
+            this._buffer = value;
+        }
+        get x() {
+            return this._x;
+        }
+        set x(value) {
+            this._x = value;
+        }
+        get y() {
+            return this._y;
+        }
+        set y(value) {
+            this._y = value;
+        }
+        get hit() {
+            return this._hit;
+        }
+        set hit(value) {
+            this._hit = value;
+        }
+        get down() {
+            return this._down;
+        }
+        set down(value) {
+            this._down = value;
+        }
+    }
+    ha_blitz.Sprite = Sprite;
+})(ha_blitz || (ha_blitz = {}));

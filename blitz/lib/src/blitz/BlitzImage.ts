@@ -59,7 +59,7 @@ const CopyImage = (src: IBuffer): IBuffer => {
  * image blitting
 */
 const DrawImage = (img: IBuffer, x: number = 0, y: number = 0, frame: number = 0) => {
-	let ctx: CanvasRenderingContext2D = ha.blitz.main.canvasAktif.ctx;
+	let ctx: CanvasRenderingContext2D = ha_blitz.main.canvasAktif.ctx;
 	let jmlH: number;
 	let jmlV: number;
 	let frameX: number;
@@ -102,7 +102,7 @@ const DrawImage = (img: IBuffer, x: number = 0, y: number = 0, frame: number = 0
 
 //TODO: test
 const GrabImage = (img: IBuffer, x: number = 0, y: number = 0) => {
-	img.ctx.drawImage(ha.blitz.main.canvasAktif.canvas, x, y, img.width, img.height, 0, 0, img.width, img.height);
+	img.ctx.drawImage(ha_blitz.main.canvasAktif.canvas, x, y, img.width, img.height, 0, 0, img.width, img.height);
 }
 
 const HandleImage = (img: IBuffer, x: number = 0, y: number = 0) => {
@@ -119,18 +119,18 @@ const ImageYHandle = (img: IBuffer): number => { return img.handleY; };
 const ImageOverlap = () => { };
 
 const ImageCollide = (img1: IBuffer, x1: number, y1: number, img2: IBuffer, x2: number, y2: number): boolean => {
-	ha.blitz.image.resetImageRect(img1);
-	ha.blitz.image.rectToImageTransform(img1, x1, y1);
+	ha_blitz.image.resetImageRect(img1);
+	ha_blitz.image.rectToImageTransform(img1, x1, y1);
 
-	ha.blitz.image.resetImageRect(img2);
-	ha.blitz.image.rectToImageTransform(img2, x2, y2);
+	ha_blitz.image.resetImageRect(img2);
+	ha_blitz.image.rectToImageTransform(img2, x2, y2);
 
 	return ha.rect.collide(img1.rect, img2.rect);
 };
 
 const ImageDotCollide = (img1: IBuffer, x1: number, y1: number, x2: number, y2: number): boolean => {
-	ha.blitz.image.resetImageRect(img1);
-	ha.blitz.image.rectToImageTransform(img1, x1, y1);
+	ha_blitz.image.resetImageRect(img1);
+	ha_blitz.image.rectToImageTransform(img1, x1, y1);
 
 	return ha.rect.collideDot(img1.rect, x2, y2);
 };
@@ -146,7 +146,7 @@ const MidHandle = (img: IBuffer) => {
 }
 
 const LoadImage = async (url: string): Promise<IBuffer> => {
-	let img: HTMLImageElement = await ha.blitz.image.loadImage(url);
+	let img: HTMLImageElement = await ha_blitz.image.loadImage(url);
 	let canvas: HTMLCanvasElement = document.createElement('canvas');
 	let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
 	let rect: IRect;
@@ -178,7 +178,7 @@ const LoadImage = async (url: string): Promise<IBuffer> => {
 }
 
 const LoadAnimImage = async (url: string, fw: number = 32, fh: number = 32): Promise<IBuffer> => {
-	let img: HTMLImageElement = await ha.blitz.image.loadImage(url);
+	let img: HTMLImageElement = await ha_blitz.image.loadImage(url);
 	let canvas: HTMLCanvasElement = document.createElement('canvas');
 	let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
 	let rect: IRect;
@@ -229,8 +229,8 @@ const TileImage = (img: IBuffer, x: number = 0, y: number = 0, frame: number = 0
 
 	frame = Math.floor(frame);
 
-	jmlH = Math.ceil((ha.blitz.main.canvasAktif.width + Math.abs(x)) / w2);
-	jmlV = Math.ceil((ha.blitz.main.canvasAktif.height + Math.abs(y)) / h2);
+	jmlH = Math.ceil((ha_blitz.main.canvasAktif.width + Math.abs(x)) / w2);
+	jmlV = Math.ceil((ha_blitz.main.canvasAktif.height + Math.abs(y)) / h2);
 
 	for (let i: number = 0; i < jmlH; i++) {
 		for (let j: number = 0; j < jmlV; j++) {
@@ -256,7 +256,7 @@ const ScaleImage = (img: IBuffer, xScale: number = 1, yScale: number = 1) => {
 
 const GetPixel = (x: number = 0, y: number = 0): number[] => {
 	try {
-		let data: Uint8ClampedArray = ha.blitz.main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
+		let data: Uint8ClampedArray = ha_blitz.main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
 
 		let hasil: number[] = [];
 		hasil.push(data[0]);
@@ -279,7 +279,7 @@ const SetColor = (r: number = 255, g: number = 255, b: number = 255, a: number =
 }
 
 const SetPixel = (x: number = 0, y: number = 0) => {
-	ha.blitz.main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
+	ha_blitz.main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
 }
 
 //TODO: next

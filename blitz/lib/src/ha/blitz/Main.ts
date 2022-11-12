@@ -1,4 +1,4 @@
-namespace ha.blitz {
+namespace ha_blitz {
 
 	class Main {
 		private _fps: number = 1000 / 30;
@@ -35,7 +35,7 @@ namespace ha.blitz {
 			canvas = this.buatCanvas(canvasDepan);
 			this._canvasAr.push(canvas);
 
-			ha.blitz.main.canvasAktif = canvas;
+			ha_blitz.main.canvasAktif = canvas;
 		}
 
 		public get canvasAktif(): IBuffer {

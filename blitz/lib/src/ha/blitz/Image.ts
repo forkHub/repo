@@ -1,4 +1,4 @@
-namespace ha.blitz {
+namespace ha_blitz {
 	class Image {
 		loadImage = async (url: string): Promise<HTMLImageElement> => {
 			return new Promise((resolve, reject): void => {

@@ -1,5 +1,5 @@
 /** SPRITE.TS */
-namespace ha.blitz {
+namespace ha_blitz {
     export class Sprite implements ISprite {
         static readonly daftar: ISprite[] = [];
 
@@ -30,6 +30,8 @@ namespace ha.blitz {
 
             hasil = new Sprite(image, dragable);
             this.daftar.push(hasil);
+
+            console.log('buat sprite');
 
             return hasil;
         }
