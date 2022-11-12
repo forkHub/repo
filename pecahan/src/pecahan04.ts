@@ -21,7 +21,7 @@ namespace p4 {
 
     function buatSoal(): ISoal {
         let hasil: ISoal;
-        let penyebut = Math.floor(Math.random() * 9) + 2;
+        let penyebut = Math.floor(Math.random() * 5) + 2;
 
         hasil = {
             pecahan: []
@@ -57,11 +57,11 @@ namespace p4 {
         while (true) {
             hasil = Pecahan.buat(0, Math.floor(Math.random() * 10) + 1, penyebut);
 
-            if (hasil.pembilang < hasil.penyebut) {
-                Pecahan.tukar(hasil);
-            }
-
-            if (hasil.pembilang != hasil.penyebut && (hasil.pembilang % hasil.penyebut > 0)) {
+            if (
+                hasil.pembilang != hasil.penyebut &&
+                (hasil.pembilang % hasil.penyebut > 0) &&
+                (hasil.pembilang > hasil.penyebut)
+            ) {
                 Pecahan.keBentukCampuran(hasil);
                 break;
             }
