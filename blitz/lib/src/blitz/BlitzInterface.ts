@@ -50,23 +50,6 @@ interface IInputData {
 	key?: string;	//kode keyb, tombol mouse 
 }
 
-interface IBuffer {
-	img: HTMLImageElement;
-	width: number;
-	height: number;
-	frameW: number;
-	frameH: number;
-	handleX: number;
-	handleY: number;
-	rotation: number;
-	scaleX: number;
-	scaleY: number;
-	isAnim: boolean;
-	canvas: HTMLCanvasElement;
-	ctx: CanvasRenderingContext2D;
-	rect: IRect
-}
-
 //geom
 interface IV2D {
 	x: number,

@@ -64,22 +64,22 @@ interface IInputData {
 // 	scaleY: number
 // }
 
-interface IBuffer {
-	img: HTMLImageElement;
-	width: number;
-	height: number;
-	frameW: number;
-	frameH: number;
-	handleX: number;
-	handleY: number;
-	rotation: number;
-	scaleX: number;
-	scaleY: number;
-	isAnim: boolean;
-	canvas: HTMLCanvasElement;
-	ctx: CanvasRenderingContext2D;
-	rect: IRect
-}
+// interface IBuffer {
+// 	img: HTMLImageElement;
+// 	width: number;
+// 	height: number;
+// 	frameW: number;
+// 	frameH: number;
+// 	handleX: number;
+// 	handleY: number;
+// 	rotation: number;
+// 	scaleX: number;
+// 	scaleY: number;
+// 	isAnim: boolean;
+// 	canvas: HTMLCanvasElement;
+// 	ctx: CanvasRenderingContext2D;
+// 	rect: IRect
+// }
 
 //geom
 interface IPoint2D {

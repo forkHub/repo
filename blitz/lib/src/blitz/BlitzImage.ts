@@ -7,13 +7,13 @@
  */
 
 //TODO: test
-const CreateImage = (w: number = 32, h: number = 32, frameW: number = 32, frameH: number = 32): IBuffer => {
+const BuatGambar = (w: number = 32, h: number = 32, frameW: number = 32, frameH: number = 32): IGambar => {
 	let canvas: HTMLCanvasElement = document.createElement('canvas') as HTMLCanvasElement;
-	let img: IBuffer;
+	let img: IGambar;
 	canvas.width = w;
 	canvas.height = h;
 
-	let rect: IRect = ha.rect.create(0, 0, frameW, frameH);
+	let rect: IRect = ha.Rect.create(0, 0, frameW, frameH);
 
 	img = {
 		width: w,
@@ -35,7 +35,7 @@ const CreateImage = (w: number = 32, h: number = 32, frameW: number = 32, frameH
 	return img;
 }
 
-const CopyImage = (src: IBuffer): IBuffer => {
+const CopyGambar = (src: IGambar): IGambar => {
 	return {
 		canvas: src.canvas,
 		ctx: src.ctx,
@@ -46,7 +46,7 @@ const CopyImage = (src: IBuffer): IBuffer => {
 		height: src.height,
 		img: src.img,
 		isAnim: src.isAnim,
-		rect: ha.rect.copy(src.rect),
+		rect: ha.Rect.copy(src.rect),
 		rotation: src.rotation,
 		scaleX: src.scaleX,
 		scaleY: src.scaleY,
@@ -58,7 +58,7 @@ const CopyImage = (src: IBuffer): IBuffer => {
  * skip drawing outside
  * image blitting
 */
-const DrawImage = (img: IBuffer, x: number = 0, y: number = 0, frame: number = 0) => {
+const TaruhGambar = (gbr: IGambar, x: number = 0, y: number = 0, frame: number = 0) => {
 	let ctx: CanvasRenderingContext2D = ha_blitz.main.canvasAktif.ctx;
 	let jmlH: number;
 	let jmlV: number;
@@ -66,14 +66,14 @@ const DrawImage = (img: IBuffer, x: number = 0, y: number = 0, frame: number = 0
 	let frameY: number;
 	// let rect: IRect = img.rect;
 
-	jmlH = Math.floor(img.width / img.frameW);
-	jmlV = Math.floor(img.height / img.frameH);
+	jmlH = Math.floor(gbr.width / gbr.frameW);
+	jmlV = Math.floor(gbr.height / gbr.frameH);
 
 	frameX = (frame % jmlH);
 	frameY = Math.floor(frame / jmlV);
 
-	frameX *= img.frameW;
-	frameY *= img.frameH;
+	frameX *= gbr.frameW;
+	frameY *= gbr.frameH;
 
 	frameX = Math.floor(frameX);
 	frameY = Math.floor(frameY);
@@ -81,71 +81,69 @@ const DrawImage = (img: IBuffer, x: number = 0, y: number = 0, frame: number = 0
 	let x2: number = Math.floor(x);
 	let y2: number = Math.floor(y);
 
-	let w2: number = Math.floor(img.frameW * img.scaleX);
-	let h2: number = Math.floor(img.frameH * img.scaleY);
+	let w2: number = Math.floor(gbr.frameW * gbr.scaleX);
+	let h2: number = Math.floor(gbr.frameH * gbr.scaleY);
 
-	x2 -= (img.handleX);
-	y2 -= (img.handleY);
+	x2 -= (gbr.handleX);
+	y2 -= (gbr.handleY);
 
-	if (img.rotation != 0) {
+	if (gbr.rotation != 0) {
 		ctx.save();
 		ctx.translate(x, y);
-		ctx.rotate(img.rotation * (Math.PI / 180));
-		ctx.drawImage(img.img, frameX, frameY, img.frameW, img.frameH, - img.handleX, -img.handleY, w2, h2);
+		ctx.rotate(gbr.rotation * (Math.PI / 180));
+		ctx.drawImage(gbr.img, frameX, frameY, gbr.frameW, gbr.frameH, - gbr.handleX, -gbr.handleY, w2, h2);
 		ctx.restore();
 	}
 	else {
-		ctx.drawImage(img.canvas, frameX, frameY, img.frameW, img.frameH, x2, y2, w2, h2);
+		ctx.drawImage(gbr.canvas, frameX, frameY, gbr.frameW, gbr.frameH, x2, y2, w2, h2);
 	}
 
 }
 
-//TODO: test
-const GrabImage = (img: IBuffer, x: number = 0, y: number = 0) => {
-	img.ctx.drawImage(ha_blitz.main.canvasAktif.canvas, x, y, img.width, img.height, 0, 0, img.width, img.height);
+//TODO: test - dihapus
+const GrabGambar = (gbr: IGambar, x: number = 0, y: number = 0) => {
+	gbr.ctx.drawImage(ha_blitz.main.canvasAktif.canvas, x, y, gbr.width, gbr.height, 0, 0, gbr.width, gbr.height);
 }
 
-const HandleImage = (img: IBuffer, x: number = 0, y: number = 0) => {
-	img.handleX = x;
-	img.handleY = y;
+const PosisiHandleGambar = (gbr: IGambar, x: number = 0, y: number = 0) => {
+	gbr.handleX = x;
+	gbr.handleY = y;
 }
 
-const ImageWidth = (img: IBuffer): number => { return img.frameW * img.scaleX; };
-const ImageHeight = (img: IBuffer): number => { return img.frameH * img.scaleY; };
-const ImageXHandle = (img: IBuffer): number => { return img.handleX; };
-const ImageYHandle = (img: IBuffer): number => { return img.handleY; };
+//dibuat set dan get
+const PanjangGambar = (gbr: IGambar): number => { return gbr.frameW * gbr.scaleX; };
+const LebarGambar = (gbr: IGambar): number => { return gbr.frameH * gbr.scaleY; };
+const HandleXGambar = (gbr: IGambar): number => { return gbr.handleX; };
+const HandleYGambar = (gbr: IGambar): number => { return gbr.handleY; };
 
 //TODO:
-const ImageOverlap = () => { };
-
-const ImageCollide = (img1: IBuffer, x1: number, y1: number, img2: IBuffer, x2: number, y2: number): boolean => {
-	ha_blitz.image.resetImageRect(img1);
-	ha_blitz.image.rectToImageTransform(img1, x1, y1);
-
-	ha_blitz.image.resetImageRect(img2);
-	ha_blitz.image.rectToImageTransform(img2, x2, y2);
-
-	return ha.rect.collide(img1.rect, img2.rect);
+const GambarOverlap = (gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number) => {
+	GambarTabrakan(gbr1, x1, y1, gbr2, x2, y2);
 };
 
-const ImageDotCollide = (img1: IBuffer, x1: number, y1: number, x2: number, y2: number): boolean => {
-	ha_blitz.image.resetImageRect(img1);
-	ha_blitz.image.rectToImageTransform(img1, x1, y1);
+const GambarTabrakan = (gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean => {
+	ha_blitz.image.resetImageRect(gbr1);
+	ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
 
-	return ha.rect.collideDot(img1.rect, x2, y2);
+	ha_blitz.image.resetImageRect(gbr2);
+	ha_blitz.image.rectToImageTransform(gbr2, x2, y2);
+
+	return ha.Rect.collide(gbr1.rect, gbr2.rect);
 };
 
-//
-const ImageBoundOverlap = (): boolean => {
-	return false; //TODO:
+const DotDidalamGambar = (gbr1: IGambar, x1: number, y1: number, x2: number, y2: number): boolean => {
+	ha_blitz.image.resetImageRect(gbr1);
+	ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
+
+	return ha.Rect.collideDot(gbr1.rect, x2, y2);
+};
+
+const HandleTengah = (gbr: IGambar) => {
+	gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
+	gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
 }
 
-const MidHandle = (img: IBuffer) => {
-	img.handleX = Math.floor((img.frameW * img.scaleX) / 2);
-	img.handleY = Math.floor((img.frameH * img.scaleY) / 2);
-}
-
-const LoadImage = async (url: string): Promise<IBuffer> => {
+const MuatGambar = async (url: string): Promise<IGambar> => {
 	let img: HTMLImageElement = await ha_blitz.image.loadImage(url);
 	let canvas: HTMLCanvasElement = document.createElement('canvas');
 	let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
@@ -155,16 +153,14 @@ const LoadImage = async (url: string): Promise<IBuffer> => {
 	canvas.height = img.naturalHeight;
 	ctx.drawImage(img, 0, 0);
 
-	rect = ha.rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+	rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
 
-	return {
+	let gbr: IGambar = {
 		img: img,
 		width: img.naturalWidth,
 		height: img.naturalHeight,
 		frameH: img.naturalHeight,
 		frameW: img.naturalWidth,
-		// width2: img.naturalWidth,
-		// height2: img.naturalHeight,
 		isAnim: false,
 		handleX: 0,
 		handleY: 0,
@@ -175,9 +171,13 @@ const LoadImage = async (url: string): Promise<IBuffer> => {
 		canvas: canvas,
 		rect: rect
 	}
+
+	ha_blitz.image.daftar.push(gbr);
+
+	return gbr;
 }
 
-const LoadAnimImage = async (url: string, fw: number = 32, fh: number = 32): Promise<IBuffer> => {
+const MuatGambarAnimasi = async (url: string, fw: number = 32, fh: number = 32): Promise<IGambar> => {
 	let img: HTMLImageElement = await ha_blitz.image.loadImage(url);
 	let canvas: HTMLCanvasElement = document.createElement('canvas');
 	let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
@@ -187,7 +187,7 @@ const LoadAnimImage = async (url: string, fw: number = 32, fh: number = 32): Pro
 	canvas.height = img.naturalHeight;
 	ctx.drawImage(img, 0, 0);
 
-	rect = ha.rect.create(0, 0, fw, fh);
+	rect = ha.Rect.create(0, 0, fw, fh);
 
 	return {
 		img: img,
@@ -209,12 +209,12 @@ const LoadAnimImage = async (url: string, fw: number = 32, fh: number = 32): Pro
 	}
 }
 
-const TileImage = (img: IBuffer, x: number = 0, y: number = 0, frame: number = 0) => {
+const GambarUbin = (gbr: IGambar, x: number = 0, y: number = 0, frame: number = 0) => {
 	let jmlH: number = 0;
 	let jmlV: number = 0;
 
-	let w2: number = Math.floor(img.frameW * img.scaleX);
-	let h2: number = Math.floor(img.frameH * img.scaleY);
+	let w2: number = Math.floor(gbr.frameW * gbr.scaleX);
+	let h2: number = Math.floor(gbr.frameH * gbr.scaleY);
 
 	while (x < 0) {
 		x += w2;
@@ -234,27 +234,27 @@ const TileImage = (img: IBuffer, x: number = 0, y: number = 0, frame: number = 0
 
 	for (let i: number = 0; i < jmlH; i++) {
 		for (let j: number = 0; j < jmlV; j++) {
-			DrawImage(img, x + (i * w2), y + (j * h2), frame);
+			TaruhGambar(gbr, x + (i * w2), y + (j * h2), frame);
 		}
 	}
 }
 
-const ResizeImage = (img: IBuffer, w: number = 1, h: number = 1) => {
-	img.scaleX = Math.floor(w) / img.frameW;
-	img.scaleY = Math.floor(h) / img.frameH;
-	console.log(img);
+const ResizeGambar = (gbr: IGambar, w: number = 1, h: number = 1) => {
+	gbr.scaleX = Math.floor(w) / gbr.frameW;
+	gbr.scaleY = Math.floor(h) / gbr.frameH;
+	console.log(gbr);
 }
 
-const RotateImage = (img: IBuffer, degree: number = 0) => {
-	img.rotation = degree;
+const PutarGambar = (gbr: IGambar, sudut: number = 0) => {
+	gbr.rotation = sudut;
 }
 
-const ScaleImage = (img: IBuffer, xScale: number = 1, yScale: number = 1) => {
-	img.scaleX = xScale;
-	img.scaleY = yScale;
+const SkalaGambar = (gbr: IGambar, skalaX: number = 1, skalaY: number = 1) => {
+	gbr.scaleX = skalaX;
+	gbr.scaleY = skalaY;
 }
 
-const GetPixel = (x: number = 0, y: number = 0): number[] => {
+const AmbilPiksel = (x: number = 0, y: number = 0): number[] => {
 	try {
 		let data: Uint8ClampedArray = ha_blitz.main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
 
@@ -274,23 +274,22 @@ const GetPixel = (x: number = 0, y: number = 0): number[] => {
 }
 
 //TODO: dep
-const SetColor = (r: number = 255, g: number = 255, b: number = 255, a: number = 1) => {
-	Color(r, g, b, a);
+const SetWarna = (r: number = 255, g: number = 255, b: number = 255, a: number = 1) => {
+	let ctx: CanvasRenderingContext2D = ha_blitz.main.canvasAktif.ctx;
+	ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+	ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 }
 
-const SetPixel = (x: number = 0, y: number = 0) => {
+const SetPikel = (x: number = 0, y: number = 0) => {
 	ha_blitz.main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
 }
 
 //TODO: next
 const ImagePivot = () => { }
-
 const BackgroundImage = () => { }
 const MainLayer = () => { }
-
 const CreateLayer = () => { }
 const LayerZ = () => { }
-
 
 //ignored
 //const TFormImage = () => { }

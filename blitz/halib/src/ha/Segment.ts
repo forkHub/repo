@@ -94,8 +94,8 @@ namespace ha {
 		}
 
 		static rotate(seg: ISegment, deg: number = 0, xc: number = 0, yc: number = 0): void {
-			ha.Point.rotateRel(seg.v1, xc, yc, deg);
-			ha.Point.rotateRel(seg.v2, xc, yc, deg);
+			ha.Point.putarPoros(seg.v1, xc, yc, deg);
+			ha.Point.putarPoros(seg.v2, xc, yc, deg);
 		}
 
 		static minX(seg: ISegment): number {

@@ -63,7 +63,7 @@ interface IInputData {
 // 	scaleY: number
 // }
 
-interface IBuffer {
+interface IGambar {
 	img: HTMLImageElement;
 	width: number;
 	height: number;

@@ -1,4 +1,4 @@
 echo on
-call tsc -p .\tsconfig_prod.json
+call tsc -p .\tsconfig.json
 pause
 pause

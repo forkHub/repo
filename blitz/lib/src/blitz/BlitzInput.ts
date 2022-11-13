@@ -5,6 +5,7 @@
  * BLITZ-INPUT.TS
  */
 
+//TODO: promise
 const Prompt = (m: string, def: string): string => {
 	let hasil: string = window.prompt(m, def);
 	return hasil;
@@ -17,10 +18,10 @@ const InputHit = (): number => {
 	return hit;
 }
 
-const WaitInput = async (): Promise<void> => {
+const TungguInput = async (): Promise<void> => {
 	while (true) {
 		if (InputHit() > 0) return;
-		Delay(30);
+		Jeda(30);
 	}
 }
 
@@ -32,11 +33,11 @@ const InputY = () => {
 	return ha.input.inputGlobal.y;
 }
 
-const InputDragX = (): number => {
+const InputGeserX = (): number => {
 	return ha.input.inputGlobal.xDrag
 }
 
-const InputDragY = (): number => {
+const InputGeserY = (): number => {
 	return ha.input.inputGlobal.yDrag
 }
 
@@ -44,11 +45,11 @@ const FlushInput = () => {
 	ha.input.flush();
 }
 
-const InputDown = (): boolean => {
+const Pencet = (): boolean => {
 	return ha.input.inputGlobal.isDown;
 }
 
-const InputDrag = (): boolean => {
+const Geser = (): boolean => {
 	return ha.input.inputGlobal.isDrag;
 }
 
@@ -64,7 +65,7 @@ const GetKey = (): string => {
 	return ha.input.keybGlobal.key;
 }
 
-const KeyIsDown = (key: string = ''): boolean => {
+const KeybDiPencet = (key: string = ''): boolean => {
 	if ("" == key) {
 		return ha.input.keybGlobal.isDown;
 	}
@@ -78,7 +79,7 @@ const KeyIsDown = (key: string = ''): boolean => {
 	}
 }
 
-const KeyHit = (key: string = ''): number => {
+const KeybHit = (key: string = ''): number => {
 	if ("" == key) {
 		let n: number = ha.input.keybGlobal.hit;
 		ha.input.keybGlobal.hit = 0;
@@ -97,20 +98,20 @@ const KeyHit = (key: string = ''): number => {
 	}
 }
 
-const WaitKey = async (kode: string = ""): Promise<void> => {
+const TungguKeyb = async (kode: string = ""): Promise<void> => {
 	console.log('wait key: ' + kode);
 	let ulang: boolean = true;
 
 	while (ulang) {
-		if (KeyHit(kode) > 0) ulang = false;
-		await Delay(30);
+		if (KeybHit(kode) > 0) ulang = false;
+		await Jeda(30);
 	}
 
 	console.log('wait key end');
 }
 
 /**
- * MOUSE
+ * MOUSE dihapus
  */
 
 //Get Mouse Id of the last pressed mouse

@@ -41,22 +41,6 @@ interface IInputData {
     type?: string;
     key?: string;
 }
-interface IBuffer {
-    img: HTMLImageElement;
-    width: number;
-    height: number;
-    frameW: number;
-    frameH: number;
-    handleX: number;
-    handleY: number;
-    rotation: number;
-    scaleX: number;
-    scaleY: number;
-    isAnim: boolean;
-    canvas: HTMLCanvasElement;
-    ctx: CanvasRenderingContext2D;
-    rect: IRect;
-}
 interface IPoint2D {
     x: number;
     y: number;
@@ -65,14 +49,6 @@ interface ITransform {
     pos: IPoint2D;
     scale: IPoint2D;
     rotation: number;
-}
-declare namespace ha {
-    class Line2D {
-        createLine(m: number, b: number): ILine;
-        lineCrossPos(line: ILine, line2: ILine): IPoint2D;
-    }
-    export var line: Line2D;
-    export {};
 }
 declare namespace ha {
     class Point {

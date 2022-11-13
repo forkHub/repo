@@ -3,12 +3,12 @@ namespace ha_blitz {
 	class Main {
 		private _fps: number = 1000 / 30;
 		private _origin: IV2D;
-		private _canvasAr: IBuffer[] = [];
-		private _canvasAktif: IBuffer;
+		private _canvasAr: IGambar[] = [];
+		private _canvasAktif: IGambar;
 
-		buatCanvas(canvasEl: HTMLCanvasElement): IBuffer {
+		buatCanvas(canvasEl: HTMLCanvasElement): IGambar {
 			// let canvasEl: HTMLCanvasElement = window.document.body.querySelector(`canvas.${buffer}`);
-			let canvas: IBuffer = {
+			let canvas: IGambar = {
 				canvas: canvasEl,
 				ctx: canvasEl.getContext('2d'),
 				height: canvasEl.height,
@@ -22,14 +22,14 @@ namespace ha_blitz {
 				img: null,
 				isAnim: false,
 				rotation: 0,
-				rect: ha.rect.create()
+				rect: ha.Rect.create()
 			}
 
 			return canvas;
 		}
 
 		init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void {
-			let canvas: IBuffer = this.buatCanvas(canvasBelakang);
+			let canvas: IGambar = this.buatCanvas(canvasBelakang);
 			this._canvasAr.push(canvas);
 
 			canvas = this.buatCanvas(canvasDepan);
@@ -38,17 +38,17 @@ namespace ha_blitz {
 			ha_blitz.main.canvasAktif = canvas;
 		}
 
-		public get canvasAktif(): IBuffer {
+		public get canvasAktif(): IGambar {
 			return this._canvasAktif;
 		}
-		public set canvasAktif(value: IBuffer) {
+		public set canvasAktif(value: IGambar) {
 			this._canvasAktif = value;
 		}
 
-		public get canvasAr(): IBuffer[] {
+		public get canvasAr(): IGambar[] {
 			return this._canvasAr;
 		}
-		public set canvasAr(value: IBuffer[]) {
+		public set canvasAr(value: IGambar[]) {
 			this._canvasAr = value;
 		}
 

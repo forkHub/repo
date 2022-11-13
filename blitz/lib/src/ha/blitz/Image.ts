@@ -1,5 +1,28 @@
 namespace ha_blitz {
 	class Image {
+		readonly daftar: IGambar[] = [];
+
+		buat(img: HTMLImageElement, ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, rect: IRect): IGambar {
+			let gbr: IGambar = {
+				img: img,
+				width: img.naturalWidth,
+				height: img.naturalHeight,
+				frameH: img.naturalHeight,
+				frameW: img.naturalWidth,
+				isAnim: false,
+				handleX: 0,
+				handleY: 0,
+				rotation: 0,
+				scaleX: 1,
+				scaleY: 1,
+				ctx: ctx,
+				canvas: canvas,
+				rect: rect
+			}
+
+			return gbr;
+		}
+
 		loadImage = async (url: string): Promise<HTMLImageElement> => {
 			return new Promise((resolve, reject): void => {
 				let image2: HTMLImageElement = document.createElement('img');
@@ -17,7 +40,7 @@ namespace ha_blitz {
 			});
 		}
 
-		resetImageRect(img: IBuffer): void {
+		resetImageRect(img: IGambar): void {
 			let rect: IRect = img.rect;
 			let p: IV2D;
 
@@ -39,7 +62,7 @@ namespace ha_blitz {
 
 		}
 
-		rectToImageTransform(image: IBuffer, x: number, y: number): void {
+		rectToImageTransform(image: IGambar, x: number, y: number): void {
 			let rect: IRect = image.rect;
 			let p: IV2D;
 			let x2: number = image.frameW * image.scaleX;
@@ -59,11 +82,11 @@ namespace ha_blitz {
 			p.y = y2;
 
 			//translate
-			ha.rect.translate(rect, x, y);
-			ha.rect.translate(rect, -image.handleX, -image.handleY);
+			ha.Rect.translate(rect, x, y);
+			ha.Rect.translate(rect, -image.handleX, -image.handleY);
 
 			//rotate
-			ha.rect.rotate(rect, image.rotation, x, y);
+			ha.Rect.rotate(rect, image.rotation, x, y);
 		}
 
 	}

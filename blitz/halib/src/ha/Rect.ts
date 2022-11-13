@@ -119,7 +119,7 @@ namespace ha {
 			}
 
 			Rect.rotate(r2, -d, pRot.x, pRot.y);
-			ha.Point.rotateRel(p, pRot.x, pRot.y, -d);
+			ha.Point.putarPoros(p, pRot.x, pRot.y, -d);
 
 			if (!this.collideDotBound(r2, p)) {
 				// console.log('collide bound 2 failed');
@@ -194,7 +194,7 @@ namespace ha {
 			}
 
 			r2.vs.forEach((p: IPoint2D) => {
-				ha.Point.rotateRel(p, xc, yc, deg);
+				ha.Point.putarPoros(p, xc, yc, deg);
 			});
 
 			return r2;

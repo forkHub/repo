@@ -1,23 +1,5 @@
 var ha;
 (function (ha) {
-    class Line2D {
-        createLine(m, b) {
-            return {
-                b: b,
-                m: m,
-                y: 0
-            };
-        }
-        lineCrossPos(line, line2) {
-            line;
-            line2;
-            return null;
-        }
-    }
-    ha.line = new Line2D();
-})(ha || (ha = {}));
-var ha;
-(function (ha) {
     class Point {
         static create(x = 0, y = 0) {
             return {
@@ -62,7 +44,7 @@ var ha;
             return hasil;
         }
         static posPolar(jarak, sudut, xt, yt) {
-            let hasil;
+            let hasil = ha.Point.create();
             hasil.x = jarak * Math.cos(sudut * ha.Transform.DEG2RAD);
             hasil.y = jarak * Math.sin(sudut * ha.Transform.DEG2RAD);
             hasil.x += xt;

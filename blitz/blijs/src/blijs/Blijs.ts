@@ -20,10 +20,10 @@ namespace ha_blijs {
 			let _window: any = window;
 
 			setTimeout(() => {
-				if (typeof _window.Start == "function") {
+				if (typeof _window.Mulai == "function") {
 					console.log('window start function called');
 
-					_window.Start()
+					_window.Mulai()
 						.then(() => {
 							this.repeat();
 						})
@@ -41,10 +41,12 @@ namespace ha_blijs {
 		loop = async (): Promise<void> => {
 			let _window: any = window;
 			if (typeof _window.Loop == 'function') {
+				//TODO: pre loop
 				await _window.Loop();
+				//TODO: post loop
 			}
-			else if (typeof _window.loop == 'function') {
-				await _window.loop();
+			else {
+
 			}
 		}
 

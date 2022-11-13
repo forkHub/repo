@@ -3,7 +3,7 @@ namespace ha_blitz {
     export class Sprite implements ISprite {
         static readonly daftar: ISprite[] = [];
 
-        private _buffer: IBuffer;
+        private _buffer: IGambar;
         private _x: number = 0;
         private _y: number = 0;
         private _dragged: boolean = false;
@@ -13,7 +13,7 @@ namespace ha_blitz {
         private _dragStartX: number = 0;
         private _dragable: boolean = false;
 
-        constructor(buffer: IBuffer, dragable: boolean = false) {
+        constructor(buffer: IGambar, dragable: boolean = false) {
             this.buffer = buffer;
             this.dragable = dragable;
         }
@@ -25,7 +25,7 @@ namespace ha_blitz {
             this._dragable = value;
         }
 
-        static buat(image: IBuffer, dragable: boolean = false): ISprite {
+        static buat(image: IGambar, dragable: boolean = false): ISprite {
             let hasil: ISprite;
 
             hasil = new Sprite(image, dragable);
@@ -36,8 +36,56 @@ namespace ha_blitz {
             return hasil;
         }
 
+        static inputDown(pos: any): void {
+            ha_blitz.Sprite.daftar.forEach((item: ISprite) => {
+                item.down = false;
+            });
+
+            //sprite down
+            for (let i: number = ha_blitz.Sprite.daftar.length - 1; i >= 0; i--) {
+                let item: ISprite;
+
+                item = ha_blitz.Sprite.daftar[i];
+
+                if (DotDidalamGambar(item.buffer, item.x, item.y, pos.x, pos.y)) {
+                    item.down = true;
+                    item.dragStartX = pos.x - item.x;
+                    item.dragStartY = pos.y - item.y
+                    return;
+                }
+            }
+        }
+
+        static inputMove(pos: any): void {
+            ha_blitz.Sprite.daftar.forEach((item: ISprite) => {
+
+                if (item.down && item.dragable) {
+                    item.dragged = true;
+                    item.x = pos.x - item.dragStartX
+                    item.y = pos.y - item.dragStartY
+                }
+            });
+        }
+
+        static inputUp(): void {
+            ha_blitz.Sprite.daftar.forEach((item: ISprite) => {
+                if (item.down) {
+                    item.hit++;
+                }
+
+                item.down = false;
+                item.dragged = false;
+            });
+        }
+
         static gambar(sprite: ISprite): void {
-            DrawImage(sprite.buffer, sprite.x, sprite.y);
+            TaruhGambar(sprite.buffer, sprite.x, sprite.y);
+        }
+
+        static positionOrbitSprite(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void {
+            let p: IPoint2D = ha.Point.posPolar(jarak, sudut, x2, y2);
+            sprite.x = p.x;
+            sprite.y = p.y;
         }
 
         public get dragStartX(): number {
@@ -59,10 +107,10 @@ namespace ha_blitz {
         public set dragged(value: boolean) {
             this._dragged = value;
         }
-        public get buffer(): IBuffer {
+        public get buffer(): IGambar {
             return this._buffer;
         }
-        public set buffer(value: IBuffer) {
+        public set buffer(value: IGambar) {
             this._buffer = value;
         }
         public get x(): number {
@@ -94,15 +142,17 @@ namespace ha_blitz {
 
     }
 
-    export interface ISprite {
-        buffer: IBuffer,
-        x: number,
-        y: number,
-        dragable: boolean
-        dragged: boolean
-        down: boolean
-        hit: number
-        dragStartX: number
-        dragStartY: number
-    }
+
+}
+
+interface ISprite {
+    buffer: IGambar,
+    x: number,
+    y: number,
+    dragable: boolean
+    dragged: boolean
+    down: boolean
+    hit: number
+    dragStartX: number
+    dragStartY: number
 }

@@ -1,12 +1,20 @@
 echo off
+cd ..\blitz
+call build.bat
+
+
+cd ..\blitz_demo
 
 echo drag2
 echo =====
+copy ..\blitz\output\*.d.ts .\drag02\dts
+copy ..\blitz\output\*.js .\drag02\web\js
+pause
 
-copy ..\blitz\lib\js\*.d.ts .\drag02\dts
-copy ..\blitz\blijs\js\*.d.ts .\drag02\dts
-
-copy ..\blitz\lib\js\*.js .\drag02\web\js
-copy ..\blitz\blijs\js\*.js .\drag02\web\js
+echo orbit
+echo =====
+copy ..\blitz\output\*.d.ts .\orbit\dts
+copy ..\blitz\output\*.js .\orbit\web\js
+pause
 
 pause

@@ -125,7 +125,7 @@ namespace ha {
 			}
 		}
 
-		static dist(x: number, y: number, xt: number, yt: number): number {
+		static jarak(x: number, y: number, xt: number, yt: number): number {
 			let pjx: number = xt - x;
 			let pjy: number = yt - y;
 			return Math.sqrt(pjx * pjx + pjy * pjy);

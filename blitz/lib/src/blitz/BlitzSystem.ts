@@ -1,7 +1,7 @@
 ///<reference path="../ha/blitz/Main.ts"/>
 ///<reference path="../ha/blitz/Image.ts"/>
 
-const Delay = async (m: number = 0): Promise<void> => {
+const Jeda = async (m: number = 0): Promise<void> => {
 	return new Promise((resolve, _reject) => {
 		setTimeout(() => {
 			resolve();
@@ -16,6 +16,7 @@ const FPS = (n: number) => {
 	}
 }
 
+//TODO: dihapus
 //TODO: kemungkinan diganti buat nyesuain sama blitz
 const Dim = (...args: any[]): any[] => {
 

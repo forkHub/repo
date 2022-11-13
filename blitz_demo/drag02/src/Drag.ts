@@ -1,19 +1,18 @@
-//DECLARE GLOBAL VARIABLE
-let img: IBuffer;				//img object
-let spr: ha_blitz.ISprite;
+//deklarasi variable
+let spr: ISprite;
+let spr2: ISprite;
 
-//START PROGRAM
-async function Start(): Promise<void> {
-	Graphics(320, 240);
-	img = await LoadImage("./gbr/box.png");
-	MidHandle(img);
+async function Mulai(): Promise<void> {
+	Grafis(240, 320);
 
-	spr = CreateSprite(img, true);
-	PositionSprite(spr, 160, 120);
+	spr = await MuatSprite("./gbr/box.png", true);
+	PosisiSprite(spr, 160, 120);
+
+	spr2 = await MuatSprite("./gbr/box.png", true);
+	PosisiSprite(spr2, 160, 120);
 }
 
-//LOOOP
 async function Loop(): Promise<void> {
-	Cls();
-	DrawSprite(spr);
+	Bersih();
+	TaruhSemuaSprite();
 }

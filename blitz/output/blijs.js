@@ -12,9 +12,9 @@ var ha_blijs;
             }, 100);
             let _window = window;
             setTimeout(() => {
-                if (typeof _window.Start == "function") {
+                if (typeof _window.Mulai == "function") {
                     console.log('window start function called');
-                    _window.Start()
+                    _window.Mulai()
                         .then(() => {
                         this.repeat();
                     })
@@ -33,8 +33,7 @@ var ha_blijs;
             if (typeof _window.Loop == 'function') {
                 await _window.Loop();
             }
-            else if (typeof _window.loop == 'function') {
-                await _window.loop();
+            else {
             }
         };
         repeat = () => {

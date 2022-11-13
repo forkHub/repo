@@ -1,5 +1,6 @@
 namespace ha {
 	export class Point {
+
 		static create(x: number = 0, y: number = 0): IPoint2D {
 			return {
 				x: x,
@@ -17,13 +18,13 @@ namespace ha {
 			return h;
 		}
 
-		static equal(p1: IPoint2D, p2: IPoint2D): boolean {
+		static sama(p1: IPoint2D, p2: IPoint2D): boolean {
 			if (false == Transform.equal(p1.x, p2.x)) return false;
 			if (false == Transform.equal(p1.y, p2.y)) return false;
 			return true;
 		}
 
-		static rotateRel(p: IPoint2D, xc: number = 0, yc: number = 0, deg: number = 0): void {
+		static putarPoros(p: IPoint2D, xc: number = 0, yc: number = 0, deg: number = 0): void {
 			Transform.rotateRel(p.x, p.y, xc, yc, deg);
 
 			p.x = Transform.lastX;
@@ -38,7 +39,8 @@ namespace ha {
 			let rasio: number;
 			let hasil: IPoint2D = Point.create();
 
-			jrkA = Transform.dist(p.x, p.y, xt, yt);
+			//jarak sekarang
+			jrkA = Transform.jarak(p.x, p.y, xt, yt);
 			i = xt - p.x;
 			j = yt - p.y;
 
@@ -54,8 +56,7 @@ namespace ha {
 		}
 
 		static posPolar(jarak: number, sudut: number, xt: number, yt: number): IPoint2D {
-			let hasil: IPoint2D;
-
+			let hasil: IPoint2D = ha.Point.create();
 
 			hasil.x = jarak * Math.cos(sudut * Transform.DEG2RAD);
 			hasil.y = jarak * Math.sin(sudut * Transform.DEG2RAD);

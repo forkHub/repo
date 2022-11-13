@@ -7,7 +7,7 @@
 
 //TODO: dipindahin ke tempat yang bener
 
-const Cls = (r: number = 0, g: number = 0, b: number = 0, alpha: number = 1): void => {
+const Bersih = (r: number = 0, g: number = 0, b: number = 0, alpha: number = 1): void => {
 	let ctx: CanvasRenderingContext2D = ha_blitz.main.canvasAktif.ctx;
 	ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
 	ctx.fillRect(0, 0, ha_blitz.main.canvasAktif.width, ha_blitz.main.canvasAktif.height);
@@ -21,7 +21,7 @@ const Color = (r: number = 0, g: number = 0, b: number = 0, a: number = 1) => {
 	ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 }
 
-const ColorRed = () => { }
+const WarnaMerah = () => { }
 const ColorBlue = () => { }
 const ColorGreen = () => { }
 
@@ -35,8 +35,8 @@ const FrontBuffer = () => { }
 
 const GetColor = () => { }
 
-const Graphics = (width: number = 320, height: number = 240, gl: boolean = true, pixel: boolean = true): void => {
-	let canvas: IBuffer = ha_blitz.main.canvasAktif;
+const Grafis = (width: number = 320, height: number = 240, gl: boolean = true, pixel: boolean = true): void => {
+	let canvas: IGambar = ha_blitz.main.canvasAktif;
 
 	canvas.canvas.width = width;
 	canvas.canvas.height = height;
@@ -59,7 +59,7 @@ const Graphics = (width: number = 320, height: number = 240, gl: boolean = true,
 
 const GraphicsBuffer = () => { }
 
-const Line = (x1: number, y1: number, x2: number, y2: number) => {
+const Garis = (x1: number, y1: number, x2: number, y2: number) => {
 	let ctx: CanvasRenderingContext2D = ha_blitz.main.canvasAktif.ctx;
 	x1 = Math.floor(x1);
 	y1 = Math.floor(y1);
@@ -71,16 +71,17 @@ const Line = (x1: number, y1: number, x2: number, y2: number) => {
 	ctx.stroke();
 }
 
+//TODO
 const Origin = () => { }
 
 const Oval = () => { }
 
-const Rect = (x1: number, y1: number, x2: number, y2: number) => {
+const Kotak = (x1: number, y1: number, x2: number, y2: number) => {
 	let ctx: CanvasRenderingContext2D = ha_blitz.main.canvasAktif.ctx;
 	ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
 }
 
-const SetBuffer = (buffer: IBuffer) => {
+const SetBuffer = (buffer: IGambar) => {
 	ha_blitz.main.canvasAktif = buffer
 }
 

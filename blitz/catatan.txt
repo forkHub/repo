@@ -1,0 +1,50 @@
+origin
+drag background
+    ubin karena origin ganti?
+    origin => screen
+    screen => origin`
+    position screen relative to origin
+    posision absolute relative to origin
+
+tombol UI
+    slider
+    tombol
+    knop
+
+simple form
+simple dialog
+knop
+drag rotasi
+full screen
+konektor
+kontektor kurva
+colision solver
+
+geometri
+titik di dalam polygon
+titik di sebelah kiri garis
+garis swap ke atas
+jarak ke garis
+jarak ke garis terdekat dari polygon
+vektor ke garis terdekat
+titik terdekat dari polygon ke posisi
+
+DEMO:
+=====
+jam
+rantai
+mobil berhenti pada jarak berapa
+mobil bertemu pada jarak berapa
+meriam
+bom jatuh
+simulasi mesin
+air molekul
+tumbukan
+refleksi
+sudut lancit/tumpul
+elipsis
+simetri putar
+elipsis + rotasi
+soal menghubungkan
+soal drag-drop gambar dan bayangan
+aplikasi susun balok
