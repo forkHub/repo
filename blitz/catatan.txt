@@ -2,7 +2,7 @@ origin
 drag background
     ubin karena origin ganti?
     origin => screen
-    screen => origin`
+    screen => origin
     position screen relative to origin
     posision absolute relative to origin
 
@@ -19,6 +19,8 @@ full screen
 konektor
 kontektor kurva
 colision solver
+camera
+ubah target buffer
 
 geometri
 titik di dalam polygon
