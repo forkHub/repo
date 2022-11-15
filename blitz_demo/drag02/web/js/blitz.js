@@ -1,10 +1,10 @@
 var ha_blitz;
 (function (ha_blitz) {
     class Main {
-        _fps = 1000 / 30;
-        _origin;
-        _canvasAr = [];
-        _canvasAktif;
+        constructor() {
+            this._fps = 1000 / 30;
+            this._canvasAr = [];
+        }
         buatCanvas(canvasEl) {
             // let canvasEl: HTMLCanvasElement = window.document.body.querySelector(`canvas.${buffer}`);
             let canvas = {
@@ -62,7 +62,21 @@ var ha_blitz;
 var ha_blitz;
 (function (ha_blitz) {
     class Image {
-        daftar = [];
+        constructor() {
+            this.daftar = [];
+            this.loadImage = async (url) => {
+                return new Promise((resolve, reject) => {
+                    let image2 = document.createElement('img');
+                    image2.onload = () => {
+                        resolve(image2);
+                    };
+                    image2.src = url;
+                    image2.onerror = (e) => {
+                        reject(e);
+                    };
+                });
+            };
+        }
         buat(img, ctx, canvas, rect) {
             let gbr = {
                 img: img,
@@ -82,18 +96,6 @@ var ha_blitz;
             };
             return gbr;
         }
-        loadImage = async (url) => {
-            return new Promise((resolve, reject) => {
-                let image2 = document.createElement('img');
-                image2.onload = () => {
-                    resolve(image2);
-                };
-                image2.src = url;
-                image2.onerror = (e) => {
-                    reject(e);
-                };
-            });
-        };
         resetImageRect(img) {
             let rect = img.rect;
             let p;
@@ -602,13 +604,13 @@ const TaruhSemuaSprite = () => {
         TaruhSprite(item);
     });
 };
-const PosisiXSprite = (spr, x) => {
+const PosisiXSprite = (spr, x = null) => {
     if (typeof (x) == 'number') {
         spr.x = x;
     }
     return spr.x;
 };
-const PosisiYSprite = (spr, y) => {
+const PosisiYSprite = (spr, y = null) => {
     if (typeof (y) == 'number') {
         spr.y = y;
     }
@@ -720,15 +722,18 @@ const Millisecs = () => {
 var ha;
 (function (ha) {
     class Input {
-        _inputs = []; //any input,
-        //data untuk simpan state tiap input type
-        //tidak support multiple finger
-        _touchGlobal; //global touch
-        _mouseGlobal; //global mouse
-        _keybGlobal; //global keyb
-        _inputGlobal; //global input
-        _event = new EventHandler();
         constructor() {
+            this._inputs = []; //any input,
+            this._event = new EventHandler();
+            this.pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
+                let rect = buffer.canvas.getBoundingClientRect();
+                let poslx = Math.floor((cx - rect.x) / canvasScaleX);
+                let posly = Math.floor((cy - rect.y) / canvasScaleY);
+                return {
+                    x: poslx,
+                    y: posly
+                };
+            };
             this._touchGlobal = this.buatInputDefault();
             this._mouseGlobal = this.buatInputDefault();
             this._keybGlobal = this.buatInputDefault();
@@ -925,15 +930,6 @@ var ha;
             }
             return input;
         }
-        pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
-            let rect = buffer.canvas.getBoundingClientRect();
-            let poslx = Math.floor((cx - rect.x) / canvasScaleX);
-            let posly = Math.floor((cy - rect.y) / canvasScaleY);
-            return {
-                x: poslx,
-                y: posly
-            };
-        };
         get inputs() {
             return this._inputs;
         }
@@ -997,17 +993,15 @@ var ha;
 var ha_blitz;
 (function (ha_blitz) {
     class Sprite {
-        static daftar = [];
-        _buffer;
-        _x = 0;
-        _y = 0;
-        _dragged = false;
-        _down = false;
-        _hit = 0;
-        _dragStartY = 0;
-        _dragStartX = 0;
-        _dragable = false;
         constructor(buffer, dragable = false) {
+            this._x = 0;
+            this._y = 0;
+            this._dragged = false;
+            this._down = false;
+            this._hit = 0;
+            this._dragStartY = 0;
+            this._dragStartX = 0;
+            this._dragable = false;
             this.buffer = buffer;
             this.dragable = dragable;
         }
@@ -1115,5 +1109,6 @@ var ha_blitz;
             this._down = value;
         }
     }
+    Sprite.daftar = [];
     ha_blitz.Sprite = Sprite;
 })(ha_blitz || (ha_blitz = {}));

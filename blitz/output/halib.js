@@ -15,14 +15,14 @@ var ha;
             let h = this.create(p.x, p.y);
             return h;
         }
-        static equal(p1, p2) {
+        static sama(p1, p2) {
             if (false == ha.Transform.equal(p1.x, p2.x))
                 return false;
             if (false == ha.Transform.equal(p1.y, p2.y))
                 return false;
             return true;
         }
-        static rotateRel(p, xc = 0, yc = 0, deg = 0) {
+        static putarPoros(p, xc = 0, yc = 0, deg = 0) {
             ha.Transform.rotateRel(p.x, p.y, xc, yc, deg);
             p.x = ha.Transform.lastX;
             p.y = ha.Transform.lastY;
@@ -33,7 +33,7 @@ var ha;
             let j;
             let rasio;
             let hasil = Point.create();
-            jrkA = ha.Transform.dist(p.x, p.y, xt, yt);
+            jrkA = ha.Transform.jarak(p.x, p.y, xt, yt);
             i = xt - p.x;
             j = yt - p.y;
             rasio = jrkA / jrk;
@@ -133,7 +133,7 @@ var ha;
                 return false;
             }
             Rect.rotate(r2, -d, pRot.x, pRot.y);
-            ha.Point.rotateRel(p, pRot.x, pRot.y, -d);
+            ha.Point.putarPoros(p, pRot.x, pRot.y, -d);
             if (!this.collideDotBound(r2, p)) {
                 return false;
             }
@@ -189,7 +189,7 @@ var ha;
                 r2 = r;
             }
             r2.vs.forEach((p) => {
-                ha.Point.rotateRel(p, xc, yc, deg);
+                ha.Point.putarPoros(p, xc, yc, deg);
             });
             return r2;
         }
@@ -276,8 +276,8 @@ var ha;
             return seg.v2.y - seg.v1.y;
         }
         static rotate(seg, deg = 0, xc = 0, yc = 0) {
-            ha.Point.rotateRel(seg.v1, xc, yc, deg);
-            ha.Point.rotateRel(seg.v2, xc, yc, deg);
+            ha.Point.putarPoros(seg.v1, xc, yc, deg);
+            ha.Point.putarPoros(seg.v2, xc, yc, deg);
         }
         static minX(seg) {
             return Math.min(seg.v1.x, seg.v2.x);
@@ -310,10 +310,6 @@ var ha;
 var ha;
 (function (ha) {
     class Transform {
-        static RAD2DEG = 180.0 / Math.PI;
-        static DEG2RAD = Math.PI / 180.0;
-        static _lastX = 0;
-        static _lastY = 0;
         static get lastX() {
             return this._lastX;
         }
@@ -417,7 +413,7 @@ var ha;
                 }
             }
         }
-        static dist(x, y, xt, yt) {
+        static jarak(x, y, xt, yt) {
             let pjx = xt - x;
             let pjy = yt - y;
             return Math.sqrt(pjx * pjx + pjy * pjy);
@@ -434,5 +430,9 @@ var ha;
             this._lastY = y1 + yt;
         }
     }
+    Transform.RAD2DEG = 180.0 / Math.PI;
+    Transform.DEG2RAD = Math.PI / 180.0;
+    Transform._lastX = 0;
+    Transform._lastY = 0;
     ha.Transform = Transform;
 })(ha || (ha = {}));

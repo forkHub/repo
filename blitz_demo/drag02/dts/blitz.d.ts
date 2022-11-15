@@ -169,8 +169,8 @@ declare const PosisiPolarSprite: (sprite: ISprite, sudut: number, jarak: number,
 declare const PosisiJarakSprite: () => void;
 declare const TaruhSprite: (sprite: ISprite, frame?: number) => void;
 declare const TaruhSemuaSprite: () => void;
-declare const PosisiXSprite: (spr: ISprite, x: number | null | undefined) => number;
-declare const PosisiYSprite: (spr: ISprite, y: number | null | undefined) => number;
+declare const PosisiXSprite: (spr: ISprite, x?: number) => number;
+declare const PosisiYSprite: (spr: ISprite, y?: number) => number;
 declare const Jeda: (m?: number) => Promise<void>;
 declare const FPS: (n: number) => void;
 declare const Dim: (...args: any[]) => any[];

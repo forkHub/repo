@@ -55,8 +55,8 @@ declare namespace ha {
         static create(x?: number, y?: number): IPoint2D;
         static copy(p1: IPoint2D, p2: IPoint2D): void;
         static clone(p: IPoint2D): IPoint2D;
-        static equal(p1: IPoint2D, p2: IPoint2D): boolean;
-        static rotateRel(p: IPoint2D, xc?: number, yc?: number, deg?: number): void;
+        static sama(p1: IPoint2D, p2: IPoint2D): boolean;
+        static putarPoros(p: IPoint2D, xc?: number, yc?: number, deg?: number): void;
         static posDist(p: IPoint2D, xt: number, yt: number, jrk: number): IPoint2D;
         static posPolar(jarak: number, sudut: number, xt: number, yt: number): IPoint2D;
     }
@@ -115,7 +115,7 @@ declare namespace ha {
         static normalizeDeg(deg: number): number;
         static degDistMax(angleS: number, angleT: number): number;
         static degDistMin(angleS: number, angleT: number): number;
-        static dist(x: number, y: number, xt: number, yt: number): number;
+        static jarak(x: number, y: number, xt: number, yt: number): number;
         static rotateRel(x?: number, y?: number, xt?: number, yt?: number, deg?: number): void;
     }
 }
