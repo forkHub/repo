@@ -1,85 +1,10 @@
-var ha_blijs;
-(function (ha_blijs) {
-    class Blijs {
-        constructor() {
-            this.loop = async () => {
-                let _window = window;
-                if (typeof _window.Loop == 'function') {
-                    await _window.Loop();
-                }
-                else {
-                }
-            };
-            this.repeat = () => {
-                this.loop()
-                    .then(() => {
-                    setTimeout(() => {
-                        requestAnimationFrame(this.repeat);
-                    }, 0);
-                }).
-                    catch((e) => {
-                    console.error(e);
-                });
-            };
-            this.windowResize = () => {
-                let canvas = ha_blitz.main.canvasAktif.canvas;
-                let cp = ha_blitz.main.canvasAktif.canvas.width;
-                let cl = ha_blitz.main.canvasAktif.canvas.height;
-                let wp = window.innerWidth;
-                let wl = window.innerHeight;
-                let ratio = Math.min((wp / cp), (wl / cl));
-                let cp2 = Math.floor(cp * ratio);
-                let cl2 = Math.floor(cl * ratio);
-                ha_blitz.main.canvasAktif.scaleX = ratio;
-                ha_blitz.main.canvasAktif.scaleY = ratio;
-                canvas.style.width = cp2 + 'px';
-                canvas.style.height = cl2 + 'px';
-                canvas.style.top = ((wl - cl2) / 2) + 'px';
-                canvas.style.left = ((wp - cp2) / 2) + 'px';
-            };
-        }
-        init(canvas) {
-            ha_blitz.main.init(canvas, canvas);
-            ha.input.init(ha_blitz.main.canvasAktif);
-            window.onresize = async () => {
-                this.windowResize();
-            };
-            setTimeout(() => {
-                this.windowResize();
-            }, 100);
-            let _window = window;
-            setTimeout(() => {
-                if (typeof _window.Mulai == "function") {
-                    console.log('window start function called');
-                    _window.Mulai()
-                        .then(() => {
-                        this.repeat();
-                    })
-                        .catch((e) => {
-                        console.error(e);
-                    });
-                }
-                else {
-                    console.warn('start not found');
-                    this.repeat();
-                }
-            }, 0);
-        }
-    }
-    ha_blijs.blijs = new Blijs();
-})(ha_blijs || (ha_blijs = {}));
-window.onload = () => {
-    console.log('window onload:');
-    let canvas = document.body.querySelector('canvas');
-    ha_blijs.blijs.init(canvas);
-};
 var ha_blitz;
 (function (ha_blitz) {
     class Main {
-        constructor() {
-            this._fps = 1000 / 30;
-            this._canvasAr = [];
-        }
+        _fps = 1000 / 30;
+        _origin;
+        _canvasAr = [];
+        _canvasAktif;
         buatCanvas(canvasEl) {
             // let canvasEl: HTMLCanvasElement = window.document.body.querySelector(`canvas.${buffer}`);
             let canvas = {
@@ -137,21 +62,7 @@ var ha_blitz;
 var ha_blitz;
 (function (ha_blitz) {
     class Image {
-        constructor() {
-            this.daftar = [];
-            this.loadImage = async (url) => {
-                return new Promise((resolve, reject) => {
-                    let image2 = document.createElement('img');
-                    image2.onload = () => {
-                        resolve(image2);
-                    };
-                    image2.src = url;
-                    image2.onerror = (e) => {
-                        reject(e);
-                    };
-                });
-            };
-        }
+        daftar = [];
         buat(img, ctx, canvas, rect) {
             let gbr = {
                 img: img,
@@ -171,6 +82,26 @@ var ha_blitz;
             };
             return gbr;
         }
+        handleTengah = (gbr) => {
+            gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
+            gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
+        };
+        ukuranGambar(gbr, w, h) {
+            gbr.scaleX = Math.floor(w) / gbr.frameW;
+            gbr.scaleY = Math.floor(h) / gbr.frameH;
+        }
+        loadImage = async (url) => {
+            return new Promise((resolve, reject) => {
+                let image2 = document.createElement('img');
+                image2.onload = () => {
+                    resolve(image2);
+                };
+                image2.src = url;
+                image2.onerror = (e) => {
+                    reject(e);
+                };
+            });
+        };
         resetImageRect(img) {
             let rect = img.rect;
             let p;
@@ -324,10 +255,11 @@ const DotDidalamGambar = (gbr1, x1, y1, x2, y2) => {
     ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
     return ha.Rect.collideDot(gbr1.rect, x2, y2);
 };
-const HandleTengah = (gbr) => {
-    gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
-    gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
-};
+const HandleTengah = ha_blitz.image.handleTengah;
+// (gbr: IGambar) => {
+// 	gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
+// 	gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
+// }
 const MuatGambar = async (url) => {
     let img = await ha_blitz.image.loadImage(url);
     let canvas = document.createElement('canvas');
@@ -406,11 +338,13 @@ const GambarUbin = (gbr, x = 0, y = 0, frame = 0) => {
         }
     }
 };
-const ResizeGambar = (gbr, w = 1, h = 1) => {
-    gbr.scaleX = Math.floor(w) / gbr.frameW;
-    gbr.scaleY = Math.floor(h) / gbr.frameH;
-    console.log(gbr);
-};
+const ResizeGambar = ha_blitz.image.ukuranGambar;
+// (gbr: IGambar, w: number = 1, h: number = 1) => {
+// 	ha_blitz.image.ukuranGambar(gbr, w, h);
+// 	gbr.scaleX = Math.floor(w) / gbr.frameW;
+// 	gbr.scaleY = Math.floor(h) / gbr.frameH;
+// 	console.log(gbr);
+// }
 const PutarGambar = (gbr, sudut = 0) => {
     gbr.rotation = sudut;
 };
@@ -655,6 +589,137 @@ const ReadPixel = () => { };
 const Plot = () => { };
 ///<reference path="../ha/blitz/Main.ts"/>
 ///<reference path="../ha/blitz/Image.ts"/>
+/** SPRITE.TS */
+var ha_blitz;
+(function (ha_blitz) {
+    class Sprite {
+        static daftar = [];
+        _buffer;
+        _x = 0;
+        _y = 0;
+        _dragged = false;
+        _down = false;
+        _hit = 0;
+        _dragStartY = 0;
+        _dragStartX = 0;
+        _dragable = false;
+        constructor(buffer, dragable = false) {
+            this.buffer = buffer;
+            this.dragable = dragable;
+        }
+        get dragable() {
+            return this._dragable;
+        }
+        set dragable(value) {
+            this._dragable = value;
+        }
+        static ukuranGambar(gbr, w, h) {
+            ha_blitz.image.ukuranGambar(gbr.buffer, w, h);
+        }
+        static handleTengah(gbr) {
+            ha_blitz.image.handleTengah(gbr.buffer);
+        }
+        static buat(image, dragable = false) {
+            let hasil;
+            hasil = new Sprite(image, dragable);
+            this.daftar.push(hasil);
+            console.log('buat sprite');
+            return hasil;
+        }
+        static inputDown(pos) {
+            ha_blitz.Sprite.daftar.forEach((item) => {
+                item.down = false;
+            });
+            //sprite down
+            for (let i = ha_blitz.Sprite.daftar.length - 1; i >= 0; i--) {
+                let item;
+                item = ha_blitz.Sprite.daftar[i];
+                if (DotDidalamGambar(item.buffer, item.x, item.y, pos.x, pos.y)) {
+                    item.down = true;
+                    item.dragStartX = pos.x - item.x;
+                    item.dragStartY = pos.y - item.y;
+                    return;
+                }
+            }
+        }
+        static inputMove(pos) {
+            ha_blitz.Sprite.daftar.forEach((item) => {
+                if (item.down && item.dragable) {
+                    item.dragged = true;
+                    item.x = pos.x - item.dragStartX;
+                    item.y = pos.y - item.dragStartY;
+                }
+            });
+        }
+        static inputUp() {
+            ha_blitz.Sprite.daftar.forEach((item) => {
+                if (item.down) {
+                    item.hit++;
+                }
+                item.down = false;
+                item.dragged = false;
+            });
+        }
+        static gambar(sprite) {
+            TaruhGambar(sprite.buffer, sprite.x, sprite.y);
+        }
+        static positionOrbitSprite(sprite, sudut, jarak, x2, y2) {
+            let p = ha.Point.posPolar(jarak, sudut, x2, y2);
+            sprite.x = p.x;
+            sprite.y = p.y;
+        }
+        get dragStartX() {
+            return this._dragStartX;
+        }
+        set dragStartX(value) {
+            this._dragStartX = value;
+        }
+        get dragStartY() {
+            return this._dragStartY;
+        }
+        set dragStartY(value) {
+            this._dragStartY = value;
+        }
+        get dragged() {
+            return this._dragged;
+        }
+        set dragged(value) {
+            this._dragged = value;
+        }
+        get buffer() {
+            return this._buffer;
+        }
+        set buffer(value) {
+            this._buffer = value;
+        }
+        get x() {
+            return this._x;
+        }
+        set x(value) {
+            this._x = value;
+        }
+        get y() {
+            return this._y;
+        }
+        set y(value) {
+            this._y = value;
+        }
+        get hit() {
+            return this._hit;
+        }
+        set hit(value) {
+            this._hit = value;
+        }
+        get down() {
+            return this._down;
+        }
+        set down(value) {
+            this._down = value;
+        }
+    }
+    ha_blitz.Sprite = Sprite;
+})(ha_blitz || (ha_blitz = {}));
+///<reference path="../ha/blitz/Sprite.ts"/>
 /** BLITZ-SPRITE.TS */
 const BuatSprite = (gbr, dragable = false) => {
     return ha_blitz.Sprite.buat(gbr, dragable);
@@ -667,6 +732,8 @@ const PosisiSprite = (sprite, x = 0, y = 0) => {
     sprite.x = x;
     sprite.y = y;
 };
+const UkuranSprite = ha_blitz.Sprite.ukuranGambar;
+const HandleSpriteTengah = ha_blitz.Sprite.handleTengah;
 const PosisiPolarSprite = (sprite, sudut, jarak, x2, y2) => {
     ha_blitz.Sprite.positionOrbitSprite(sprite, sudut, jarak, x2, y2);
 };
@@ -797,18 +864,15 @@ const Millisecs = () => {
 var ha;
 (function (ha) {
     class Input {
+        _inputs = []; //any input,
+        //data untuk simpan state tiap input type
+        //tidak support multiple finger
+        _touchGlobal; //global touch
+        _mouseGlobal; //global mouse
+        _keybGlobal; //global keyb
+        _inputGlobal; //global input
+        _event = new EventHandler();
         constructor() {
-            this._inputs = []; //any input,
-            this._event = new EventHandler();
-            this.pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
-                let rect = buffer.canvas.getBoundingClientRect();
-                let poslx = Math.floor((cx - rect.x) / canvasScaleX);
-                let posly = Math.floor((cy - rect.y) / canvasScaleY);
-                return {
-                    x: poslx,
-                    y: posly
-                };
-            };
             this._touchGlobal = this.buatInputDefault();
             this._mouseGlobal = this.buatInputDefault();
             this._keybGlobal = this.buatInputDefault();
@@ -1005,6 +1069,15 @@ var ha;
             }
             return input;
         }
+        pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
+            let rect = buffer.canvas.getBoundingClientRect();
+            let poslx = Math.floor((cx - rect.x) / canvasScaleX);
+            let posly = Math.floor((cy - rect.y) / canvasScaleY);
+            return {
+                x: poslx,
+                y: posly
+            };
+        };
         get inputs() {
             return this._inputs;
         }
@@ -1064,565 +1137,3 @@ var ha;
 /**
  * INTERFACE
 */
-/** SPRITE.TS */
-var ha_blitz;
-(function (ha_blitz) {
-    class Sprite {
-        constructor(buffer, dragable = false) {
-            this._x = 0;
-            this._y = 0;
-            this._dragged = false;
-            this._down = false;
-            this._hit = 0;
-            this._dragStartY = 0;
-            this._dragStartX = 0;
-            this._dragable = false;
-            this.buffer = buffer;
-            this.dragable = dragable;
-        }
-        get dragable() {
-            return this._dragable;
-        }
-        set dragable(value) {
-            this._dragable = value;
-        }
-        static buat(image, dragable = false) {
-            let hasil;
-            hasil = new Sprite(image, dragable);
-            this.daftar.push(hasil);
-            console.log('buat sprite');
-            return hasil;
-        }
-        static inputDown(pos) {
-            ha_blitz.Sprite.daftar.forEach((item) => {
-                item.down = false;
-            });
-            //sprite down
-            for (let i = ha_blitz.Sprite.daftar.length - 1; i >= 0; i--) {
-                let item;
-                item = ha_blitz.Sprite.daftar[i];
-                if (DotDidalamGambar(item.buffer, item.x, item.y, pos.x, pos.y)) {
-                    item.down = true;
-                    item.dragStartX = pos.x - item.x;
-                    item.dragStartY = pos.y - item.y;
-                    return;
-                }
-            }
-        }
-        static inputMove(pos) {
-            ha_blitz.Sprite.daftar.forEach((item) => {
-                if (item.down && item.dragable) {
-                    item.dragged = true;
-                    item.x = pos.x - item.dragStartX;
-                    item.y = pos.y - item.dragStartY;
-                }
-            });
-        }
-        static inputUp() {
-            ha_blitz.Sprite.daftar.forEach((item) => {
-                if (item.down) {
-                    item.hit++;
-                }
-                item.down = false;
-                item.dragged = false;
-            });
-        }
-        static gambar(sprite) {
-            TaruhGambar(sprite.buffer, sprite.x, sprite.y);
-        }
-        static positionOrbitSprite(sprite, sudut, jarak, x2, y2) {
-            let p = ha.Point.posPolar(jarak, sudut, x2, y2);
-            sprite.x = p.x;
-            sprite.y = p.y;
-        }
-        get dragStartX() {
-            return this._dragStartX;
-        }
-        set dragStartX(value) {
-            this._dragStartX = value;
-        }
-        get dragStartY() {
-            return this._dragStartY;
-        }
-        set dragStartY(value) {
-            this._dragStartY = value;
-        }
-        get dragged() {
-            return this._dragged;
-        }
-        set dragged(value) {
-            this._dragged = value;
-        }
-        get buffer() {
-            return this._buffer;
-        }
-        set buffer(value) {
-            this._buffer = value;
-        }
-        get x() {
-            return this._x;
-        }
-        set x(value) {
-            this._x = value;
-        }
-        get y() {
-            return this._y;
-        }
-        set y(value) {
-            this._y = value;
-        }
-        get hit() {
-            return this._hit;
-        }
-        set hit(value) {
-            this._hit = value;
-        }
-        get down() {
-            return this._down;
-        }
-        set down(value) {
-            this._down = value;
-        }
-    }
-    Sprite.daftar = [];
-    ha_blitz.Sprite = Sprite;
-})(ha_blitz || (ha_blitz = {}));
-var ha;
-(function (ha) {
-    class Point {
-        static create(x = 0, y = 0) {
-            return {
-                x: x,
-                y: y
-            };
-        }
-        static copy(p1, p2) {
-            p2.x = p1.x;
-            p2.y = p1.y;
-        }
-        static clone(p) {
-            let h = this.create(p.x, p.y);
-            return h;
-        }
-        static sama(p1, p2) {
-            if (false == ha.Transform.equal(p1.x, p2.x))
-                return false;
-            if (false == ha.Transform.equal(p1.y, p2.y))
-                return false;
-            return true;
-        }
-        static putarPoros(p, xc = 0, yc = 0, deg = 0) {
-            ha.Transform.rotateRel(p.x, p.y, xc, yc, deg);
-            p.x = ha.Transform.lastX;
-            p.y = ha.Transform.lastY;
-        }
-        static posDist(p, xt, yt, jrk) {
-            let jrkA;
-            let i;
-            let j;
-            let rasio;
-            let hasil = Point.create();
-            jrkA = ha.Transform.jarak(p.x, p.y, xt, yt);
-            i = xt - p.x;
-            j = yt - p.y;
-            rasio = jrkA / jrk;
-            hasil.x = i * rasio;
-            hasil.y = j * rasio;
-            hasil.x = xt - hasil.x;
-            hasil.y = yt - hasil.y;
-            return hasil;
-        }
-        static posPolar(jarak, sudut, xt, yt) {
-            let hasil = ha.Point.create();
-            hasil.x = jarak * Math.cos(sudut * ha.Transform.DEG2RAD);
-            hasil.y = jarak * Math.sin(sudut * ha.Transform.DEG2RAD);
-            hasil.x += xt;
-            hasil.y += yt;
-            return hasil;
-        }
-    }
-    ha.Point = Point;
-})(ha || (ha = {}));
-var ha;
-(function (ha) {
-    class Rect {
-        static create(x1 = 0, y1 = 0, x2 = 0, y2 = 0) {
-            let r = {};
-            r.vs = [];
-            r.vs.push(ha.Point.create(x1, y1));
-            r.vs.push(ha.Point.create(x2, y1));
-            r.vs.push(ha.Point.create(x2, y2));
-            r.vs.push(ha.Point.create(x1, y2));
-            r.segs = [];
-            r.segs.push(ha.Segment.create(r.vs[0], r.vs[1]));
-            r.segs.push(ha.Segment.create(r.vs[1], r.vs[2]));
-            r.segs.push(ha.Segment.create(r.vs[2], r.vs[3]));
-            r.segs.push(ha.Segment.create(r.vs[3], r.vs[0]));
-            return r;
-        }
-        static copy(r) {
-            let hasil = this.create();
-            this.copyInfo(r, hasil);
-            return hasil;
-        }
-        static copyInfo(r1, r2) {
-            for (let i = 0; i < r1.segs.length; i++) {
-                ha.Segment.copy(r1.segs[i], r2.segs[i]);
-            }
-        }
-        static collideBound(r1, r2) {
-            if (this.maxX(r1) < this.minX(r2)) {
-                return false;
-            }
-            if (this.minX(r1) > this.maxX(r2)) {
-                return false;
-            }
-            if (this.maxY(r1) < this.minY(r2)) {
-                return false;
-            }
-            if (this.minY(r1) > this.maxY(r2)) {
-                return false;
-            }
-            return true;
-        }
-        static collide(r1, r2) {
-            let bound = this.collideBound(r1, r2);
-            if (!bound)
-                return false;
-            for (let i = 0; i < r1.segs.length; i++) {
-                for (let j = 0; j < r2.segs.length; j++) {
-                    if (ha.Segment.collide(r1.segs[i], r2.segs[j])) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-        static collideDotBound(r, d) {
-            if (d.x < this.minX(r)) {
-                return false;
-            }
-            if (d.x > this.maxX(r)) {
-                return false;
-            }
-            if (d.y < this.minY(r)) {
-                return false;
-            }
-            if (d.y > this.maxY(r)) {
-                return false;
-            }
-            return true;
-        }
-        static collideDot(r, x, y) {
-            let r2 = Rect.copy(r);
-            let p = ha.Point.create(x, y);
-            let d = ha.Segment.deg(r2.segs[0]);
-            let pRot = r2.vs[0];
-            if (!this.collideDotBound(r, p)) {
-                return false;
-            }
-            Rect.rotate(r2, -d, pRot.x, pRot.y);
-            ha.Point.putarPoros(p, pRot.x, pRot.y, -d);
-            if (!this.collideDotBound(r2, p)) {
-                return false;
-            }
-            return true;
-        }
-        static minX(r) {
-            let x = r.vs[0].x;
-            r.vs.forEach((item) => {
-                if (item.x < x)
-                    x = item.x;
-            });
-            return x;
-        }
-        static maxX(r) {
-            let x = r.vs[0].x;
-            r.vs.forEach((item) => {
-                if (item.x > x)
-                    x = item.x;
-            });
-            return x;
-        }
-        static minY(r) {
-            let y = r.vs[0].y;
-            r.vs.forEach((item) => {
-                if (item.y < y)
-                    y = item.y;
-            });
-            return y;
-        }
-        static maxY(r) {
-            let y = r.vs[0].y;
-            r.vs.forEach((item) => {
-                if (item.y > y)
-                    y = item.y;
-            });
-            return y;
-        }
-        static scale(r) {
-            r;
-        }
-        static translate(rect, x, y) {
-            rect.vs.forEach((v) => {
-                v.x += x;
-                v.y += y;
-            });
-        }
-        static rotate(r, deg, xc = 0, yc, copy = true) {
-            let r2;
-            if (copy) {
-                r2 = Rect.copy(r);
-            }
-            else {
-                r2 = r;
-            }
-            r2.vs.forEach((p) => {
-                ha.Point.putarPoros(p, xc, yc, deg);
-            });
-            return r2;
-        }
-    }
-    ha.Rect = Rect;
-})(ha || (ha = {}));
-var ha;
-(function (ha) {
-    class Segment {
-        static create(v1 = { x: 0, y: 0 }, v2 = { x: 0, y: 0 }) {
-            return {
-                v1: v1,
-                v2: v2
-            };
-        }
-        static boundCollide(seg1, seg2) {
-            if (this.maxX(seg1) < this.minX(seg2))
-                return false;
-            if (this.minX(seg1) > this.maxX(seg2))
-                return false;
-            if (this.maxY(seg1) < this.minY(seg2))
-                return false;
-            if (this.minY(seg1) > this.maxY(seg2))
-                return false;
-            return true;
-        }
-        static collide(seg1, seg2) {
-            let bound = this.boundCollide(seg1, seg2);
-            if (!bound)
-                return false;
-            let seg2Copy = this.clone(seg2);
-            let seg1Copy = this.clone(seg1);
-            let deg = this.deg(seg2);
-            this.rotate(seg2Copy, -deg, seg2.v1.x, seg2.v1.y);
-            this.rotate(seg1Copy, -deg, seg2.v1.x, seg2.v1.y);
-            if (!this.boundCollide(seg1Copy, seg2Copy))
-                return false;
-            this.translate(seg1Copy, -seg2.v1.x, -seg2.v1.y);
-            this.translate(seg2Copy, -seg2.v1.x, -seg2.v1.y);
-            if (!this.crossHor(seg1Copy)) {
-                return false;
-            }
-            let idx = this.xHorIdx(seg1Copy);
-            let x = this.getXAtIdx(seg1Copy, idx);
-            if (x > this.maxX(seg2Copy))
-                return false;
-            if (x < this.minX(seg2Copy))
-                return false;
-            return true;
-        }
-        static copy(seg1, seg2) {
-            ha.Point.copy(seg1.v1, seg2.v2);
-            ha.Point.copy(seg1.v2, seg2.v2);
-        }
-        static clone(seg) {
-            return {
-                v1: ha.Point.clone(seg.v1),
-                v2: ha.Point.clone(seg.v2)
-            };
-        }
-        static crossHor(seg) {
-            if (this.maxY(seg) > 0) {
-                if (this.minY(seg) < 0) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        static deg(line) {
-            let j = line.v2.y - line.v1.y;
-            let i = line.v2.x - line.v1.x;
-            return ha.Transform.deg(i, j);
-        }
-        static getXAtIdx(seg, idx) {
-            return seg.v1.x + (idx * this.vecI(seg));
-        }
-        static getYAtIdx(seg, idx) {
-            return seg.v1.y + (idx * this.vecJ(seg));
-        }
-        static vecI(seg) {
-            return seg.v2.x - seg.v1.x;
-        }
-        static vecJ(seg) {
-            return seg.v2.y - seg.v1.y;
-        }
-        static rotate(seg, deg = 0, xc = 0, yc = 0) {
-            ha.Point.putarPoros(seg.v1, xc, yc, deg);
-            ha.Point.putarPoros(seg.v2, xc, yc, deg);
-        }
-        static minX(seg) {
-            return Math.min(seg.v1.x, seg.v2.x);
-        }
-        static maxX(seg) {
-            return Math.max(seg.v1.x, seg.v2.x);
-        }
-        static minY(seg) {
-            return Math.min(seg.v1.y, seg.v2.y);
-        }
-        static maxY(seg) {
-            return Math.max(seg.v1.y, seg.v2.y);
-        }
-        static translate(seg, x = 0, y = 0) {
-            seg.v1.x += x;
-            seg.v1.y += y;
-            seg.v2.x += x;
-            seg.v2.y += y;
-        }
-        static xHorIdx(seg) {
-            if (!this.crossHor(seg))
-                return NaN;
-            let idx = 0;
-            idx = (0 - seg.v1.y) / (seg.v2.y - seg.v1.y);
-            return idx;
-        }
-    }
-    ha.Segment = Segment;
-})(ha || (ha = {}));
-var ha;
-(function (ha) {
-    class Transform {
-        static get lastX() {
-            return this._lastX;
-        }
-        static get lastY() {
-            return this._lastY;
-        }
-        static equal(n1, n2, toleransi = 1) {
-            if (Math.abs(n1 - n2) <= toleransi)
-                return true;
-            return false;
-        }
-        static quadDeg2(x, y, deg) {
-            if (x == 0) {
-                if (y == 0) {
-                    return deg;
-                }
-                else if (y > 0) {
-                    return deg;
-                }
-                else if (y < 0) {
-                    return 360 - Math.abs(deg);
-                }
-            }
-            else if (x > 0) {
-                if (y == 0) {
-                    return deg;
-                }
-                else if (y > 0) {
-                    return deg;
-                }
-                else if (y < 0) {
-                    return 360 - Math.abs(deg);
-                }
-            }
-            else if (x < 0) {
-                if (y == 0) {
-                    return 180;
-                }
-                else if (y > 0) {
-                    return 180 - Math.abs(deg);
-                }
-                else if (y < 0) {
-                    return 180 + Math.abs(deg);
-                }
-            }
-            throw Error();
-        }
-        static deg(x, y) {
-            let l;
-            let sin;
-            l = Math.sqrt(x * x + y * y);
-            if (l == 0) {
-                l = .00001;
-            }
-            sin = y / l;
-            sin = Math.asin(sin);
-            sin *= this.RAD2DEG;
-            sin = this.quadDeg2(x, y, sin);
-            sin = this.normalizeDeg(sin);
-            return sin;
-        }
-        static normalizeDeg(deg) {
-            while (deg >= 360) {
-                deg -= 360;
-            }
-            while (deg <= -360) {
-                deg += 360;
-            }
-            if (deg < 0)
-                deg = 360 + deg;
-            return deg;
-        }
-        static degDistMax(angleS = 0, angleT) {
-            angleS = this.normalizeDeg(angleS);
-            angleT = this.normalizeDeg(angleT);
-            let deg = this.degDistMin(angleS, angleT);
-            if (deg >= 0) {
-                return -(360 - deg);
-            }
-            else {
-                return (360 - Math.abs(deg));
-            }
-        }
-        static degDistMin(angleS = 0, angleT) {
-            angleS = this.normalizeDeg(angleS);
-            angleT = this.normalizeDeg(angleT);
-            if (angleT >= angleS) {
-                if (angleT - angleS > 180) {
-                    return -(angleS + 360 - angleT);
-                }
-                else {
-                    return angleT - angleS;
-                }
-            }
-            else {
-                if (angleS - angleT >= 180) {
-                    return 360 + angleT - angleS;
-                }
-                else {
-                    return angleT - angleS;
-                }
-            }
-        }
-        static jarak(x, y, xt, yt) {
-            let pjx = xt - x;
-            let pjy = yt - y;
-            return Math.sqrt(pjx * pjx + pjy * pjy);
-        }
-        static rotateRel(x = 0, y = 0, xt = 0, yt = 0, deg = 10) {
-            let xr = x - xt;
-            let yr = y - yt;
-            let x1;
-            let y1;
-            deg *= this.DEG2RAD;
-            x1 = xr * Math.cos(deg) - yr * Math.sin(deg);
-            y1 = xr * Math.sin(deg) + yr * Math.cos(deg);
-            this._lastX = x1 + xt;
-            this._lastY = y1 + yt;
-        }
-    }
-    Transform.RAD2DEG = 180.0 / Math.PI;
-    Transform.DEG2RAD = Math.PI / 180.0;
-    Transform._lastX = 0;
-    Transform._lastY = 0;
-    ha.Transform = Transform;
-})(ha || (ha = {}));
-

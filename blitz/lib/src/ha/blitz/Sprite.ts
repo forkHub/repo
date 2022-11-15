@@ -25,6 +25,14 @@ namespace ha_blitz {
             this._dragable = value;
         }
 
+        static ukuranGambar(gbr: ISprite, w: number, h: number): void {
+            ha_blitz.image.ukuranGambar(gbr.buffer, w, h);
+        }
+
+        static handleTengah(gbr: ISprite): void {
+            ha_blitz.image.handleTengah(gbr.buffer);
+        }
+
         static buat(image: IGambar, dragable: boolean = false): ISprite {
             let hasil: ISprite;
 

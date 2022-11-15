@@ -1,10 +1,10 @@
 var ha_blitz;
 (function (ha_blitz) {
     class Main {
-        constructor() {
-            this._fps = 1000 / 30;
-            this._canvasAr = [];
-        }
+        _fps = 1000 / 30;
+        _origin;
+        _canvasAr = [];
+        _canvasAktif;
         buatCanvas(canvasEl) {
             // let canvasEl: HTMLCanvasElement = window.document.body.querySelector(`canvas.${buffer}`);
             let canvas = {
@@ -62,21 +62,7 @@ var ha_blitz;
 var ha_blitz;
 (function (ha_blitz) {
     class Image {
-        constructor() {
-            this.daftar = [];
-            this.loadImage = async (url) => {
-                return new Promise((resolve, reject) => {
-                    let image2 = document.createElement('img');
-                    image2.onload = () => {
-                        resolve(image2);
-                    };
-                    image2.src = url;
-                    image2.onerror = (e) => {
-                        reject(e);
-                    };
-                });
-            };
-        }
+        daftar = [];
         buat(img, ctx, canvas, rect) {
             let gbr = {
                 img: img,
@@ -96,6 +82,26 @@ var ha_blitz;
             };
             return gbr;
         }
+        handleTengah = (gbr) => {
+            gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
+            gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
+        };
+        ukuranGambar(gbr, w, h) {
+            gbr.scaleX = Math.floor(w) / gbr.frameW;
+            gbr.scaleY = Math.floor(h) / gbr.frameH;
+        }
+        loadImage = async (url) => {
+            return new Promise((resolve, reject) => {
+                let image2 = document.createElement('img');
+                image2.onload = () => {
+                    resolve(image2);
+                };
+                image2.src = url;
+                image2.onerror = (e) => {
+                    reject(e);
+                };
+            });
+        };
         resetImageRect(img) {
             let rect = img.rect;
             let p;
@@ -249,10 +255,11 @@ const DotDidalamGambar = (gbr1, x1, y1, x2, y2) => {
     ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
     return ha.Rect.collideDot(gbr1.rect, x2, y2);
 };
-const HandleTengah = (gbr) => {
-    gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
-    gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
-};
+const HandleTengah = ha_blitz.image.handleTengah;
+// (gbr: IGambar) => {
+// 	gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
+// 	gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
+// }
 const MuatGambar = async (url) => {
     let img = await ha_blitz.image.loadImage(url);
     let canvas = document.createElement('canvas');
@@ -331,11 +338,13 @@ const GambarUbin = (gbr, x = 0, y = 0, frame = 0) => {
         }
     }
 };
-const ResizeGambar = (gbr, w = 1, h = 1) => {
-    gbr.scaleX = Math.floor(w) / gbr.frameW;
-    gbr.scaleY = Math.floor(h) / gbr.frameH;
-    console.log(gbr);
-};
+const ResizeGambar = ha_blitz.image.ukuranGambar;
+// (gbr: IGambar, w: number = 1, h: number = 1) => {
+// 	ha_blitz.image.ukuranGambar(gbr, w, h);
+// 	gbr.scaleX = Math.floor(w) / gbr.frameW;
+// 	gbr.scaleY = Math.floor(h) / gbr.frameH;
+// 	console.log(gbr);
+// }
 const PutarGambar = (gbr, sudut = 0) => {
     gbr.rotation = sudut;
 };
@@ -580,6 +589,137 @@ const ReadPixel = () => { };
 const Plot = () => { };
 ///<reference path="../ha/blitz/Main.ts"/>
 ///<reference path="../ha/blitz/Image.ts"/>
+/** SPRITE.TS */
+var ha_blitz;
+(function (ha_blitz) {
+    class Sprite {
+        static daftar = [];
+        _buffer;
+        _x = 0;
+        _y = 0;
+        _dragged = false;
+        _down = false;
+        _hit = 0;
+        _dragStartY = 0;
+        _dragStartX = 0;
+        _dragable = false;
+        constructor(buffer, dragable = false) {
+            this.buffer = buffer;
+            this.dragable = dragable;
+        }
+        get dragable() {
+            return this._dragable;
+        }
+        set dragable(value) {
+            this._dragable = value;
+        }
+        static ukuranGambar(gbr, w, h) {
+            ha_blitz.image.ukuranGambar(gbr.buffer, w, h);
+        }
+        static handleTengah(gbr) {
+            ha_blitz.image.handleTengah(gbr.buffer);
+        }
+        static buat(image, dragable = false) {
+            let hasil;
+            hasil = new Sprite(image, dragable);
+            this.daftar.push(hasil);
+            console.log('buat sprite');
+            return hasil;
+        }
+        static inputDown(pos) {
+            ha_blitz.Sprite.daftar.forEach((item) => {
+                item.down = false;
+            });
+            //sprite down
+            for (let i = ha_blitz.Sprite.daftar.length - 1; i >= 0; i--) {
+                let item;
+                item = ha_blitz.Sprite.daftar[i];
+                if (DotDidalamGambar(item.buffer, item.x, item.y, pos.x, pos.y)) {
+                    item.down = true;
+                    item.dragStartX = pos.x - item.x;
+                    item.dragStartY = pos.y - item.y;
+                    return;
+                }
+            }
+        }
+        static inputMove(pos) {
+            ha_blitz.Sprite.daftar.forEach((item) => {
+                if (item.down && item.dragable) {
+                    item.dragged = true;
+                    item.x = pos.x - item.dragStartX;
+                    item.y = pos.y - item.dragStartY;
+                }
+            });
+        }
+        static inputUp() {
+            ha_blitz.Sprite.daftar.forEach((item) => {
+                if (item.down) {
+                    item.hit++;
+                }
+                item.down = false;
+                item.dragged = false;
+            });
+        }
+        static gambar(sprite) {
+            TaruhGambar(sprite.buffer, sprite.x, sprite.y);
+        }
+        static positionOrbitSprite(sprite, sudut, jarak, x2, y2) {
+            let p = ha.Point.posPolar(jarak, sudut, x2, y2);
+            sprite.x = p.x;
+            sprite.y = p.y;
+        }
+        get dragStartX() {
+            return this._dragStartX;
+        }
+        set dragStartX(value) {
+            this._dragStartX = value;
+        }
+        get dragStartY() {
+            return this._dragStartY;
+        }
+        set dragStartY(value) {
+            this._dragStartY = value;
+        }
+        get dragged() {
+            return this._dragged;
+        }
+        set dragged(value) {
+            this._dragged = value;
+        }
+        get buffer() {
+            return this._buffer;
+        }
+        set buffer(value) {
+            this._buffer = value;
+        }
+        get x() {
+            return this._x;
+        }
+        set x(value) {
+            this._x = value;
+        }
+        get y() {
+            return this._y;
+        }
+        set y(value) {
+            this._y = value;
+        }
+        get hit() {
+            return this._hit;
+        }
+        set hit(value) {
+            this._hit = value;
+        }
+        get down() {
+            return this._down;
+        }
+        set down(value) {
+            this._down = value;
+        }
+    }
+    ha_blitz.Sprite = Sprite;
+})(ha_blitz || (ha_blitz = {}));
+///<reference path="../ha/blitz/Sprite.ts"/>
 /** BLITZ-SPRITE.TS */
 const BuatSprite = (gbr, dragable = false) => {
     return ha_blitz.Sprite.buat(gbr, dragable);
@@ -592,6 +732,8 @@ const PosisiSprite = (sprite, x = 0, y = 0) => {
     sprite.x = x;
     sprite.y = y;
 };
+const UkuranSprite = ha_blitz.Sprite.ukuranGambar;
+const HandleSpriteTengah = ha_blitz.Sprite.handleTengah;
 const PosisiPolarSprite = (sprite, sudut, jarak, x2, y2) => {
     ha_blitz.Sprite.positionOrbitSprite(sprite, sudut, jarak, x2, y2);
 };
@@ -722,18 +864,15 @@ const Millisecs = () => {
 var ha;
 (function (ha) {
     class Input {
+        _inputs = []; //any input,
+        //data untuk simpan state tiap input type
+        //tidak support multiple finger
+        _touchGlobal; //global touch
+        _mouseGlobal; //global mouse
+        _keybGlobal; //global keyb
+        _inputGlobal; //global input
+        _event = new EventHandler();
         constructor() {
-            this._inputs = []; //any input,
-            this._event = new EventHandler();
-            this.pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
-                let rect = buffer.canvas.getBoundingClientRect();
-                let poslx = Math.floor((cx - rect.x) / canvasScaleX);
-                let posly = Math.floor((cy - rect.y) / canvasScaleY);
-                return {
-                    x: poslx,
-                    y: posly
-                };
-            };
             this._touchGlobal = this.buatInputDefault();
             this._mouseGlobal = this.buatInputDefault();
             this._keybGlobal = this.buatInputDefault();
@@ -930,6 +1069,15 @@ var ha;
             }
             return input;
         }
+        pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
+            let rect = buffer.canvas.getBoundingClientRect();
+            let poslx = Math.floor((cx - rect.x) / canvasScaleX);
+            let posly = Math.floor((cy - rect.y) / canvasScaleY);
+            return {
+                x: poslx,
+                y: posly
+            };
+        };
         get inputs() {
             return this._inputs;
         }
@@ -989,126 +1137,3 @@ var ha;
 /**
  * INTERFACE
 */
-/** SPRITE.TS */
-var ha_blitz;
-(function (ha_blitz) {
-    class Sprite {
-        constructor(buffer, dragable = false) {
-            this._x = 0;
-            this._y = 0;
-            this._dragged = false;
-            this._down = false;
-            this._hit = 0;
-            this._dragStartY = 0;
-            this._dragStartX = 0;
-            this._dragable = false;
-            this.buffer = buffer;
-            this.dragable = dragable;
-        }
-        get dragable() {
-            return this._dragable;
-        }
-        set dragable(value) {
-            this._dragable = value;
-        }
-        static buat(image, dragable = false) {
-            let hasil;
-            hasil = new Sprite(image, dragable);
-            this.daftar.push(hasil);
-            console.log('buat sprite');
-            return hasil;
-        }
-        static inputDown(pos) {
-            ha_blitz.Sprite.daftar.forEach((item) => {
-                item.down = false;
-            });
-            //sprite down
-            for (let i = ha_blitz.Sprite.daftar.length - 1; i >= 0; i--) {
-                let item;
-                item = ha_blitz.Sprite.daftar[i];
-                if (DotDidalamGambar(item.buffer, item.x, item.y, pos.x, pos.y)) {
-                    item.down = true;
-                    item.dragStartX = pos.x - item.x;
-                    item.dragStartY = pos.y - item.y;
-                    return;
-                }
-            }
-        }
-        static inputMove(pos) {
-            ha_blitz.Sprite.daftar.forEach((item) => {
-                if (item.down && item.dragable) {
-                    item.dragged = true;
-                    item.x = pos.x - item.dragStartX;
-                    item.y = pos.y - item.dragStartY;
-                }
-            });
-        }
-        static inputUp() {
-            ha_blitz.Sprite.daftar.forEach((item) => {
-                if (item.down) {
-                    item.hit++;
-                }
-                item.down = false;
-                item.dragged = false;
-            });
-        }
-        static gambar(sprite) {
-            TaruhGambar(sprite.buffer, sprite.x, sprite.y);
-        }
-        static positionOrbitSprite(sprite, sudut, jarak, x2, y2) {
-            let p = ha.Point.posPolar(jarak, sudut, x2, y2);
-            sprite.x = p.x;
-            sprite.y = p.y;
-        }
-        get dragStartX() {
-            return this._dragStartX;
-        }
-        set dragStartX(value) {
-            this._dragStartX = value;
-        }
-        get dragStartY() {
-            return this._dragStartY;
-        }
-        set dragStartY(value) {
-            this._dragStartY = value;
-        }
-        get dragged() {
-            return this._dragged;
-        }
-        set dragged(value) {
-            this._dragged = value;
-        }
-        get buffer() {
-            return this._buffer;
-        }
-        set buffer(value) {
-            this._buffer = value;
-        }
-        get x() {
-            return this._x;
-        }
-        set x(value) {
-            this._x = value;
-        }
-        get y() {
-            return this._y;
-        }
-        set y(value) {
-            this._y = value;
-        }
-        get hit() {
-            return this._hit;
-        }
-        set hit(value) {
-            this._hit = value;
-        }
-        get down() {
-            return this._down;
-        }
-        set down(value) {
-            this._down = value;
-        }
-    }
-    Sprite.daftar = [];
-    ha_blitz.Sprite = Sprite;
-})(ha_blitz || (ha_blitz = {}));

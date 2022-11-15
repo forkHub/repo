@@ -310,6 +310,10 @@ var ha;
 var ha;
 (function (ha) {
     class Transform {
+        static RAD2DEG = 180.0 / Math.PI;
+        static DEG2RAD = Math.PI / 180.0;
+        static _lastX = 0;
+        static _lastY = 0;
         static get lastX() {
             return this._lastX;
         }
@@ -430,9 +434,5 @@ var ha;
             this._lastY = y1 + yt;
         }
     }
-    Transform.RAD2DEG = 180.0 / Math.PI;
-    Transform.DEG2RAD = Math.PI / 180.0;
-    Transform._lastX = 0;
-    Transform._lastY = 0;
     ha.Transform = Transform;
 })(ha || (ha = {}));

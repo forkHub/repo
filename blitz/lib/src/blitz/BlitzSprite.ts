@@ -1,3 +1,5 @@
+///<reference path="../ha/blitz/Sprite.ts"/>
+
 /** BLITZ-SPRITE.TS */
 const BuatSprite = (gbr: IGambar, dragable = false): ISprite => {
 	return ha_blitz.Sprite.buat(gbr, dragable);
@@ -12,6 +14,9 @@ const PosisiSprite = (sprite: ISprite, x: number = 0, y: number = 0) => {
 	sprite.x = x;
 	sprite.y = y;
 }
+
+const UkuranSprite = ha_blitz.Sprite.ukuranGambar;
+const HandleSpriteTengah = ha_blitz.Sprite.handleTengah;
 
 const PosisiPolarSprite = (sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number) => {
 	ha_blitz.Sprite.positionOrbitSprite(sprite, sudut, jarak, x2, y2);

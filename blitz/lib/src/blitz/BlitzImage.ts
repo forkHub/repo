@@ -138,10 +138,12 @@ const DotDidalamGambar = (gbr1: IGambar, x1: number, y1: number, x2: number, y2:
 	return ha.Rect.collideDot(gbr1.rect, x2, y2);
 };
 
-const HandleTengah = (gbr: IGambar) => {
-	gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
-	gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
-}
+const HandleTengah = ha_blitz.image.handleTengah;
+
+// (gbr: IGambar) => {
+// 	gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
+// 	gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
+// }
 
 const MuatGambar = async (url: string): Promise<IGambar> => {
 	let img: HTMLImageElement = await ha_blitz.image.loadImage(url);
@@ -239,11 +241,14 @@ const GambarUbin = (gbr: IGambar, x: number = 0, y: number = 0, frame: number = 
 	}
 }
 
-const ResizeGambar = (gbr: IGambar, w: number = 1, h: number = 1) => {
-	gbr.scaleX = Math.floor(w) / gbr.frameW;
-	gbr.scaleY = Math.floor(h) / gbr.frameH;
-	console.log(gbr);
-}
+const ResizeGambar = ha_blitz.image.ukuranGambar;
+
+// (gbr: IGambar, w: number = 1, h: number = 1) => {
+// 	ha_blitz.image.ukuranGambar(gbr, w, h);
+// 	gbr.scaleX = Math.floor(w) / gbr.frameW;
+// 	gbr.scaleY = Math.floor(h) / gbr.frameH;
+// 	console.log(gbr);
+// }
 
 const PutarGambar = (gbr: IGambar, sudut: number = 0) => {
 	gbr.rotation = sudut;

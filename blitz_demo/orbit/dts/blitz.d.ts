@@ -22,6 +22,8 @@ declare namespace ha_blitz {
     class Image {
         readonly daftar: IGambar[];
         buat(img: HTMLImageElement, ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, rect: IRect): IGambar;
+        handleTengah: (gbr: IGambar) => void;
+        ukuranGambar(gbr: IGambar, w: number, h: number): void;
         loadImage: (url: string) => Promise<HTMLImageElement>;
         resetImageRect(img: IGambar): void;
         rectToImageTransform(image: IGambar, x: number, y: number): void;
@@ -48,7 +50,7 @@ declare const HandleTengah: (gbr: IGambar) => void;
 declare const MuatGambar: (url: string) => Promise<IGambar>;
 declare const MuatGambarAnimasi: (url: string, fw?: number, fh?: number) => Promise<IGambar>;
 declare const GambarUbin: (gbr: IGambar, x?: number, y?: number, frame?: number) => void;
-declare const ResizeGambar: (gbr: IGambar, w?: number, h?: number) => void;
+declare const ResizeGambar: (gbr: IGambar, w: number, h: number) => void;
 declare const PutarGambar: (gbr: IGambar, sudut?: number) => void;
 declare const SkalaGambar: (gbr: IGambar, skalaX?: number, skalaY?: number) => void;
 declare const AmbilPiksel: (x?: number, y?: number) => number[];
@@ -161,16 +163,71 @@ declare const SetBuffer: (buffer: IGambar) => void;
 declare const WritePixel: () => void;
 declare const ReadPixel: () => void;
 declare const Plot: () => void;
+/** SPRITE.TS */
+declare namespace ha_blitz {
+    class Sprite implements ISprite {
+        static readonly daftar: ISprite[];
+        private _buffer;
+        private _x;
+        private _y;
+        private _dragged;
+        private _down;
+        private _hit;
+        private _dragStartY;
+        private _dragStartX;
+        private _dragable;
+        constructor(buffer: IGambar, dragable?: boolean);
+        get dragable(): boolean;
+        set dragable(value: boolean);
+        static ukuranGambar(gbr: ISprite, w: number, h: number): void;
+        static handleTengah(gbr: ISprite): void;
+        static buat(image: IGambar, dragable?: boolean): ISprite;
+        static inputDown(pos: any): void;
+        static inputMove(pos: any): void;
+        static inputUp(): void;
+        static gambar(sprite: ISprite): void;
+        static positionOrbitSprite(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void;
+        get dragStartX(): number;
+        set dragStartX(value: number);
+        get dragStartY(): number;
+        set dragStartY(value: number);
+        get dragged(): boolean;
+        set dragged(value: boolean);
+        get buffer(): IGambar;
+        set buffer(value: IGambar);
+        get x(): number;
+        set x(value: number);
+        get y(): number;
+        set y(value: number);
+        get hit(): number;
+        set hit(value: number);
+        get down(): boolean;
+        set down(value: boolean);
+    }
+}
+interface ISprite {
+    buffer: IGambar;
+    x: number;
+    y: number;
+    dragable: boolean;
+    dragged: boolean;
+    down: boolean;
+    hit: number;
+    dragStartX: number;
+    dragStartY: number;
+}
 /** BLITZ-SPRITE.TS */
 declare const BuatSprite: (gbr: IGambar, dragable?: boolean) => ISprite;
 declare const MuatSprite: (url: string, dragable?: boolean) => Promise<ISprite>;
 declare const PosisiSprite: (sprite: ISprite, x?: number, y?: number) => void;
+declare const UkuranSprite: typeof ha_blitz.Sprite.ukuranGambar;
+declare const HandleSpriteTengah: typeof ha_blitz.Sprite.handleTengah;
 declare const PosisiPolarSprite: (sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number) => void;
 declare const PosisiJarakSprite: () => void;
 declare const TaruhSprite: (sprite: ISprite, frame?: number) => void;
 declare const TaruhSemuaSprite: () => void;
-declare const PosisiXSprite: (spr: ISprite, x?: number) => number;
-declare const PosisiYSprite: (spr: ISprite, y?: number) => number;
+declare const PosisiXSprite: (spr: ISprite, x?: number | null | undefined) => number;
+declare const PosisiYSprite: (spr: ISprite, y?: number | null | undefined) => number;
 declare const Jeda: (m?: number) => Promise<void>;
 declare const FPS: (n: number) => void;
 declare const Dim: (...args: any[]) => any[];
@@ -286,55 +343,4 @@ interface ITransform {
     pos: IV2D;
     scale: IV2D;
     rotation: number;
-}
-/** SPRITE.TS */
-declare namespace ha_blitz {
-    class Sprite implements ISprite {
-        static readonly daftar: ISprite[];
-        private _buffer;
-        private _x;
-        private _y;
-        private _dragged;
-        private _down;
-        private _hit;
-        private _dragStartY;
-        private _dragStartX;
-        private _dragable;
-        constructor(buffer: IGambar, dragable?: boolean);
-        get dragable(): boolean;
-        set dragable(value: boolean);
-        static buat(image: IGambar, dragable?: boolean): ISprite;
-        static inputDown(pos: any): void;
-        static inputMove(pos: any): void;
-        static inputUp(): void;
-        static gambar(sprite: ISprite): void;
-        static positionOrbitSprite(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void;
-        get dragStartX(): number;
-        set dragStartX(value: number);
-        get dragStartY(): number;
-        set dragStartY(value: number);
-        get dragged(): boolean;
-        set dragged(value: boolean);
-        get buffer(): IGambar;
-        set buffer(value: IGambar);
-        get x(): number;
-        set x(value: number);
-        get y(): number;
-        set y(value: number);
-        get hit(): number;
-        set hit(value: number);
-        get down(): boolean;
-        set down(value: boolean);
-    }
-}
-interface ISprite {
-    buffer: IGambar;
-    x: number;
-    y: number;
-    dragable: boolean;
-    dragged: boolean;
-    down: boolean;
-    hit: number;
-    dragStartX: number;
-    dragStartY: number;
 }
