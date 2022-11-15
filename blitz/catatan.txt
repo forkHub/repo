@@ -19,8 +19,11 @@ full screen
 konektor
 kontektor kurva
 colision solver
-camera
+camera/viewport
 ubah target buffer
+fungsi positionPolar ada parameter buat skala x dan y
+fungsi positionPolar ada parameter buat kemiringan
+animasi tween dan keyframe
 
 geometri
 titik di dalam polygon
@@ -30,6 +33,7 @@ jarak ke garis
 jarak ke garis terdekat dari polygon
 vektor ke garis terdekat
 titik terdekat dari polygon ke posisi
+fungsi tween
 
 DEMO:
 =====
@@ -50,3 +54,7 @@ elipsis + rotasi
 soal menghubungkan
 soal drag-drop gambar dan bayangan
 aplikasi susun balok
+simulasi jantung
+atom dan electron
+fx per sinus
+fx gelombang air
