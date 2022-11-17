@@ -25,6 +25,22 @@ namespace ha_blitz {
             this._dragable = value;
         }
 
+        static posisi(sprite: ISprite, x: number = 0, y: number = 0) {
+            sprite.x = x;
+            sprite.y = y;
+        }
+
+        static gambarSemua() {
+            ha_blitz.Sprite.daftar.forEach((item: ISprite) => {
+                this.gambar(item);
+            });
+        }
+
+        static async muat(url: string, dragable = false): Promise<ISprite> {
+            let img: IGambar = await ha_blitz.image.muat(url);
+            return this.buat(img, dragable);
+        }
+
         static ukuranGambar(gbr: ISprite, w: number, h: number): void {
             ha_blitz.image.ukuranGambar(gbr.buffer, w, h);
         }
@@ -90,7 +106,7 @@ namespace ha_blitz {
             TaruhGambar(sprite.buffer, sprite.x, sprite.y);
         }
 
-        static positionOrbitSprite(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void {
+        static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void {
             let p: IPoint2D = ha.Point.posPolar(jarak, sudut, x2, y2);
             sprite.x = p.x;
             sprite.y = p.y;
