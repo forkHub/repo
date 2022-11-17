@@ -58,47 +58,7 @@ const CopyGambar = (src: IGambar): IGambar => {
  * skip drawing outside
  * image blitting
 */
-const TaruhGambar = (gbr: IGambar, x: number = 0, y: number = 0, frame: number = 0) => {
-	let ctx: CanvasRenderingContext2D = ha_blitz.main.canvasAktif.ctx;
-	let jmlH: number;
-	let jmlV: number;
-	let frameX: number;
-	let frameY: number;
-	// let rect: IRect = img.rect;
-
-	jmlH = Math.floor(gbr.width / gbr.frameW);
-	jmlV = Math.floor(gbr.height / gbr.frameH);
-
-	frameX = (frame % jmlH);
-	frameY = Math.floor(frame / jmlV);
-
-	frameX *= gbr.frameW;
-	frameY *= gbr.frameH;
-
-	frameX = Math.floor(frameX);
-	frameY = Math.floor(frameY);
-
-	let x2: number = Math.floor(x);
-	let y2: number = Math.floor(y);
-
-	let w2: number = Math.floor(gbr.frameW * gbr.scaleX);
-	let h2: number = Math.floor(gbr.frameH * gbr.scaleY);
-
-	x2 -= (gbr.handleX);
-	y2 -= (gbr.handleY);
-
-	if (gbr.rotation != 0) {
-		ctx.save();
-		ctx.translate(x, y);
-		ctx.rotate(gbr.rotation * (Math.PI / 180));
-		ctx.drawImage(gbr.img, frameX, frameY, gbr.frameW, gbr.frameH, - gbr.handleX, -gbr.handleY, w2, h2);
-		ctx.restore();
-	}
-	else {
-		ctx.drawImage(gbr.canvas, frameX, frameY, gbr.frameW, gbr.frameH, x2, y2, w2, h2);
-	}
-
-}
+const TaruhGambar = ha_blitz.image.gambar;
 
 //TODO: test - dihapus
 const GrabGambar = (gbr: IGambar, x: number = 0, y: number = 0) => {
@@ -138,46 +98,9 @@ const DotDidalamGambar = (gbr1: IGambar, x1: number, y1: number, x2: number, y2:
 	return ha.Rect.collideDot(gbr1.rect, x2, y2);
 };
 
-const HandleTengah = ha_blitz.image.handleTengah;
+// const HandleTengah = ha_blitz.image.handleTengah;
 
-// (gbr: IGambar) => {
-// 	gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
-// 	gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
-// }
-
-const MuatGambar = async (url: string): Promise<IGambar> => {
-	let img: HTMLImageElement = await ha_blitz.image.loadImage(url);
-	let canvas: HTMLCanvasElement = document.createElement('canvas');
-	let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-	let rect: IRect;
-
-	canvas.width = img.naturalWidth;
-	canvas.height = img.naturalHeight;
-	ctx.drawImage(img, 0, 0);
-
-	rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
-
-	let gbr: IGambar = {
-		img: img,
-		width: img.naturalWidth,
-		height: img.naturalHeight,
-		frameH: img.naturalHeight,
-		frameW: img.naturalWidth,
-		isAnim: false,
-		handleX: 0,
-		handleY: 0,
-		rotation: 0,
-		scaleX: 1,
-		scaleY: 1,
-		ctx: ctx,
-		canvas: canvas,
-		rect: rect
-	}
-
-	ha_blitz.image.daftar.push(gbr);
-
-	return gbr;
-}
+const MuatGambar = ha_blitz.image.muat;
 
 const MuatGambarAnimasi = async (url: string, fw: number = 32, fh: number = 32): Promise<IGambar> => {
 	let img: HTMLImageElement = await ha_blitz.image.loadImage(url);

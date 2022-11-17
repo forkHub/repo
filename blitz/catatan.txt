@@ -24,6 +24,8 @@ ubah target buffer
 fungsi positionPolar ada parameter buat skala x dan y
 fungsi positionPolar ada parameter buat kemiringan
 animasi tween dan keyframe
+track ball
+tombol geser putar horizontal
 
 geometri
 titik di dalam polygon
