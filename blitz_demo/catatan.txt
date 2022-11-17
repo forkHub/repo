@@ -1,0 +1,1 @@
+asset bumi dan bulan bisa di resize di awal

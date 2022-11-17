@@ -37,3 +37,5 @@ tombol builtin
 gambar di buffer
 
 buffer bisa di drag internal
+
+fungsi start dihapus

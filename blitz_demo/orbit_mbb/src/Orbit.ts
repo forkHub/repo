@@ -1,22 +1,26 @@
 //DECLARE GLOBAL VARIABLE
 let matahari: ISprite;
 let bumi: ISprite;
-let sudutBumi: number = 90;
+let sudut: number = 10;
 let bulan: ISprite;
 let sudutBulan: number = 0;
 
 //START PROGRAM
 async function Mulai(): Promise<void> {
-	Grafis(240, 320);
+	Grafis(480, 480);
 
-	matahari = await MuatSprite("./gbr/box.png", true);
-	PosisiSprite(matahari, 120, 160);
+	matahari = await MuatSprite("./gbr/matahari.png", true);
+	UkuranSprite(matahari, 100, 100);
+	HandleSpriteTengah(matahari);
+	PosisiSprite(matahari, 240, 240);
 
-	bumi = await MuatSprite("./gbr/box.png");
-	PosisiSprite(bumi, 160, 120);
+	bumi = await MuatSprite("./gbr/bumi.png", true);
+	UkuranSprite(bumi, 50, 50);
+	HandleSpriteTengah(bumi);
 
-	bulan = await MuatSprite("./gbr/box.png");
-	PosisiSprite(bulan, 200, 120);
+	bulan = await MuatSprite("./gbr/bulan_32.png", true);
+	UkuranSprite(bulan, 32, 32);
+	HandleSpriteTengah(bulan);
 
 }
 
@@ -24,18 +28,17 @@ async function Mulai(): Promise<void> {
 async function Loop(): Promise<void> {
 	Bersih();
 
-	sudutBumi++;
-	if (sudutBumi > 360) {
-		sudutBumi -= 360;
+	sudut += .5;
+	if (sudut > 360) {
+		sudut -= 360;
 	}
 
-	sudutBulan++;
+	sudutBulan += 6;
 	if (sudutBulan > 360) {
 		sudutBulan -= 360;
 	}
 
-	PosisiPolarSprite(bumi, sudutBumi, 60, PosisiXSprite(matahari), PosisiYSprite(matahari));
-	PosisiPolarSprite(bulan, sudutBulan, 60, PosisiXSprite(bumi), PosisiYSprite(bumi));
-
+	PosisiPolarSprite(bumi, sudut, 160, PosisiXSprite(matahari), PosisiYSprite(matahari));
+	PosisiPolarSprite(bulan, sudutBulan, 80, PosisiXSprite(bumi), PosisiYSprite(bumi));
 	TaruhSemuaSprite();
 }
