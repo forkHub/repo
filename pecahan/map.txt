@@ -9,14 +9,18 @@ membandingkan
     biasa - campuran
         penyebut sama   04
         penyebut acak   02
-    biasa - angka
+    biasa - angka       05
+        
     angka - campuran
 
 mengurutkan
     awal/tengah/akhir
         campuran semua
-        sama semua
-        campuran + sama
+            penyebut sama
+            penyebut bebas
+        biasa semua
+
+        campuran + biasa
 
 pecahan setara 
     skala keatas
