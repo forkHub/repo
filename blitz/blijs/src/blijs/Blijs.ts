@@ -6,8 +6,8 @@ namespace ha_blijs {
 	class Blijs {
 		init(canvas: HTMLCanvasElement) {
 
-			ha_blitz.main.init(canvas, canvas);
-			ha.input.init(ha_blitz.main.canvasAktif);
+			ha_blitz.Main.init(canvas, canvas);
+			ha.input.init(ha_blitz.Main.canvasAktif);
 
 			window.onresize = async (): Promise<void> => {
 				this.windowResize();
@@ -20,7 +20,7 @@ namespace ha_blijs {
 			let _window: any = window;
 
 			setTimeout(() => {
-				if (typeof _window.Mulai == "function") {
+				if (typeof _window.Mulai__ == "function") {
 					console.log('window start function called');
 
 					_window.Mulai()
@@ -51,6 +51,10 @@ namespace ha_blijs {
 		}
 
 		repeat = () => {
+			//check semua image sudah diload
+
+
+
 			this.loop()
 				.then(() => {
 					setTimeout(() => {
@@ -64,10 +68,10 @@ namespace ha_blijs {
 
 		windowResize = (): void => {
 			// console.debug('window on resize');
-			let canvas: HTMLCanvasElement = ha_blitz.main.canvasAktif.canvas;
+			let canvas: HTMLCanvasElement = ha_blitz.Main.canvasAktif.canvas;
 
-			let cp = ha_blitz.main.canvasAktif.canvas.width;
-			let cl = ha_blitz.main.canvasAktif.canvas.height;
+			let cp = ha_blitz.Main.canvasAktif.canvas.width;
+			let cl = ha_blitz.Main.canvasAktif.canvas.height;
 
 			let wp = window.innerWidth;
 			let wl = window.innerHeight;
@@ -77,8 +81,8 @@ namespace ha_blijs {
 			let cp2 = Math.floor(cp * ratio);
 			let cl2 = Math.floor(cl * ratio);
 
-			ha_blitz.main.canvasAktif.scaleX = ratio;
-			ha_blitz.main.canvasAktif.scaleY = ratio;
+			ha_blitz.Main.canvasAktif.scaleX = ratio;
+			ha_blitz.Main.canvasAktif.scaleY = ratio;
 
 			canvas.style.width = cp2 + 'px';
 			canvas.style.height = cl2 + 'px';
@@ -98,30 +102,4 @@ window.onload = () => {
 
 	let canvas: HTMLCanvasElement = document.body.querySelector('canvas') as HTMLCanvasElement;
 	ha_blijs.blijs.init(canvas)
-
-	// window.onresize = async (): Promise<void> => {
-	// 	ha_blijs.blijs.windowResize();
-	// }
-
-	// ha_blijs.blijs.windowResize();
-
-	// let _window: any = window;
-
-	// setTimeout(() => {
-	// 	if (typeof _window.Start == "function") {
-	// 		console.log('window start');
-
-	// 		_window.Start()
-	// 			.then(() => {
-	// 				ha_blijs.blijs.repeat();
-	// 			})
-	// 			.catch((e: Error) => {
-	// 				console.error(e);
-	// 			})
-	// 	}
-	// 	else {
-	// 		console.warn('start not found');
-	// 		ha_blijs.blijs.repeat();
-	// 	}
-	// }, 0);
 }

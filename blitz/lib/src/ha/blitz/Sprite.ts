@@ -18,16 +18,25 @@ namespace ha_blitz {
             this.dragable = dragable;
         }
 
-        public get dragable(): boolean {
-            return this._dragable;
-        }
-        public set dragable(value: boolean) {
-            this._dragable = value;
-        }
-
         static posisi(sprite: ISprite, x: number = 0, y: number = 0) {
             sprite.x = x;
             sprite.y = y;
+        }
+
+        static posisiX(spr: ISprite, x: number | null | undefined = null): number {
+            if (typeof (x) == 'number') {
+                spr.x = x;
+            }
+
+            return spr.x;
+        }
+
+        static posisiY(spr: ISprite, y: number | null | undefined = null): number {
+            if (typeof (y) == 'number') {
+                spr.y = y;
+            }
+
+            return spr.y;
         }
 
         static gambarSemua() {
@@ -36,8 +45,13 @@ namespace ha_blitz {
             });
         }
 
+        static muatAsync(url: string, dragable = false): ISprite {
+            let img: IGambar = ha_blitz.Image.muatAsync(url);
+            return this.buat(img, dragable);
+        }
+
         static async muat(url: string, dragable = false): Promise<ISprite> {
-            let img: IGambar = await ha_blitz.image.muat(url);
+            let img: IGambar = await ha_blitz.Image.muat(url);
             return this.buat(img, dragable);
         }
 
@@ -162,10 +176,15 @@ namespace ha_blitz {
         public set down(value: boolean) {
             this._down = value;
         }
+        public get dragable(): boolean {
+            return this._dragable;
+        }
+        public set dragable(value: boolean) {
+            this._dragable = value;
+        }
 
 
     }
-
 
 }
 

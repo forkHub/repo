@@ -9,3 +9,6 @@ cd..
 cd lib
 call build.bat
 cd ..
+
+copy .\output\blitz.d.ts .\blijs\src\blitz.d.ts
+pause

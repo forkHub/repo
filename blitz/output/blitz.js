@@ -1,12 +1,11 @@
 var ha_blitz;
 (function (ha_blitz) {
     class Main {
-        _fps = 1000 / 30;
-        _origin;
-        _canvasAr = [];
-        _canvasAktif;
-        buatCanvas(canvasEl) {
-            // let canvasEl: HTMLCanvasElement = window.document.body.querySelector(`canvas.${buffer}`);
+        static _fps = 1000 / 30;
+        static _origin;
+        static _canvasAr = [];
+        static _canvasAktif;
+        static buatCanvas(canvasEl) {
             let canvas = {
                 canvas: canvasEl,
                 ctx: canvasEl.getContext('2d'),
@@ -21,49 +20,263 @@ var ha_blitz;
                 img: null,
                 isAnim: false,
                 rotation: 0,
-                rect: ha.Rect.create()
+                rect: ha.Rect.create(),
+                load: true
             };
             return canvas;
         }
-        init(canvasBelakang, canvasDepan) {
+        static init(canvasBelakang, canvasDepan) {
             let canvas = this.buatCanvas(canvasBelakang);
             this._canvasAr.push(canvas);
             canvas = this.buatCanvas(canvasDepan);
             this._canvasAr.push(canvas);
-            ha_blitz.main.canvasAktif = canvas;
+            ha_blitz.Main.canvasAktif = canvas;
         }
-        get canvasAktif() {
+        static Bersih = (r = 0, g = 0, b = 0, alpha = 1) => {
+            let ctx = ha_blitz.Main.canvasAktif.ctx;
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            ctx.fillRect(0, 0, ha_blitz.Main.canvasAktif.width, ha_blitz.Main.canvasAktif.height);
+        };
+        static Color = (r = 0, g = 0, b = 0, a = 1) => {
+            let ctx = ha_blitz.Main.canvasAktif.ctx;
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+        };
+        static Grafis = (width = 320, height = 240, gl = true, pixel = true) => {
+            let canvas = ha_blitz.Main.canvasAktif;
+            canvas.canvas.width = width;
+            canvas.canvas.height = height;
+            canvas.width = width;
+            canvas.height = height;
+            if (gl) {
+                ha_blitz.Main.canvasAktif.canvas.classList.add('gl');
+            }
+            else {
+                ha_blitz.Main.canvasAktif.canvas.classList.remove('gl');
+            }
+            if (pixel) {
+                ha_blitz.Main.canvasAktif.canvas.classList.add('pixel');
+            }
+            // ha_blitz.Main.windowResize();
+        };
+        static Garis = (x1, y1, x2, y2) => {
+            let ctx = ha_blitz.Main.canvasAktif.ctx;
+            x1 = Math.floor(x1);
+            y1 = Math.floor(y1);
+            x2 = Math.floor(x2);
+            y2 = Math.floor(y2);
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        };
+        static Kotak = (x1, y1, x2, y2) => {
+            let ctx = ha_blitz.Main.canvasAktif.ctx;
+            ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+        };
+        static SetBuffer = (buffer) => {
+            ha_blitz.Main.canvasAktif = buffer;
+        };
+        static get canvasAktif() {
             return this._canvasAktif;
         }
-        set canvasAktif(value) {
+        static set canvasAktif(value) {
             this._canvasAktif = value;
         }
-        get canvasAr() {
+        static get canvasAr() {
             return this._canvasAr;
         }
-        set canvasAr(value) {
+        static set canvasAr(value) {
             this._canvasAr = value;
         }
-        get origin() {
+        static get origin() {
             return this._origin;
         }
-        set origin(value) {
+        static set origin(value) {
             this._origin = value;
         }
-        get fps() {
+        static get fps() {
             return this._fps;
         }
-        set fps(value) {
+        static set fps(value) {
             this._fps = value;
         }
     }
-    ha_blitz.main = new Main();
+    ha_blitz.Main = Main;
 })(ha_blitz || (ha_blitz = {}));
 var ha_blitz;
 (function (ha_blitz) {
     class Image {
-        daftar = [];
-        buat(img, ctx, canvas, rect) {
+        // readonly daftar: IGambar[] = [];
+        static buatGambar(w = 32, h = 32, frameW = 32, frameH = 32) {
+            let canvas = document.createElement('canvas');
+            let img;
+            canvas.width = w;
+            canvas.height = h;
+            let rect = ha.Rect.create(0, 0, frameW, frameH);
+            img = {
+                width: w,
+                height: h,
+                img: null,
+                frameH: frameH,
+                frameW: frameW,
+                handleX: 0,
+                handleY: 0,
+                rotation: 0,
+                isAnim: false,
+                scaleX: 1,
+                scaleY: 1,
+                canvas: canvas,
+                ctx: canvas.getContext('2d'),
+                rect: rect,
+                load: true
+            };
+            return img;
+        }
+        static panjangGambar(gbr) { return gbr.frameW * gbr.scaleX; }
+        ;
+        static lebarGambar(gbr) { return gbr.frameH * gbr.scaleY; }
+        ;
+        static handleXGambar(gbr) { return gbr.handleX; }
+        ;
+        static handleYGambar(gbr) { return gbr.handleY; }
+        ;
+        //TODO:
+        static gambarOverlap(gbr1, x1, y1, gbr2, x2, y2) {
+            GambarTabrakan(gbr1, x1, y1, gbr2, x2, y2);
+        }
+        ;
+        static gambarTabrakan(gbr1, x1, y1, gbr2, x2, y2) {
+            ha_blitz.image.resetImageRect(gbr1);
+            ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
+            ha_blitz.image.resetImageRect(gbr2);
+            ha_blitz.image.rectToImageTransform(gbr2, x2, y2);
+            return ha.Rect.collide(gbr1.rect, gbr2.rect);
+        }
+        ;
+        static dotDidalamGambar(gbr1, x1, y1, x2, y2) {
+            ha_blitz.image.resetImageRect(gbr1);
+            ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
+            return ha.Rect.collideDot(gbr1.rect, x2, y2);
+        }
+        ;
+        static async muatGambarAnimasi(url, fw = 32, fh = 32) {
+            let img = await ha_blitz.image.loadImage(url);
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            let rect;
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            ctx.drawImage(img, 0, 0);
+            rect = ha.Rect.create(0, 0, fw, fh);
+            return {
+                img: img,
+                width: img.naturalWidth,
+                height: img.naturalHeight,
+                frameH: fw,
+                frameW: fh,
+                // width2: w,
+                // height2: h,
+                isAnim: true,
+                handleX: 0,
+                handleY: 0,
+                rotation: 0,
+                scaleX: 1,
+                scaleY: 1,
+                ctx: ctx,
+                canvas: canvas,
+                rect: rect,
+                load: true
+            };
+        }
+        static gambarUbin(gbr, x = 0, y = 0, frame = 0) {
+            let jmlH = 0;
+            let jmlV = 0;
+            let w2 = Math.floor(gbr.frameW * gbr.scaleX);
+            let h2 = Math.floor(gbr.frameH * gbr.scaleY);
+            while (x < 0) {
+                x += w2;
+            }
+            while (y < 0) {
+                y += h2;
+            }
+            x -= w2;
+            y -= h2;
+            frame = Math.floor(frame);
+            jmlH = Math.ceil((ha_blitz.Main.canvasAktif.width + Math.abs(x)) / w2);
+            jmlV = Math.ceil((ha_blitz.Main.canvasAktif.height + Math.abs(y)) / h2);
+            for (let i = 0; i < jmlH; i++) {
+                for (let j = 0; j < jmlV; j++) {
+                    TaruhGambar(gbr, x + (i * w2), y + (j * h2), frame);
+                }
+            }
+        }
+        static putarGambar(gbr, sudut = 0) {
+            gbr.rotation = sudut;
+        }
+        static skalaGambar(gbr, skalaX = 1, skalaY = 1) {
+            gbr.scaleX = skalaX;
+            gbr.scaleY = skalaY;
+        }
+        static ambilPiksel(x = 0, y = 0) {
+            try {
+                let data = ha_blitz.Main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
+                let hasil = [];
+                hasil.push(data[0]);
+                hasil.push(data[1]);
+                hasil.push(data[2]);
+                hasil.push(data[3]);
+                return hasil;
+            }
+            catch (e) {
+                console.error(e);
+            }
+            return [0, 0, 0];
+        }
+        //TODO: dep
+        static setWarna(r = 255, g = 255, b = 255, a = 1) {
+            let ctx = ha_blitz.Main.canvasAktif.ctx;
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+        }
+        static setPiksel(x = 0, y = 0) {
+            ha_blitz.Main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
+        }
+        static posisiHandleGambar(gbr, x = 0, y = 0) {
+            gbr.handleX = x;
+            gbr.handleY = y;
+        }
+        static grabGambar(gbr, x = 0, y = 0) {
+            gbr.ctx.drawImage(ha_blitz.Main.canvasAktif.canvas, x, y, gbr.width, gbr.height, 0, 0, gbr.width, gbr.height);
+        }
+        // static copyGambar(src: IGambar): IGambar {
+        // 	return {
+        // 		canvas: src.canvas,
+        // 		ctx: src.ctx,
+        // 		frameH: src.frameH,
+        // 		frameW: src.frameW,
+        // 		handleX: src.handleX,
+        // 		handleY: src.handleY,
+        // 		height: src.height,
+        // 		img: src.img,
+        // 		isAnim: src.isAnim,
+        // 		rect: ha.Rect.copy(src.rect),
+        // 		rotation: src.rotation,
+        // 		scaleX: src.scaleX,
+        // 		scaleY: src.scaleY,
+        // 		width: src.width,
+        // 		load: src.load
+        // 	}
+        // }
+        static async muat(url) {
+            let img = await ha_blitz.image.loadImage(url);
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            let rect;
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            ctx.drawImage(img, 0, 0);
+            rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
             let gbr = {
                 img: img,
                 width: img.naturalWidth,
@@ -78,18 +291,107 @@ var ha_blitz;
                 scaleY: 1,
                 ctx: ctx,
                 canvas: canvas,
-                rect: rect
+                rect: rect,
+                load: true
             };
+            // ha_blitz.image.daftar.push(gbr);
             return gbr;
+        }
+        static muatAsync(url) {
+            let img = document.createElement('img'); //ha_blitz.image.loadImageAsync(url, () => { }, () => { });
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            let rect;
+            rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+            let gbr = {
+                img: img,
+                width: img.naturalWidth,
+                height: img.naturalHeight,
+                frameH: img.naturalHeight,
+                frameW: img.naturalWidth,
+                isAnim: false,
+                handleX: 0,
+                handleY: 0,
+                rotation: 0,
+                scaleX: 1,
+                scaleY: 1,
+                ctx: ctx,
+                canvas: canvas,
+                rect: rect,
+                load: false
+            };
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0);
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                gbr.rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+                // rect.
+            };
+            img.onerror = () => {
+                console.log('gagal load image, url ' + url);
+                //TODO: default image
+            };
+            img.src = url;
+            // ha_blitz.image.daftar.push(gbr);
+            return gbr;
+        }
+        static gambar(gbr, x = 0, y = 0, frame = 0) {
+            let ctx = ha_blitz.Main.canvasAktif.ctx;
+            let jmlH;
+            let jmlV;
+            let frameX;
+            let frameY;
+            // let rect: IRect = img.rect;
+            jmlH = Math.floor(gbr.width / gbr.frameW);
+            jmlV = Math.floor(gbr.height / gbr.frameH);
+            frameX = (frame % jmlH);
+            frameY = Math.floor(frame / jmlV);
+            frameX *= gbr.frameW;
+            frameY *= gbr.frameH;
+            frameX = Math.floor(frameX);
+            frameY = Math.floor(frameY);
+            let x2 = Math.floor(x);
+            let y2 = Math.floor(y);
+            let w2 = Math.floor(gbr.frameW * gbr.scaleX);
+            let h2 = Math.floor(gbr.frameH * gbr.scaleY);
+            x2 -= (gbr.handleX);
+            y2 -= (gbr.handleY);
+            if (gbr.rotation != 0) {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(gbr.rotation * (Math.PI / 180));
+                ctx.drawImage(gbr.img, frameX, frameY, gbr.frameW, gbr.frameH, -gbr.handleX, -gbr.handleY, w2, h2);
+                ctx.restore();
+            }
+            else {
+                ctx.drawImage(gbr.canvas, frameX, frameY, gbr.frameW, gbr.frameH, x2, y2, w2, h2);
+            }
         }
         handleTengah = (gbr) => {
             gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
             gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
         };
+        /**
+         * Ubah Ukuran Gambar
+         * @param gbr
+         * @param w
+         * @param h
+         */
         ukuranGambar(gbr, w, h) {
             gbr.scaleX = Math.floor(w) / gbr.frameW;
             gbr.scaleY = Math.floor(h) / gbr.frameH;
         }
+        // loadImageAsync = (url: string, ok: () => void, error: () => void): HTMLImageElement => {
+        // 	let image2: HTMLImageElement = document.createElement('img');
+        // 	image2.src = url;
+        // 	image2.onload = () => {
+        // 		ok();
+        // 	}
+        // 	image2.onerror = (e) => {
+        // 		error();
+        // 	}
+        // 	return image2;
+        // }
         loadImage = async (url) => {
             return new Promise((resolve, reject) => {
                 let image2 = document.createElement('img');
@@ -140,6 +442,7 @@ var ha_blitz;
             ha.Rect.rotate(rect, image.rotation, x, y);
         }
     }
+    ha_blitz.Image = Image;
     ha_blitz.image = new Image();
 })(ha_blitz || (ha_blitz = {}));
 ///<reference path="../ha/blitz/Main.ts"/>
@@ -147,246 +450,33 @@ var ha_blitz;
 /**
  * IMAGE
  */
-//TODO: test
-const BuatGambar = (w = 32, h = 32, frameW = 32, frameH = 32) => {
-    let canvas = document.createElement('canvas');
-    let img;
-    canvas.width = w;
-    canvas.height = h;
-    let rect = ha.Rect.create(0, 0, frameW, frameH);
-    img = {
-        width: w,
-        height: h,
-        img: null,
-        frameH: frameH,
-        frameW: frameW,
-        handleX: 0,
-        handleY: 0,
-        rotation: 0,
-        isAnim: false,
-        scaleX: 1,
-        scaleY: 1,
-        canvas: canvas,
-        ctx: canvas.getContext('2d'),
-        rect: rect
-    };
-    return img;
-};
-const CopyGambar = (src) => {
-    return {
-        canvas: src.canvas,
-        ctx: src.ctx,
-        frameH: src.frameH,
-        frameW: src.frameW,
-        handleX: src.handleX,
-        handleY: src.handleY,
-        height: src.height,
-        img: src.img,
-        isAnim: src.isAnim,
-        rect: ha.Rect.copy(src.rect),
-        rotation: src.rotation,
-        scaleX: src.scaleX,
-        scaleY: src.scaleY,
-        width: src.width
-    };
-};
-/* TODO [next]:
- * skip drawing outside
- * image blitting
-*/
-const TaruhGambar = (gbr, x = 0, y = 0, frame = 0) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    let jmlH;
-    let jmlV;
-    let frameX;
-    let frameY;
-    // let rect: IRect = img.rect;
-    jmlH = Math.floor(gbr.width / gbr.frameW);
-    jmlV = Math.floor(gbr.height / gbr.frameH);
-    frameX = (frame % jmlH);
-    frameY = Math.floor(frame / jmlV);
-    frameX *= gbr.frameW;
-    frameY *= gbr.frameH;
-    frameX = Math.floor(frameX);
-    frameY = Math.floor(frameY);
-    let x2 = Math.floor(x);
-    let y2 = Math.floor(y);
-    let w2 = Math.floor(gbr.frameW * gbr.scaleX);
-    let h2 = Math.floor(gbr.frameH * gbr.scaleY);
-    x2 -= (gbr.handleX);
-    y2 -= (gbr.handleY);
-    if (gbr.rotation != 0) {
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(gbr.rotation * (Math.PI / 180));
-        ctx.drawImage(gbr.img, frameX, frameY, gbr.frameW, gbr.frameH, -gbr.handleX, -gbr.handleY, w2, h2);
-        ctx.restore();
-    }
-    else {
-        ctx.drawImage(gbr.canvas, frameX, frameY, gbr.frameW, gbr.frameH, x2, y2, w2, h2);
-    }
-};
-//TODO: test - dihapus
-const GrabGambar = (gbr, x = 0, y = 0) => {
-    gbr.ctx.drawImage(ha_blitz.main.canvasAktif.canvas, x, y, gbr.width, gbr.height, 0, 0, gbr.width, gbr.height);
-};
-const PosisiHandleGambar = (gbr, x = 0, y = 0) => {
-    gbr.handleX = x;
-    gbr.handleY = y;
-};
-//dibuat set dan get
-const PanjangGambar = (gbr) => { return gbr.frameW * gbr.scaleX; };
-const LebarGambar = (gbr) => { return gbr.frameH * gbr.scaleY; };
-const HandleXGambar = (gbr) => { return gbr.handleX; };
-const HandleYGambar = (gbr) => { return gbr.handleY; };
-//TODO:
-const GambarOverlap = (gbr1, x1, y1, gbr2, x2, y2) => {
-    GambarTabrakan(gbr1, x1, y1, gbr2, x2, y2);
-};
-const GambarTabrakan = (gbr1, x1, y1, gbr2, x2, y2) => {
-    ha_blitz.image.resetImageRect(gbr1);
-    ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
-    ha_blitz.image.resetImageRect(gbr2);
-    ha_blitz.image.rectToImageTransform(gbr2, x2, y2);
-    return ha.Rect.collide(gbr1.rect, gbr2.rect);
-};
-const DotDidalamGambar = (gbr1, x1, y1, x2, y2) => {
-    ha_blitz.image.resetImageRect(gbr1);
-    ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
-    return ha.Rect.collideDot(gbr1.rect, x2, y2);
-};
-const HandleTengah = ha_blitz.image.handleTengah;
-// (gbr: IGambar) => {
-// 	gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
-// 	gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
-// }
-const MuatGambar = async (url) => {
-    let img = await ha_blitz.image.loadImage(url);
-    let canvas = document.createElement('canvas');
-    let ctx = canvas.getContext('2d');
-    let rect;
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    ctx.drawImage(img, 0, 0);
-    rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
-    let gbr = {
-        img: img,
-        width: img.naturalWidth,
-        height: img.naturalHeight,
-        frameH: img.naturalHeight,
-        frameW: img.naturalWidth,
-        isAnim: false,
-        handleX: 0,
-        handleY: 0,
-        rotation: 0,
-        scaleX: 1,
-        scaleY: 1,
-        ctx: ctx,
-        canvas: canvas,
-        rect: rect
-    };
-    ha_blitz.image.daftar.push(gbr);
-    return gbr;
-};
-const MuatGambarAnimasi = async (url, fw = 32, fh = 32) => {
-    let img = await ha_blitz.image.loadImage(url);
-    let canvas = document.createElement('canvas');
-    let ctx = canvas.getContext('2d');
-    let rect;
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    ctx.drawImage(img, 0, 0);
-    rect = ha.Rect.create(0, 0, fw, fh);
-    return {
-        img: img,
-        width: img.naturalWidth,
-        height: img.naturalHeight,
-        frameH: fw,
-        frameW: fh,
-        // width2: w,
-        // height2: h,
-        isAnim: true,
-        handleX: 0,
-        handleY: 0,
-        rotation: 0,
-        scaleX: 1,
-        scaleY: 1,
-        ctx: ctx,
-        canvas: canvas,
-        rect: rect
-    };
-};
-const GambarUbin = (gbr, x = 0, y = 0, frame = 0) => {
-    let jmlH = 0;
-    let jmlV = 0;
-    let w2 = Math.floor(gbr.frameW * gbr.scaleX);
-    let h2 = Math.floor(gbr.frameH * gbr.scaleY);
-    while (x < 0) {
-        x += w2;
-    }
-    while (y < 0) {
-        y += h2;
-    }
-    x -= w2;
-    y -= h2;
-    frame = Math.floor(frame);
-    jmlH = Math.ceil((ha_blitz.main.canvasAktif.width + Math.abs(x)) / w2);
-    jmlV = Math.ceil((ha_blitz.main.canvasAktif.height + Math.abs(y)) / h2);
-    for (let i = 0; i < jmlH; i++) {
-        for (let j = 0; j < jmlV; j++) {
-            TaruhGambar(gbr, x + (i * w2), y + (j * h2), frame);
-        }
-    }
-};
+const BuatGambar = ha_blitz.Image.buatGambar;
+// const CopyGambar = ha_blitz.Image.copyGambar;
+const TaruhGambar = ha_blitz.Image.gambar;
+const GrabGambar = ha_blitz.Image.grabGambar; //TODO: test - dihapus
+const PosisiHandleGambar = ha_blitz.Image.posisiHandleGambar;
+const PanjangGambar = ha_blitz.Image.panjangGambar;
+const LebarGambar = ha_blitz.Image.lebarGambar;
+const HandleXGambar = ha_blitz.Image.handleXGambar;
+const HandleYGambar = ha_blitz.Image.handleYGambar;
+const GambarOverlap = ha_blitz.Image.gambarOverlap;
+const GambarTabrakan = ha_blitz.Image.gambarTabrakan;
+const DotDidalamGambar = ha_blitz.Image.dotDidalamGambar;
+const MuatGambar = ha_blitz.Image.muat;
+const MuatGambarAnimasi = ha_blitz.Image.muatGambarAnimasi;
+const GambarUbin = ha_blitz.Image.gambarUbin;
 const ResizeGambar = ha_blitz.image.ukuranGambar;
-// (gbr: IGambar, w: number = 1, h: number = 1) => {
-// 	ha_blitz.image.ukuranGambar(gbr, w, h);
-// 	gbr.scaleX = Math.floor(w) / gbr.frameW;
-// 	gbr.scaleY = Math.floor(h) / gbr.frameH;
-// 	console.log(gbr);
-// }
-const PutarGambar = (gbr, sudut = 0) => {
-    gbr.rotation = sudut;
-};
-const SkalaGambar = (gbr, skalaX = 1, skalaY = 1) => {
-    gbr.scaleX = skalaX;
-    gbr.scaleY = skalaY;
-};
-const AmbilPiksel = (x = 0, y = 0) => {
-    try {
-        let data = ha_blitz.main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
-        let hasil = [];
-        hasil.push(data[0]);
-        hasil.push(data[1]);
-        hasil.push(data[2]);
-        hasil.push(data[3]);
-        return hasil;
-    }
-    catch (e) {
-        console.error(e);
-    }
-    return [0, 0, 0];
-};
-//TODO: dep
-const SetWarna = (r = 255, g = 255, b = 255, a = 1) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-    ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-};
-const SetPikel = (x = 0, y = 0) => {
-    ha_blitz.main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
-};
+const PutarGambar = ha_blitz.Image.putarGambar;
+const SkalaGambar = ha_blitz.Image.skalaGambar;
+const AmbilPiksel = ha_blitz.Image.ambilPiksel;
+const SetWarna = ha_blitz.Image.setWarna;
+const SetPiksel = ha_blitz.Image.setPiksel;
 //TODO: next
 const ImagePivot = () => { };
 const BackgroundImage = () => { };
 const MainLayer = () => { };
 const CreateLayer = () => { };
 const LayerZ = () => { };
-//ignored
-//const TFormImage = () => { }
-//const FeeImage = () => { }
-//const DrawImageRect = () => { }
-//const ImageBuffer = () => { }
 ///<reference path="../ha/blitz/Main.ts"/>
 ///<reference path="../ha/blitz/Image.ts"/>
 /*
@@ -524,18 +614,18 @@ const FlushMouse = () => {
 /*
  * 	GRAPHICS
  */
-//TODO: dipindahin ke tempat yang bener
-const Bersih = (r = 0, g = 0, b = 0, alpha = 1) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    ctx.fillRect(0, 0, ha_blitz.main.canvasAktif.width, ha_blitz.main.canvasAktif.height);
-};
-const BackBuffer = () => { };
-const Color = (r = 0, g = 0, b = 0, a = 1) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-    ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-};
+const Bersih = ha_blitz.Main.Bersih;
+const Color = ha_blitz.Main.Color;
+const Grafis = ha_blitz.Main.Grafis;
+const Garis = ha_blitz.Main.Garis;
+const Kotak = ha_blitz.Main.Kotak;
+const SetBuffer = ha_blitz.Main.SetBuffer;
+const GraphicsBuffer = () => { };
+const Origin = () => { };
+const Oval = () => { };
+const WritePixel = () => { };
+const ReadPixel = () => { };
+const Plot = () => { };
 const WarnaMerah = () => { };
 const ColorBlue = () => { };
 const ColorGreen = () => { };
@@ -544,49 +634,7 @@ const CopyPixel = () => { };
 const CopyRect = () => { };
 const FrontBuffer = () => { };
 const GetColor = () => { };
-const Grafis = (width = 320, height = 240, gl = true, pixel = true) => {
-    let canvas = ha_blitz.main.canvasAktif;
-    canvas.canvas.width = width;
-    canvas.canvas.height = height;
-    canvas.width = width;
-    canvas.height = height;
-    if (gl) {
-        ha_blitz.main.canvasAktif.canvas.classList.add('gl');
-    }
-    else {
-        ha_blitz.main.canvasAktif.canvas.classList.remove('gl');
-    }
-    if (pixel) {
-        ha_blitz.main.canvasAktif.canvas.classList.add('pixel');
-    }
-    // ha_blitz.main.windowResize();
-};
-const GraphicsBuffer = () => { };
-const Garis = (x1, y1, x2, y2) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    x1 = Math.floor(x1);
-    y1 = Math.floor(y1);
-    x2 = Math.floor(x2);
-    y2 = Math.floor(y2);
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-};
-//TODO
-const Origin = () => { };
-const Oval = () => { };
-const Kotak = (x1, y1, x2, y2) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
-};
-const SetBuffer = (buffer) => {
-    ha_blitz.main.canvasAktif = buffer;
-};
-//TODO: dep
-const WritePixel = () => { };
-const ReadPixel = () => { };
-const Plot = () => { };
+const BackBuffer = () => { };
 ///<reference path="../ha/blitz/Main.ts"/>
 ///<reference path="../ha/blitz/Image.ts"/>
 /** SPRITE.TS */
@@ -607,11 +655,34 @@ var ha_blitz;
             this.buffer = buffer;
             this.dragable = dragable;
         }
-        get dragable() {
-            return this._dragable;
+        static posisi(sprite, x = 0, y = 0) {
+            sprite.x = x;
+            sprite.y = y;
         }
-        set dragable(value) {
-            this._dragable = value;
+        static posisiX(spr, x = null) {
+            if (typeof (x) == 'number') {
+                spr.x = x;
+            }
+            return spr.x;
+        }
+        static posisiY(spr, y = null) {
+            if (typeof (y) == 'number') {
+                spr.y = y;
+            }
+            return spr.y;
+        }
+        static gambarSemua() {
+            ha_blitz.Sprite.daftar.forEach((item) => {
+                this.gambar(item);
+            });
+        }
+        static muatAsync(url, dragable = false) {
+            let img = ha_blitz.Image.muatAsync(url);
+            return this.buat(img, dragable);
+        }
+        static async muat(url, dragable = false) {
+            let img = await ha_blitz.Image.muat(url);
+            return this.buat(img, dragable);
         }
         static ukuranGambar(gbr, w, h) {
             ha_blitz.image.ukuranGambar(gbr.buffer, w, h);
@@ -663,7 +734,7 @@ var ha_blitz;
         static gambar(sprite) {
             TaruhGambar(sprite.buffer, sprite.x, sprite.y);
         }
-        static positionOrbitSprite(sprite, sudut, jarak, x2, y2) {
+        static posisiPolar(sprite, sudut, jarak, x2, y2) {
             let p = ha.Point.posPolar(jarak, sudut, x2, y2);
             sprite.x = p.x;
             sprite.y = p.y;
@@ -716,48 +787,46 @@ var ha_blitz;
         set down(value) {
             this._down = value;
         }
+        get dragable() {
+            return this._dragable;
+        }
+        set dragable(value) {
+            this._dragable = value;
+        }
     }
     ha_blitz.Sprite = Sprite;
 })(ha_blitz || (ha_blitz = {}));
 ///<reference path="../ha/blitz/Sprite.ts"/>
 /** BLITZ-SPRITE.TS */
-const BuatSprite = (gbr, dragable = false) => {
-    return ha_blitz.Sprite.buat(gbr, dragable);
-};
-const MuatSprite = async (url, dragable = false) => {
-    let img = await MuatGambar(url);
-    return BuatSprite(img, dragable);
-};
-const PosisiSprite = (sprite, x = 0, y = 0) => {
-    sprite.x = x;
-    sprite.y = y;
-};
-const UkuranSprite = ha_blitz.Sprite.ukuranGambar;
-const HandleSpriteTengah = ha_blitz.Sprite.handleTengah;
-const PosisiPolarSprite = (sprite, sudut, jarak, x2, y2) => {
-    ha_blitz.Sprite.positionOrbitSprite(sprite, sudut, jarak, x2, y2);
-};
+const Buat = ha_blitz.Sprite.buat;
+const Muat = ha_blitz.Sprite.muatAsync;
+const Posisi = ha_blitz.Sprite.posisi;
+const Ukuran = ha_blitz.Sprite.ukuranGambar;
+const HandleTengah = ha_blitz.Sprite.handleTengah;
+const PosisiPolar = ha_blitz.Sprite.posisiPolar;
+const Gambar = ha_blitz.Sprite.gambar;
+const GambarSemua = ha_blitz.Sprite.gambarSemua;
+const PosisiX = ha_blitz.Sprite.posisiX;
+const PosisiY = ha_blitz.Sprite.posisiY;
 const PosisiJarakSprite = () => { };
-const TaruhSprite = (sprite, frame = 0) => {
-    TaruhGambar(sprite.buffer, sprite.x, sprite.y, frame);
-};
-const TaruhSemuaSprite = () => {
-    ha_blitz.Sprite.daftar.forEach((item) => {
-        TaruhSprite(item);
-    });
-};
-const PosisiXSprite = (spr, x = null) => {
-    if (typeof (x) == 'number') {
-        spr.x = x;
-    }
-    return spr.x;
-};
-const PosisiYSprite = (spr, y = null) => {
-    if (typeof (y) == 'number') {
-        spr.y = y;
-    }
-    return spr.y;
-};
+const Copy = () => { };
+const PosisiHandle = () => { };
+const Panjang = () => { };
+const Lebar = () => { };
+const HandleX = () => { };
+const HandleY = () => { };
+const Overlap = () => { };
+const Tabrakan = () => { };
+const DotDiDalam = () => { };
+const MuatAnimasi = () => { };
+const Ubin = () => { };
+const Putar = () => { };
+const Skala = () => { };
+const Piksel = () => { };
+const Warna = () => { };
+const Merah = () => { };
+const Hijau = () => { };
+const Biru = () => { };
 ///<reference path="../ha/blitz/Main.ts"/>
 ///<reference path="../ha/blitz/Image.ts"/>
 ///<reference path="../ha/blitz/Main.ts"/>
@@ -770,9 +839,9 @@ const Jeda = async (m = 0) => {
     });
 };
 const FPS = (n) => {
-    ha_blitz.main.fps = Math.floor(1000 / n);
+    ha_blitz.Main.fps = Math.floor(1000 / n);
     if (n >= 60) {
-        ha_blitz.main.fps = 0;
+        ha_blitz.Main.fps = 0;
     }
 };
 //TODO: dihapus
