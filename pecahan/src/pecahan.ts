@@ -11,12 +11,17 @@ class Pecahan implements IPecahan {
 		this.pembilang = bilang;
 		this.penyebut = sebut;
 
-		if (a == 0) {
-			this._dec = this.pembilang / this.penyebut;
+		Pecahan.updateDec(this);
+	}
+
+	static updateDec(p: IPecahan): void {
+		if (p.angka == 0) {
+			p.dec = p.pembilang / p.penyebut;
 		}
 		else {
-			this._dec = (this.penyebut * this.angka + this.pembilang) / this.penyebut;
+			p.dec = (p.penyebut * p.angka + p.pembilang) / p.penyebut;
 		}
+
 	}
 
 	static clone(p: IPecahan): IPecahan {
@@ -204,24 +209,23 @@ class Pecahan implements IPecahan {
 	}
 	public set angka(value: number) {
 		this._angka = value;
+		Pecahan.updateDec(this);
 	}
+
 	public get pembilang(): number {
 		return this._pembilang;
 	}
 	public set pembilang(value: number) {
-		if (value > 30) {
-			ha.comp.Util.stackTrace();
-		}
 		this._pembilang = value;
+		Pecahan.updateDec(this);
 	}
+
 	public get penyebut(): number {
 		return this._penyebut;
 	}
 	public set penyebut(value: number) {
-		if (value > 30) {
-			ha.comp.Util.stackTrace();
-		}
 		this._penyebut = value;
+		Pecahan.updateDec(this);
 	}
 
 	public get dec(): number {

@@ -127,6 +127,6 @@ const soal1Cont: HTMLElement = ha.comp.Util.getEl('div.soal-1');
 const soal2Cont: HTMLElement = ha.comp.Util.getEl('div.soal-2');
 
 interface ISoal {
-	pecahan?: IPecahan[];
+	pecahan?: any[];
 	jawaban?: string;
 }
