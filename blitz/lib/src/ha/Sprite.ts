@@ -66,6 +66,11 @@ namespace ha {
 			}
 		}
 
+		static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag: boolean = false): ISprite {
+			let img: IGambar = ha.Image.muatGambarAnimasiAsync(url, pf, lf);
+			return ha.Sprite.buat(img, bisaDiDrag);
+		}
+
 		static muatAsync(url: string, dragable = false): ISprite {
 			let img: IGambar = ha.Image.muatAsync(url);
 			console.log(img);
@@ -138,8 +143,8 @@ namespace ha {
 			});
 		}
 
-		static gambar(sprite: ISprite): void {
-			ha.Image.gambar(sprite.buffer, sprite.x, sprite.y);
+		static gambar(sprite: ISprite, frame?: number): void {
+			ha.Image.gambar(sprite.buffer, sprite.x, sprite.y, frame);
 		}
 
 		static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void {

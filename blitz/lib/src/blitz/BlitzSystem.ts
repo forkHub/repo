@@ -8,12 +8,7 @@
 // 	})
 // }
 
-// const FPS = (n: number) => {
-// 	ha.Main.fps = Math.floor(1000 / n);
-// 	if (n >= 60) {
-// 		ha.Main.fps = 0;
-// 	}
-// }
+const FPS = ha.Main.Fps;
 
 //TODO: dihapus
 //TODO: kemungkinan diganti buat nyesuain sama blitz

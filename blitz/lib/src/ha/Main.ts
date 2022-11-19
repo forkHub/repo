@@ -2,10 +2,17 @@ namespace ha {
 
 	//TODO: beberapa perintah harus mengecheck apakah kanvas sudah di init, dan coba lagi kalau belum bisa
 	export class Main {
-		private static _fps: number = 1000 / 30;
+		private static _fps: number = 0;
 		private static _origin: IV2D;
 		private static _canvasAr: IGambar[] = [];
 		private static _canvasAktif: IGambar;
+
+		static Fps(n: number) {
+			ha.Main.fps = Math.floor(1000 / n);
+			if (n >= 60) {
+				ha.Main.fps = 0;
+			}
+		}
 
 		static buatCanvas(canvasEl: HTMLCanvasElement): IGambar {
 			let canvas: IGambar = {

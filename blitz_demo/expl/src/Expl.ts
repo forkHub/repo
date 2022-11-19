@@ -1,15 +1,15 @@
-let img: IBuffer;
+let img: ISprite;
 let frame: number = 0;
 
-async function Start(): Promise<void> {
-	Graphics(300, 300);
-	img = await LoadAnimImage('./gbr/exp2_0.png', 64, 64);
-	ResizeImage(img, 256, 256);
-}
+Grafis(300, 300);
+FPS(20);
 
-async function Loop(): Promise<void> {
-	Cls();
+img = MuatAnimasi('./gbr/exp2_0.png', 64, 64);
+Ukuran(img, 256, 256);
+
+function Loop(): void {
+	Bersih();
 	frame = ((frame % 8) + 1);
-	DrawImage(img, 0, 0, frame - 1);
+	Gambar(img, frame - 1);
 }
 

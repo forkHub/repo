@@ -67,7 +67,7 @@ namespace ha {
 				requestAnimationFrame(() => {
 					ha.Blijs.repeat();
 				});
-			}, 0);
+			}, ha.Main.fps);
 		}
 
 		static windowResize(): void {

@@ -1,3 +1,15 @@
+echo off
+
+echo doodle:
+echo =====
+copy ..\blitz\output\*.d.ts .\doodle\dts
+copy ..\blitz\output\*.js .\doodle\web\js
+
+echo expl:
+echo =====
+copy ..\blitz\output\*.d.ts .\expl\dts
+copy ..\blitz\output\*.js .\expl\web\js
+
 echo collision:
 echo ==========
 copy ..\blitz\output\*.d.ts .\collision\dts

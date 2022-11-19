@@ -2,6 +2,12 @@ var ha;
 (function (ha) {
     //TODO: beberapa perintah harus mengecheck apakah kanvas sudah di init, dan coba lagi kalau belum bisa
     class Main {
+        static Fps(n) {
+            ha.Main.fps = Math.floor(1000 / n);
+            if (n >= 60) {
+                ha.Main.fps = 0;
+            }
+        }
         static buatCanvas(canvasEl) {
             let canvas = {
                 canvas: canvasEl,
@@ -109,7 +115,7 @@ var ha;
             this._fps = value;
         }
     }
-    Main._fps = 1000 / 30;
+    Main._fps = 0;
     Main._canvasAr = [];
     ha.Main = Main;
 })(ha || (ha = {}));
@@ -593,6 +599,10 @@ var ha;
                 ha.Sprite.gambar(item);
             }
         }
+        static muatAnimasiAsync(url, pf, lf, bisaDiDrag = false) {
+            let img = ha.Image.muatGambarAnimasiAsync(url, pf, lf);
+            return ha.Sprite.buat(img, bisaDiDrag);
+        }
         static muatAsync(url, dragable = false) {
             let img = ha.Image.muatAsync(url);
             console.log(img);
@@ -649,8 +659,8 @@ var ha;
                 item.dragged = false;
             });
         }
-        static gambar(sprite) {
-            ha.Image.gambar(sprite.buffer, sprite.x, sprite.y);
+        static gambar(sprite, frame) {
+            ha.Image.gambar(sprite.buffer, sprite.x, sprite.y, frame);
         }
         static posisiPolar(sprite, sudut, jarak, x2, y2) {
             let p = ha.Point.posPolar(jarak, sudut, x2, y2);
@@ -1378,7 +1388,7 @@ var ha;
                 requestAnimationFrame(() => {
                     ha.Blijs.repeat();
                 });
-            }, 0);
+            }, ha.Main.fps);
         }
         static windowResize() {
             // console.debug('window on resize');
@@ -1743,6 +1753,7 @@ const PosisiX = ha.Sprite.posisiX;
 const PosisiY = ha.Sprite.posisiY;
 const Handle = ha.Sprite.handle;
 const Rotasi = ha.Sprite.rotasi;
+const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
 const PosisiJarakSprite = () => { };
 const Copy = () => { };
 const PosisiHandle = () => { };
@@ -1753,7 +1764,6 @@ const HandleY = () => { };
 const Overlap = () => { };
 const Tabrakan = () => { };
 const DotDiDalam = () => { };
-const MuatAnimasi = () => { };
 const Ubin = () => { };
 const Skala = () => { };
 const Piksel = () => { };
@@ -1771,12 +1781,7 @@ const Biru = () => { };
 // 		}, m);
 // 	})
 // }
-// const FPS = (n: number) => {
-// 	ha.Main.fps = Math.floor(1000 / n);
-// 	if (n >= 60) {
-// 		ha.Main.fps = 0;
-// 	}
-// }
+const FPS = ha.Main.Fps;
 //TODO: dihapus
 //TODO: kemungkinan diganti buat nyesuain sama blitz
 // const Dim = (...args: any[]): any[] => {

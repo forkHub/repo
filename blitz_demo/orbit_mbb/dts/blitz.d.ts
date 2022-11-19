@@ -4,6 +4,7 @@ declare namespace ha {
         private static _origin;
         private static _canvasAr;
         private static _canvasAktif;
+        static Fps(n: number): void;
         static buatCanvas(canvasEl: HTMLCanvasElement): IGambar;
         static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void;
         static Bersih(r?: number, g?: number, b?: number, alpha?: number): void;
@@ -76,13 +77,14 @@ declare namespace ha {
         static posisiY(spr: ISprite, y?: number | null | undefined): number;
         static handle(spr: ISprite, x?: number, y?: number): void;
         static gambarSemua(): void;
+        static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag?: boolean): ISprite;
         static muatAsync(url: string, dragable?: boolean): ISprite;
         static ukuranGambar(gbr: ISprite, w: number, h: number): void;
         static buat(image: IGambar, dragable?: boolean): ISprite;
         static inputDown(pos: any): void;
         static inputMove(pos: any): void;
         static inputUp(): void;
-        static gambar(sprite: ISprite): void;
+        static gambar(sprite: ISprite, frame?: number): void;
         static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void;
         get dragStartX(): number;
         set dragStartX(value: number);
@@ -348,6 +350,7 @@ declare const PosisiX: typeof ha.Sprite.posisiX;
 declare const PosisiY: typeof ha.Sprite.posisiY;
 declare const Handle: typeof ha.Sprite.handle;
 declare const Rotasi: typeof ha.Sprite.rotasi;
+declare const MuatAnimasi: typeof ha.Sprite.muatAnimasiAsync;
 declare const PosisiJarakSprite: () => void;
 declare const Copy: () => void;
 declare const PosisiHandle: () => void;
@@ -358,7 +361,6 @@ declare const HandleY: () => void;
 declare const Overlap: () => void;
 declare const Tabrakan: () => void;
 declare const DotDiDalam: () => void;
-declare const MuatAnimasi: () => void;
 declare const Ubin: () => void;
 declare const Skala: () => void;
 declare const Piksel: () => void;
@@ -366,6 +368,7 @@ declare const Warna: () => void;
 declare const Merah: () => void;
 declare const Hijau: () => void;
 declare const Biru: () => void;
+declare const FPS: typeof ha.Main.Fps;
 /**
  * TEXTS
  */ 
