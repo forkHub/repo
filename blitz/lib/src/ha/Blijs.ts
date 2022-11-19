@@ -2,12 +2,17 @@
  * BLIJS
  */
 
-namespace ha_blijs {
-	class Blijs {
-		init(canvas: HTMLCanvasElement) {
+namespace ha {
+	export class Blijs {
+		static init(canvas?: HTMLCanvasElement) {
+			if (!canvas) canvas = document.body.querySelector('canvas') as HTMLCanvasElement;
+			if (!canvas) {
+				console.log('gagal init');
+				return;
+			}
 
-			ha_blitz.Main.init(canvas, canvas);
-			ha.input.init(ha_blitz.Main.canvasAktif);
+			ha.Main.init(canvas, canvas);
+			ha.input.init(ha.Main.canvasAktif);
 
 			window.onresize = async (): Promise<void> => {
 				this.windowResize();
@@ -17,61 +22,63 @@ namespace ha_blijs {
 				this.windowResize();
 			}, 100);
 
-			let _window: any = window;
+			// let _window: any = window;
 
 			setTimeout(() => {
-				if (typeof _window.Mulai__ == "function") {
-					console.log('window start function called');
+				this.repeat();
+				// if (typeof _window.Mulai__ == "function") {
+				// 	console.log('window start function called');
 
-					_window.Mulai()
-						.then(() => {
-							this.repeat();
-						})
-						.catch((e: Error) => {
-							console.error(e);
-						})
-				}
-				else {
-					console.warn('start not found');
-					this.repeat();
-				}
+				// 	_window.Mulai()
+				// 		.then(() => {
+				// 			this.repeat();
+				// 		})
+				// 		.catch((e: Error) => {
+				// 			console.error(e);
+				// 		})
+				// }
+				// else {
+				// 	console.warn('start not found');
+				// 	this.repeat();
+				// }
 			}, 0);
 		}
 
-		loop = async (): Promise<void> => {
+		static loop = (): void => {
 			let _window: any = window;
 			if (typeof _window.Loop == 'function') {
 				//TODO: pre loop
-				await _window.Loop();
+				_window.Loop();
 				//TODO: post loop
 			}
-			else {
-
-			}
 		}
 
-		repeat = () => {
+		static repeat = () => {
 			//check semua image sudah diload
 
-
-
-			this.loop()
-				.then(() => {
-					setTimeout(() => {
-						requestAnimationFrame(this.repeat);
-					}, 0);
-				}).
-				catch((e) => {
-					console.error(e);
+			this.loop();
+			setTimeout(() => {
+				requestAnimationFrame(() => {
+					this.repeat();
 				});
+			}, 0);
+
+			// .then(() => {
+			// 	setTimeout(() => {
+			// 		requestAnimationFrame(this.repeat);
+			// 	}, 0);
+			// }).
+			// catch((e) => {
+			// 	console.error(e);
+			// });
 		}
 
-		windowResize = (): void => {
+		static windowResize = (): void => {
 			// console.debug('window on resize');
-			let canvas: HTMLCanvasElement = ha_blitz.Main.canvasAktif.canvas;
+			let canvas: HTMLCanvasElement = ha.Main.canvasAktif.canvas;
 
-			let cp = ha_blitz.Main.canvasAktif.canvas.width;
-			let cl = ha_blitz.Main.canvasAktif.canvas.height;
+			let cp = ha.Main.canvasAktif.canvas.width;
+			let cl = ha.Main.canvasAktif.canvas.height;
 
 			let wp = window.innerWidth;
 			let wl = window.innerHeight;
@@ -81,8 +88,8 @@ namespace ha_blijs {
 			let cp2 = Math.floor(cp * ratio);
 			let cl2 = Math.floor(cl * ratio);
 
-			ha_blitz.Main.canvasAktif.scaleX = ratio;
-			ha_blitz.Main.canvasAktif.scaleY = ratio;
+			ha.Main.canvasAktif.ratioX = ratio;
+			ha.Main.canvasAktif.ratioY = ratio;
 
 			canvas.style.width = cp2 + 'px';
 			canvas.style.height = cl2 + 'px';
@@ -93,13 +100,8 @@ namespace ha_blijs {
 			// console.debug('canvas w: ' + canvas.style.width + '/ratio: ' + ratio);
 		}
 	}
-
-	export var blijs: Blijs = new Blijs();
 }
 
-window.onload = () => {
-	console.log('window onload:');
-
-	let canvas: HTMLCanvasElement = document.body.querySelector('canvas') as HTMLCanvasElement;
-	ha_blijs.blijs.init(canvas)
-}
+setTimeout(() => {
+	ha.Blijs.init()
+}, 0);

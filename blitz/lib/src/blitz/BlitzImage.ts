@@ -1,31 +1,29 @@
 
-///<reference path="../ha/blitz/Main.ts"/>
-///<reference path="../ha/blitz/Image.ts"/>
-
+///<reference path="./Route.ts"/>
 /**
  * IMAGE
  */
-const BuatGambar = ha_blitz.Image.buatGambar;
+const BuatGambar = ha.Image.buatGambar;
 // const CopyGambar = ha_blitz.Image.copyGambar;
-const TaruhGambar = ha_blitz.Image.gambar;
-const GrabGambar = ha_blitz.Image.grabGambar;//TODO: test - dihapus
-const PosisiHandleGambar = ha_blitz.Image.posisiHandleGambar;
-const PanjangGambar = ha_blitz.Image.panjangGambar;
-const LebarGambar = ha_blitz.Image.lebarGambar;
-const HandleXGambar = ha_blitz.Image.handleXGambar;
-const HandleYGambar = ha_blitz.Image.handleYGambar;
-const GambarOverlap = ha_blitz.Image.gambarOverlap;
-const GambarTabrakan = ha_blitz.Image.gambarTabrakan;
-const DotDidalamGambar = ha_blitz.Image.dotDidalamGambar;
-const MuatGambar = ha_blitz.Image.muat;
-const MuatGambarAnimasi = ha_blitz.Image.muatGambarAnimasi;
-const GambarUbin = ha_blitz.Image.gambarUbin;
-const ResizeGambar = ha_blitz.image.ukuranGambar;
-const PutarGambar = ha_blitz.Image.putarGambar;
-const SkalaGambar = ha_blitz.Image.skalaGambar;
-const AmbilPiksel = ha_blitz.Image.ambilPiksel;
-const SetWarna = ha_blitz.Image.setWarna;
-const SetPiksel = ha_blitz.Image.setPiksel;
+const TaruhGambar = ha.Image.gambar;
+const GrabGambar = ha.Image.grabGambar;//TODO: test - dihapus
+const PosisiHandleGambar = ha.Image.posisiHandleGambar;
+const PanjangGambar = ha.Image.panjangGambar;
+const LebarGambar = ha.Image.lebarGambar;
+const HandleXGambar = ha.Image.handleXGambar;
+const HandleYGambar = ha.Image.handleYGambar;
+const GambarOverlap = ha.Image.gambarOverlap;
+const GambarTabrakan = ha.Image.gambarTabrakan;
+const DotDidalamGambar = ha.Image.dotDidalamGambar;
+const MuatGambar = ha.Image.muat;
+const MuatGambarAnimasi = ha.Image.muatGambarAnimasi;
+const GambarUbin = ha.Image.gambarUbin;
+const ResizeGambar = ha.image.ukuranGambar;
+const PutarGambar = ha.Image.putarGambar;
+// const SkalaGambar = ha.Image.skalaGambar;
+const AmbilPiksel = ha.Image.ambilPiksel;
+const SetWarna = ha.Image.setWarna;
+const SetPiksel = ha.Image.setPiksel;
 
 //TODO: next
 const ImagePivot = () => { }

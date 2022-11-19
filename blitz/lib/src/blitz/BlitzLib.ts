@@ -1,15 +1,14 @@
-///<reference path="../ha/blitz/Main.ts"/>
-///<reference path="../ha/blitz/Image.ts"/>
+///<reference path="./Route.ts"/>
 
 /*
  * 	GRAPHICS
  */
-const Bersih = ha_blitz.Main.Bersih;
-const Color = ha_blitz.Main.Color;
-const Grafis = ha_blitz.Main.Grafis;
-const Garis = ha_blitz.Main.Garis;
-const Kotak = ha_blitz.Main.Kotak;
-const SetBuffer = ha_blitz.Main.SetBuffer;
+const Bersih = ha.Main.Bersih;
+const Color = ha.Main.Color;
+const Grafis = ha.Main.Grafis;
+const Garis = ha.Main.Garis;
+const Kotak = ha.Main.Kotak;
+const SetBuffer = ha.Main.SetBuffer;
 
 const GraphicsBuffer = () => { }
 const Origin = () => { }
@@ -18,6 +17,8 @@ const WritePixel = () => { }
 const ReadPixel = () => { }
 const Plot = () => { }
 const WarnaMerah = () => { }
+///<reference path="../ha/Main.ts"/>
+
 const ColorBlue = () => { }
 const ColorGreen = () => { }
 const ClsColor = () => { }

@@ -1,26 +1,28 @@
-let img: IBuffer;
-let imgBig: IBuffer;
+Grafis(320, 240);
+
+let img: ISprite;
+let imgBig: ISprite;
 let frame: number = 0;
 let deg: number = 0;
 let rot: number = 0;
-let boxAr: IV2D[] = Dim(10);
+
+let boxAr: IV2D[] = [];
 for (let i: number = 0; i < 10; i++) {
 	boxAr[i].x = -Math.floor(Math.random() * 320);
 	boxAr[i].y = Math.floor(Math.random() * 240);
 }
 
-async function Start(): Promise<void> {
-	Graphics(320, 240);
-	img = await LoadImage("./gbr/box.png");
-	ResizeImage(img, 16, 16);
-	MidHandle(img);
+Grafis(320, 240);
+img = Muat("./gbr/box.png");
+Ukuran(img, 16, 16);
+Handle(img, 8, 8);
 
-	imgBig = CopyImage(img);
-	ResizeImage(imgBig, 30, 200);
-	MidHandle(imgBig);
-	RotateImage(imgBig, 30);
+imgBig = Muat("./gbr/box.png");
+Ukuran(imgBig, 30, 200);
+Handle(imgBig, 16, 100);
+PutarGambar(imgBig, 30);
 
-	console.log(ImageCollide(img, 0, 0, imgBig, 100, 0));
+console.log(ImageCollide(img, 0, 0, imgBig, 100, 0));
 }
 
 async function Loop(): Promise<void> {

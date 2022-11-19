@@ -1,14 +1,10 @@
-cd blijs
-call build.bat
-cd ..
-
-cd halib
-call build.bat
-cd..
+rem build
+rem =====
 
 cd lib
 call build.bat
 cd ..
 
-copy .\output\blitz.d.ts .\blijs\src\blitz.d.ts
+rem copy data
+rem =========
 pause

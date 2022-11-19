@@ -1,5 +1,8 @@
+
+///<reference path="./Image.ts"/>
+
 /** SPRITE.TS */
-namespace ha_blitz {
+namespace ha {
     export class Sprite implements ISprite {
         static readonly daftar: ISprite[] = [];
 
@@ -16,6 +19,14 @@ namespace ha_blitz {
         constructor(buffer: IGambar, dragable: boolean = false) {
             this.buffer = buffer;
             this.dragable = dragable;
+        }
+
+        static rotasi(sprite: ISprite, sudut?: number): number {
+            if (sprite && (typeof (sudut) == 'number')) {
+                sprite.buffer.rotation = sudut;
+            }
+
+            return sprite.buffer.rotation;
         }
 
         static posisi(sprite: ISprite, x: number = 0, y: number = 0) {
@@ -39,29 +50,40 @@ namespace ha_blitz {
             return spr.y;
         }
 
+        static handle(spr: ISprite, x: number = 0, y: number = 0): void {
+            if (spr) {
+                spr.buffer.handleX = x;
+                spr.buffer.handleY = y;
+            }
+
+            return
+        }
+
         static gambarSemua() {
-            ha_blitz.Sprite.daftar.forEach((item: ISprite) => {
-                this.gambar(item);
-            });
+            for (let i: number = 0; i < ha.Sprite.daftar.length; i++) {
+                let item: ISprite = ha.Sprite.daftar[i];
+                ha.Sprite.gambar(item);
+            }
         }
 
         static muatAsync(url: string, dragable = false): ISprite {
-            let img: IGambar = ha_blitz.Image.muatAsync(url);
-            return this.buat(img, dragable);
+            let img: IGambar = ha.Image.muatAsync(url);
+            console.log(img);
+            return ha.Sprite.buat(img, dragable);
         }
 
-        static async muat(url: string, dragable = false): Promise<ISprite> {
-            let img: IGambar = await ha_blitz.Image.muat(url);
-            return this.buat(img, dragable);
-        }
+        // static async muat(url: string, dragable = false): Promise<ISprite> {
+        //     let img: IGambar = await ha.Image.muat(url);
+        //     return this.buat(img, dragable);
+        // }
 
         static ukuranGambar(gbr: ISprite, w: number, h: number): void {
-            ha_blitz.image.ukuranGambar(gbr.buffer, w, h);
+            ha.image.ukuranGambar(gbr.buffer, w, h);
         }
 
-        static handleTengah(gbr: ISprite): void {
-            ha_blitz.image.handleTengah(gbr.buffer);
-        }
+        // static handleTengah(gbr: ISprite): void {
+        //     ha.image.handleTengah(gbr.buffer);
+        // }
 
         static buat(image: IGambar, dragable: boolean = false): ISprite {
             let hasil: ISprite;
@@ -75,15 +97,15 @@ namespace ha_blitz {
         }
 
         static inputDown(pos: any): void {
-            ha_blitz.Sprite.daftar.forEach((item: ISprite) => {
+            ha.Sprite.daftar.forEach((item: ISprite) => {
                 item.down = false;
             });
 
             //sprite down
-            for (let i: number = ha_blitz.Sprite.daftar.length - 1; i >= 0; i--) {
+            for (let i: number = ha.Sprite.daftar.length - 1; i >= 0; i--) {
                 let item: ISprite;
 
-                item = ha_blitz.Sprite.daftar[i];
+                item = ha.Sprite.daftar[i];
 
                 if (DotDidalamGambar(item.buffer, item.x, item.y, pos.x, pos.y)) {
                     item.down = true;
@@ -95,7 +117,7 @@ namespace ha_blitz {
         }
 
         static inputMove(pos: any): void {
-            ha_blitz.Sprite.daftar.forEach((item: ISprite) => {
+            ha.Sprite.daftar.forEach((item: ISprite) => {
 
                 if (item.down && item.dragable) {
                     item.dragged = true;
@@ -106,7 +128,7 @@ namespace ha_blitz {
         }
 
         static inputUp(): void {
-            ha_blitz.Sprite.daftar.forEach((item: ISprite) => {
+            ha.Sprite.daftar.forEach((item: ISprite) => {
                 if (item.down) {
                     item.hit++;
                 }
@@ -117,7 +139,7 @@ namespace ha_blitz {
         }
 
         static gambar(sprite: ISprite): void {
-            TaruhGambar(sprite.buffer, sprite.x, sprite.y);
+            ha.Image.gambar(sprite.buffer, sprite.x, sprite.y);
         }
 
         static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void {

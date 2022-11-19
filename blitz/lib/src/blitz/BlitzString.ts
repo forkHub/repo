@@ -1,2 +1,2 @@
-///<reference path="../ha/blitz/Main.ts"/>
-///<reference path="../ha/blitz/Image.ts"/>
+///<reference path="../ha/Main.ts"/>
+///<reference path="../ha/Image.ts"/>

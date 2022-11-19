@@ -1,4 +1,4 @@
-declare namespace ha_blitz {
+declare namespace ha {
     class Main {
         private static _fps;
         private static _origin;
@@ -22,7 +22,7 @@ declare namespace ha_blitz {
         static set fps(value: number);
     }
 }
-declare namespace ha_blitz {
+declare namespace ha {
     class Image {
         static buatGambar(w?: number, h?: number, frameW?: number, frameH?: number): IGambar;
         static panjangGambar(gbr: IGambar): number;
@@ -33,18 +33,18 @@ declare namespace ha_blitz {
         static gambarTabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean;
         static dotDidalamGambar(gbr1: IGambar, x1: number, y1: number, x2: number, y2: number): boolean;
         static muatGambarAnimasi(url: string, fw?: number, fh?: number): Promise<IGambar>;
+        static muatGambarAnimasiAsync(url: string, fw?: number, fh?: number): IGambar;
+        static muatAsync(url: string): IGambar;
         static gambarUbin(gbr: IGambar, x?: number, y?: number, frame?: number): void;
         static putarGambar(gbr: IGambar, sudut?: number): void;
-        static skalaGambar(gbr: IGambar, skalaX?: number, skalaY?: number): void;
         static ambilPiksel(x?: number, y?: number): number[];
         static setWarna(r?: number, g?: number, b?: number, a?: number): void;
         static setPiksel(x?: number, y?: number): void;
         static posisiHandleGambar(gbr: IGambar, x?: number, y?: number): void;
         static grabGambar(gbr: IGambar, x?: number, y?: number): void;
+        static tungguLoad(): Promise<void>;
         static muat(url: string): Promise<IGambar>;
-        static muatAsync(url: string): IGambar;
         static gambar(gbr: IGambar, x?: number, y?: number, frame?: number): void;
-        handleTengah: (gbr: IGambar) => void;
         /**
          * Ubah Ukuran Gambar
          * @param gbr
@@ -58,29 +58,204 @@ declare namespace ha_blitz {
     }
     var image: Image;
 }
+/** SPRITE.TS */
+declare namespace ha {
+    class Sprite implements ISprite {
+        static readonly daftar: ISprite[];
+        private _buffer;
+        private _x;
+        private _y;
+        private _dragged;
+        private _down;
+        private _hit;
+        private _dragStartY;
+        private _dragStartX;
+        private _dragable;
+        constructor(buffer: IGambar, dragable?: boolean);
+        static posisi(sprite: ISprite, x?: number, y?: number): void;
+        static posisiX(spr: ISprite, x?: number | null | undefined): number;
+        static posisiY(spr: ISprite, y?: number | null | undefined): number;
+        static handle(spr: ISprite, x?: number, y?: number): void;
+        static gambarSemua(): void;
+        static muatAsync(url: string, dragable?: boolean): ISprite;
+        static ukuranGambar(gbr: ISprite, w: number, h: number): void;
+        static buat(image: IGambar, dragable?: boolean): ISprite;
+        static inputDown(pos: any): void;
+        static inputMove(pos: any): void;
+        static inputUp(): void;
+        static gambar(sprite: ISprite): void;
+        static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void;
+        get dragStartX(): number;
+        set dragStartX(value: number);
+        get dragStartY(): number;
+        set dragStartY(value: number);
+        get dragged(): boolean;
+        set dragged(value: boolean);
+        get buffer(): IGambar;
+        set buffer(value: IGambar);
+        get x(): number;
+        set x(value: number);
+        get y(): number;
+        set y(value: number);
+        get hit(): number;
+        set hit(value: number);
+        get down(): boolean;
+        set down(value: boolean);
+        get dragable(): boolean;
+        set dragable(value: boolean);
+    }
+}
+interface ISprite {
+    buffer: IGambar;
+    x: number;
+    y: number;
+    dragable: boolean;
+    dragged: boolean;
+    down: boolean;
+    hit: number;
+    dragStartX: number;
+    dragStartY: number;
+}
+/** INPUT.TS */
+declare namespace ha {
+    class Input {
+        private _inputs;
+        private _touchGlobal;
+        private _mouseGlobal;
+        private _keybGlobal;
+        private _inputGlobal;
+        private _event;
+        constructor();
+        getMouseKeyId(e: PointerEvent): string;
+        init(buffer: IGambar): void;
+        buatInputDefault(): IInput;
+        reset(input: IInput): void;
+        flush(): void;
+        flushByType(type: string): void;
+        flushByInput(input: IInput): void;
+        getInput(key: string, inputType: string): IInput;
+        baru(keyId: string, inputType: string): IInput;
+        pos: (cx: number, cy: number, buffer: IGambar, canvasScaleX: number, canvasScaleY: number) => {
+            x: number;
+            y: number;
+        };
+        get inputs(): IInput[];
+        get event(): EventHandler;
+        get touchGlobal(): IInput;
+        get mouseGlobal(): IInput;
+        get keybGlobal(): IInput;
+        get inputGlobal(): IInput;
+    }
+    class EventHandler {
+        move(input: IInput, buffer: IGambar, e: PointerEvent): void;
+        down(input: IInput, key: string, type: string, pos: IV2D): void;
+        up(input2: IInput): void;
+    }
+    export var input: Input;
+    export {};
+}
+declare namespace ha {
+    class Point {
+        static create(x?: number, y?: number): IPoint2D;
+        static copy(p1: IPoint2D, p2: IPoint2D): void;
+        static clone(p: IPoint2D): IPoint2D;
+        static sama(p1: IPoint2D, p2: IPoint2D): boolean;
+        static putarPoros(p: IPoint2D, xc?: number, yc?: number, deg?: number): void;
+        static posDist(p: IPoint2D, xt: number, yt: number, jrk: number): IPoint2D;
+        static posPolar(jarak: number, sudut: number, xt: number, yt: number): IPoint2D;
+    }
+}
+declare namespace ha {
+    class Rect {
+        static create(x1?: number, y1?: number, x2?: number, y2?: number): IRect;
+        static copy(r: IRect): IRect;
+        static copyInfo(r1: IRect, r2: IRect): void;
+        static collideBound(r1: IRect, r2: IRect): boolean;
+        static collide(r1: IRect, r2: IRect): boolean;
+        static collideDotBound(r: IRect, d: IPoint2D): boolean;
+        static collideDot(r: IRect, x: number, y: number): boolean;
+        static minX(r: IRect): number;
+        static maxX(r: IRect): number;
+        static minY(r: IRect): number;
+        static maxY(r: IRect): number;
+        static scale(r: IRect): void;
+        static translate(rect: IRect, x: number, y: number): void;
+        static rotate(r: IRect, deg: number, xc: number, yc: number, copy?: boolean): IRect;
+    }
+}
+declare namespace ha {
+    class Segment {
+        static create(v1?: IPoint2D, v2?: IPoint2D): ISegment;
+        static boundCollide(seg1: ISegment, seg2: ISegment): boolean;
+        static collide(seg1: ISegment, seg2: ISegment): boolean;
+        static copy(seg1: ISegment, seg2: ISegment): void;
+        static clone(seg: ISegment): ISegment;
+        static crossHor(seg: ISegment): boolean;
+        static deg(line: ISegment): number;
+        static getXAtIdx(seg: ISegment, idx: number): number;
+        static getYAtIdx(seg: ISegment, idx: number): number;
+        static vecI(seg: ISegment): number;
+        static vecJ(seg: ISegment): number;
+        static rotate(seg: ISegment, deg?: number, xc?: number, yc?: number): void;
+        static minX(seg: ISegment): number;
+        static maxX(seg: ISegment): number;
+        static minY(seg: ISegment): number;
+        static maxY(seg: ISegment): number;
+        static translate(seg: ISegment, x?: number, y?: number): void;
+        static xHorIdx(seg: ISegment): number;
+    }
+}
+/**
+ * BLIJS
+ */
+declare namespace ha {
+    class Blijs {
+        static init(canvas?: HTMLCanvasElement): void;
+        static loop: () => void;
+        static repeat: () => void;
+        static windowResize: () => void;
+    }
+}
+declare namespace ha {
+    class Transform {
+        static readonly RAD2DEG: number;
+        static readonly DEG2RAD: number;
+        private static _lastX;
+        private static _lastY;
+        static get lastX(): number;
+        static get lastY(): number;
+        static equal(n1: number, n2: number, toleransi?: number): boolean;
+        private static quadDeg2;
+        static deg(x: number, y: number): number;
+        static normalizeDeg(deg: number): number;
+        static degDistMax(angleS: number, angleT: number): number;
+        static degDistMin(angleS: number, angleT: number): number;
+        static jarak(x: number, y: number, xt: number, yt: number): number;
+        static rotateRel(x?: number, y?: number, xt?: number, yt?: number, deg?: number): void;
+    }
+}
 /**
  * IMAGE
  */
-declare const BuatGambar: typeof ha_blitz.Image.buatGambar;
-declare const TaruhGambar: typeof ha_blitz.Image.gambar;
-declare const GrabGambar: typeof ha_blitz.Image.grabGambar;
-declare const PosisiHandleGambar: typeof ha_blitz.Image.posisiHandleGambar;
-declare const PanjangGambar: typeof ha_blitz.Image.panjangGambar;
-declare const LebarGambar: typeof ha_blitz.Image.lebarGambar;
-declare const HandleXGambar: typeof ha_blitz.Image.handleXGambar;
-declare const HandleYGambar: typeof ha_blitz.Image.handleYGambar;
-declare const GambarOverlap: typeof ha_blitz.Image.gambarOverlap;
-declare const GambarTabrakan: typeof ha_blitz.Image.gambarTabrakan;
-declare const DotDidalamGambar: typeof ha_blitz.Image.dotDidalamGambar;
-declare const MuatGambar: typeof ha_blitz.Image.muat;
-declare const MuatGambarAnimasi: typeof ha_blitz.Image.muatGambarAnimasi;
-declare const GambarUbin: typeof ha_blitz.Image.gambarUbin;
+declare const BuatGambar: typeof ha.Image.buatGambar;
+declare const TaruhGambar: typeof ha.Image.gambar;
+declare const GrabGambar: typeof ha.Image.grabGambar;
+declare const PosisiHandleGambar: typeof ha.Image.posisiHandleGambar;
+declare const PanjangGambar: typeof ha.Image.panjangGambar;
+declare const LebarGambar: typeof ha.Image.lebarGambar;
+declare const HandleXGambar: typeof ha.Image.handleXGambar;
+declare const HandleYGambar: typeof ha.Image.handleYGambar;
+declare const GambarOverlap: typeof ha.Image.gambarOverlap;
+declare const GambarTabrakan: typeof ha.Image.gambarTabrakan;
+declare const DotDidalamGambar: typeof ha.Image.dotDidalamGambar;
+declare const MuatGambar: typeof ha.Image.muat;
+declare const MuatGambarAnimasi: typeof ha.Image.muatGambarAnimasi;
+declare const GambarUbin: typeof ha.Image.gambarUbin;
 declare const ResizeGambar: (gbr: IGambar, w: number, h: number) => void;
-declare const PutarGambar: typeof ha_blitz.Image.putarGambar;
-declare const SkalaGambar: typeof ha_blitz.Image.skalaGambar;
-declare const AmbilPiksel: typeof ha_blitz.Image.ambilPiksel;
-declare const SetWarna: typeof ha_blitz.Image.setWarna;
-declare const SetPiksel: typeof ha_blitz.Image.setPiksel;
+declare const PutarGambar: typeof ha.Image.putarGambar;
+declare const AmbilPiksel: typeof ha.Image.ambilPiksel;
+declare const SetWarna: typeof ha.Image.setWarna;
+declare const SetPiksel: typeof ha.Image.setPiksel;
 declare const ImagePivot: () => void;
 declare const BackgroundImage: () => void;
 declare const MainLayer: () => void;
@@ -88,7 +263,6 @@ declare const CreateLayer: () => void;
 declare const LayerZ: () => void;
 declare const Prompt: (m: string, def: string) => string;
 declare const InputHit: () => number;
-declare const TungguInput: () => Promise<void>;
 declare const InputX: () => number;
 declare const InputY: () => number;
 declare const InputGeserX: () => number;
@@ -103,7 +277,6 @@ declare const FlushKeys: () => void;
 declare const GetKey: () => string;
 declare const KeybDiPencet: (key?: string) => boolean;
 declare const KeybHit: (key?: string) => number;
-declare const TungguKeyb: (kode?: string) => Promise<void>;
 /**
  * MOUSE dihapus
  */
@@ -188,76 +361,17 @@ declare const CopyRect: () => void;
 declare const FrontBuffer: () => void;
 declare const GetColor: () => void;
 declare const BackBuffer: () => void;
-/** SPRITE.TS */
-declare namespace ha_blitz {
-    class Sprite implements ISprite {
-        static readonly daftar: ISprite[];
-        private _buffer;
-        private _x;
-        private _y;
-        private _dragged;
-        private _down;
-        private _hit;
-        private _dragStartY;
-        private _dragStartX;
-        private _dragable;
-        constructor(buffer: IGambar, dragable?: boolean);
-        static posisi(sprite: ISprite, x?: number, y?: number): void;
-        static posisiX(spr: ISprite, x?: number | null | undefined): number;
-        static posisiY(spr: ISprite, y?: number | null | undefined): number;
-        static gambarSemua(): void;
-        static muatAsync(url: string, dragable?: boolean): ISprite;
-        static muat(url: string, dragable?: boolean): Promise<ISprite>;
-        static ukuranGambar(gbr: ISprite, w: number, h: number): void;
-        static handleTengah(gbr: ISprite): void;
-        static buat(image: IGambar, dragable?: boolean): ISprite;
-        static inputDown(pos: any): void;
-        static inputMove(pos: any): void;
-        static inputUp(): void;
-        static gambar(sprite: ISprite): void;
-        static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void;
-        get dragStartX(): number;
-        set dragStartX(value: number);
-        get dragStartY(): number;
-        set dragStartY(value: number);
-        get dragged(): boolean;
-        set dragged(value: boolean);
-        get buffer(): IGambar;
-        set buffer(value: IGambar);
-        get x(): number;
-        set x(value: number);
-        get y(): number;
-        set y(value: number);
-        get hit(): number;
-        set hit(value: number);
-        get down(): boolean;
-        set down(value: boolean);
-        get dragable(): boolean;
-        set dragable(value: boolean);
-    }
-}
-interface ISprite {
-    buffer: IGambar;
-    x: number;
-    y: number;
-    dragable: boolean;
-    dragged: boolean;
-    down: boolean;
-    hit: number;
-    dragStartX: number;
-    dragStartY: number;
-}
 /** BLITZ-SPRITE.TS */
-declare const Buat: typeof ha_blitz.Sprite.buat;
-declare const Muat: typeof ha_blitz.Sprite.muatAsync;
-declare const Posisi: typeof ha_blitz.Sprite.posisi;
-declare const Ukuran: typeof ha_blitz.Sprite.ukuranGambar;
-declare const HandleTengah: typeof ha_blitz.Sprite.handleTengah;
-declare const PosisiPolar: typeof ha_blitz.Sprite.posisiPolar;
-declare const Gambar: typeof ha_blitz.Sprite.gambar;
-declare const GambarSemua: typeof ha_blitz.Sprite.gambarSemua;
-declare const PosisiX: typeof ha_blitz.Sprite.posisiX;
-declare const PosisiY: typeof ha_blitz.Sprite.posisiY;
+declare const Buat: typeof ha.Sprite.buat;
+declare const Muat: typeof ha.Sprite.muatAsync;
+declare const Posisi: typeof ha.Sprite.posisi;
+declare const Ukuran: typeof ha.Sprite.ukuranGambar;
+declare const PosisiPolar: typeof ha.Sprite.posisiPolar;
+declare const Gambar: typeof ha.Sprite.gambar;
+declare const GambarSemua: typeof ha.Sprite.gambarSemua;
+declare const PosisiX: typeof ha.Sprite.posisiX;
+declare const PosisiY: typeof ha.Sprite.posisiY;
+declare const Handle: typeof ha.Sprite.handle;
 declare const PosisiJarakSprite: () => void;
 declare const Copy: () => void;
 declare const PosisiHandle: () => void;
@@ -277,50 +391,63 @@ declare const Warna: () => void;
 declare const Merah: () => void;
 declare const Hijau: () => void;
 declare const Biru: () => void;
-declare const Jeda: (m?: number) => Promise<void>;
-declare const FPS: (n: number) => void;
-declare const Dim: (...args: any[]) => any[];
-declare const Millisecs: () => number;
 /**
  * TEXTS
  */ 
-/** INPUT.TS */
-declare namespace ha {
-    class Input {
-        private _inputs;
-        private _touchGlobal;
-        private _mouseGlobal;
-        private _keybGlobal;
-        private _inputGlobal;
-        private _event;
-        constructor();
-        getMouseKeyId(e: PointerEvent): string;
-        init(buffer: IGambar): void;
-        buatInputDefault(): IInput;
-        reset(input: IInput): void;
-        flush(): void;
-        flushByType(type: string): void;
-        flushByInput(input: IInput): void;
-        getInput(key: string, inputType: string): IInput;
-        baru(keyId: string, inputType: string): IInput;
-        pos: (cx: number, cy: number, buffer: IGambar, canvasScaleX: number, canvasScaleY: number) => {
-            x: number;
-            y: number;
-        };
-        get inputs(): IInput[];
-        get event(): EventHandler;
-        get touchGlobal(): IInput;
-        get mouseGlobal(): IInput;
-        get keybGlobal(): IInput;
-        get inputGlobal(): IInput;
-    }
-    class EventHandler {
-        move(input: IInput, buffer: IGambar, e: PointerEvent): void;
-        down(input: IInput, key: string, type: string, pos: IV2D): void;
-        up(input2: IInput): void;
-    }
-    export var input: Input;
-    export {};
+/**
+ * INTERFACE
+*/
+interface IConfig {
+    input: IInput;
+}
+interface ILine {
+    y: number;
+    m: number;
+    b: number;
+}
+interface IRect {
+    vs?: IPoint2D[];
+    segs?: ISegment[];
+}
+interface ISegment {
+    v1: IPoint2D;
+    v2: IPoint2D;
+}
+interface ITimer {
+    endTime: number;
+    startTime: number;
+    time: number;
+    aktif: boolean;
+}
+interface IInput {
+    xStart: number;
+    yStart: number;
+    xDrag: number;
+    yDrag: number;
+    x: number;
+    y: number;
+    isDrag: boolean;
+    isDown: boolean;
+    isTap: boolean;
+    hit: number;
+    key: string;
+    type: string;
+    timerStart: number;
+    timerEnd: number;
+    id: number;
+}
+interface IInputData {
+    type?: string;
+    key?: string;
+}
+interface IPoint2D {
+    x: number;
+    y: number;
+}
+interface ITransform {
+    pos: IPoint2D;
+    scale: IPoint2D;
+    rotation: number;
 }
 /**
  * INTERFACE
@@ -370,20 +497,20 @@ interface IInputData {
 }
 interface IGambar {
     img: HTMLImageElement;
-    width: number;
-    height: number;
+    panjang: number;
+    lebar: number;
     frameW: number;
     frameH: number;
-    handleX: number;
-    handleY: number;
     rotation: number;
-    scaleX: number;
-    scaleY: number;
     isAnim: boolean;
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
     rect: IRect;
     load: boolean;
+    handleX: number;
+    handleY: number;
+    ratioX?: number;
+    ratioY?: number;
 }
 interface IV2D {
     x: number;

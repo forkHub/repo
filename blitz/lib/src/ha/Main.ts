@@ -1,4 +1,4 @@
-namespace ha_blitz {
+namespace ha {
 
 	export class Main {
 		private static _fps: number = 1000 / 30;
@@ -10,10 +10,10 @@ namespace ha_blitz {
 			let canvas: IGambar = {
 				canvas: canvasEl,
 				ctx: canvasEl.getContext('2d'),
-				height: canvasEl.height,
-				scaleX: 1,
-				scaleY: 1,
-				width: canvasEl.width,
+				lebar: canvasEl.height,
+				// scaleX: 1,
+				// scaleY: 1,
+				panjang: canvasEl.width,
 				frameH: canvasEl.height,
 				frameW: canvasEl.width,
 				handleX: 0,
@@ -35,45 +35,45 @@ namespace ha_blitz {
 			canvas = this.buatCanvas(canvasDepan);
 			this._canvasAr.push(canvas);
 
-			ha_blitz.Main.canvasAktif = canvas;
+			ha.Main.canvasAktif = canvas;
 		}
 
 		static Bersih = (r: number = 0, g: number = 0, b: number = 0, alpha: number = 1): void => {
-			let ctx: CanvasRenderingContext2D = ha_blitz.Main.canvasAktif.ctx;
+			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 			ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
-			ctx.fillRect(0, 0, ha_blitz.Main.canvasAktif.width, ha_blitz.Main.canvasAktif.height);
+			ctx.fillRect(0, 0, ha.Main.canvasAktif.panjang, ha.Main.canvasAktif.lebar);
 		}
 
 		static Color = (r: number = 0, g: number = 0, b: number = 0, a: number = 1) => {
-			let ctx: CanvasRenderingContext2D = ha_blitz.Main.canvasAktif.ctx;
+			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 			ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 			ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 		}
 
 		static Grafis = (width: number = 320, height: number = 240, gl: boolean = true, pixel: boolean = true): void => {
-			let canvas: IGambar = ha_blitz.Main.canvasAktif;
+			let canvas: IGambar = ha.Main.canvasAktif;
 
 			canvas.canvas.width = width;
 			canvas.canvas.height = height;
-			canvas.width = width;
-			canvas.height = height;
+			canvas.panjang = width;
+			canvas.lebar = height;
 
 			if (gl) {
-				ha_blitz.Main.canvasAktif.canvas.classList.add('gl');
+				ha.Main.canvasAktif.canvas.classList.add('gl');
 			}
 			else {
-				ha_blitz.Main.canvasAktif.canvas.classList.remove('gl');
+				ha.Main.canvasAktif.canvas.classList.remove('gl');
 			}
 
 			if (pixel) {
-				ha_blitz.Main.canvasAktif.canvas.classList.add('pixel');
+				ha.Main.canvasAktif.canvas.classList.add('pixel');
 			}
 
 			// ha_blitz.Main.windowResize();
 		}
 
 		static Garis = (x1: number, y1: number, x2: number, y2: number) => {
-			let ctx: CanvasRenderingContext2D = ha_blitz.Main.canvasAktif.ctx;
+			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 			x1 = Math.floor(x1);
 			y1 = Math.floor(y1);
 			x2 = Math.floor(x2);
@@ -85,12 +85,12 @@ namespace ha_blitz {
 		}
 
 		static Kotak = (x1: number, y1: number, x2: number, y2: number) => {
-			let ctx: CanvasRenderingContext2D = ha_blitz.Main.canvasAktif.ctx;
+			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 			ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
 		}
 
 		static SetBuffer = (buffer: IGambar) => {
-			ha_blitz.Main.canvasAktif = buffer
+			ha.Main.canvasAktif = buffer
 		}
 
 		public static get canvasAktif(): IGambar {

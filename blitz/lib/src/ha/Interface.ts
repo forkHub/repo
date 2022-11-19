@@ -65,20 +65,22 @@ interface IInputData {
 
 interface IGambar {
 	img: HTMLImageElement;
-	width: number;
-	height: number;
+	panjang: number;
+	lebar: number;
 	frameW: number;
 	frameH: number;
-	handleX: number;
-	handleY: number;
 	rotation: number;
-	scaleX: number;
-	scaleY: number;
 	isAnim: boolean;
 	canvas: HTMLCanvasElement;
 	ctx: CanvasRenderingContext2D;
 	rect: IRect;
-	load: boolean
+	load: boolean;
+
+	handleX: number;	//dipakai cuman pas saat gambar, dan perhitungan geometri, posisi tetap pakai x
+	handleY: number;	//dipakai cuman pas saat gambar
+
+	ratioX?: number,	//buat canvas buffer saat window resize
+	ratioY?: number
 }
 
 //geom

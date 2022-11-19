@@ -43,7 +43,7 @@ namespace ha {
 				e.stopPropagation();
 				// e.preventDefault();
 
-				let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.scaleX, buffer.scaleY);
+				let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
 				let key: string = this.getMouseKeyId(e);
 				let input: IInput = ha.input.baru(key, e.pointerType);
 
@@ -53,7 +53,7 @@ namespace ha {
 				if ("mouse" == e.pointerType) ha.input.event.down(this._mouseGlobal, key, 'mouse', pos);
 				if ("touch" == e.pointerType) ha.input.event.down(this._touchGlobal, key, 'touch', pos);
 
-				ha_blitz.Sprite.inputDown(pos)
+				ha.Sprite.inputDown(pos)
 			}
 
 			buffer.canvas.onpointermove = (e: PointerEvent) => {
@@ -69,8 +69,8 @@ namespace ha {
 
 				//sprite	
 				//sprite move
-				let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.scaleX, buffer.scaleY);
-				ha_blitz.Sprite.inputMove(pos);
+				let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
+				ha.Sprite.inputMove(pos);
 			}
 
 			buffer.canvas.onpointerout = (e: PointerEvent) => {
@@ -103,7 +103,7 @@ namespace ha {
 
 				//sprite up
 				//sprite hit
-				ha_blitz.Sprite.daftar.forEach((item: ISprite) => {
+				ha.Sprite.daftar.forEach((item: ISprite) => {
 					if (item.down) {
 						item.hit++;
 					}
@@ -284,7 +284,7 @@ namespace ha {
 	class EventHandler {
 
 		move(input: IInput, buffer: IGambar, e: PointerEvent): void {
-			let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.scaleX, buffer.scaleY);
+			let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
 			input.x = pos.x;
 			input.y = pos.y;
 			input.id = e.pointerId;

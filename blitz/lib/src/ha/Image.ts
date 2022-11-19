@@ -1,4 +1,4 @@
-namespace ha_blitz {
+namespace ha {
 	export class Image {
 		// readonly daftar: IGambar[] = [];
 
@@ -12,8 +12,8 @@ namespace ha_blitz {
 			let rect: IRect = ha.Rect.create(0, 0, frameW, frameH);
 
 			img = {
-				width: w,
-				height: h,
+				panjang: w,
+				lebar: h,
 				img: null,
 				frameH: frameH,
 				frameW: frameW,
@@ -21,8 +21,8 @@ namespace ha_blitz {
 				handleY: 0,
 				rotation: 0,
 				isAnim: false,
-				scaleX: 1,
-				scaleY: 1,
+				// scaleX: 1,
+				// scaleY: 1,
 				canvas: canvas,
 				ctx: canvas.getContext('2d'),
 				rect: rect,
@@ -32,8 +32,8 @@ namespace ha_blitz {
 			return img;
 		}
 
-		static panjangGambar(gbr: IGambar): number { return gbr.frameW * gbr.scaleX; };
-		static lebarGambar(gbr: IGambar): number { return gbr.frameH * gbr.scaleY; };
+		static panjangGambar(gbr: IGambar): number { return gbr.panjang; };
+		static lebarGambar(gbr: IGambar): number { return gbr.lebar; };
 		static handleXGambar(gbr: IGambar): number { return gbr.handleX; };
 		static handleYGambar(gbr: IGambar): number { return gbr.handleY; };
 
@@ -43,24 +43,24 @@ namespace ha_blitz {
 		};
 
 		static gambarTabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean {
-			ha_blitz.image.resetImageRect(gbr1);
-			ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
+			ha.image.resetImageRect(gbr1);
+			ha.image.rectToImageTransform(gbr1, x1, y1);
 
-			ha_blitz.image.resetImageRect(gbr2);
-			ha_blitz.image.rectToImageTransform(gbr2, x2, y2);
+			ha.image.resetImageRect(gbr2);
+			ha.image.rectToImageTransform(gbr2, x2, y2);
 
 			return ha.Rect.collide(gbr1.rect, gbr2.rect);
 		};
 
 		static dotDidalamGambar(gbr1: IGambar, x1: number, y1: number, x2: number, y2: number): boolean {
-			ha_blitz.image.resetImageRect(gbr1);
-			ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
+			ha.image.resetImageRect(gbr1);
+			ha.image.rectToImageTransform(gbr1, x1, y1);
 
 			return ha.Rect.collideDot(gbr1.rect, x2, y2);
 		};
 
 		static async muatGambarAnimasi(url: string, fw: number = 32, fh: number = 32): Promise<IGambar> {
-			let img: HTMLImageElement = await ha_blitz.image.loadImage(url);
+			let img: HTMLImageElement = await ha.image.loadImage(url);
 			let canvas: HTMLCanvasElement = document.createElement('canvas');
 			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
 			let rect: IRect;
@@ -73,8 +73,8 @@ namespace ha_blitz {
 
 			return {
 				img: img,
-				width: img.naturalWidth,
-				height: img.naturalHeight,
+				panjang: img.naturalWidth,
+				lebar: img.naturalHeight,
 				frameH: fw,
 				frameW: fh,
 				// width2: w,
@@ -83,8 +83,8 @@ namespace ha_blitz {
 				handleX: 0,
 				handleY: 0,
 				rotation: 0,
-				scaleX: 1,
-				scaleY: 1,
+				// scaleX: 1,
+				// scaleY: 1,
 				ctx: ctx,
 				canvas: canvas,
 				rect: rect,
@@ -92,12 +92,119 @@ namespace ha_blitz {
 			}
 		}
 
+		static muatGambarAnimasiAsync(url: string, fw: number = 32, fh: number = 32): IGambar {
+			let img: HTMLImageElement = document.createElement('img'); //;
+			let canvas: HTMLCanvasElement = document.createElement('canvas');
+			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+			let rect: IRect;
+
+			// canvas.width = img.naturalWidth;
+			// canvas.height = img.naturalHeight;
+			// ctx.drawImage(img, 0, 0);
+
+			rect = ha.Rect.create(0, 0, fw, fh);
+
+			let gbr: IGambar = {
+				img: img,
+				panjang: img.naturalWidth,
+				lebar: img.naturalHeight,
+				frameH: fw,
+				frameW: fh,
+				// width2: w,
+				// height2: h,
+				isAnim: true,
+				handleX: 0,
+				handleY: 0,
+				rotation: 0,
+				// scaleX: 1,
+				// scaleY: 1,
+				ctx: ctx,
+				canvas: canvas,
+				rect: rect,
+				load: false
+			}
+
+			img.onload = () => {
+				canvas.width = img.naturalWidth;
+				canvas.height = img.naturalHeight;
+				ctx.drawImage(img, 0, 0);
+				// gbr.rect = ha.Rect.create(0, 0, fw, fh);
+				gbr.load = true;
+				gbr.panjang = img.naturalWidth;
+				gbr.lebar = img.naturalHeight;
+				// gbr.frameH = img.naturalHeight;
+				// gbr.frameW = img.naturalWidth;
+				// console.log(gbr);
+			}
+
+			img.onerror = () => {
+				console.log('gagal load image, url ' + url);
+				//TODO: default image
+			}
+
+			img.src = url;
+
+			return gbr;
+		}
+
+		static muatAsync(url: string): IGambar {
+			let img: HTMLImageElement = document.createElement('img'); //ha_blitz.image.loadImageAsync(url, () => { }, () => { });
+			let canvas: HTMLCanvasElement = document.createElement('canvas');
+			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+			let rect: IRect;
+
+			rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+
+			let gbr: IGambar = {
+				img: img,
+				panjang: img.naturalWidth,
+				lebar: img.naturalHeight,
+				frameH: img.naturalHeight,
+				frameW: img.naturalWidth,
+				isAnim: false,
+				handleX: 0,
+				handleY: 0,
+				rotation: 0,
+				// scaleX: 1,
+				// scaleY: 1,
+				ctx: ctx,
+				canvas: canvas,
+				rect: rect,
+				load: false
+			}
+
+			img.onload = () => {
+				canvas.width = img.naturalWidth;
+				canvas.height = img.naturalHeight;
+				ctx.drawImage(img, 0, 0);
+				gbr.rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+				gbr.load = true;
+				gbr.panjang = img.naturalWidth;
+				gbr.lebar = img.naturalHeight;
+				gbr.frameH = img.naturalHeight;
+				gbr.frameW = img.naturalWidth;
+				// console.log(gbr);
+				console.log('gambar di load');
+			}
+
+			img.onerror = () => {
+				console.log('gagal load image, url ' + url);
+				//TODO: default image
+			}
+
+			img.src = url;
+
+			// ha_blitz.image.daftar.push(gbr);
+
+			return gbr;
+		}
+
 		static gambarUbin(gbr: IGambar, x: number = 0, y: number = 0, frame: number = 0) {
 			let jmlH: number = 0;
 			let jmlV: number = 0;
 
-			let w2: number = Math.floor(gbr.frameW * gbr.scaleX);
-			let h2: number = Math.floor(gbr.frameH * gbr.scaleY);
+			let w2: number = Math.floor(gbr.panjang);
+			let h2: number = Math.floor(gbr.lebar);
 
 			while (x < 0) {
 				x += w2;
@@ -112,8 +219,8 @@ namespace ha_blitz {
 
 			frame = Math.floor(frame);
 
-			jmlH = Math.ceil((ha_blitz.Main.canvasAktif.width + Math.abs(x)) / w2);
-			jmlV = Math.ceil((ha_blitz.Main.canvasAktif.height + Math.abs(y)) / h2);
+			jmlH = Math.ceil((ha.Main.canvasAktif.panjang + Math.abs(x)) / w2);
+			jmlV = Math.ceil((ha.Main.canvasAktif.lebar + Math.abs(y)) / h2);
 
 			for (let i: number = 0; i < jmlH; i++) {
 				for (let j: number = 0; j < jmlV; j++) {
@@ -126,14 +233,14 @@ namespace ha_blitz {
 			gbr.rotation = sudut;
 		}
 
-		static skalaGambar(gbr: IGambar, skalaX: number = 1, skalaY: number = 1) {
-			gbr.scaleX = skalaX;
-			gbr.scaleY = skalaY;
-		}
+		// static skalaGambar(gbr: IGambar, skalaX: number = 1, skalaY: number = 1) {
+		// 	gbr.scaleX = skalaX;
+		// 	gbr.scaleY = skalaY;
+		// }
 
 		static ambilPiksel(x: number = 0, y: number = 0): number[] {
 			try {
-				let data: Uint8ClampedArray = ha_blitz.Main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
+				let data: Uint8ClampedArray = ha.Main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
 
 				let hasil: number[] = [];
 				hasil.push(data[0]);
@@ -152,13 +259,13 @@ namespace ha_blitz {
 
 		//TODO: dep
 		static setWarna(r: number = 255, g: number = 255, b: number = 255, a: number = 1) {
-			let ctx: CanvasRenderingContext2D = ha_blitz.Main.canvasAktif.ctx;
+			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 			ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 			ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 		}
 
 		static setPiksel(x: number = 0, y: number = 0) {
-			ha_blitz.Main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
+			ha.Main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
 		}
 
 		static posisiHandleGambar(gbr: IGambar, x: number = 0, y: number = 0) {
@@ -167,7 +274,7 @@ namespace ha_blitz {
 		}
 
 		static grabGambar(gbr: IGambar, x: number = 0, y: number = 0) {
-			gbr.ctx.drawImage(ha_blitz.Main.canvasAktif.canvas, x, y, gbr.width, gbr.height, 0, 0, gbr.width, gbr.height);
+			gbr.ctx.drawImage(ha.Main.canvasAktif.canvas, x, y, gbr.panjang, gbr.lebar, 0, 0, gbr.panjang, gbr.lebar);
 		}
 
 		// static copyGambar(src: IGambar): IGambar {
@@ -190,8 +297,15 @@ namespace ha_blitz {
 		// 	}
 		// }
 
+		static async tungguLoad(): Promise<void> {
+			return new Promise((resolve, reject) => {
+				resolve;
+				reject
+			});
+		}
+
 		static async muat(url: string): Promise<IGambar> {
-			let img: HTMLImageElement = await ha_blitz.image.loadImage(url);
+			let img: HTMLImageElement = await ha.image.loadImage(url);
 			let canvas: HTMLCanvasElement = document.createElement('canvas');
 			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
 			let rect: IRect;
@@ -204,16 +318,16 @@ namespace ha_blitz {
 
 			let gbr: IGambar = {
 				img: img,
-				width: img.naturalWidth,
-				height: img.naturalHeight,
+				panjang: img.naturalWidth,
+				lebar: img.naturalHeight,
 				frameH: img.naturalHeight,
 				frameW: img.naturalWidth,
 				isAnim: false,
 				handleX: 0,
 				handleY: 0,
 				rotation: 0,
-				scaleX: 1,
-				scaleY: 1,
+				// scaleX: 1,
+				// scaleY: 1,
 				ctx: ctx,
 				canvas: canvas,
 				rect: rect,
@@ -225,62 +339,16 @@ namespace ha_blitz {
 			return gbr;
 		}
 
-		static muatAsync(url: string): IGambar {
-			let img: HTMLImageElement = document.createElement('img'); //ha_blitz.image.loadImageAsync(url, () => { }, () => { });
-			let canvas: HTMLCanvasElement = document.createElement('canvas');
-			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-			let rect: IRect;
-
-			rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
-
-			let gbr: IGambar = {
-				img: img,
-				width: img.naturalWidth,
-				height: img.naturalHeight,
-				frameH: img.naturalHeight,
-				frameW: img.naturalWidth,
-				isAnim: false,
-				handleX: 0,
-				handleY: 0,
-				rotation: 0,
-				scaleX: 1,
-				scaleY: 1,
-				ctx: ctx,
-				canvas: canvas,
-				rect: rect,
-				load: false
-			}
-
-			img.onload = () => {
-				ctx.drawImage(img, 0, 0);
-				canvas.width = img.naturalWidth;
-				canvas.height = img.naturalHeight;
-				gbr.rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
-				// rect.
-			}
-
-			img.onerror = () => {
-				console.log('gagal load image, url ' + url);
-				//TODO: default image
-			}
-
-			img.src = url;
-
-			// ha_blitz.image.daftar.push(gbr);
-
-			return gbr;
-		}
-
 		static gambar(gbr: IGambar, x: number = 0, y: number = 0, frame: number = 0) {
-			let ctx: CanvasRenderingContext2D = ha_blitz.Main.canvasAktif.ctx;
-			let jmlH: number;
-			let jmlV: number;
-			let frameX: number;
-			let frameY: number;
+			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
+			let jmlH: number = 0;
+			let jmlV: number = 0;
+			let frameX: number = 0;
+			let frameY: number = 0;
 			// let rect: IRect = img.rect;
 
-			jmlH = Math.floor(gbr.width / gbr.frameW);
-			jmlV = Math.floor(gbr.height / gbr.frameH);
+			jmlH = Math.floor(gbr.panjang / gbr.frameW);
+			jmlV = Math.floor(gbr.lebar / gbr.frameH);
 
 			frameX = (frame % jmlH);
 			frameY = Math.floor(frame / jmlV);
@@ -294,8 +362,8 @@ namespace ha_blitz {
 			let x2: number = Math.floor(x);
 			let y2: number = Math.floor(y);
 
-			let w2: number = Math.floor(gbr.frameW * gbr.scaleX);
-			let h2: number = Math.floor(gbr.frameH * gbr.scaleY);
+			let w2: number = Math.floor(gbr.panjang);
+			let h2: number = Math.floor(gbr.lebar);
 
 			x2 -= (gbr.handleX);
 			y2 -= (gbr.handleY);
@@ -311,12 +379,14 @@ namespace ha_blitz {
 				ctx.drawImage(gbr.canvas, frameX, frameY, gbr.frameW, gbr.frameH, x2, y2, w2, h2);
 			}
 
+			// debugger;
+
 		}
 
-		handleTengah = (gbr: IGambar) => {
-			gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
-			gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
-		}
+		// handleTengah = (gbr: IGambar) => {
+		// 	gbr.handleX = Math.floor(gbr.panjang / 2);
+		// 	gbr.handleY = Math.floor(gbr.lebar / 2);
+		// }
 
 		/**
 		 * Ubah Ukuran Gambar
@@ -325,8 +395,10 @@ namespace ha_blitz {
 		 * @param h 
 		 */
 		ukuranGambar(gbr: IGambar, w: number, h: number): void {
-			gbr.scaleX = Math.floor(w) / gbr.frameW;
-			gbr.scaleY = Math.floor(h) / gbr.frameH;
+			// gbr.scaleX = Math.floor(w) / gbr.frameW;
+			// gbr.scaleY = Math.floor(h) / gbr.frameH;
+			gbr.panjang = w;
+			gbr.lebar = h;
 		}
 
 		// loadImageAsync = (url: string, ok: () => void, error: () => void): HTMLImageElement => {
@@ -386,8 +458,8 @@ namespace ha_blitz {
 		rectToImageTransform(image: IGambar, x: number, y: number): void {
 			let rect: IRect = image.rect;
 			let p: IV2D;
-			let x2: number = image.frameW * image.scaleX;
-			let y2: number = image.frameH * image.scaleY;
+			let x2: number = image.panjang
+			let y2: number = image.lebar;
 
 			//scale
 			p = rect.vs[1];

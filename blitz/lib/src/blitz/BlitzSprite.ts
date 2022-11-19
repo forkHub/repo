@@ -1,16 +1,17 @@
-///<reference path="../ha/blitz/Sprite.ts"/>
+///<reference path="./Route.ts"/>
 
 /** BLITZ-SPRITE.TS */
-const Buat = ha_blitz.Sprite.buat;
-const Muat = ha_blitz.Sprite.muatAsync;
-const Posisi = ha_blitz.Sprite.posisi;
-const Ukuran = ha_blitz.Sprite.ukuranGambar;
-const HandleTengah = ha_blitz.Sprite.handleTengah;
-const PosisiPolar = ha_blitz.Sprite.posisiPolar;
-const Gambar = ha_blitz.Sprite.gambar;
-const GambarSemua = ha_blitz.Sprite.gambarSemua;
-const PosisiX = ha_blitz.Sprite.posisiX;
-const PosisiY = ha_blitz.Sprite.posisiY;
+const Buat = ha.Sprite.buat;
+const Muat = ha.Sprite.muatAsync;
+const Posisi = ha.Sprite.posisi;
+const Ukuran = ha.Sprite.ukuranGambar;
+const PosisiPolar = ha.Sprite.posisiPolar;
+const Gambar = ha.Sprite.gambar;
+const GambarSemua = ha.Sprite.gambarSemua;
+const PosisiX = ha.Sprite.posisiX;
+const PosisiY = ha.Sprite.posisiY;
+const Handle = ha.Sprite.handle;
+const Rotasi = ha.Sprite.rotasi;
 
 const PosisiJarakSprite = () => { }
 const Copy = () => { };
@@ -24,7 +25,6 @@ const Tabrakan = () => { }
 const DotDiDalam = () => { }
 const MuatAnimasi = () => { }
 const Ubin = () => { }
-const Putar = () => { }
 const Skala = () => { }
 
 const Piksel = () => { }

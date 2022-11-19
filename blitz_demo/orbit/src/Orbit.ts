@@ -1,25 +1,18 @@
-//DECLARE GLOBAL VARIABLE
+Grafis(480, 480);
 let matahari: ISprite;
 let bumi: ISprite;
 let sudut: number = 10;
 
-//START PROGRAM
-async function Mulai(): Promise<void> {
-	Grafis(480, 480);
+matahari = Muat("./gbr/matahari.png", true);
+Ukuran(matahari, 100, 100);
+HandleTengah(matahari);
+Posisi(matahari, 240, 240);
 
-	matahari = await MuatSprite("./gbr/matahari.png", true);
-	UkuranSprite(matahari, 100, 100);
-	HandleSpriteTengah(matahari);
-	PosisiSprite(matahari, 240, 240);
+bumi = Muat("./gbr/bumi.png");
+Ukuran(bumi, 50, 50);
+HandleTengah(bumi);
 
-	bumi = await MuatSprite("./gbr/bumi.png", true);
-	UkuranSprite(bumi, 50, 50);
-	HandleSpriteTengah(bumi);
-	PosisiSprite(bumi, 500, 240);
-}
-
-//LOOOP
-async function Loop(): Promise<void> {
+function Loop(): void {
 	Bersih();
 
 	sudut++;
@@ -27,6 +20,6 @@ async function Loop(): Promise<void> {
 		sudut -= 360;
 	}
 
-	PosisiPolarSprite(bumi, sudut, 160, PosisiXSprite(matahari), PosisiYSprite(matahari));
-	TaruhSemuaSprite();
+	PosisiPolar(bumi, sudut, 160, PosisiX(matahari), PosisiY(matahari));
+	GambarSemua();
 }

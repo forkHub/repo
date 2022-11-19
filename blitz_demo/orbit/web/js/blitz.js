@@ -1,19 +1,18 @@
-var ha_blitz;
-(function (ha_blitz) {
+var ha;
+(function (ha) {
     class Main {
-        _fps = 1000 / 30;
-        _origin;
-        _canvasAr = [];
-        _canvasAktif;
-        buatCanvas(canvasEl) {
-            // let canvasEl: HTMLCanvasElement = window.document.body.querySelector(`canvas.${buffer}`);
+        static _fps = 1000 / 30;
+        static _origin;
+        static _canvasAr = [];
+        static _canvasAktif;
+        static buatCanvas(canvasEl) {
             let canvas = {
                 canvas: canvasEl,
                 ctx: canvasEl.getContext('2d'),
-                height: canvasEl.height,
-                scaleX: 1,
-                scaleY: 1,
-                width: canvasEl.width,
+                lebar: canvasEl.height,
+                // scaleX: 1,
+                // scaleY: 1,
+                panjang: canvasEl.width,
                 frameH: canvasEl.height,
                 frameW: canvasEl.width,
                 handleX: 0,
@@ -21,75 +20,440 @@ var ha_blitz;
                 img: null,
                 isAnim: false,
                 rotation: 0,
-                rect: ha.Rect.create()
+                rect: ha.Rect.create(),
+                load: true
             };
             return canvas;
         }
-        init(canvasBelakang, canvasDepan) {
+        static init(canvasBelakang, canvasDepan) {
             let canvas = this.buatCanvas(canvasBelakang);
             this._canvasAr.push(canvas);
             canvas = this.buatCanvas(canvasDepan);
             this._canvasAr.push(canvas);
-            ha_blitz.main.canvasAktif = canvas;
+            ha.Main.canvasAktif = canvas;
         }
-        get canvasAktif() {
+        static Bersih = (r = 0, g = 0, b = 0, alpha = 1) => {
+            let ctx = ha.Main.canvasAktif.ctx;
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            ctx.fillRect(0, 0, ha.Main.canvasAktif.panjang, ha.Main.canvasAktif.lebar);
+        };
+        static Color = (r = 0, g = 0, b = 0, a = 1) => {
+            let ctx = ha.Main.canvasAktif.ctx;
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+        };
+        static Grafis = (width = 320, height = 240, gl = true, pixel = true) => {
+            let canvas = ha.Main.canvasAktif;
+            canvas.canvas.width = width;
+            canvas.canvas.height = height;
+            canvas.panjang = width;
+            canvas.lebar = height;
+            if (gl) {
+                ha.Main.canvasAktif.canvas.classList.add('gl');
+            }
+            else {
+                ha.Main.canvasAktif.canvas.classList.remove('gl');
+            }
+            if (pixel) {
+                ha.Main.canvasAktif.canvas.classList.add('pixel');
+            }
+            // ha_blitz.Main.windowResize();
+        };
+        static Garis = (x1, y1, x2, y2) => {
+            let ctx = ha.Main.canvasAktif.ctx;
+            x1 = Math.floor(x1);
+            y1 = Math.floor(y1);
+            x2 = Math.floor(x2);
+            y2 = Math.floor(y2);
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        };
+        static Kotak = (x1, y1, x2, y2) => {
+            let ctx = ha.Main.canvasAktif.ctx;
+            ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+        };
+        static SetBuffer = (buffer) => {
+            ha.Main.canvasAktif = buffer;
+        };
+        static get canvasAktif() {
             return this._canvasAktif;
         }
-        set canvasAktif(value) {
+        static set canvasAktif(value) {
             this._canvasAktif = value;
         }
-        get canvasAr() {
+        static get canvasAr() {
             return this._canvasAr;
         }
-        set canvasAr(value) {
+        static set canvasAr(value) {
             this._canvasAr = value;
         }
-        get origin() {
+        static get origin() {
             return this._origin;
         }
-        set origin(value) {
+        static set origin(value) {
             this._origin = value;
         }
-        get fps() {
+        static get fps() {
             return this._fps;
         }
-        set fps(value) {
+        static set fps(value) {
             this._fps = value;
         }
     }
-    ha_blitz.main = new Main();
-})(ha_blitz || (ha_blitz = {}));
-var ha_blitz;
-(function (ha_blitz) {
+    ha.Main = Main;
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
     class Image {
-        daftar = [];
-        buat(img, ctx, canvas, rect) {
+        // readonly daftar: IGambar[] = [];
+        static buatGambar(w = 32, h = 32, frameW = 32, frameH = 32) {
+            let canvas = document.createElement('canvas');
+            let img;
+            canvas.width = w;
+            canvas.height = h;
+            let rect = ha.Rect.create(0, 0, frameW, frameH);
+            img = {
+                panjang: w,
+                lebar: h,
+                img: null,
+                frameH: frameH,
+                frameW: frameW,
+                handleX: 0,
+                handleY: 0,
+                rotation: 0,
+                isAnim: false,
+                // scaleX: 1,
+                // scaleY: 1,
+                canvas: canvas,
+                ctx: canvas.getContext('2d'),
+                rect: rect,
+                load: true
+            };
+            return img;
+        }
+        static panjangGambar(gbr) { return gbr.panjang; }
+        ;
+        static lebarGambar(gbr) { return gbr.lebar; }
+        ;
+        static handleXGambar(gbr) { return gbr.handleX; }
+        ;
+        static handleYGambar(gbr) { return gbr.handleY; }
+        ;
+        //TODO:
+        static gambarOverlap(gbr1, x1, y1, gbr2, x2, y2) {
+            GambarTabrakan(gbr1, x1, y1, gbr2, x2, y2);
+        }
+        ;
+        static gambarTabrakan(gbr1, x1, y1, gbr2, x2, y2) {
+            ha.image.resetImageRect(gbr1);
+            ha.image.rectToImageTransform(gbr1, x1, y1);
+            ha.image.resetImageRect(gbr2);
+            ha.image.rectToImageTransform(gbr2, x2, y2);
+            return ha.Rect.collide(gbr1.rect, gbr2.rect);
+        }
+        ;
+        static dotDidalamGambar(gbr1, x1, y1, x2, y2) {
+            ha.image.resetImageRect(gbr1);
+            ha.image.rectToImageTransform(gbr1, x1, y1);
+            return ha.Rect.collideDot(gbr1.rect, x2, y2);
+        }
+        ;
+        static async muatGambarAnimasi(url, fw = 32, fh = 32) {
+            let img = await ha.image.loadImage(url);
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            let rect;
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            ctx.drawImage(img, 0, 0);
+            rect = ha.Rect.create(0, 0, fw, fh);
+            return {
+                img: img,
+                panjang: img.naturalWidth,
+                lebar: img.naturalHeight,
+                frameH: fw,
+                frameW: fh,
+                // width2: w,
+                // height2: h,
+                isAnim: true,
+                handleX: 0,
+                handleY: 0,
+                rotation: 0,
+                // scaleX: 1,
+                // scaleY: 1,
+                ctx: ctx,
+                canvas: canvas,
+                rect: rect,
+                load: true
+            };
+        }
+        static muatGambarAnimasiAsync(url, fw = 32, fh = 32) {
+            let img = document.createElement('img'); //;
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            let rect;
+            // canvas.width = img.naturalWidth;
+            // canvas.height = img.naturalHeight;
+            // ctx.drawImage(img, 0, 0);
+            rect = ha.Rect.create(0, 0, fw, fh);
             let gbr = {
                 img: img,
-                width: img.naturalWidth,
-                height: img.naturalHeight,
+                panjang: img.naturalWidth,
+                lebar: img.naturalHeight,
+                frameH: fw,
+                frameW: fh,
+                // width2: w,
+                // height2: h,
+                isAnim: true,
+                handleX: 0,
+                handleY: 0,
+                rotation: 0,
+                // scaleX: 1,
+                // scaleY: 1,
+                ctx: ctx,
+                canvas: canvas,
+                rect: rect,
+                load: false
+            };
+            img.onload = () => {
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                ctx.drawImage(img, 0, 0);
+                // gbr.rect = ha.Rect.create(0, 0, fw, fh);
+                gbr.load = true;
+                gbr.panjang = img.naturalWidth;
+                gbr.lebar = img.naturalHeight;
+                // gbr.frameH = img.naturalHeight;
+                // gbr.frameW = img.naturalWidth;
+                // console.log(gbr);
+            };
+            img.onerror = () => {
+                console.log('gagal load image, url ' + url);
+                //TODO: default image
+            };
+            img.src = url;
+            return gbr;
+        }
+        static muatAsync(url) {
+            let img = document.createElement('img'); //ha_blitz.image.loadImageAsync(url, () => { }, () => { });
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            let rect;
+            rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+            let gbr = {
+                img: img,
+                panjang: img.naturalWidth,
+                lebar: img.naturalHeight,
                 frameH: img.naturalHeight,
                 frameW: img.naturalWidth,
                 isAnim: false,
                 handleX: 0,
                 handleY: 0,
                 rotation: 0,
-                scaleX: 1,
-                scaleY: 1,
+                // scaleX: 1,
+                // scaleY: 1,
                 ctx: ctx,
                 canvas: canvas,
-                rect: rect
+                rect: rect,
+                load: false
             };
+            img.onload = () => {
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                ctx.drawImage(img, 0, 0);
+                gbr.rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+                gbr.load = true;
+                gbr.panjang = img.naturalWidth;
+                gbr.lebar = img.naturalHeight;
+                gbr.frameH = img.naturalHeight;
+                gbr.frameW = img.naturalWidth;
+                // console.log(gbr);
+                console.log('gambar di load');
+            };
+            img.onerror = () => {
+                console.log('gagal load image, url ' + url);
+                //TODO: default image
+            };
+            img.src = url;
+            // ha_blitz.image.daftar.push(gbr);
             return gbr;
         }
-        handleTengah = (gbr) => {
-            gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
-            gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
-        };
-        ukuranGambar(gbr, w, h) {
-            gbr.scaleX = Math.floor(w) / gbr.frameW;
-            gbr.scaleY = Math.floor(h) / gbr.frameH;
+        static gambarUbin(gbr, x = 0, y = 0, frame = 0) {
+            let jmlH = 0;
+            let jmlV = 0;
+            let w2 = Math.floor(gbr.panjang);
+            let h2 = Math.floor(gbr.lebar);
+            while (x < 0) {
+                x += w2;
+            }
+            while (y < 0) {
+                y += h2;
+            }
+            x -= w2;
+            y -= h2;
+            frame = Math.floor(frame);
+            jmlH = Math.ceil((ha.Main.canvasAktif.panjang + Math.abs(x)) / w2);
+            jmlV = Math.ceil((ha.Main.canvasAktif.lebar + Math.abs(y)) / h2);
+            for (let i = 0; i < jmlH; i++) {
+                for (let j = 0; j < jmlV; j++) {
+                    TaruhGambar(gbr, x + (i * w2), y + (j * h2), frame);
+                }
+            }
         }
+        static putarGambar(gbr, sudut = 0) {
+            gbr.rotation = sudut;
+        }
+        // static skalaGambar(gbr: IGambar, skalaX: number = 1, skalaY: number = 1) {
+        // 	gbr.scaleX = skalaX;
+        // 	gbr.scaleY = skalaY;
+        // }
+        static ambilPiksel(x = 0, y = 0) {
+            try {
+                let data = ha.Main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
+                let hasil = [];
+                hasil.push(data[0]);
+                hasil.push(data[1]);
+                hasil.push(data[2]);
+                hasil.push(data[3]);
+                return hasil;
+            }
+            catch (e) {
+                console.error(e);
+            }
+            return [0, 0, 0];
+        }
+        //TODO: dep
+        static setWarna(r = 255, g = 255, b = 255, a = 1) {
+            let ctx = ha.Main.canvasAktif.ctx;
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+        }
+        static setPiksel(x = 0, y = 0) {
+            ha.Main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
+        }
+        static posisiHandleGambar(gbr, x = 0, y = 0) {
+            gbr.handleX = x;
+            gbr.handleY = y;
+        }
+        static grabGambar(gbr, x = 0, y = 0) {
+            gbr.ctx.drawImage(ha.Main.canvasAktif.canvas, x, y, gbr.panjang, gbr.lebar, 0, 0, gbr.panjang, gbr.lebar);
+        }
+        // static copyGambar(src: IGambar): IGambar {
+        // 	return {
+        // 		canvas: src.canvas,
+        // 		ctx: src.ctx,
+        // 		frameH: src.frameH,
+        // 		frameW: src.frameW,
+        // 		handleX: src.handleX,
+        // 		handleY: src.handleY,
+        // 		height: src.height,
+        // 		img: src.img,
+        // 		isAnim: src.isAnim,
+        // 		rect: ha.Rect.copy(src.rect),
+        // 		rotation: src.rotation,
+        // 		scaleX: src.scaleX,
+        // 		scaleY: src.scaleY,
+        // 		width: src.width,
+        // 		load: src.load
+        // 	}
+        // }
+        static async tungguLoad() {
+            return new Promise((resolve, reject) => {
+                resolve;
+                reject;
+            });
+        }
+        static async muat(url) {
+            let img = await ha.image.loadImage(url);
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            let rect;
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            ctx.drawImage(img, 0, 0);
+            rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+            let gbr = {
+                img: img,
+                panjang: img.naturalWidth,
+                lebar: img.naturalHeight,
+                frameH: img.naturalHeight,
+                frameW: img.naturalWidth,
+                isAnim: false,
+                handleX: 0,
+                handleY: 0,
+                rotation: 0,
+                // scaleX: 1,
+                // scaleY: 1,
+                ctx: ctx,
+                canvas: canvas,
+                rect: rect,
+                load: true
+            };
+            // ha_blitz.image.daftar.push(gbr);
+            return gbr;
+        }
+        static gambar(gbr, x = 0, y = 0, frame = 0) {
+            let ctx = ha.Main.canvasAktif.ctx;
+            let jmlH = 0;
+            let jmlV = 0;
+            let frameX = 0;
+            let frameY = 0;
+            // let rect: IRect = img.rect;
+            jmlH = Math.floor(gbr.panjang / gbr.frameW);
+            jmlV = Math.floor(gbr.lebar / gbr.frameH);
+            frameX = (frame % jmlH);
+            frameY = Math.floor(frame / jmlV);
+            frameX *= gbr.frameW;
+            frameY *= gbr.frameH;
+            frameX = Math.floor(frameX);
+            frameY = Math.floor(frameY);
+            let x2 = Math.floor(x);
+            let y2 = Math.floor(y);
+            let w2 = Math.floor(gbr.panjang);
+            let h2 = Math.floor(gbr.lebar);
+            x2 -= (gbr.handleX);
+            y2 -= (gbr.handleY);
+            if (gbr.rotation != 0) {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(gbr.rotation * (Math.PI / 180));
+                ctx.drawImage(gbr.img, frameX, frameY, gbr.frameW, gbr.frameH, -gbr.handleX, -gbr.handleY, w2, h2);
+                ctx.restore();
+            }
+            else {
+                ctx.drawImage(gbr.canvas, frameX, frameY, gbr.frameW, gbr.frameH, x2, y2, w2, h2);
+            }
+            // debugger;
+        }
+        // handleTengah = (gbr: IGambar) => {
+        // 	gbr.handleX = Math.floor(gbr.panjang / 2);
+        // 	gbr.handleY = Math.floor(gbr.lebar / 2);
+        // }
+        /**
+         * Ubah Ukuran Gambar
+         * @param gbr
+         * @param w
+         * @param h
+         */
+        ukuranGambar(gbr, w, h) {
+            // gbr.scaleX = Math.floor(w) / gbr.frameW;
+            // gbr.scaleY = Math.floor(h) / gbr.frameH;
+            gbr.panjang = w;
+            gbr.lebar = h;
+        }
+        // loadImageAsync = (url: string, ok: () => void, error: () => void): HTMLImageElement => {
+        // 	let image2: HTMLImageElement = document.createElement('img');
+        // 	image2.src = url;
+        // 	image2.onload = () => {
+        // 		ok();
+        // 	}
+        // 	image2.onerror = (e) => {
+        // 		error();
+        // 	}
+        // 	return image2;
+        // }
         loadImage = async (url) => {
             return new Promise((resolve, reject) => {
                 let image2 = document.createElement('img');
@@ -121,8 +485,8 @@ var ha_blitz;
         rectToImageTransform(image, x, y) {
             let rect = image.rect;
             let p;
-            let x2 = image.frameW * image.scaleX;
-            let y2 = image.frameH * image.scaleY;
+            let x2 = image.panjang;
+            let y2 = image.lebar;
             //scale
             p = rect.vs[1];
             p.x = x2;
@@ -140,458 +504,13 @@ var ha_blitz;
             ha.Rect.rotate(rect, image.rotation, x, y);
         }
     }
-    ha_blitz.image = new Image();
-})(ha_blitz || (ha_blitz = {}));
-///<reference path="../ha/blitz/Main.ts"/>
-///<reference path="../ha/blitz/Image.ts"/>
-/**
- * IMAGE
- */
-//TODO: test
-const BuatGambar = (w = 32, h = 32, frameW = 32, frameH = 32) => {
-    let canvas = document.createElement('canvas');
-    let img;
-    canvas.width = w;
-    canvas.height = h;
-    let rect = ha.Rect.create(0, 0, frameW, frameH);
-    img = {
-        width: w,
-        height: h,
-        img: null,
-        frameH: frameH,
-        frameW: frameW,
-        handleX: 0,
-        handleY: 0,
-        rotation: 0,
-        isAnim: false,
-        scaleX: 1,
-        scaleY: 1,
-        canvas: canvas,
-        ctx: canvas.getContext('2d'),
-        rect: rect
-    };
-    return img;
-};
-const CopyGambar = (src) => {
-    return {
-        canvas: src.canvas,
-        ctx: src.ctx,
-        frameH: src.frameH,
-        frameW: src.frameW,
-        handleX: src.handleX,
-        handleY: src.handleY,
-        height: src.height,
-        img: src.img,
-        isAnim: src.isAnim,
-        rect: ha.Rect.copy(src.rect),
-        rotation: src.rotation,
-        scaleX: src.scaleX,
-        scaleY: src.scaleY,
-        width: src.width
-    };
-};
-/* TODO [next]:
- * skip drawing outside
- * image blitting
-*/
-const TaruhGambar = (gbr, x = 0, y = 0, frame = 0) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    let jmlH;
-    let jmlV;
-    let frameX;
-    let frameY;
-    // let rect: IRect = img.rect;
-    jmlH = Math.floor(gbr.width / gbr.frameW);
-    jmlV = Math.floor(gbr.height / gbr.frameH);
-    frameX = (frame % jmlH);
-    frameY = Math.floor(frame / jmlV);
-    frameX *= gbr.frameW;
-    frameY *= gbr.frameH;
-    frameX = Math.floor(frameX);
-    frameY = Math.floor(frameY);
-    let x2 = Math.floor(x);
-    let y2 = Math.floor(y);
-    let w2 = Math.floor(gbr.frameW * gbr.scaleX);
-    let h2 = Math.floor(gbr.frameH * gbr.scaleY);
-    x2 -= (gbr.handleX);
-    y2 -= (gbr.handleY);
-    if (gbr.rotation != 0) {
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(gbr.rotation * (Math.PI / 180));
-        ctx.drawImage(gbr.img, frameX, frameY, gbr.frameW, gbr.frameH, -gbr.handleX, -gbr.handleY, w2, h2);
-        ctx.restore();
-    }
-    else {
-        ctx.drawImage(gbr.canvas, frameX, frameY, gbr.frameW, gbr.frameH, x2, y2, w2, h2);
-    }
-};
-//TODO: test - dihapus
-const GrabGambar = (gbr, x = 0, y = 0) => {
-    gbr.ctx.drawImage(ha_blitz.main.canvasAktif.canvas, x, y, gbr.width, gbr.height, 0, 0, gbr.width, gbr.height);
-};
-const PosisiHandleGambar = (gbr, x = 0, y = 0) => {
-    gbr.handleX = x;
-    gbr.handleY = y;
-};
-//dibuat set dan get
-const PanjangGambar = (gbr) => { return gbr.frameW * gbr.scaleX; };
-const LebarGambar = (gbr) => { return gbr.frameH * gbr.scaleY; };
-const HandleXGambar = (gbr) => { return gbr.handleX; };
-const HandleYGambar = (gbr) => { return gbr.handleY; };
-//TODO:
-const GambarOverlap = (gbr1, x1, y1, gbr2, x2, y2) => {
-    GambarTabrakan(gbr1, x1, y1, gbr2, x2, y2);
-};
-const GambarTabrakan = (gbr1, x1, y1, gbr2, x2, y2) => {
-    ha_blitz.image.resetImageRect(gbr1);
-    ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
-    ha_blitz.image.resetImageRect(gbr2);
-    ha_blitz.image.rectToImageTransform(gbr2, x2, y2);
-    return ha.Rect.collide(gbr1.rect, gbr2.rect);
-};
-const DotDidalamGambar = (gbr1, x1, y1, x2, y2) => {
-    ha_blitz.image.resetImageRect(gbr1);
-    ha_blitz.image.rectToImageTransform(gbr1, x1, y1);
-    return ha.Rect.collideDot(gbr1.rect, x2, y2);
-};
-const HandleTengah = ha_blitz.image.handleTengah;
-// (gbr: IGambar) => {
-// 	gbr.handleX = Math.floor((gbr.frameW * gbr.scaleX) / 2);
-// 	gbr.handleY = Math.floor((gbr.frameH * gbr.scaleY) / 2);
-// }
-const MuatGambar = async (url) => {
-    let img = await ha_blitz.image.loadImage(url);
-    let canvas = document.createElement('canvas');
-    let ctx = canvas.getContext('2d');
-    let rect;
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    ctx.drawImage(img, 0, 0);
-    rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
-    let gbr = {
-        img: img,
-        width: img.naturalWidth,
-        height: img.naturalHeight,
-        frameH: img.naturalHeight,
-        frameW: img.naturalWidth,
-        isAnim: false,
-        handleX: 0,
-        handleY: 0,
-        rotation: 0,
-        scaleX: 1,
-        scaleY: 1,
-        ctx: ctx,
-        canvas: canvas,
-        rect: rect
-    };
-    ha_blitz.image.daftar.push(gbr);
-    return gbr;
-};
-const MuatGambarAnimasi = async (url, fw = 32, fh = 32) => {
-    let img = await ha_blitz.image.loadImage(url);
-    let canvas = document.createElement('canvas');
-    let ctx = canvas.getContext('2d');
-    let rect;
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    ctx.drawImage(img, 0, 0);
-    rect = ha.Rect.create(0, 0, fw, fh);
-    return {
-        img: img,
-        width: img.naturalWidth,
-        height: img.naturalHeight,
-        frameH: fw,
-        frameW: fh,
-        // width2: w,
-        // height2: h,
-        isAnim: true,
-        handleX: 0,
-        handleY: 0,
-        rotation: 0,
-        scaleX: 1,
-        scaleY: 1,
-        ctx: ctx,
-        canvas: canvas,
-        rect: rect
-    };
-};
-const GambarUbin = (gbr, x = 0, y = 0, frame = 0) => {
-    let jmlH = 0;
-    let jmlV = 0;
-    let w2 = Math.floor(gbr.frameW * gbr.scaleX);
-    let h2 = Math.floor(gbr.frameH * gbr.scaleY);
-    while (x < 0) {
-        x += w2;
-    }
-    while (y < 0) {
-        y += h2;
-    }
-    x -= w2;
-    y -= h2;
-    frame = Math.floor(frame);
-    jmlH = Math.ceil((ha_blitz.main.canvasAktif.width + Math.abs(x)) / w2);
-    jmlV = Math.ceil((ha_blitz.main.canvasAktif.height + Math.abs(y)) / h2);
-    for (let i = 0; i < jmlH; i++) {
-        for (let j = 0; j < jmlV; j++) {
-            TaruhGambar(gbr, x + (i * w2), y + (j * h2), frame);
-        }
-    }
-};
-const ResizeGambar = ha_blitz.image.ukuranGambar;
-// (gbr: IGambar, w: number = 1, h: number = 1) => {
-// 	ha_blitz.image.ukuranGambar(gbr, w, h);
-// 	gbr.scaleX = Math.floor(w) / gbr.frameW;
-// 	gbr.scaleY = Math.floor(h) / gbr.frameH;
-// 	console.log(gbr);
-// }
-const PutarGambar = (gbr, sudut = 0) => {
-    gbr.rotation = sudut;
-};
-const SkalaGambar = (gbr, skalaX = 1, skalaY = 1) => {
-    gbr.scaleX = skalaX;
-    gbr.scaleY = skalaY;
-};
-const AmbilPiksel = (x = 0, y = 0) => {
-    try {
-        let data = ha_blitz.main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
-        let hasil = [];
-        hasil.push(data[0]);
-        hasil.push(data[1]);
-        hasil.push(data[2]);
-        hasil.push(data[3]);
-        return hasil;
-    }
-    catch (e) {
-        console.error(e);
-    }
-    return [0, 0, 0];
-};
-//TODO: dep
-const SetWarna = (r = 255, g = 255, b = 255, a = 1) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-    ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-};
-const SetPikel = (x = 0, y = 0) => {
-    ha_blitz.main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
-};
-//TODO: next
-const ImagePivot = () => { };
-const BackgroundImage = () => { };
-const MainLayer = () => { };
-const CreateLayer = () => { };
-const LayerZ = () => { };
-//ignored
-//const TFormImage = () => { }
-//const FeeImage = () => { }
-//const DrawImageRect = () => { }
-//const ImageBuffer = () => { }
-///<reference path="../ha/blitz/Main.ts"/>
-///<reference path="../ha/blitz/Image.ts"/>
-/*
- * BLITZ-INPUT.TS
- */
-//TODO: promise
-const Prompt = (m, def) => {
-    let hasil = window.prompt(m, def);
-    return hasil;
-};
-const InputHit = () => {
-    let hit = ha.input.inputGlobal.hit;
-    ha.input.inputGlobal.hit = 0;
-    return hit;
-};
-const TungguInput = async () => {
-    while (true) {
-        if (InputHit() > 0)
-            return;
-        Jeda(30);
-    }
-};
-const InputX = () => {
-    return ha.input.inputGlobal.x;
-};
-const InputY = () => {
-    return ha.input.inputGlobal.y;
-};
-const InputGeserX = () => {
-    return ha.input.inputGlobal.xDrag;
-};
-const InputGeserY = () => {
-    return ha.input.inputGlobal.yDrag;
-};
-const FlushInput = () => {
-    ha.input.flush();
-};
-const Pencet = () => {
-    return ha.input.inputGlobal.isDown;
-};
-const Geser = () => {
-    return ha.input.inputGlobal.isDrag;
-};
-/**
- * 	KEYBOARD
- */
-const FlushKeys = () => {
-    ha.input.flushByInput(ha.input.keybGlobal);
-    ha.input.flushByType('keyb');
-};
-const GetKey = () => {
-    return ha.input.keybGlobal.key;
-};
-const KeybDiPencet = (key = '') => {
-    if ("" == key) {
-        return ha.input.keybGlobal.isDown;
-    }
-    else {
-        let input = ha.input.getInput(key, 'keyb');
-        if (input) {
-            return input.isDown;
-        }
-        return false;
-    }
-};
-const KeybHit = (key = '') => {
-    if ("" == key) {
-        let n = ha.input.keybGlobal.hit;
-        ha.input.keybGlobal.hit = 0;
-        return (n);
-    }
-    else {
-        let input = ha.input.getInput(key, 'keyb');
-        let n = 0;
-        if (input) {
-            n = input.hit;
-            input.hit = 0;
-        }
-        return n;
-    }
-};
-const TungguKeyb = async (kode = "") => {
-    console.log('wait key: ' + kode);
-    let ulang = true;
-    while (ulang) {
-        if (KeybHit(kode) > 0)
-            ulang = false;
-        await Jeda(30);
-    }
-    console.log('wait key end');
-};
-/**
- * MOUSE dihapus
- */
-//Get Mouse Id of the last pressed mouse
-const GetMouse = () => {
-    return parseInt(ha.input.mouseGlobal.key);
-};
-//how many time mouse is hit
-const MouseHit = (button = -1) => {
-    if (button == -1) {
-        //TODO:
-    }
-    else {
-        //TODO:
-    }
-    return 0;
-};
-const MouseDown = (key) => {
-    key;
-    return false;
-};
-const WaitMouse = () => {
-};
-const MouseX = () => {
-    return 0;
-};
-const MouseY = () => {
-    return 0;
-};
-const MouseZ = () => {
-    return 0;
-};
-const FlushMouse = () => {
-};
-//MouseDragX
-//MouseDragY
-//MouseDragAngle
-//MouseUp
-/**
- * INTERFACE
-*/
-///<reference path="../ha/blitz/Main.ts"/>
-///<reference path="../ha/blitz/Image.ts"/>
-/*
- * 	GRAPHICS
- */
-//TODO: dipindahin ke tempat yang bener
-const Bersih = (r = 0, g = 0, b = 0, alpha = 1) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    ctx.fillRect(0, 0, ha_blitz.main.canvasAktif.width, ha_blitz.main.canvasAktif.height);
-};
-const BackBuffer = () => { };
-const Color = (r = 0, g = 0, b = 0, a = 1) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-    ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-};
-const WarnaMerah = () => { };
-const ColorBlue = () => { };
-const ColorGreen = () => { };
-const ClsColor = () => { };
-const CopyPixel = () => { };
-const CopyRect = () => { };
-const FrontBuffer = () => { };
-const GetColor = () => { };
-const Grafis = (width = 320, height = 240, gl = true, pixel = true) => {
-    let canvas = ha_blitz.main.canvasAktif;
-    canvas.canvas.width = width;
-    canvas.canvas.height = height;
-    canvas.width = width;
-    canvas.height = height;
-    if (gl) {
-        ha_blitz.main.canvasAktif.canvas.classList.add('gl');
-    }
-    else {
-        ha_blitz.main.canvasAktif.canvas.classList.remove('gl');
-    }
-    if (pixel) {
-        ha_blitz.main.canvasAktif.canvas.classList.add('pixel');
-    }
-    // ha_blitz.main.windowResize();
-};
-const GraphicsBuffer = () => { };
-const Garis = (x1, y1, x2, y2) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    x1 = Math.floor(x1);
-    y1 = Math.floor(y1);
-    x2 = Math.floor(x2);
-    y2 = Math.floor(y2);
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-};
-//TODO
-const Origin = () => { };
-const Oval = () => { };
-const Kotak = (x1, y1, x2, y2) => {
-    let ctx = ha_blitz.main.canvasAktif.ctx;
-    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
-};
-const SetBuffer = (buffer) => {
-    ha_blitz.main.canvasAktif = buffer;
-};
-//TODO: dep
-const WritePixel = () => { };
-const ReadPixel = () => { };
-const Plot = () => { };
-///<reference path="../ha/blitz/Main.ts"/>
-///<reference path="../ha/blitz/Image.ts"/>
+    ha.Image = Image;
+    ha.image = new Image();
+})(ha || (ha = {}));
+///<reference path="./Image.ts"/>
 /** SPRITE.TS */
-var ha_blitz;
-(function (ha_blitz) {
+var ha;
+(function (ha) {
     class Sprite {
         static daftar = [];
         _buffer;
@@ -607,18 +526,50 @@ var ha_blitz;
             this.buffer = buffer;
             this.dragable = dragable;
         }
-        get dragable() {
-            return this._dragable;
+        static posisi(sprite, x = 0, y = 0) {
+            sprite.x = x;
+            sprite.y = y;
         }
-        set dragable(value) {
-            this._dragable = value;
+        static posisiX(spr, x = null) {
+            if (typeof (x) == 'number') {
+                spr.x = x;
+            }
+            return spr.x;
         }
+        static posisiY(spr, y = null) {
+            if (typeof (y) == 'number') {
+                spr.y = y;
+            }
+            return spr.y;
+        }
+        static handle(spr, x = 0, y = 0) {
+            if (spr) {
+                spr.buffer.handleX = x;
+                spr.buffer.handleY = y;
+            }
+            return;
+        }
+        static gambarSemua() {
+            for (let i = 0; i < ha.Sprite.daftar.length; i++) {
+                let item = ha.Sprite.daftar[i];
+                ha.Sprite.gambar(item);
+            }
+        }
+        static muatAsync(url, dragable = false) {
+            let img = ha.Image.muatAsync(url);
+            console.log(img);
+            return ha.Sprite.buat(img, dragable);
+        }
+        // static async muat(url: string, dragable = false): Promise<ISprite> {
+        //     let img: IGambar = await ha.Image.muat(url);
+        //     return this.buat(img, dragable);
+        // }
         static ukuranGambar(gbr, w, h) {
-            ha_blitz.image.ukuranGambar(gbr.buffer, w, h);
+            ha.image.ukuranGambar(gbr.buffer, w, h);
         }
-        static handleTengah(gbr) {
-            ha_blitz.image.handleTengah(gbr.buffer);
-        }
+        // static handleTengah(gbr: ISprite): void {
+        //     ha.image.handleTengah(gbr.buffer);
+        // }
         static buat(image, dragable = false) {
             let hasil;
             hasil = new Sprite(image, dragable);
@@ -627,13 +578,13 @@ var ha_blitz;
             return hasil;
         }
         static inputDown(pos) {
-            ha_blitz.Sprite.daftar.forEach((item) => {
+            ha.Sprite.daftar.forEach((item) => {
                 item.down = false;
             });
             //sprite down
-            for (let i = ha_blitz.Sprite.daftar.length - 1; i >= 0; i--) {
+            for (let i = ha.Sprite.daftar.length - 1; i >= 0; i--) {
                 let item;
-                item = ha_blitz.Sprite.daftar[i];
+                item = ha.Sprite.daftar[i];
                 if (DotDidalamGambar(item.buffer, item.x, item.y, pos.x, pos.y)) {
                     item.down = true;
                     item.dragStartX = pos.x - item.x;
@@ -643,7 +594,7 @@ var ha_blitz;
             }
         }
         static inputMove(pos) {
-            ha_blitz.Sprite.daftar.forEach((item) => {
+            ha.Sprite.daftar.forEach((item) => {
                 if (item.down && item.dragable) {
                     item.dragged = true;
                     item.x = pos.x - item.dragStartX;
@@ -652,7 +603,7 @@ var ha_blitz;
             });
         }
         static inputUp() {
-            ha_blitz.Sprite.daftar.forEach((item) => {
+            ha.Sprite.daftar.forEach((item) => {
                 if (item.down) {
                     item.hit++;
                 }
@@ -661,9 +612,9 @@ var ha_blitz;
             });
         }
         static gambar(sprite) {
-            TaruhGambar(sprite.buffer, sprite.x, sprite.y);
+            ha.Image.gambar(sprite.buffer, sprite.x, sprite.y);
         }
-        static positionOrbitSprite(sprite, sudut, jarak, x2, y2) {
+        static posisiPolar(sprite, sudut, jarak, x2, y2) {
             let p = ha.Point.posPolar(jarak, sudut, x2, y2);
             sprite.x = p.x;
             sprite.y = p.y;
@@ -716,150 +667,15 @@ var ha_blitz;
         set down(value) {
             this._down = value;
         }
-    }
-    ha_blitz.Sprite = Sprite;
-})(ha_blitz || (ha_blitz = {}));
-///<reference path="../ha/blitz/Sprite.ts"/>
-/** BLITZ-SPRITE.TS */
-const BuatSprite = (gbr, dragable = false) => {
-    return ha_blitz.Sprite.buat(gbr, dragable);
-};
-const MuatSprite = async (url, dragable = false) => {
-    let img = await MuatGambar(url);
-    return BuatSprite(img, dragable);
-};
-const PosisiSprite = (sprite, x = 0, y = 0) => {
-    sprite.x = x;
-    sprite.y = y;
-};
-const UkuranSprite = ha_blitz.Sprite.ukuranGambar;
-const HandleSpriteTengah = ha_blitz.Sprite.handleTengah;
-const PosisiPolarSprite = (sprite, sudut, jarak, x2, y2) => {
-    ha_blitz.Sprite.positionOrbitSprite(sprite, sudut, jarak, x2, y2);
-};
-const PosisiJarakSprite = () => { };
-const TaruhSprite = (sprite, frame = 0) => {
-    TaruhGambar(sprite.buffer, sprite.x, sprite.y, frame);
-};
-const TaruhSemuaSprite = () => {
-    ha_blitz.Sprite.daftar.forEach((item) => {
-        TaruhSprite(item);
-    });
-};
-const PosisiXSprite = (spr, x = null) => {
-    if (typeof (x) == 'number') {
-        spr.x = x;
-    }
-    return spr.x;
-};
-const PosisiYSprite = (spr, y = null) => {
-    if (typeof (y) == 'number') {
-        spr.y = y;
-    }
-    return spr.y;
-};
-///<reference path="../ha/blitz/Main.ts"/>
-///<reference path="../ha/blitz/Image.ts"/>
-///<reference path="../ha/blitz/Main.ts"/>
-///<reference path="../ha/blitz/Image.ts"/>
-const Jeda = async (m = 0) => {
-    return new Promise((resolve, _reject) => {
-        setTimeout(() => {
-            resolve();
-        }, m);
-    });
-};
-const FPS = (n) => {
-    ha_blitz.main.fps = Math.floor(1000 / n);
-    if (n >= 60) {
-        ha_blitz.main.fps = 0;
-    }
-};
-//TODO: dihapus
-//TODO: kemungkinan diganti buat nyesuain sama blitz
-const Dim = (...args) => {
-    if (0 == args.length) {
-        return [];
-    }
-    else if (1 == args.length) {
-        let hasil = [];
-        for (let i = 0; i < args[0]; i++) {
-            hasil[i] = {};
+        get dragable() {
+            return this._dragable;
         }
-        return hasil;
-    }
-    else if (2 == args.length) {
-        if (typeof args[1] == 'number') {
-            let hasil = [];
-            for (let i = 0; i < args[0]; i++) {
-                hasil[i] = [];
-                for (let j = 0; j < args[1]; j++) {
-                    hasil[i][j] = {};
-                }
-            }
-            return hasil;
-        }
-        else if (typeof args[1] == 'function') {
-            let hasil = [];
-            for (let i = 0; i < args[0]; i++) {
-                hasil[i] = {};
-                args[1](hasil[i]);
-            }
-            return hasil;
-        }
-        else if (typeof args[1] == 'object') {
-            let hasil = [];
-            for (let i = 0; i < args[0]; i++) {
-                try {
-                    hasil[i] = JSON.parse(JSON.stringify(args[1]));
-                }
-                catch (e) {
-                    console.error(e);
-                    hasil[i] = {};
-                }
-            }
-            return hasil;
-        }
-        else {
-            throw new Error('second argument is invalid, expected number or function or object');
+        set dragable(value) {
+            this._dragable = value;
         }
     }
-    else if (3 == args.length) {
-        if (typeof args[2] == 'function') {
-            let hasil = [];
-            for (let i = 0; i < args[0]; i++) {
-                hasil[i] = [];
-                for (let j = 0; j < args[1]; j++) {
-                    hasil[i][j] = {};
-                    args[2](hasil[i][j]);
-                }
-            }
-            return hasil;
-        }
-        else if (typeof args[2] == 'object') {
-            let hasil = [];
-            for (let i = 0; i < args[0]; i++) {
-                hasil[i] = [];
-                for (let j = 0; j < args[1]; j++) {
-                    hasil[i][j] = JSON.parse(JSON.stringify(args[2]));
-                }
-            }
-            return hasil;
-        }
-        else {
-            throw Error('expecting third argument is a function or object');
-        }
-    }
-    else {
-        throw Error('arguments invalid, expected max arguments: 3');
-    }
-};
-const Millisecs = () => {
-    return Date.now();
-};
-/**
- * TEXTS
- */ 
+    ha.Sprite = Sprite;
+})(ha || (ha = {}));
 /** INPUT.TS */
 var ha;
 (function (ha) {
@@ -897,7 +713,7 @@ var ha;
             buffer.canvas.onpointerdown = (e) => {
                 e.stopPropagation();
                 // e.preventDefault();
-                let pos = ha.input.pos(e.clientX, e.clientY, buffer, buffer.scaleX, buffer.scaleY);
+                let pos = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
                 let key = this.getMouseKeyId(e);
                 let input = ha.input.baru(key, e.pointerType);
                 ha.input.event.down(input, key, e.pointerType, pos);
@@ -906,7 +722,7 @@ var ha;
                     ha.input.event.down(this._mouseGlobal, key, 'mouse', pos);
                 if ("touch" == e.pointerType)
                     ha.input.event.down(this._touchGlobal, key, 'touch', pos);
-                ha_blitz.Sprite.inputDown(pos);
+                ha.Sprite.inputDown(pos);
             };
             buffer.canvas.onpointermove = (e) => {
                 e.stopPropagation();
@@ -919,8 +735,8 @@ var ha;
                     ha.input.event.move(ha.input.mouseGlobal, buffer, e);
                 //sprite	
                 //sprite move
-                let pos = ha.input.pos(e.clientX, e.clientY, buffer, buffer.scaleX, buffer.scaleY);
-                ha_blitz.Sprite.inputMove(pos);
+                let pos = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
+                ha.Sprite.inputMove(pos);
             };
             buffer.canvas.onpointerout = (e) => {
                 e.stopPropagation();
@@ -948,7 +764,7 @@ var ha;
                     ha.input.event.up(ha.input.mouseGlobal);
                 //sprite up
                 //sprite hit
-                ha_blitz.Sprite.daftar.forEach((item) => {
+                ha.Sprite.daftar.forEach((item) => {
                     if (item.down) {
                         item.hit++;
                     }
@@ -1099,7 +915,7 @@ var ha;
     }
     class EventHandler {
         move(input, buffer, e) {
-            let pos = ha.input.pos(e.clientX, e.clientY, buffer, buffer.scaleX, buffer.scaleY);
+            let pos = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
             input.x = pos.x;
             input.y = pos.y;
             input.id = e.pointerId;
@@ -1134,6 +950,891 @@ var ha;
     }
     ha.input = new Input();
 })(ha || (ha = {}));
+var ha;
+(function (ha) {
+    class Point {
+        static create(x = 0, y = 0) {
+            return {
+                x: x,
+                y: y
+            };
+        }
+        static copy(p1, p2) {
+            p2.x = p1.x;
+            p2.y = p1.y;
+        }
+        static clone(p) {
+            let h = this.create(p.x, p.y);
+            return h;
+        }
+        static sama(p1, p2) {
+            if (false == ha.Transform.equal(p1.x, p2.x))
+                return false;
+            if (false == ha.Transform.equal(p1.y, p2.y))
+                return false;
+            return true;
+        }
+        static putarPoros(p, xc = 0, yc = 0, deg = 0) {
+            ha.Transform.rotateRel(p.x, p.y, xc, yc, deg);
+            p.x = ha.Transform.lastX;
+            p.y = ha.Transform.lastY;
+        }
+        static posDist(p, xt, yt, jrk) {
+            let jrkA;
+            let i;
+            let j;
+            let rasio;
+            let hasil = Point.create();
+            //jarak sekarang
+            jrkA = ha.Transform.jarak(p.x, p.y, xt, yt);
+            i = xt - p.x;
+            j = yt - p.y;
+            rasio = jrkA / jrk;
+            hasil.x = i * rasio;
+            hasil.y = j * rasio;
+            hasil.x = xt - hasil.x;
+            hasil.y = yt - hasil.y;
+            return hasil;
+        }
+        static posPolar(jarak, sudut, xt, yt) {
+            let hasil = ha.Point.create();
+            hasil.x = jarak * Math.cos(sudut * ha.Transform.DEG2RAD);
+            hasil.y = jarak * Math.sin(sudut * ha.Transform.DEG2RAD);
+            hasil.x += xt;
+            hasil.y += yt;
+            return hasil;
+        }
+    }
+    ha.Point = Point;
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    class Rect {
+        static create(x1 = 0, y1 = 0, x2 = 0, y2 = 0) {
+            let r = {};
+            r.vs = [];
+            r.vs.push(ha.Point.create(x1, y1));
+            r.vs.push(ha.Point.create(x2, y1));
+            r.vs.push(ha.Point.create(x2, y2));
+            r.vs.push(ha.Point.create(x1, y2));
+            r.segs = [];
+            r.segs.push(ha.Segment.create(r.vs[0], r.vs[1]));
+            r.segs.push(ha.Segment.create(r.vs[1], r.vs[2]));
+            r.segs.push(ha.Segment.create(r.vs[2], r.vs[3]));
+            r.segs.push(ha.Segment.create(r.vs[3], r.vs[0]));
+            return r;
+        }
+        static copy(r) {
+            // console.log('copy:');
+            // console.log(r.vs);
+            // let hasil: IRect = this.create(r.vs[0].x, r.vs[0].y, r.vs[2].x, r.vs[2].y);
+            let hasil = this.create();
+            this.copyInfo(r, hasil);
+            // console.log(hasil.vs);
+            return hasil;
+        }
+        static copyInfo(r1, r2) {
+            for (let i = 0; i < r1.segs.length; i++) {
+                ha.Segment.copy(r1.segs[i], r2.segs[i]);
+            }
+        }
+        static collideBound(r1, r2) {
+            // console.debug('collide bound');
+            if (this.maxX(r1) < this.minX(r2)) {
+                // console.debug('maxX gagal');
+                return false;
+            }
+            // console.log('maxx ' + this.maxX(r1));
+            // console.log('minx ' + this.minX(r2));
+            if (this.minX(r1) > this.maxX(r2)) {
+                // console.debug('min x gagal');
+                return false;
+            }
+            if (this.maxY(r1) < this.minY(r2)) {
+                // console.debug('max y gagal');
+                return false;
+            }
+            if (this.minY(r1) > this.maxY(r2)) {
+                // console.debug('min y gagal');
+                return false;
+            }
+            return true;
+        }
+        static collide(r1, r2) {
+            let bound = this.collideBound(r1, r2);
+            if (!bound)
+                return false;
+            for (let i = 0; i < r1.segs.length; i++) {
+                for (let j = 0; j < r2.segs.length; j++) {
+                    if (ha.Segment.collide(r1.segs[i], r2.segs[j])) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        static collideDotBound(r, d) {
+            if (d.x < this.minX(r)) {
+                // console.log('minx failed');
+                return false;
+            }
+            if (d.x > this.maxX(r)) {
+                // console.log('maxX failed');
+                // console.log(d);
+                // console.log(this.maxX(r));
+                // console.log(r.vs);
+                return false;
+            }
+            if (d.y < this.minY(r)) {
+                // console.log('minY failed');
+                return false;
+            }
+            if (d.y > this.maxY(r)) {
+                // console.log('maxY failed');
+                return false;
+            }
+            return true;
+        }
+        static collideDot(r, x, y) {
+            let r2 = Rect.copy(r);
+            let p = ha.Point.create(x, y);
+            let d = ha.Segment.deg(r2.segs[0]);
+            let pRot = r2.vs[0];
+            if (!this.collideDotBound(r, p)) {
+                return false;
+            }
+            Rect.rotate(r2, -d, pRot.x, pRot.y);
+            ha.Point.putarPoros(p, pRot.x, pRot.y, -d);
+            if (!this.collideDotBound(r2, p)) {
+                // console.log('collide bound 2 failed');
+                // console.log('deg ' + d);
+                // console.log('rect');
+                // console.log(r2);
+                return false;
+            }
+            return true;
+        }
+        static minX(r) {
+            let x = r.vs[0].x;
+            r.vs.forEach((item) => {
+                if (item.x < x)
+                    x = item.x;
+            });
+            return x;
+        }
+        static maxX(r) {
+            let x = r.vs[0].x;
+            r.vs.forEach((item) => {
+                if (item.x > x)
+                    x = item.x;
+            });
+            return x;
+        }
+        static minY(r) {
+            let y = r.vs[0].y;
+            r.vs.forEach((item) => {
+                if (item.y < y)
+                    y = item.y;
+            });
+            return y;
+        }
+        static maxY(r) {
+            let y = r.vs[0].y;
+            r.vs.forEach((item) => {
+                if (item.y > y)
+                    y = item.y;
+            });
+            return y;
+        }
+        static scale(r) {
+            r;
+        }
+        static translate(rect, x, y) {
+            rect.vs.forEach((v) => {
+                v.x += x;
+                v.y += y;
+            });
+        }
+        static rotate(r, deg, xc = 0, yc, copy = true) {
+            let r2;
+            if (copy) {
+                r2 = Rect.copy(r);
+            }
+            else {
+                r2 = r;
+            }
+            r2.vs.forEach((p) => {
+                ha.Point.putarPoros(p, xc, yc, deg);
+            });
+            return r2;
+        }
+    }
+    ha.Rect = Rect;
+    // export var rect: Rect = new Rect();
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    class Segment {
+        static create(v1 = { x: 0, y: 0 }, v2 = { x: 0, y: 0 }) {
+            return {
+                v1: v1,
+                v2: v2
+            };
+        }
+        static boundCollide(seg1, seg2) {
+            if (this.maxX(seg1) < this.minX(seg2))
+                return false;
+            if (this.minX(seg1) > this.maxX(seg2))
+                return false;
+            if (this.maxY(seg1) < this.minY(seg2))
+                return false;
+            if (this.minY(seg1) > this.maxY(seg2))
+                return false;
+            return true;
+        }
+        static collide(seg1, seg2) {
+            let bound = this.boundCollide(seg1, seg2);
+            if (!bound)
+                return false;
+            // let deg: number = this.deg(seg2);
+            let seg2Copy = this.clone(seg2);
+            let seg1Copy = this.clone(seg1);
+            let deg = this.deg(seg2);
+            this.rotate(seg2Copy, -deg, seg2.v1.x, seg2.v1.y);
+            this.rotate(seg1Copy, -deg, seg2.v1.x, seg2.v1.y);
+            if (!this.boundCollide(seg1Copy, seg2Copy))
+                return false;
+            this.translate(seg1Copy, -seg2.v1.x, -seg2.v1.y);
+            this.translate(seg2Copy, -seg2.v1.x, -seg2.v1.y);
+            if (!this.crossHor(seg1Copy)) {
+                return false;
+            }
+            let idx = this.xHorIdx(seg1Copy);
+            let x = this.getXAtIdx(seg1Copy, idx);
+            if (x > this.maxX(seg2Copy))
+                return false;
+            if (x < this.minX(seg2Copy))
+                return false;
+            return true;
+        }
+        static copy(seg1, seg2) {
+            ha.Point.copy(seg1.v1, seg2.v2);
+            ha.Point.copy(seg1.v2, seg2.v2);
+        }
+        static clone(seg) {
+            return {
+                v1: ha.Point.clone(seg.v1),
+                v2: ha.Point.clone(seg.v2)
+            };
+        }
+        static crossHor(seg) {
+            if (this.maxY(seg) > 0) {
+                if (this.minY(seg) < 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        static deg(line) {
+            let j = line.v2.y - line.v1.y;
+            let i = line.v2.x - line.v1.x;
+            return ha.Transform.deg(i, j);
+        }
+        static getXAtIdx(seg, idx) {
+            return seg.v1.x + (idx * this.vecI(seg));
+        }
+        static getYAtIdx(seg, idx) {
+            return seg.v1.y + (idx * this.vecJ(seg));
+        }
+        static vecI(seg) {
+            return seg.v2.x - seg.v1.x;
+        }
+        static vecJ(seg) {
+            return seg.v2.y - seg.v1.y;
+        }
+        static rotate(seg, deg = 0, xc = 0, yc = 0) {
+            ha.Point.putarPoros(seg.v1, xc, yc, deg);
+            ha.Point.putarPoros(seg.v2, xc, yc, deg);
+        }
+        static minX(seg) {
+            return Math.min(seg.v1.x, seg.v2.x);
+        }
+        static maxX(seg) {
+            return Math.max(seg.v1.x, seg.v2.x);
+        }
+        static minY(seg) {
+            return Math.min(seg.v1.y, seg.v2.y);
+        }
+        static maxY(seg) {
+            return Math.max(seg.v1.y, seg.v2.y);
+        }
+        static translate(seg, x = 0, y = 0) {
+            seg.v1.x += x;
+            seg.v1.y += y;
+            seg.v2.x += x;
+            seg.v2.y += y;
+        }
+        //tested
+        static xHorIdx(seg) {
+            if (!this.crossHor(seg))
+                return NaN;
+            let idx = 0;
+            idx = (0 - seg.v1.y) / (seg.v2.y - seg.v1.y);
+            return idx;
+        }
+    }
+    ha.Segment = Segment;
+})(ha || (ha = {}));
+/**
+ * BLIJS
+ */
+var ha;
+(function (ha) {
+    class Blijs {
+        static init(canvas) {
+            if (!canvas)
+                canvas = document.body.querySelector('canvas');
+            if (!canvas) {
+                console.log('gagal init');
+                return;
+            }
+            ha.Main.init(canvas, canvas);
+            ha.input.init(ha.Main.canvasAktif);
+            window.onresize = async () => {
+                this.windowResize();
+            };
+            setTimeout(() => {
+                this.windowResize();
+            }, 100);
+            // let _window: any = window;
+            setTimeout(() => {
+                this.repeat();
+                // if (typeof _window.Mulai__ == "function") {
+                // 	console.log('window start function called');
+                // 	_window.Mulai()
+                // 		.then(() => {
+                // 			this.repeat();
+                // 		})
+                // 		.catch((e: Error) => {
+                // 			console.error(e);
+                // 		})
+                // }
+                // else {
+                // 	console.warn('start not found');
+                // 	this.repeat();
+                // }
+            }, 0);
+        }
+        static loop = () => {
+            let _window = window;
+            if (typeof _window.Loop == 'function') {
+                //TODO: pre loop
+                _window.Loop();
+                //TODO: post loop
+            }
+        };
+        static repeat = () => {
+            //check semua image sudah diload
+            this.loop();
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    this.repeat();
+                });
+            }, 0);
+            // .then(() => {
+            // 	setTimeout(() => {
+            // 		requestAnimationFrame(this.repeat);
+            // 	}, 0);
+            // }).
+            // catch((e) => {
+            // 	console.error(e);
+            // });
+        };
+        static windowResize = () => {
+            // console.debug('window on resize');
+            let canvas = ha.Main.canvasAktif.canvas;
+            let cp = ha.Main.canvasAktif.canvas.width;
+            let cl = ha.Main.canvasAktif.canvas.height;
+            let wp = window.innerWidth;
+            let wl = window.innerHeight;
+            let ratio = Math.min((wp / cp), (wl / cl));
+            let cp2 = Math.floor(cp * ratio);
+            let cl2 = Math.floor(cl * ratio);
+            ha.Main.canvasAktif.ratioX = ratio;
+            ha.Main.canvasAktif.ratioY = ratio;
+            canvas.style.width = cp2 + 'px';
+            canvas.style.height = cl2 + 'px';
+            canvas.style.top = ((wl - cl2) / 2) + 'px';
+            canvas.style.left = ((wp - cp2) / 2) + 'px';
+            // console.debug('canvas w: ' + canvas.style.width + '/ratio: ' + ratio);
+        };
+    }
+    ha.Blijs = Blijs;
+})(ha || (ha = {}));
+setTimeout(() => {
+    ha.Blijs.init();
+}, 0);
+var ha;
+(function (ha) {
+    class Transform {
+        static RAD2DEG = 180.0 / Math.PI;
+        static DEG2RAD = Math.PI / 180.0;
+        static _lastX = 0;
+        static _lastY = 0;
+        static get lastX() {
+            return this._lastX;
+        }
+        static get lastY() {
+            return this._lastY;
+        }
+        static equal(n1, n2, toleransi = 1) {
+            if (Math.abs(n1 - n2) <= toleransi)
+                return true;
+            return false;
+        }
+        static quadDeg2(x, y, deg) {
+            if (x == 0) {
+                if (y == 0) {
+                    return deg;
+                }
+                else if (y > 0) {
+                    return deg;
+                }
+                else if (y < 0) {
+                    return 360 - Math.abs(deg);
+                }
+            }
+            else if (x > 0) {
+                if (y == 0) {
+                    return deg;
+                }
+                else if (y > 0) {
+                    return deg;
+                }
+                else if (y < 0) {
+                    return 360 - Math.abs(deg);
+                }
+            }
+            else if (x < 0) {
+                if (y == 0) {
+                    return 180;
+                }
+                else if (y > 0) {
+                    return 180 - Math.abs(deg);
+                }
+                else if (y < 0) {
+                    return 180 + Math.abs(deg);
+                }
+            }
+            throw Error();
+        }
+        static deg(x, y) {
+            let l;
+            let sin;
+            l = Math.sqrt(x * x + y * y);
+            if (l == 0) {
+                l = .00001;
+            }
+            sin = y / l;
+            sin = Math.asin(sin);
+            sin *= this.RAD2DEG;
+            sin = this.quadDeg2(x, y, sin);
+            sin = this.normalizeDeg(sin);
+            return sin;
+        }
+        static normalizeDeg(deg) {
+            while (deg >= 360) {
+                deg -= 360;
+            }
+            while (deg <= -360) {
+                deg += 360;
+            }
+            if (deg < 0)
+                deg = 360 + deg;
+            return deg;
+        }
+        static degDistMax(angleS = 0, angleT) {
+            angleS = this.normalizeDeg(angleS);
+            angleT = this.normalizeDeg(angleT);
+            let deg = this.degDistMin(angleS, angleT);
+            if (deg >= 0) {
+                return -(360 - deg);
+            }
+            else {
+                return (360 - Math.abs(deg));
+            }
+        }
+        static degDistMin(angleS = 0, angleT) {
+            angleS = this.normalizeDeg(angleS);
+            angleT = this.normalizeDeg(angleT);
+            if (angleT >= angleS) {
+                if (angleT - angleS > 180) {
+                    return -(angleS + 360 - angleT);
+                }
+                else {
+                    return angleT - angleS;
+                }
+            }
+            else {
+                if (angleS - angleT >= 180) {
+                    return 360 + angleT - angleS;
+                }
+                else {
+                    return angleT - angleS;
+                }
+            }
+        }
+        static jarak(x, y, xt, yt) {
+            let pjx = xt - x;
+            let pjy = yt - y;
+            return Math.sqrt(pjx * pjx + pjy * pjy);
+        }
+        static rotateRel(x = 0, y = 0, xt = 0, yt = 0, deg = 10) {
+            let xr = x - xt;
+            let yr = y - yt;
+            let x1;
+            let y1;
+            deg *= this.DEG2RAD;
+            x1 = xr * Math.cos(deg) - yr * Math.sin(deg);
+            y1 = xr * Math.sin(deg) + yr * Math.cos(deg);
+            this._lastX = x1 + xt;
+            this._lastY = y1 + yt;
+        }
+    }
+    ha.Transform = Transform;
+})(ha || (ha = {}));
+///<reference path="../ha/Main.ts"/>
+///<reference path="../ha/Image.ts"/>
+///<reference path="../ha/Sprite.ts"/>
+///<reference path="../ha/Input.ts"/>
+///<reference path="../ha/Point.ts"/>
+///<reference path="../ha/Rect.ts"/>
+///<reference path="../ha/Segment.ts"/>
+///<reference path="../ha/Blijs.ts"/>
+///<reference path="../ha/Transform.ts"/>
+///<reference path="./Route.ts"/>
+/**
+ * IMAGE
+ */
+const BuatGambar = ha.Image.buatGambar;
+// const CopyGambar = ha_blitz.Image.copyGambar;
+const TaruhGambar = ha.Image.gambar;
+const GrabGambar = ha.Image.grabGambar; //TODO: test - dihapus
+const PosisiHandleGambar = ha.Image.posisiHandleGambar;
+const PanjangGambar = ha.Image.panjangGambar;
+const LebarGambar = ha.Image.lebarGambar;
+const HandleXGambar = ha.Image.handleXGambar;
+const HandleYGambar = ha.Image.handleYGambar;
+const GambarOverlap = ha.Image.gambarOverlap;
+const GambarTabrakan = ha.Image.gambarTabrakan;
+const DotDidalamGambar = ha.Image.dotDidalamGambar;
+const MuatGambar = ha.Image.muat;
+const MuatGambarAnimasi = ha.Image.muatGambarAnimasi;
+const GambarUbin = ha.Image.gambarUbin;
+const ResizeGambar = ha.image.ukuranGambar;
+const PutarGambar = ha.Image.putarGambar;
+// const SkalaGambar = ha.Image.skalaGambar;
+const AmbilPiksel = ha.Image.ambilPiksel;
+const SetWarna = ha.Image.setWarna;
+const SetPiksel = ha.Image.setPiksel;
+//TODO: next
+const ImagePivot = () => { };
+const BackgroundImage = () => { };
+const MainLayer = () => { };
+const CreateLayer = () => { };
+const LayerZ = () => { };
+///<reference path="./Route.ts"/>
+/*
+ * BLITZ-INPUT.TS
+ */
+//TODO: promise
+const Prompt = (m, def) => {
+    let hasil = window.prompt(m, def);
+    return hasil;
+};
+const InputHit = () => {
+    let hit = ha.input.inputGlobal.hit;
+    ha.input.inputGlobal.hit = 0;
+    return hit;
+};
+// const TungguInput = async (): Promise<void> => {
+// 	while (true) {
+// 		if (InputHit() > 0) return;
+// 		Jeda(30);
+// 	}
+// }
+const InputX = () => {
+    return ha.input.inputGlobal.x;
+};
+const InputY = () => {
+    return ha.input.inputGlobal.y;
+};
+const InputGeserX = () => {
+    return ha.input.inputGlobal.xDrag;
+};
+const InputGeserY = () => {
+    return ha.input.inputGlobal.yDrag;
+};
+const FlushInput = () => {
+    ha.input.flush();
+};
+const Pencet = () => {
+    return ha.input.inputGlobal.isDown;
+};
+const Geser = () => {
+    return ha.input.inputGlobal.isDrag;
+};
+/**
+ * 	KEYBOARD
+ */
+const FlushKeys = () => {
+    ha.input.flushByInput(ha.input.keybGlobal);
+    ha.input.flushByType('keyb');
+};
+const GetKey = () => {
+    return ha.input.keybGlobal.key;
+};
+const KeybDiPencet = (key = '') => {
+    if ("" == key) {
+        return ha.input.keybGlobal.isDown;
+    }
+    else {
+        let input = ha.input.getInput(key, 'keyb');
+        if (input) {
+            return input.isDown;
+        }
+        return false;
+    }
+};
+const KeybHit = (key = '') => {
+    if ("" == key) {
+        let n = ha.input.keybGlobal.hit;
+        ha.input.keybGlobal.hit = 0;
+        return (n);
+    }
+    else {
+        let input = ha.input.getInput(key, 'keyb');
+        let n = 0;
+        if (input) {
+            n = input.hit;
+            input.hit = 0;
+        }
+        return n;
+    }
+};
+// const TungguKeyb = async (kode: string = ""): Promise<void> => {
+// 	console.log('wait key: ' + kode);
+// 	let ulang: boolean = true;
+// 	while (ulang) {
+// 		if (KeybHit(kode) > 0) ulang = false;
+// 		await Jeda(30);
+// 	}
+// 	console.log('wait key end');
+// }
+/**
+ * MOUSE dihapus
+ */
+//Get Mouse Id of the last pressed mouse
+const GetMouse = () => {
+    return parseInt(ha.input.mouseGlobal.key);
+};
+//how many time mouse is hit
+const MouseHit = (button = -1) => {
+    if (button == -1) {
+        //TODO:
+    }
+    else {
+        //TODO:
+    }
+    return 0;
+};
+const MouseDown = (key) => {
+    key;
+    return false;
+};
+const WaitMouse = () => {
+};
+const MouseX = () => {
+    return 0;
+};
+const MouseY = () => {
+    return 0;
+};
+const MouseZ = () => {
+    return 0;
+};
+const FlushMouse = () => {
+};
+//MouseDragX
+//MouseDragY
+//MouseDragAngle
+//MouseUp
+/**
+ * INTERFACE
+*/
+///<reference path="./Route.ts"/>
+/*
+ * 	GRAPHICS
+ */
+const Bersih = ha.Main.Bersih;
+const Color = ha.Main.Color;
+const Grafis = ha.Main.Grafis;
+const Garis = ha.Main.Garis;
+const Kotak = ha.Main.Kotak;
+const SetBuffer = ha.Main.SetBuffer;
+const GraphicsBuffer = () => { };
+const Origin = () => { };
+const Oval = () => { };
+const WritePixel = () => { };
+const ReadPixel = () => { };
+const Plot = () => { };
+const WarnaMerah = () => { };
+///<reference path="../ha/Main.ts"/>
+const ColorBlue = () => { };
+const ColorGreen = () => { };
+const ClsColor = () => { };
+const CopyPixel = () => { };
+const CopyRect = () => { };
+const FrontBuffer = () => { };
+const GetColor = () => { };
+const BackBuffer = () => { };
+///<reference path="../ha/Main.ts"/>
+///<reference path="../ha/Image.ts"/>
+///<reference path="./Route.ts"/>
+/** BLITZ-SPRITE.TS */
+const Buat = ha.Sprite.buat;
+const Muat = ha.Sprite.muatAsync;
+const Posisi = ha.Sprite.posisi;
+const Ukuran = ha.Sprite.ukuranGambar;
+const PosisiPolar = ha.Sprite.posisiPolar;
+const Gambar = ha.Sprite.gambar;
+const GambarSemua = ha.Sprite.gambarSemua;
+const PosisiX = ha.Sprite.posisiX;
+const PosisiY = ha.Sprite.posisiY;
+const Handle = ha.Sprite.handle;
+const PosisiJarakSprite = () => { };
+const Copy = () => { };
+const PosisiHandle = () => { };
+const Panjang = () => { };
+const Lebar = () => { };
+const HandleX = () => { };
+const HandleY = () => { };
+const Overlap = () => { };
+const Tabrakan = () => { };
+const DotDiDalam = () => { };
+const MuatAnimasi = () => { };
+const Ubin = () => { };
+const Putar = () => { };
+const Skala = () => { };
+const Piksel = () => { };
+const Warna = () => { };
+const Merah = () => { };
+const Hijau = () => { };
+const Biru = () => { };
+///<reference path="../ha/Main.ts"/>
+///<reference path="../ha/Image.ts"/>
+///<reference path="./Route.ts"/>
+// const Jeda = async (m: number = 0): Promise<void> => {
+// 	return new Promise((resolve, _reject) => {
+// 		setTimeout(() => {
+// 			resolve();
+// 		}, m);
+// 	})
+// }
+// const FPS = (n: number) => {
+// 	ha.Main.fps = Math.floor(1000 / n);
+// 	if (n >= 60) {
+// 		ha.Main.fps = 0;
+// 	}
+// }
+//TODO: dihapus
+//TODO: kemungkinan diganti buat nyesuain sama blitz
+// const Dim = (...args: any[]): any[] => {
+// 	if (0 == args.length) {
+// 		return [];
+// 	}
+// 	else if (1 == args.length) {
+// 		let hasil: any[] = [];
+// 		for (let i: number = 0; i < args[0]; i++) {
+// 			hasil[i] = {}
+// 		}
+// 		return hasil;
+// 	}
+// 	else if (2 == args.length) {
+// 		if (typeof args[1] == 'number') {
+// 			let hasil: any[] = [];
+// 			for (let i: number = 0; i < args[0]; i++) {
+// 				hasil[i] = [];
+// 				for (let j: number = 0; j < args[1]; j++) {
+// 					hasil[i][j] = {}
+// 				}
+// 			}
+// 			return hasil;
+// 		}
+// 		else if (typeof args[1] == 'function') {
+// 			let hasil: any[] = [];
+// 			for (let i: number = 0; i < args[0]; i++) {
+// 				hasil[i] = {}
+// 				args[1](hasil[i]);
+// 			}
+// 			return hasil;
+// 		}
+// 		else if (typeof args[1] == 'object') {
+// 			let hasil: any[] = [];
+// 			for (let i: number = 0; i < args[0]; i++) {
+// 				try {
+// 					hasil[i] = JSON.parse(JSON.stringify(args[1]));
+// 				}
+// 				catch (e) {
+// 					console.error(e);
+// 					hasil[i] = {}
+// 				}
+// 			}
+// 			return hasil;
+// 		}
+// 		else {
+// 			throw new Error('second argument is invalid, expected number or function or object');
+// 		}
+// 	}
+// 	else if (3 == args.length) {
+// 		if (typeof args[2] == 'function') {
+// 			let hasil: any[] = [];
+// 			for (let i: number = 0; i < args[0]; i++) {
+// 				hasil[i] = [];
+// 				for (let j: number = 0; j < args[1]; j++) {
+// 					hasil[i][j] = {}
+// 					args[2](hasil[i][j])
+// 				}
+// 			}
+// 			return hasil;
+// 		}
+// 		else if (typeof args[2] == 'object') {
+// 			let hasil: any[] = [];
+// 			for (let i: number = 0; i < args[0]; i++) {
+// 				hasil[i] = [];
+// 				for (let j: number = 0; j < args[1]; j++) {
+// 					hasil[i][j] = JSON.parse(JSON.stringify(args[2]));
+// 				}
+// 			}
+// 			return hasil;
+// 		}
+// 		else {
+// 			throw Error('expecting third argument is a function or object');
+// 		}
+// 	}
+// 	else {
+// 		throw Error('arguments invalid, expected max arguments: 3');
+// 	}
+// }
+// const Millisecs = (): number => {
+// 	return Date.now();
+// }
+/**
+ * TEXTS
+ */ 
+/**
+ * INTERFACE
+*/
 /**
  * INTERFACE
 */

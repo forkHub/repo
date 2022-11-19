@@ -1,5 +1,4 @@
-///<reference path="../ha/blitz/Main.ts"/>
-///<reference path="../ha/blitz/Image.ts"/>
+///<reference path="./Route.ts"/>
 
 /*
  * BLITZ-INPUT.TS
@@ -18,12 +17,12 @@ const InputHit = (): number => {
 	return hit;
 }
 
-const TungguInput = async (): Promise<void> => {
-	while (true) {
-		if (InputHit() > 0) return;
-		Jeda(30);
-	}
-}
+// const TungguInput = async (): Promise<void> => {
+// 	while (true) {
+// 		if (InputHit() > 0) return;
+// 		Jeda(30);
+// 	}
+// }
 
 const InputX = () => {
 	return ha.input.inputGlobal.x;
@@ -98,17 +97,17 @@ const KeybHit = (key: string = ''): number => {
 	}
 }
 
-const TungguKeyb = async (kode: string = ""): Promise<void> => {
-	console.log('wait key: ' + kode);
-	let ulang: boolean = true;
+// const TungguKeyb = async (kode: string = ""): Promise<void> => {
+// 	console.log('wait key: ' + kode);
+// 	let ulang: boolean = true;
 
-	while (ulang) {
-		if (KeybHit(kode) > 0) ulang = false;
-		await Jeda(30);
-	}
+// 	while (ulang) {
+// 		if (KeybHit(kode) > 0) ulang = false;
+// 		await Jeda(30);
+// 	}
 
-	console.log('wait key end');
-}
+// 	console.log('wait key end');
+// }
 
 /**
  * MOUSE dihapus
