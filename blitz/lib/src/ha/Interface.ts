@@ -65,8 +65,6 @@ interface IInputData {
 
 interface IGambar {
 	img: HTMLImageElement;
-	panjang: number;
-	lebar: number;
 	frameW: number;
 	frameH: number;
 	rotation: number;
@@ -75,6 +73,11 @@ interface IGambar {
 	ctx: CanvasRenderingContext2D;
 	rect: IRect;
 	load: boolean;
+
+	panjang: number;
+	lebar: number;
+	panjangDiSet: boolean;
+	lebarDiSet: boolean;
 
 	handleX: number;	//dipakai cuman pas saat gambar, dan perhitungan geometri, posisi tetap pakai x
 	handleY: number;	//dipakai cuman pas saat gambar

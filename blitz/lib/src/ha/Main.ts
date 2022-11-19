@@ -1,5 +1,6 @@
 namespace ha {
 
+	//TODO: beberapa perintah harus mengecheck apakah kanvas sudah di init, dan coba lagi kalau belum bisa
 	export class Main {
 		private static _fps: number = 1000 / 30;
 		private static _origin: IV2D;
@@ -22,7 +23,9 @@ namespace ha {
 				isAnim: false,
 				rotation: 0,
 				rect: ha.Rect.create(),
-				load: true
+				load: true,
+				panjangDiSet: true,
+				lebarDiSet: true
 			}
 
 			return canvas;
@@ -38,20 +41,30 @@ namespace ha {
 			ha.Main.canvasAktif = canvas;
 		}
 
-		static Bersih = (r: number = 0, g: number = 0, b: number = 0, alpha: number = 1): void => {
+		static Bersih(r: number = 0, g: number = 0, b: number = 0, alpha: number = 1): void {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 			ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
 			ctx.fillRect(0, 0, ha.Main.canvasAktif.panjang, ha.Main.canvasAktif.lebar);
 		}
 
-		static Color = (r: number = 0, g: number = 0, b: number = 0, a: number = 1) => {
+		static Color(r: number = 0, g: number = 0, b: number = 0, a: number = 1): void {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 			ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 			ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 		}
 
-		static Grafis = (width: number = 320, height: number = 240, gl: boolean = true, pixel: boolean = true): void => {
+		static Grafis(width: number = 320, height: number = 240, gl: boolean = true, pixel: boolean = true): void {
 			let canvas: IGambar = ha.Main.canvasAktif;
+
+			if (!canvas) {
+				setTimeout(() => {
+					ha.Main.Grafis(width, height);
+				}, 0);
+				console.log('failed');
+				return;
+			}
+
+			console.log('ok');
 
 			canvas.canvas.width = width;
 			canvas.canvas.height = height;
@@ -72,7 +85,7 @@ namespace ha {
 			// ha_blitz.Main.windowResize();
 		}
 
-		static Garis = (x1: number, y1: number, x2: number, y2: number) => {
+		static Garis(x1: number, y1: number, x2: number, y2: number) {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 			x1 = Math.floor(x1);
 			y1 = Math.floor(y1);
@@ -84,12 +97,12 @@ namespace ha {
 			ctx.stroke();
 		}
 
-		static Kotak = (x1: number, y1: number, x2: number, y2: number) => {
+		static Kotak(x1: number, y1: number, x2: number, y2: number) {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 			ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
 		}
 
-		static SetBuffer = (buffer: IGambar) => {
+		static SetBuffer(buffer: IGambar) {
 			ha.Main.canvasAktif = buffer
 		}
 

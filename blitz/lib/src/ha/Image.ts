@@ -1,4 +1,5 @@
 namespace ha {
+	//TODO: harus ada setter and getter buat object gambar
 	export class Image {
 		// readonly daftar: IGambar[] = [];
 
@@ -26,7 +27,9 @@ namespace ha {
 				canvas: canvas,
 				ctx: canvas.getContext('2d'),
 				rect: rect,
-				load: true
+				load: true,
+				panjangDiSet: true,
+				lebarDiSet: true
 			}
 
 			return img;
@@ -39,7 +42,8 @@ namespace ha {
 
 		//TODO:
 		static gambarOverlap(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number) {
-			GambarTabrakan(gbr1, x1, y1, gbr2, x2, y2);
+
+			ha.Image.gambarTabrakan(gbr1, x1, y1, gbr2, x2, y2);
 		};
 
 		static gambarTabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean {
@@ -59,38 +63,41 @@ namespace ha {
 			return ha.Rect.collideDot(gbr1.rect, x2, y2);
 		};
 
-		static async muatGambarAnimasi(url: string, fw: number = 32, fh: number = 32): Promise<IGambar> {
-			let img: HTMLImageElement = await ha.image.loadImage(url);
-			let canvas: HTMLCanvasElement = document.createElement('canvas');
-			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-			let rect: IRect;
+		//
+		// static async muatGambarAnimasi(url: string, fw: number = 32, fh: number = 32): Promise<IGambar> {
+		// 	let img: HTMLImageElement = await ha.image.loadImage(url);
+		// 	let canvas: HTMLCanvasElement = document.createElement('canvas');
+		// 	let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+		// 	let rect: IRect;
 
-			canvas.width = img.naturalWidth;
-			canvas.height = img.naturalHeight;
-			ctx.drawImage(img, 0, 0);
+		// 	canvas.width = img.naturalWidth;
+		// 	canvas.height = img.naturalHeight;
+		// 	ctx.drawImage(img, 0, 0);
 
-			rect = ha.Rect.create(0, 0, fw, fh);
+		// 	rect = ha.Rect.create(0, 0, fw, fh);
 
-			return {
-				img: img,
-				panjang: img.naturalWidth,
-				lebar: img.naturalHeight,
-				frameH: fw,
-				frameW: fh,
-				// width2: w,
-				// height2: h,
-				isAnim: true,
-				handleX: 0,
-				handleY: 0,
-				rotation: 0,
-				// scaleX: 1,
-				// scaleY: 1,
-				ctx: ctx,
-				canvas: canvas,
-				rect: rect,
-				load: true
-			}
-		}
+		// 	return {
+		// 		img: img,
+		// 		panjang: img.naturalWidth,
+		// 		lebar: img.naturalHeight,
+		// 		frameH: fw,
+		// 		frameW: fh,
+		// 		// width2: w,
+		// 		// height2: h,
+		// 		isAnim: true,
+		// 		handleX: 0,
+		// 		handleY: 0,
+		// 		rotation: 0,
+		// 		// scaleX: 1,
+		// 		// scaleY: 1,
+		// 		ctx: ctx,
+		// 		canvas: canvas,
+		// 		rect: rect,
+		// 		load: true,
+		// 		panjangDiSet: true,
+		// 		lebarDiSet: true
+		// 	}
+		// }
 
 		static muatGambarAnimasiAsync(url: string, fw: number = 32, fh: number = 32): IGambar {
 			let img: HTMLImageElement = document.createElement('img'); //;
@@ -121,7 +128,9 @@ namespace ha {
 				ctx: ctx,
 				canvas: canvas,
 				rect: rect,
-				load: false
+				load: false,
+				panjangDiSet: false,
+				lebarDiSet: false
 			}
 
 			img.onload = () => {
@@ -130,8 +139,18 @@ namespace ha {
 				ctx.drawImage(img, 0, 0);
 				// gbr.rect = ha.Rect.create(0, 0, fw, fh);
 				gbr.load = true;
-				gbr.panjang = img.naturalWidth;
-				gbr.lebar = img.naturalHeight;
+
+				if (!gbr.panjangDiSet) {
+					gbr.panjang = img.naturalWidth;
+					gbr.panjangDiSet = true;
+				}
+
+				if (!gbr.lebarDiSet) {
+					gbr.lebarDiSet = true;
+					gbr.lebar = img.naturalHeight;
+				}
+
+				// gbr.lebar = img.naturalHeight;
 				// gbr.frameH = img.naturalHeight;
 				// gbr.frameW = img.naturalWidth;
 				// console.log(gbr);
@@ -170,19 +189,33 @@ namespace ha {
 				ctx: ctx,
 				canvas: canvas,
 				rect: rect,
-				load: false
+				load: false,
+				panjangDiSet: false,
+				lebarDiSet: false
 			}
 
 			img.onload = () => {
+
 				canvas.width = img.naturalWidth;
 				canvas.height = img.naturalHeight;
 				ctx.drawImage(img, 0, 0);
 				gbr.rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+
 				gbr.load = true;
-				gbr.panjang = img.naturalWidth;
-				gbr.lebar = img.naturalHeight;
+
+				if (!gbr.panjangDiSet) {
+					gbr.panjangDiSet = true;
+					gbr.panjang = img.naturalWidth;
+				}
+
+				if (!gbr.lebarDiSet) {
+					gbr.lebar = img.naturalHeight;
+					gbr.lebarDiSet = true;
+				}
+
 				gbr.frameH = img.naturalHeight;
 				gbr.frameW = img.naturalWidth;
+
 				// console.log(gbr);
 				console.log('gambar di load');
 			}
@@ -224,7 +257,7 @@ namespace ha {
 
 			for (let i: number = 0; i < jmlH; i++) {
 				for (let j: number = 0; j < jmlV; j++) {
-					TaruhGambar(gbr, x + (i * w2), y + (j * h2), frame);
+					ha.Image.gambar(gbr, x + (i * w2), y + (j * h2), frame);
 				}
 			}
 		}
@@ -304,40 +337,40 @@ namespace ha {
 			});
 		}
 
-		static async muat(url: string): Promise<IGambar> {
-			let img: HTMLImageElement = await ha.image.loadImage(url);
-			let canvas: HTMLCanvasElement = document.createElement('canvas');
-			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-			let rect: IRect;
+		// static async muat(url: string): Promise<IGambar> {
+		// 	let img: HTMLImageElement = await ha.image.loadImage(url);
+		// 	let canvas: HTMLCanvasElement = document.createElement('canvas');
+		// 	let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+		// 	let rect: IRect;
 
-			canvas.width = img.naturalWidth;
-			canvas.height = img.naturalHeight;
-			ctx.drawImage(img, 0, 0);
+		// 	canvas.width = img.naturalWidth;
+		// 	canvas.height = img.naturalHeight;
+		// 	ctx.drawImage(img, 0, 0);
 
-			rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+		// 	rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
 
-			let gbr: IGambar = {
-				img: img,
-				panjang: img.naturalWidth,
-				lebar: img.naturalHeight,
-				frameH: img.naturalHeight,
-				frameW: img.naturalWidth,
-				isAnim: false,
-				handleX: 0,
-				handleY: 0,
-				rotation: 0,
-				// scaleX: 1,
-				// scaleY: 1,
-				ctx: ctx,
-				canvas: canvas,
-				rect: rect,
-				load: true
-			}
+		// 	let gbr: IGambar = {
+		// 		img: img,
+		// 		panjang: img.naturalWidth,
+		// 		lebar: img.naturalHeight,
+		// 		frameH: img.naturalHeight,
+		// 		frameW: img.naturalWidth,
+		// 		isAnim: false,
+		// 		handleX: 0,
+		// 		handleY: 0,
+		// 		rotation: 0,
+		// 		// scaleX: 1,
+		// 		// scaleY: 1,
+		// 		ctx: ctx,
+		// 		canvas: canvas,
+		// 		rect: rect,
+		// 		load: true
+		// 	}
 
-			// ha_blitz.image.daftar.push(gbr);
+		// 	// ha_blitz.image.daftar.push(gbr);
 
-			return gbr;
-		}
+		// 	return gbr;
+		// }
 
 		static gambar(gbr: IGambar, x: number = 0, y: number = 0, frame: number = 0) {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
@@ -347,8 +380,8 @@ namespace ha {
 			let frameY: number = 0;
 			// let rect: IRect = img.rect;
 
-			jmlH = Math.floor(gbr.panjang / gbr.frameW);
-			jmlV = Math.floor(gbr.lebar / gbr.frameH);
+			jmlH = Math.floor(gbr.img.naturalWidth / gbr.frameW);
+			jmlV = Math.floor(gbr.img.naturalHeight / gbr.frameH);
 
 			frameX = (frame % jmlH);
 			frameY = Math.floor(frame / jmlV);
@@ -380,7 +413,6 @@ namespace ha {
 			}
 
 			// debugger;
-
 		}
 
 		// handleTengah = (gbr: IGambar) => {
@@ -399,6 +431,8 @@ namespace ha {
 			// gbr.scaleY = Math.floor(h) / gbr.frameH;
 			gbr.panjang = w;
 			gbr.lebar = h;
+			gbr.panjangDiSet = true;
+			gbr.lebarDiSet = true;
 		}
 
 		// loadImageAsync = (url: string, ok: () => void, error: () => void): HTMLImageElement => {
@@ -416,7 +450,7 @@ namespace ha {
 		// 	return image2;
 		// }
 
-		loadImage = async (url: string): Promise<HTMLImageElement> => {
+		async loadImage(url: string): Promise<HTMLImageElement> {
 			return new Promise((resolve, reject): void => {
 				let image2: HTMLImageElement = document.createElement('img');
 
@@ -479,7 +513,7 @@ namespace ha {
 			ha.Rect.translate(rect, -image.handleX, -image.handleY);
 
 			//rotate
-			ha.Rect.rotate(rect, image.rotation, x, y);
+			ha.Rect.rotate(rect, image.rotation, x, y, false);
 		}
 
 	}

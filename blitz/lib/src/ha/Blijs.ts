@@ -14,7 +14,7 @@ namespace ha {
 			ha.Main.init(canvas, canvas);
 			ha.input.init(ha.Main.canvasAktif);
 
-			window.onresize = async (): Promise<void> => {
+			window.onresize = (): void => {
 				this.windowResize();
 			}
 
@@ -44,36 +44,33 @@ namespace ha {
 			}, 0);
 		}
 
-		static loop = (): void => {
+		static loop(): void {
 			let _window: any = window;
-			if (typeof _window.Loop == 'function') {
+			if (typeof (_window.Loop) == 'function') {
 				//TODO: pre loop
 				_window.Loop();
 				//TODO: post loop
 			}
+			else if (typeof (_window.update) == 'function') {
+				//TODO: pre loop
+				_window.update();
+				//TODO: post loop
+
+			}
 		}
 
-		static repeat = () => {
+		static repeat() {
 			//check semua image sudah diload
 
-			this.loop();
+			ha.Blijs.loop();
 			setTimeout(() => {
 				requestAnimationFrame(() => {
-					this.repeat();
+					ha.Blijs.repeat();
 				});
 			}, 0);
-
-			// .then(() => {
-			// 	setTimeout(() => {
-			// 		requestAnimationFrame(this.repeat);
-			// 	}, 0);
-			// }).
-			// catch((e) => {
-			// 	console.error(e);
-			// });
 		}
 
-		static windowResize = (): void => {
+		static windowResize(): void {
 			// console.debug('window on resize');
 			let canvas: HTMLCanvasElement = ha.Main.canvasAktif.canvas;
 

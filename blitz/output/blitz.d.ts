@@ -6,12 +6,12 @@ declare namespace ha {
         private static _canvasAktif;
         static buatCanvas(canvasEl: HTMLCanvasElement): IGambar;
         static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void;
-        static Bersih: (r?: number, g?: number, b?: number, alpha?: number) => void;
-        static Color: (r?: number, g?: number, b?: number, a?: number) => void;
-        static Grafis: (width?: number, height?: number, gl?: boolean, pixel?: boolean) => void;
-        static Garis: (x1: number, y1: number, x2: number, y2: number) => void;
-        static Kotak: (x1: number, y1: number, x2: number, y2: number) => void;
-        static SetBuffer: (buffer: IGambar) => void;
+        static Bersih(r?: number, g?: number, b?: number, alpha?: number): void;
+        static Color(r?: number, g?: number, b?: number, a?: number): void;
+        static Grafis(width?: number, height?: number, gl?: boolean, pixel?: boolean): void;
+        static Garis(x1: number, y1: number, x2: number, y2: number): void;
+        static Kotak(x1: number, y1: number, x2: number, y2: number): void;
+        static SetBuffer(buffer: IGambar): void;
         static get canvasAktif(): IGambar;
         static set canvasAktif(value: IGambar);
         static get canvasAr(): IGambar[];
@@ -32,7 +32,6 @@ declare namespace ha {
         static gambarOverlap(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): void;
         static gambarTabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean;
         static dotDidalamGambar(gbr1: IGambar, x1: number, y1: number, x2: number, y2: number): boolean;
-        static muatGambarAnimasi(url: string, fw?: number, fh?: number): Promise<IGambar>;
         static muatGambarAnimasiAsync(url: string, fw?: number, fh?: number): IGambar;
         static muatAsync(url: string): IGambar;
         static gambarUbin(gbr: IGambar, x?: number, y?: number, frame?: number): void;
@@ -43,7 +42,6 @@ declare namespace ha {
         static posisiHandleGambar(gbr: IGambar, x?: number, y?: number): void;
         static grabGambar(gbr: IGambar, x?: number, y?: number): void;
         static tungguLoad(): Promise<void>;
-        static muat(url: string): Promise<IGambar>;
         static gambar(gbr: IGambar, x?: number, y?: number, frame?: number): void;
         /**
          * Ubah Ukuran Gambar
@@ -52,7 +50,7 @@ declare namespace ha {
          * @param h
          */
         ukuranGambar(gbr: IGambar, w: number, h: number): void;
-        loadImage: (url: string) => Promise<HTMLImageElement>;
+        loadImage(url: string): Promise<HTMLImageElement>;
         resetImageRect(img: IGambar): void;
         rectToImageTransform(image: IGambar, x: number, y: number): void;
     }
@@ -72,6 +70,7 @@ declare namespace ha {
         private _dragStartX;
         private _dragable;
         constructor(buffer: IGambar, dragable?: boolean);
+        static rotasi(sprite: ISprite, sudut?: number): number;
         static posisi(sprite: ISprite, x?: number, y?: number): void;
         static posisiX(spr: ISprite, x?: number | null | undefined): number;
         static posisiY(spr: ISprite, y?: number | null | undefined): number;
@@ -211,9 +210,9 @@ declare namespace ha {
 declare namespace ha {
     class Blijs {
         static init(canvas?: HTMLCanvasElement): void;
-        static loop: () => void;
-        static repeat: () => void;
-        static windowResize: () => void;
+        static loop(): void;
+        static repeat(): void;
+        static windowResize(): void;
     }
 }
 declare namespace ha {
@@ -237,30 +236,6 @@ declare namespace ha {
 /**
  * IMAGE
  */
-declare const BuatGambar: typeof ha.Image.buatGambar;
-declare const TaruhGambar: typeof ha.Image.gambar;
-declare const GrabGambar: typeof ha.Image.grabGambar;
-declare const PosisiHandleGambar: typeof ha.Image.posisiHandleGambar;
-declare const PanjangGambar: typeof ha.Image.panjangGambar;
-declare const LebarGambar: typeof ha.Image.lebarGambar;
-declare const HandleXGambar: typeof ha.Image.handleXGambar;
-declare const HandleYGambar: typeof ha.Image.handleYGambar;
-declare const GambarOverlap: typeof ha.Image.gambarOverlap;
-declare const GambarTabrakan: typeof ha.Image.gambarTabrakan;
-declare const DotDidalamGambar: typeof ha.Image.dotDidalamGambar;
-declare const MuatGambar: typeof ha.Image.muat;
-declare const MuatGambarAnimasi: typeof ha.Image.muatGambarAnimasi;
-declare const GambarUbin: typeof ha.Image.gambarUbin;
-declare const ResizeGambar: (gbr: IGambar, w: number, h: number) => void;
-declare const PutarGambar: typeof ha.Image.putarGambar;
-declare const AmbilPiksel: typeof ha.Image.ambilPiksel;
-declare const SetWarna: typeof ha.Image.setWarna;
-declare const SetPiksel: typeof ha.Image.setPiksel;
-declare const ImagePivot: () => void;
-declare const BackgroundImage: () => void;
-declare const MainLayer: () => void;
-declare const CreateLayer: () => void;
-declare const LayerZ: () => void;
 declare const Prompt: (m: string, def: string) => string;
 declare const InputHit: () => number;
 declare const InputX: () => number;
@@ -340,12 +315,12 @@ interface ITransform {
     scale: IV2D;
     rotation: number;
 }
-declare const Bersih: (r?: number, g?: number, b?: number, alpha?: number) => void;
-declare const Color: (r?: number, g?: number, b?: number, a?: number) => void;
-declare const Grafis: (width?: number, height?: number, gl?: boolean, pixel?: boolean) => void;
-declare const Garis: (x1: number, y1: number, x2: number, y2: number) => void;
-declare const Kotak: (x1: number, y1: number, x2: number, y2: number) => void;
-declare const SetBuffer: (buffer: IGambar) => void;
+declare const Bersih: typeof ha.Main.Bersih;
+declare const Color: typeof ha.Main.Color;
+declare const Grafis: typeof ha.Main.Grafis;
+declare const Garis: typeof ha.Main.Garis;
+declare const Kotak: typeof ha.Main.Kotak;
+declare const SetBuffer: typeof ha.Main.SetBuffer;
 declare const GraphicsBuffer: () => void;
 declare const Origin: () => void;
 declare const Oval: () => void;
@@ -372,6 +347,7 @@ declare const GambarSemua: typeof ha.Sprite.gambarSemua;
 declare const PosisiX: typeof ha.Sprite.posisiX;
 declare const PosisiY: typeof ha.Sprite.posisiY;
 declare const Handle: typeof ha.Sprite.handle;
+declare const Rotasi: typeof ha.Sprite.rotasi;
 declare const PosisiJarakSprite: () => void;
 declare const Copy: () => void;
 declare const PosisiHandle: () => void;
@@ -384,7 +360,6 @@ declare const Tabrakan: () => void;
 declare const DotDiDalam: () => void;
 declare const MuatAnimasi: () => void;
 declare const Ubin: () => void;
-declare const Putar: () => void;
 declare const Skala: () => void;
 declare const Piksel: () => void;
 declare const Warna: () => void;
@@ -497,8 +472,6 @@ interface IInputData {
 }
 interface IGambar {
     img: HTMLImageElement;
-    panjang: number;
-    lebar: number;
     frameW: number;
     frameH: number;
     rotation: number;
@@ -507,6 +480,10 @@ interface IGambar {
     ctx: CanvasRenderingContext2D;
     rect: IRect;
     load: boolean;
+    panjang: number;
+    lebar: number;
+    panjangDiSet: boolean;
+    lebarDiSet: boolean;
     handleX: number;
     handleY: number;
     ratioX?: number;

@@ -39,7 +39,8 @@ function buatSoal(soal1Pecahan: boolean = false, soal2Pecahan: boolean = false):
 	return soal;
 }
 
-function renderSoal(soal: ISoal): void {
+let renderSoal: (soal: ISoal) => void;
+renderSoal = (soal: ISoal): void => {
 	soal1Cont.innerHTML = '';
 	soal2Cont.innerHTML = '';
 
@@ -127,6 +128,6 @@ const soal1Cont: HTMLElement = ha.comp.Util.getEl('div.soal-1');
 const soal2Cont: HTMLElement = ha.comp.Util.getEl('div.soal-2');
 
 interface ISoal {
-	pecahan?: any[];
+	pecahan?: any[] | IPecahan[];
 	jawaban?: string;
 }

@@ -1,17 +1,19 @@
 class Pecahan {
-    _angka = 0;
-    _pembilang = 0;
-    _penyebut = 0;
-    _dec;
     constructor(a, bilang, sebut) {
+        this._angka = 0;
+        this._pembilang = 0;
+        this._penyebut = 0;
         this.angka = a;
         this.pembilang = bilang;
         this.penyebut = sebut;
-        if (a == 0) {
-            this._dec = this.pembilang / this.penyebut;
+        Pecahan.updateDec(this);
+    }
+    static updateDec(p) {
+        if (p.angka == 0) {
+            p.dec = p.pembilang / p.penyebut;
         }
         else {
-            this._dec = (this.penyebut * this.angka + this.pembilang) / this.penyebut;
+            p.dec = (p.penyebut * p.angka + p.pembilang) / p.penyebut;
         }
     }
     static clone(p) {
@@ -160,24 +162,21 @@ class Pecahan {
     }
     set angka(value) {
         this._angka = value;
+        Pecahan.updateDec(this);
     }
     get pembilang() {
         return this._pembilang;
     }
     set pembilang(value) {
-        if (value > 30) {
-            ha.comp.Util.stackTrace();
-        }
         this._pembilang = value;
+        Pecahan.updateDec(this);
     }
     get penyebut() {
         return this._penyebut;
     }
     set penyebut(value) {
-        if (value > 30) {
-            ha.comp.Util.stackTrace();
-        }
         this._penyebut = value;
+        Pecahan.updateDec(this);
     }
     get dec() {
         return this._dec;

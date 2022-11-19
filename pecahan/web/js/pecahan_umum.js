@@ -32,12 +32,13 @@ function buatSoal(soal1Pecahan = false, soal2Pecahan = false) {
     }
     return soal;
 }
-function renderSoal(soal) {
+let renderSoal;
+renderSoal = (soal) => {
     soal1Cont.innerHTML = '';
     soal2Cont.innerHTML = '';
     soal1Cont.appendChild(Pecahan.render(soal.pecahan[0]));
     soal2Cont.appendChild(Pecahan.render(soal.pecahan[1]));
-}
+};
 function soalMaju() {
     soalIdx++;
     if (soalIdx >= soals.length) {
