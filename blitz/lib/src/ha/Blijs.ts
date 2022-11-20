@@ -4,44 +4,63 @@
 
 namespace ha {
 	export class Blijs {
-		static init(canvas?: HTMLCanvasElement) {
+		private static _skalaOtomatis: boolean = true;
+
+		static init(panjang: number = 320, lebar: number = 240, canvas: HTMLCanvasElement = null, skalaOtomatis: boolean = true) {
+
+			//coba cari canvas
 			if (!canvas) canvas = document.body.querySelector('canvas') as HTMLCanvasElement;
 			if (!canvas) {
 				console.log('gagal init');
 				return;
 			}
 
-			ha.Main.init(canvas, canvas);
-			ha.input.init(ha.Main.canvasAktif);
+			ha.Blijs.skalaOtomatis = skalaOtomatis;
 
-			window.onresize = (): void => {
-				this.windowResize();
+			//sudah diinisialisasi atau belum
+			if (ha.Main.canvasAktif) {
+				console.warn('init lebih dari sekali');
+				ha.Main.Grafis(panjang, lebar);
 			}
+			else {
+				console.log('inisialisasi');
+				ha.Main.init(canvas, canvas);
+				ha.Main.Grafis(panjang, lebar);
+				ha.input.init(ha.Main.canvasAktif);
 
-			setTimeout(() => {
-				this.windowResize();
-			}, 100);
+				window.onresize = (): void => {
+					if (ha.Blijs.skalaOtomatis) {
+						ha.Blijs.windowResize();
+					}
+				}
 
-			// let _window: any = window;
+				setTimeout(() => {
+					if (ha.Blijs.skalaOtomatis) {
+						ha.Blijs.windowResize();
+					}
+				}, 100);
 
-			setTimeout(() => {
-				this.repeat();
-				// if (typeof _window.Mulai__ == "function") {
-				// 	console.log('window start function called');
+				// let _window: any = window;
 
-				// 	_window.Mulai()
-				// 		.then(() => {
-				// 			this.repeat();
-				// 		})
-				// 		.catch((e: Error) => {
-				// 			console.error(e);
-				// 		})
-				// }
-				// else {
-				// 	console.warn('start not found');
-				// 	this.repeat();
-				// }
-			}, 0);
+				setTimeout(() => {
+					ha.Blijs.repeat();
+					// if (typeof _window.Mulai__ == "function") {
+					// 	console.log('window start function called');
+
+					// 	_window.Mulai()
+					// 		.then(() => {
+					// 			this.repeat();
+					// 		})
+					// 		.catch((e: Error) => {
+					// 			console.error(e);
+					// 		})
+					// }
+					// else {
+					// 	console.warn('start not found');
+					// 	this.repeat();
+					// }
+				}, 0);
+			}
 		}
 
 		static loop(): void {
@@ -96,9 +115,17 @@ namespace ha {
 
 			// console.debug('canvas w: ' + canvas.style.width + '/ratio: ' + ratio);
 		}
+
+		public static get skalaOtomatis(): boolean {
+			return Blijs._skalaOtomatis;
+		}
+		public static set skalaOtomatis(value: boolean) {
+			Blijs._skalaOtomatis = value;
+		}
+
 	}
 }
 
-setTimeout(() => {
-	ha.Blijs.init()
-}, 0);
+// setTimeout(() => {
+// 	ha.Blijs.init()
+// }, 0);

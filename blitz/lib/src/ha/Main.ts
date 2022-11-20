@@ -6,6 +6,7 @@ namespace ha {
 		private static _origin: IV2D;
 		private static _canvasAr: IGambar[] = [];
 		private static _canvasAktif: IGambar;
+		private static _skalaOtomatis: boolean = true;
 
 		static Fps(n: number) {
 			ha.Main.fps = Math.floor(1000 / n);
@@ -60,34 +61,43 @@ namespace ha {
 			ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
 		}
 
-		static Grafis(width: number = 320, height: number = 240, gl: boolean = true, pixel: boolean = true): void {
+		static Grafis(width: number = 320, height: number = 240): void {
 			let canvas: IGambar = ha.Main.canvasAktif;
 
-			if (!canvas) {
-				setTimeout(() => {
-					ha.Main.Grafis(width, height);
-				}, 0);
-				console.log('failed');
-				return;
-			}
+			//check canvas sudah diinit atau belum
+			// if (!canvas) {
+			// 	if (canvas2) {
+			// 		this.init(canvas,)
+			// 	}
+			// 	// return;
+			// 	// setTimeout(() => {
+			// 	// 	ha.Main.Grafis(width, height);
+			// 	// }, 0);
+			// 	// console.log('failed');
+			// 	// return;
+			// }
 
-			console.log('ok');
+			// console.log('ok');
 
 			canvas.canvas.width = width;
 			canvas.canvas.height = height;
 			canvas.panjang = width;
 			canvas.lebar = height;
 
-			if (gl) {
-				ha.Main.canvasAktif.canvas.classList.add('gl');
-			}
-			else {
-				ha.Main.canvasAktif.canvas.classList.remove('gl');
-			}
+			setTimeout(() => {
+				ha.Blijs.windowResize();
+			}, 0);
 
-			if (pixel) {
-				ha.Main.canvasAktif.canvas.classList.add('pixel');
-			}
+			// if (canvas2) {
+			// 	ha.Main.canvasAktif.canvas.classList.add('gl');
+			// }
+			// else {
+			// 	ha.Main.canvasAktif.canvas.classList.remove('gl');
+			// }
+
+			// if (skalaOtomatis) {
+			// 	ha.Main.canvasAktif.canvas.classList.add('pixel');
+			// }
 
 			// ha_blitz.Main.windowResize();
 		}
@@ -140,6 +150,12 @@ namespace ha {
 		}
 		public static set fps(value: number) {
 			this._fps = value;
+		}
+		public static get skalaOtomatis(): boolean {
+			return Main._skalaOtomatis;
+		}
+		public static set skalaOtomatis(value: boolean) {
+			Main._skalaOtomatis = value;
 		}
 
 	}

@@ -24,7 +24,7 @@ const HandleY = () => { }
 const Overlap = () => { }
 const Tabrakan = () => { }
 const DotDiDalam = () => { }
-const Ubin = () => { }
+const Ubin = ha.Sprite.ubin;
 const Skala = () => { }
 
 const Piksel = () => { }

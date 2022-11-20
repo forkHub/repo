@@ -1,5 +1,15 @@
 echo off
 
+echo snow:
+echo =====
+copy ..\blitz\output\*.d.ts .\snow\dts
+copy ..\blitz\output\*.js .\snow\web\js
+
+echo tile:
+echo =====
+copy ..\blitz\output\*.d.ts .\tile\dts
+copy ..\blitz\output\*.js .\tile\web\js
+
 echo doodle:
 echo =====
 copy ..\blitz\output\*.d.ts .\doodle\dts

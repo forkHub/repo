@@ -47,18 +47,18 @@ namespace ha {
 		};
 
 		static gambarTabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean {
-			ha.image.resetImageRect(gbr1);
-			ha.image.rectToImageTransform(gbr1, x1, y1);
+			ha.Image.resetImageRect(gbr1);
+			ha.Image.rectToImageTransform(gbr1, x1, y1);
 
-			ha.image.resetImageRect(gbr2);
-			ha.image.rectToImageTransform(gbr2, x2, y2);
+			ha.Image.resetImageRect(gbr2);
+			ha.Image.rectToImageTransform(gbr2, x2, y2);
 
 			return ha.Rect.collide(gbr1.rect, gbr2.rect);
 		};
 
 		static dotDidalamGambar(gbr1: IGambar, x1: number, y1: number, x2: number, y2: number): boolean {
-			ha.image.resetImageRect(gbr1);
-			ha.image.rectToImageTransform(gbr1, x1, y1);
+			ha.Image.resetImageRect(gbr1);
+			ha.Image.rectToImageTransform(gbr1, x1, y1);
 
 			return ha.Rect.collideDot(gbr1.rect, x2, y2);
 		};
@@ -236,6 +236,8 @@ namespace ha {
 			let jmlH: number = 0;
 			let jmlV: number = 0;
 
+			if (gbr.load == false) return;
+
 			let w2: number = Math.floor(gbr.panjang);
 			let h2: number = Math.floor(gbr.lebar);
 
@@ -255,6 +257,7 @@ namespace ha {
 			jmlH = Math.ceil((ha.Main.canvasAktif.panjang + Math.abs(x)) / w2);
 			jmlV = Math.ceil((ha.Main.canvasAktif.lebar + Math.abs(y)) / h2);
 
+			debugger;
 			for (let i: number = 0; i < jmlH; i++) {
 				for (let j: number = 0; j < jmlV; j++) {
 					ha.Image.gambar(gbr, x + (i * w2), y + (j * h2), frame);
@@ -380,6 +383,8 @@ namespace ha {
 			let frameY: number = 0;
 			// let rect: IRect = img.rect;
 
+			if (gbr.load == false) return;
+
 			jmlH = Math.floor(gbr.img.naturalWidth / gbr.frameW);
 			jmlV = Math.floor(gbr.img.naturalHeight / gbr.frameH);
 
@@ -426,7 +431,7 @@ namespace ha {
 		 * @param w 
 		 * @param h 
 		 */
-		ukuranGambar(gbr: IGambar, w: number, h: number): void {
+		static ukuranGambar(gbr: IGambar, w: number, h: number): void {
 			// gbr.scaleX = Math.floor(w) / gbr.frameW;
 			// gbr.scaleY = Math.floor(h) / gbr.frameH;
 			gbr.panjang = w;
@@ -450,24 +455,24 @@ namespace ha {
 		// 	return image2;
 		// }
 
-		async loadImage(url: string): Promise<HTMLImageElement> {
-			return new Promise((resolve, reject): void => {
-				let image2: HTMLImageElement = document.createElement('img');
+		// async loadImage(url: string): Promise<HTMLImageElement> {
+		// 	return new Promise((resolve, reject): void => {
+		// 		let image2: HTMLImageElement = document.createElement('img');
 
-				image2.onload = () => {
-					resolve(image2);
-				}
+		// 		image2.onload = () => {
+		// 			resolve(image2);
+		// 		}
 
-				image2.src = url;
+		// 		image2.src = url;
 
-				image2.onerror = (e) => {
-					reject(e);
-				}
+		// 		image2.onerror = (e) => {
+		// 			reject(e);
+		// 		}
 
-			});
-		}
+		// 	});
+		// }
 
-		resetImageRect(img: IGambar): void {
+		static resetImageRect(img: IGambar): void {
 			let rect: IRect = img.rect;
 			let p: IV2D;
 
@@ -489,7 +494,7 @@ namespace ha {
 
 		}
 
-		rectToImageTransform(image: IGambar, x: number, y: number): void {
+		static rectToImageTransform(image: IGambar, x: number, y: number): void {
 			let rect: IRect = image.rect;
 			let p: IV2D;
 			let x2: number = image.panjang
@@ -518,5 +523,5 @@ namespace ha {
 
 	}
 
-	export var image: Image = new Image();
+	// export var image: Image = new Image();
 }

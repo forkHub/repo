@@ -83,7 +83,7 @@ namespace ha {
 		// }
 
 		static ukuranGambar(gbr: ISprite, w: number, h: number): void {
-			ha.image.ukuranGambar(gbr.buffer, w, h);
+			ha.Image.ukuranGambar(gbr.buffer, w, h);
 		}
 
 		// static handleTengah(gbr: ISprite): void {
@@ -151,6 +151,10 @@ namespace ha {
 			let p: IPoint2D = ha.Point.posPolar(jarak, sudut, x2, y2);
 			sprite.x = p.x;
 			sprite.y = p.y;
+		}
+
+		static ubin(spr: ISprite, x: number = 0, y: number = 0, frame: number = 0) {
+			ha.Image.gambarUbin(spr.buffer, x, y, frame);
 		}
 
 		public get dragStartX(): number {

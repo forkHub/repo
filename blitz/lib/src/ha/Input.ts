@@ -63,6 +63,7 @@ namespace ha {
 
 				ha.input.event.move(input, buffer, e);
 				ha.input.event.move(this.inputGlobal, buffer, e);
+
 				if (e.pointerType == 'touch') ha.input.event.move(ha.input.touchGlobal, buffer, e);
 				if (e.pointerType == 'mouse') ha.input.event.move(ha.input.mouseGlobal, buffer, e);
 

@@ -5,7 +5,7 @@
  */
 const Bersih = ha.Main.Bersih;
 const Color = ha.Main.Color;
-const Grafis = ha.Main.Grafis;
+const Grafis = ha.Blijs.init;
 const Garis = ha.Main.Garis;
 const Kotak = ha.Main.Kotak;
 const SetBuffer = ha.Main.SetBuffer;

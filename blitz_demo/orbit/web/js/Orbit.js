@@ -4,11 +4,11 @@ let bumi;
 let sudut = 10;
 matahari = Muat("./gbr/matahari.png", true);
 Ukuran(matahari, 100, 100);
-HandleTengah(matahari);
+Handle(matahari, 50, 50);
 Posisi(matahari, 240, 240);
 bumi = Muat("./gbr/bumi.png");
 Ukuran(bumi, 50, 50);
-HandleTengah(bumi);
+Handle(bumi, 25, 25);
 function Loop() {
     Bersih();
     sudut++;

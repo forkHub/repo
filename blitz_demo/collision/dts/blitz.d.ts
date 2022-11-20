@@ -4,12 +4,13 @@ declare namespace ha {
         private static _origin;
         private static _canvasAr;
         private static _canvasAktif;
+        private static _skalaOtomatis;
         static Fps(n: number): void;
         static buatCanvas(canvasEl: HTMLCanvasElement): IGambar;
         static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void;
         static Bersih(r?: number, g?: number, b?: number, alpha?: number): void;
         static Color(r?: number, g?: number, b?: number, a?: number): void;
-        static Grafis(width?: number, height?: number, gl?: boolean, pixel?: boolean): void;
+        static Grafis(width?: number, height?: number): void;
         static Garis(x1: number, y1: number, x2: number, y2: number): void;
         static Kotak(x1: number, y1: number, x2: number, y2: number): void;
         static SetBuffer(buffer: IGambar): void;
@@ -21,6 +22,8 @@ declare namespace ha {
         static set origin(value: IV2D);
         static get fps(): number;
         static set fps(value: number);
+        static get skalaOtomatis(): boolean;
+        static set skalaOtomatis(value: boolean);
     }
 }
 declare namespace ha {
@@ -50,12 +53,10 @@ declare namespace ha {
          * @param w
          * @param h
          */
-        ukuranGambar(gbr: IGambar, w: number, h: number): void;
-        loadImage(url: string): Promise<HTMLImageElement>;
-        resetImageRect(img: IGambar): void;
-        rectToImageTransform(image: IGambar, x: number, y: number): void;
+        static ukuranGambar(gbr: IGambar, w: number, h: number): void;
+        static resetImageRect(img: IGambar): void;
+        static rectToImageTransform(image: IGambar, x: number, y: number): void;
     }
-    var image: Image;
 }
 /** SPRITE.TS */
 declare namespace ha {
@@ -86,6 +87,7 @@ declare namespace ha {
         static inputUp(): void;
         static gambar(sprite: ISprite, frame?: number): void;
         static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void;
+        static ubin(spr: ISprite, x?: number, y?: number, frame?: number): void;
         get dragStartX(): number;
         set dragStartX(value: number);
         get dragStartY(): number;
@@ -211,10 +213,13 @@ declare namespace ha {
  */
 declare namespace ha {
     class Blijs {
-        static init(canvas?: HTMLCanvasElement): void;
+        private static _skalaOtomatis;
+        static init(panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, skalaOtomatis?: boolean): void;
         static loop(): void;
         static repeat(): void;
         static windowResize(): void;
+        static get skalaOtomatis(): boolean;
+        static set skalaOtomatis(value: boolean);
     }
 }
 declare namespace ha {
@@ -319,7 +324,7 @@ interface ITransform {
 }
 declare const Bersih: typeof ha.Main.Bersih;
 declare const Color: typeof ha.Main.Color;
-declare const Grafis: typeof ha.Main.Grafis;
+declare const Grafis: typeof ha.Blijs.init;
 declare const Garis: typeof ha.Main.Garis;
 declare const Kotak: typeof ha.Main.Kotak;
 declare const SetBuffer: typeof ha.Main.SetBuffer;
@@ -361,7 +366,7 @@ declare const HandleY: () => void;
 declare const Overlap: () => void;
 declare const Tabrakan: () => void;
 declare const DotDiDalam: () => void;
-declare const Ubin: () => void;
+declare const Ubin: typeof ha.Sprite.ubin;
 declare const Skala: () => void;
 declare const Piksel: () => void;
 declare const Warna: () => void;
