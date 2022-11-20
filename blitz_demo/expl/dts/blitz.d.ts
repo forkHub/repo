@@ -5,11 +5,20 @@ declare namespace ha {
         private static _canvasAr;
         private static _canvasAktif;
         private static _skalaOtomatis;
+        private static merah;
+        private static hijau;
+        private static biru;
+        private static transparan;
         static Fps(n: number): void;
         static buatCanvas(canvasEl: HTMLCanvasElement): IGambar;
         static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void;
-        static Bersih(r?: number, g?: number, b?: number, alpha?: number): void;
-        static Color(r?: number, g?: number, b?: number, a?: number): void;
+        static Bersih(): void;
+        static warna(r?: number, g?: number, b?: number, a?: number): void;
+        static updateWarna(): void;
+        static Hijau(a?: number): number;
+        static Merah(a?: number): number;
+        static Biru(a?: number): number;
+        static Transparan(a?: number): number;
         static Grafis(width?: number, height?: number): void;
         static Garis(x1: number, y1: number, x2: number, y2: number): void;
         static Kotak(x1: number, y1: number, x2: number, y2: number): void;
@@ -41,7 +50,6 @@ declare namespace ha {
         static gambarUbin(gbr: IGambar, x?: number, y?: number, frame?: number): void;
         static putarGambar(gbr: IGambar, sudut?: number): void;
         static ambilPiksel(x?: number, y?: number): number[];
-        static setWarna(r?: number, g?: number, b?: number, a?: number): void;
         static setPiksel(x?: number, y?: number): void;
         static posisiHandleGambar(gbr: IGambar, x?: number, y?: number): void;
         static grabGambar(gbr: IGambar, x?: number, y?: number): void;
@@ -78,6 +86,7 @@ declare namespace ha {
         static posisiY(spr: ISprite, y?: number | null | undefined): number;
         static handle(spr: ISprite, x?: number, y?: number): void;
         static gambarSemua(): void;
+        static tabrakan(spr: ISprite, spr2: ISprite): boolean;
         static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag?: boolean): ISprite;
         static muatAsync(url: string, dragable?: boolean): ISprite;
         static ukuranGambar(gbr: ISprite, w: number, h: number): void;
@@ -240,9 +249,6 @@ declare namespace ha {
         static rotateRel(x?: number, y?: number, xt?: number, yt?: number, deg?: number): void;
     }
 }
-/**
- * IMAGE
- */
 declare const Prompt: (m: string, def: string) => string;
 declare const InputHit: () => number;
 declare const InputX: () => number;
@@ -323,26 +329,17 @@ interface ITransform {
     rotation: number;
 }
 declare const Bersih: typeof ha.Main.Bersih;
-declare const Color: typeof ha.Main.Color;
 declare const Grafis: typeof ha.Blijs.init;
 declare const Garis: typeof ha.Main.Garis;
 declare const Kotak: typeof ha.Main.Kotak;
 declare const SetBuffer: typeof ha.Main.SetBuffer;
-declare const GraphicsBuffer: () => void;
-declare const Origin: () => void;
-declare const Oval: () => void;
-declare const WritePixel: () => void;
-declare const ReadPixel: () => void;
-declare const Plot: () => void;
-declare const WarnaMerah: () => void;
-declare const ColorBlue: () => void;
-declare const ColorGreen: () => void;
-declare const ClsColor: () => void;
-declare const CopyPixel: () => void;
-declare const CopyRect: () => void;
-declare const FrontBuffer: () => void;
-declare const GetColor: () => void;
-declare const BackBuffer: () => void;
+declare const Warna: typeof ha.Main.warna;
+declare const Merah: typeof ha.Main.Merah;
+declare const Hijau: typeof ha.Main.Hijau;
+declare const Biru: typeof ha.Main.Biru;
+declare const Transparan: typeof ha.Main.Transparan;
+declare const AmbilPiksel: typeof ha.Main.warna;
+declare const SetPiksel: typeof ha.Main.warna;
 /** BLITZ-SPRITE.TS */
 declare const Buat: typeof ha.Sprite.buat;
 declare const Muat: typeof ha.Sprite.muatAsync;
@@ -356,6 +353,7 @@ declare const PosisiY: typeof ha.Sprite.posisiY;
 declare const Handle: typeof ha.Sprite.handle;
 declare const Rotasi: typeof ha.Sprite.rotasi;
 declare const MuatAnimasi: typeof ha.Sprite.muatAnimasiAsync;
+declare const Tabrakan: typeof ha.Sprite.tabrakan;
 declare const PosisiJarakSprite: () => void;
 declare const Copy: () => void;
 declare const PosisiHandle: () => void;
@@ -364,15 +362,10 @@ declare const Lebar: () => void;
 declare const HandleX: () => void;
 declare const HandleY: () => void;
 declare const Overlap: () => void;
-declare const Tabrakan: () => void;
 declare const DotDiDalam: () => void;
 declare const Ubin: typeof ha.Sprite.ubin;
 declare const Skala: () => void;
 declare const Piksel: () => void;
-declare const Warna: () => void;
-declare const Merah: () => void;
-declare const Hijau: () => void;
-declare const Biru: () => void;
 declare const FPS: typeof ha.Main.Fps;
 /**
  * TEXTS

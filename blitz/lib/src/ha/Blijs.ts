@@ -70,7 +70,7 @@ namespace ha {
 				_window.Loop();
 				//TODO: post loop
 			}
-			else if (typeof (_window.update) == 'function') {
+			else if (typeof (_window.Update) == 'function') {
 				//TODO: pre loop
 				_window.update();
 				//TODO: post loop
@@ -107,6 +107,8 @@ namespace ha {
 			ha.Main.canvasAktif.ratioX = ratio;
 			ha.Main.canvasAktif.ratioY = ratio;
 
+			canvas.style.position = 'fixed';
+			canvas.style.zIndex = '9999';
 			canvas.style.width = cp2 + 'px';
 			canvas.style.height = cl2 + 'px';
 

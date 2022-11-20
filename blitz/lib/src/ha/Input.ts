@@ -41,6 +41,7 @@ namespace ha {
 
 			buffer.canvas.onpointerdown = (e: PointerEvent) => {
 				e.stopPropagation();
+				e.preventDefault();
 				// e.preventDefault();
 
 				let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
@@ -58,6 +59,7 @@ namespace ha {
 
 			buffer.canvas.onpointermove = (e: PointerEvent) => {
 				e.stopPropagation();
+				e.preventDefault();
 
 				let input: IInput = this.baru(e.button + '', e.pointerType);
 
@@ -76,6 +78,7 @@ namespace ha {
 
 			buffer.canvas.onpointerout = (e: PointerEvent) => {
 				e.stopPropagation();
+				e.preventDefault();
 
 				let input: IInput = ha.input.baru(e.button + '', e.pointerType);
 
@@ -92,6 +95,7 @@ namespace ha {
 
 			buffer.canvas.onpointerup = (e: PointerEvent) => {
 				e.stopPropagation();
+				e.preventDefault();
 
 				// console.log('on pointer up');
 

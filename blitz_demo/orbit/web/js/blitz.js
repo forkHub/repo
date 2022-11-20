@@ -7,6 +7,10 @@ var ha;
         static _canvasAr = [];
         static _canvasAktif;
         static _skalaOtomatis = true;
+        static merah = 0;
+        static hijau = 0;
+        static biru = 0;
+        static transparan = 0;
         static Fps(n) {
             ha.Main.fps = Math.floor(1000 / n);
             if (n >= 60) {
@@ -31,7 +35,9 @@ var ha;
                 rect: ha.Rect.create(),
                 load: true,
                 panjangDiSet: true,
-                lebarDiSet: true
+                lebarDiSet: true,
+                ratioX: 1,
+                ratioY: 1
             };
             return canvas;
         }
@@ -42,15 +48,50 @@ var ha;
             this._canvasAr.push(canvas);
             ha.Main.canvasAktif = canvas;
         }
-        static Bersih(r = 0, g = 0, b = 0, alpha = 1) {
+        static Bersih() {
             let ctx = ha.Main.canvasAktif.ctx;
-            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            // ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
             ctx.fillRect(0, 0, ha.Main.canvasAktif.panjang, ha.Main.canvasAktif.lebar);
         }
-        static Color(r = 0, g = 0, b = 0, a = 1) {
+        static warna(r = 0, g = 0, b = 0, a = 255) {
+            this.merah = r;
+            this.biru = b;
+            this.hijau = g;
+            this.transparan = a / 255;
+            this.updateWarna();
+        }
+        static updateWarna() {
             let ctx = ha.Main.canvasAktif.ctx;
-            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+            ctx.fillStyle = `rgba(${this.merah}, ${this.hijau}, ${this.biru}, ${this.transparan})`;
+            ctx.strokeStyle = `rgba(${this.merah}, ${this.hijau}, ${this.biru}, ${this.transparan})`;
+        }
+        static Hijau(a = 0) {
+            if (typeof (a) == 'number') {
+                this.hijau = a;
+                this.updateWarna();
+            }
+            return this.hijau;
+        }
+        static Merah(a = 0) {
+            if (typeof (a) == 'number') {
+                this.merah = a;
+                this.updateWarna();
+            }
+            return this.merah;
+        }
+        static Biru(a = 0) {
+            if (typeof (a) == 'number') {
+                this.biru = a;
+                this.updateWarna();
+            }
+            return this.biru;
+        }
+        static Transparan(a = 0) {
+            if (typeof (a) == 'number') {
+                this.transparan = a / 255;
+                this.updateWarna();
+            }
+            return this.transparan;
         }
         static Grafis(width = 320, height = 240) {
             let canvas = ha.Main.canvasAktif;
@@ -69,10 +110,16 @@ var ha;
             // console.log('ok');
             canvas.canvas.width = width;
             canvas.canvas.height = height;
+            canvas.canvas.style.width = width + 'px';
+            canvas.canvas.style.height = height + 'px';
             canvas.panjang = width;
             canvas.lebar = height;
             setTimeout(() => {
-                ha.Blijs.windowResize();
+                if (ha.Blijs.skalaOtomatis) {
+                    ha.Blijs.windowResize();
+                }
+                else {
+                }
             }, 0);
             // if (canvas2) {
             // 	ha.Main.canvasAktif.canvas.classList.add('gl');
@@ -375,6 +422,7 @@ var ha;
                 hasil.push(data[1]);
                 hasil.push(data[2]);
                 hasil.push(data[3]);
+                ha.Main.warna(data[0], data[1], data[2], data[3]);
                 return hasil;
             }
             catch (e) {
@@ -383,11 +431,11 @@ var ha;
             return [0, 0, 0];
         }
         //TODO: dep
-        static setWarna(r = 255, g = 255, b = 255, a = 1) {
-            let ctx = ha.Main.canvasAktif.ctx;
-            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-        }
+        // static setWarna(r: number = 255, g: number = 255, b: number = 255, a: number = 1) {
+        // 	let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
+        // 	ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+        // 	ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+        // }
         static setPiksel(x = 0, y = 0) {
             ha.Main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
         }
@@ -623,6 +671,9 @@ var ha;
                 ha.Sprite.gambar(item);
             }
         }
+        static tabrakan(spr, spr2) {
+            return ha.Image.gambarTabrakan(spr.buffer, ha.Sprite.posisiX(spr), ha.Sprite.posisiY(spr), spr2.buffer, ha.Sprite.posisiX(spr2), ha.Sprite.posisiY(spr2));
+        }
         static muatAnimasiAsync(url, pf, lf, bisaDiDrag = false) {
             let img = ha.Image.muatGambarAnimasiAsync(url, pf, lf);
             return ha.Sprite.buat(img, bisaDiDrag);
@@ -787,6 +838,7 @@ var ha;
             console.log(buffer);
             buffer.canvas.onpointerdown = (e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 // e.preventDefault();
                 let pos = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
                 let key = this.getMouseKeyId(e);
@@ -801,6 +853,7 @@ var ha;
             };
             buffer.canvas.onpointermove = (e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 let input = this.baru(e.button + '', e.pointerType);
                 ha.input.event.move(input, buffer, e);
                 ha.input.event.move(this.inputGlobal, buffer, e);
@@ -815,6 +868,7 @@ var ha;
             };
             buffer.canvas.onpointerout = (e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 let input = ha.input.baru(e.button + '', e.pointerType);
                 ha.input.event.up(input);
                 ha.input.event.up(this.inputGlobal);
@@ -829,6 +883,7 @@ var ha;
             };
             buffer.canvas.onpointerup = (e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 // console.log('on pointer up');
                 let input = ha.input.baru(e.button + '', e.pointerType);
                 ha.input.event.up(input);
@@ -1423,7 +1478,7 @@ var ha;
                 _window.Loop();
                 //TODO: post loop
             }
-            else if (typeof (_window.update) == 'function') {
+            else if (typeof (_window.Update) == 'function') {
                 //TODO: pre loop
                 _window.update();
                 //TODO: post loop
@@ -1450,6 +1505,8 @@ var ha;
             let cl2 = Math.floor(cl * ratio);
             ha.Main.canvasAktif.ratioX = ratio;
             ha.Main.canvasAktif.ratioY = ratio;
+            canvas.style.position = 'fixed';
+            canvas.style.zIndex = '9999';
             canvas.style.width = cp2 + 'px';
             canvas.style.height = cl2 + 'px';
             canvas.style.top = ((wl - cl2) / 2) + 'px';
@@ -1607,37 +1664,6 @@ var ha;
 ///<reference path="../ha/Blijs.ts"/>
 ///<reference path="../ha/Transform.ts"/>
 ///<reference path="./Route.ts"/>
-/**
- * IMAGE
- */
-// const BuatGambar = ha.Image.buatGambar;
-// const CopyGambar = ha_blitz.Image.copyGambar;
-// const TaruhGambar = ha.Image.gambar;
-// const GrabGambar = ha.Image.grabGambar;//TODO: test - dihapus
-// const PosisiHandleGambar = ha.Image.posisiHandleGambar;
-// const PanjangGambar = ha.Image.panjangGambar;
-// const LebarGambar = ha.Image.lebarGambar;
-// const HandleXGambar = ha.Image.handleXGambar;
-// const HandleYGambar = ha.Image.handleYGambar;
-// const GambarOverlap = ha.Image.gambarOverlap;
-// const GambarTabrakan = ha.Image.gambarTabrakan;
-// const DotDidalamGambar = ha.Image.dotDidalamGambar;
-// const MuatGambar = ha.Image.muat;
-// const MuatGambarAnimasi = ha.Image.muatGambarAnimasi;
-// const GambarUbin = ha.Image.gambarUbin;
-// const ResizeGambar = ha.image.ukuranGambar;
-// const PutarGambar = ha.Image.putarGambar;
-// const SkalaGambar = ha.Image.skalaGambar;
-// const AmbilPiksel = ha.Image.ambilPiksel;
-// const SetWarna = ha.Image.setWarna;
-// const SetPiksel = ha.Image.setPiksel;
-//TODO: next
-// const ImagePivot = () => { }
-// const BackgroundImage = () => { }
-// const MainLayer = () => { }
-// const CreateLayer = () => { }
-// const LayerZ = () => { }
-///<reference path="./Route.ts"/>
 /*
  * BLITZ-INPUT.TS
  */
@@ -1771,27 +1797,28 @@ const FlushMouse = () => {
  * 	GRAPHICS
  */
 const Bersih = ha.Main.Bersih;
-const Color = ha.Main.Color;
 const Grafis = ha.Blijs.init;
 const Garis = ha.Main.Garis;
 const Kotak = ha.Main.Kotak;
 const SetBuffer = ha.Main.SetBuffer;
-const GraphicsBuffer = () => { };
-const Origin = () => { };
-const Oval = () => { };
-const WritePixel = () => { };
-const ReadPixel = () => { };
-const Plot = () => { };
-const WarnaMerah = () => { };
-///<reference path="../ha/Main.ts"/>
-const ColorBlue = () => { };
-const ColorGreen = () => { };
-const ClsColor = () => { };
-const CopyPixel = () => { };
-const CopyRect = () => { };
-const FrontBuffer = () => { };
-const GetColor = () => { };
-const BackBuffer = () => { };
+const Warna = ha.Main.warna;
+const Merah = ha.Main.Merah;
+const Hijau = ha.Main.Hijau;
+const Biru = ha.Main.Biru;
+const Transparan = ha.Main.Transparan;
+const AmbilPiksel = ha.Main.warna;
+const SetPiksel = ha.Main.warna;
+// const GraphicsBuffer = () => { }
+// const Origin = () => { }
+// const Oval = () => { }
+// const WritePixel = () => { }
+// const ReadPixel = () => { }
+// const Plot = () => { }
+// const ClsColor = () => { }
+// const CopyPixel = () => { }
+// const CopyRect = () => { }
+// const FrontBuffer = () => { }
+// const BackBuffer = () => { }
 ///<reference path="../ha/Main.ts"/>
 ///<reference path="../ha/Image.ts"/>
 ///<reference path="./Route.ts"/>
@@ -1808,6 +1835,7 @@ const PosisiY = ha.Sprite.posisiY;
 const Handle = ha.Sprite.handle;
 const Rotasi = ha.Sprite.rotasi;
 const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
+const Tabrakan = ha.Sprite.tabrakan;
 const PosisiJarakSprite = () => { };
 const Copy = () => { };
 const PosisiHandle = () => { };
@@ -1816,15 +1844,10 @@ const Lebar = () => { };
 const HandleX = () => { };
 const HandleY = () => { };
 const Overlap = () => { };
-const Tabrakan = () => { };
 const DotDiDalam = () => { };
 const Ubin = ha.Sprite.ubin;
 const Skala = () => { };
 const Piksel = () => { };
-const Warna = () => { };
-const Merah = () => { };
-const Hijau = () => { };
-const Biru = () => { };
 ///<reference path="../ha/Main.ts"/>
 ///<reference path="../ha/Image.ts"/>
 ///<reference path="./Route.ts"/>

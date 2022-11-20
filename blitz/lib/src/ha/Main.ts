@@ -37,7 +37,9 @@ namespace ha {
 				rect: ha.Rect.create(),
 				load: true,
 				panjangDiSet: true,
-				lebarDiSet: true
+				lebarDiSet: true,
+				ratioX: 1,
+				ratioY: 1
 			}
 
 			return canvas;
@@ -131,11 +133,18 @@ namespace ha {
 
 			canvas.canvas.width = width;
 			canvas.canvas.height = height;
+			canvas.canvas.style.width = width + 'px';
+			canvas.canvas.style.height = height + 'px';
 			canvas.panjang = width;
 			canvas.lebar = height;
 
 			setTimeout(() => {
-				ha.Blijs.windowResize();
+				if (ha.Blijs.skalaOtomatis) {
+					ha.Blijs.windowResize();
+				}
+				else {
+
+				}
 			}, 0);
 
 			// if (canvas2) {

@@ -5,6 +5,12 @@ echo =====
 copy ..\blitz\output\*.d.ts .\snow\dts
 copy ..\blitz\output\*.js .\snow\web\js
 
+echo drag_inline:
+echo ============
+copy ..\blitz\output\*.d.ts .\drag_inline\dts
+copy ..\blitz\output\*.js .\drag_inline\web\js
+
+
 echo tile:
 echo =====
 copy ..\blitz\output\*.d.ts .\tile\dts
