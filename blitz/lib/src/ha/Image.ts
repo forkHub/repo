@@ -279,10 +279,13 @@ namespace ha {
 				let data: Uint8ClampedArray = ha.Main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
 
 				let hasil: number[] = [];
+
 				hasil.push(data[0]);
 				hasil.push(data[1]);
 				hasil.push(data[2]);
 				hasil.push(data[3]);
+
+				ha.Main.warna(data[0], data[1], data[2], data[3]);
 
 				return hasil;
 			}
@@ -294,11 +297,11 @@ namespace ha {
 		}
 
 		//TODO: dep
-		static setWarna(r: number = 255, g: number = 255, b: number = 255, a: number = 1) {
-			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
-			ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-			ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-		}
+		// static setWarna(r: number = 255, g: number = 255, b: number = 255, a: number = 1) {
+		// 	let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
+		// 	ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+		// 	ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+		// }
 
 		static setPiksel(x: number = 0, y: number = 0) {
 			ha.Main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);

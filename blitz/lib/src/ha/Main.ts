@@ -7,6 +7,10 @@ namespace ha {
 		private static _canvasAr: IGambar[] = [];
 		private static _canvasAktif: IGambar;
 		private static _skalaOtomatis: boolean = true;
+		private static merah: number = 0;
+		private static hijau: number = 0;
+		private static biru: number = 0;
+		private static transparan: number = 0;
 
 		static Fps(n: number) {
 			ha.Main.fps = Math.floor(1000 / n);
@@ -49,16 +53,62 @@ namespace ha {
 			ha.Main.canvasAktif = canvas;
 		}
 
-		static Bersih(r: number = 0, g: number = 0, b: number = 0, alpha: number = 1): void {
+		static Bersih(): void {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
-			ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+			// ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
 			ctx.fillRect(0, 0, ha.Main.canvasAktif.panjang, ha.Main.canvasAktif.lebar);
 		}
 
-		static Color(r: number = 0, g: number = 0, b: number = 0, a: number = 1): void {
+		static warna(r: number = 0, g: number = 0, b: number = 0, a: number = 255): void {
+
+			this.merah = r;
+			this.biru = b;
+			this.hijau = g;
+			this.transparan = a / 255;
+
+			this.updateWarna();
+		}
+
+		static updateWarna(): void {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
-			ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-			ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+
+			ctx.fillStyle = `rgba(${this.merah}, ${this.hijau}, ${this.biru}, ${this.transparan})`;
+			ctx.strokeStyle = `rgba(${this.merah}, ${this.hijau}, ${this.biru}, ${this.transparan})`;
+		}
+
+		static Hijau(a: number = 0): number {
+			if (typeof (a) == 'number') {
+				this.hijau = a;
+				this.updateWarna();
+			}
+
+			return this.hijau;
+		}
+		static Merah(a: number = 0): number {
+			if (typeof (a) == 'number') {
+				this.merah = a;
+				this.updateWarna();
+			}
+
+			return this.merah;
+		}
+
+		static Biru(a: number = 0): number {
+			if (typeof (a) == 'number') {
+				this.biru = a;
+				this.updateWarna();
+			}
+
+			return this.biru;
+		}
+
+		static Transparan(a: number = 0): number {
+			if (typeof (a) == 'number') {
+				this.transparan = a / 255;
+				this.updateWarna();
+			}
+
+			return this.transparan;
 		}
 
 		static Grafis(width: number = 320, height: number = 240): void {

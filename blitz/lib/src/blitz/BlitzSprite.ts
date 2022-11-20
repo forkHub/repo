@@ -13,6 +13,7 @@ const PosisiY = ha.Sprite.posisiY;
 const Handle = ha.Sprite.handle;
 const Rotasi = ha.Sprite.rotasi;
 const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
+const Tabrakan = ha.Sprite.tabrakan;
 
 const PosisiJarakSprite = () => { }
 const Copy = () => { };
@@ -22,14 +23,8 @@ const Lebar = () => { }
 const HandleX = () => { }
 const HandleY = () => { }
 const Overlap = () => { }
-const Tabrakan = () => { }
 const DotDiDalam = () => { }
 const Ubin = ha.Sprite.ubin;
 const Skala = () => { }
 
 const Piksel = () => { }
-
-const Warna = () => { }
-const Merah = () => { }
-const Hijau = () => { }
-const Biru = () => { }

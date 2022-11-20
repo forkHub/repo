@@ -66,6 +66,10 @@ namespace ha {
 			}
 		}
 
+		static tabrakan(spr: ISprite, spr2: ISprite): boolean {
+			return ha.Image.gambarTabrakan(spr.buffer, ha.Sprite.posisiX(spr), ha.Sprite.posisiY(spr), spr2.buffer, ha.Sprite.posisiX(spr2), ha.Sprite.posisiY(spr2))
+		}
+
 		static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag: boolean = false): ISprite {
 			let img: IGambar = ha.Image.muatGambarAnimasiAsync(url, pf, lf);
 			return ha.Sprite.buat(img, bisaDiDrag);
