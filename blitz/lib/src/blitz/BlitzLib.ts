@@ -5,18 +5,17 @@
  */
 const Bersih = ha.Main.Bersih;
 const Grafis = ha.Blijs.init;
-const Garis = ha.Main.Garis;
-const Kotak = ha.Main.Kotak;
-const SetBuffer = ha.Main.SetBuffer;
-
 const Warna = ha.Main.warna;
 const Merah = ha.Main.Merah;
 const Hijau = ha.Main.Hijau;
 const Biru = ha.Main.Biru;
 const Transparan = ha.Main.Transparan;
-
 const AmbilPiksel = ha.Main.warna;
 const SetPiksel = ha.Main.warna;
+
+const Garis = ha.Main.Garis;
+const Kotak = ha.Main.Kotak;
+const SetBuffer = ha.Main.SetBuffer;
 
 // const GraphicsBuffer = () => { }
 // const Origin = () => { }

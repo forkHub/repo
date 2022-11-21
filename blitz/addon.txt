@@ -1,0 +1,28 @@
+addon:
+======
+Fungsi tambahan yang membutuhkan banyak sprite/element
+Mengubah system yang sudah ada
+
+Dibuat dalam bentuk fungsi, tutorial ataupun tambahan pustaka
+
+
+animasi tween dan keyframe
+
+origin
+drag background
+    ubin karena origin ganti?
+    origin => screen
+    screen => origin
+    position screen relative to origin
+    posision absolute relative to origin
+
+DOM:
+====
+simple form
+simple dialog
+
+konektor
+kontektor kurva
+colision solver
+camera/viewport
+

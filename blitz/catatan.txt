@@ -1,33 +1,19 @@
-origin
-drag background
-    ubin karena origin ganti?
-    origin => screen
-    screen => origin
-    position screen relative to origin
-    posision absolute relative to origin
-
 tombol UI
     slider
     tombol
     knop
 
-simple form
-simple dialog
 knop
 drag rotasi
 full screen
-konektor
-kontektor kurva
-colision solver
-camera/viewport
 ubah target buffer
 fungsi positionPolar ada parameter buat skala x dan y
 fungsi positionPolar ada parameter buat kemiringan
-animasi tween dan keyframe
 track ball
 tombol geser putar horizontal
 
-geometri
+geometri:
+=========
 titik di dalam polygon
 titik di sebelah kiri garis
 garis swap ke atas
