@@ -6,6 +6,14 @@ namespace ha {
 	export class Blijs {
 		private static _skalaOtomatis: boolean = true;
 
+		/**
+		 * Setup Blitz Edu
+		 * @param panjang (angka) panjang dari kanvas
+		 * @param lebar (angka) lebar dari kanvs
+		 * @param canvas (HTMLCanvasElement) referensi ke kanvas
+		 * @param skalaOtomatis (boolean) apakah akan men-skala kanvas mengikuti ukuran layar  
+		 * @returns 
+		 */
 		static init(panjang: number = 320, lebar: number = 240, canvas: HTMLCanvasElement = null, skalaOtomatis: boolean = true) {
 
 			//coba cari canvas

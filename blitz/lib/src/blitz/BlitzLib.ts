@@ -4,6 +4,7 @@
  * 	GRAPHICS
  */
 const Bersih = ha.Main.Bersih;
+
 const Grafis = ha.Blijs.init;
 const Warna = ha.Main.warna;
 const Merah = ha.Main.Merah;

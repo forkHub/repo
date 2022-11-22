@@ -113,23 +113,9 @@ namespace ha {
 			return this.transparan;
 		}
 
+
 		static Grafis(width: number = 320, height: number = 240): void {
 			let canvas: IGambar = ha.Main.canvasAktif;
-
-			//check canvas sudah diinit atau belum
-			// if (!canvas) {
-			// 	if (canvas2) {
-			// 		this.init(canvas,)
-			// 	}
-			// 	// return;
-			// 	// setTimeout(() => {
-			// 	// 	ha.Main.Grafis(width, height);
-			// 	// }, 0);
-			// 	// console.log('failed');
-			// 	// return;
-			// }
-
-			// console.log('ok');
 
 			canvas.canvas.width = width;
 			canvas.canvas.height = height;

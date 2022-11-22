@@ -223,6 +223,14 @@ declare namespace ha {
 declare namespace ha {
     class Blijs {
         private static _skalaOtomatis;
+        /**
+         * Setup Blitz Edu
+         * @param panjang (angka) panjang dari kanvas
+         * @param lebar (angka) lebar dari kanvs
+         * @param canvas (HTMLCanvasElement) referensi ke kanvas
+         * @param skalaOtomatis (boolean) apakah akan men-skala kanvas mengikuti ukuran layar
+         * @returns
+         */
         static init(panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, skalaOtomatis?: boolean): void;
         static loop(): void;
         static repeat(): void;
@@ -329,10 +337,15 @@ interface ITransform {
     rotation: number;
 }
 declare const Bersih: typeof ha.Main.Bersih;
+/**
+ * Setup Blitz Edu
+ * @param panjang (angka) panjang dari kanvas
+ * @param lebar (angka) lebar dari kanvs
+ * @param canvas (HTMLCanvasElement) referensi ke kanvas
+ * @param skalaOtomatis (boolean) apakah akan men-skala kanvas mengikuti ukuran layar
+ * @returns
+ */
 declare const Grafis: typeof ha.Blijs.init;
-declare const Garis: typeof ha.Main.Garis;
-declare const Kotak: typeof ha.Main.Kotak;
-declare const SetBuffer: typeof ha.Main.SetBuffer;
 declare const Warna: typeof ha.Main.warna;
 declare const Merah: typeof ha.Main.Merah;
 declare const Hijau: typeof ha.Main.Hijau;
@@ -340,6 +353,9 @@ declare const Biru: typeof ha.Main.Biru;
 declare const Transparan: typeof ha.Main.Transparan;
 declare const AmbilPiksel: typeof ha.Main.warna;
 declare const SetPiksel: typeof ha.Main.warna;
+declare const Garis: typeof ha.Main.Garis;
+declare const Kotak: typeof ha.Main.Kotak;
+declare const SetBuffer: typeof ha.Main.SetBuffer;
 /** BLITZ-SPRITE.TS */
 declare const Buat: typeof ha.Sprite.buat;
 declare const Muat: typeof ha.Sprite.muatAsync;

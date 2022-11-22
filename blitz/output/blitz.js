@@ -2,15 +2,6 @@ var ha;
 (function (ha) {
     //TODO: beberapa perintah harus mengecheck apakah kanvas sudah di init, dan coba lagi kalau belum bisa
     class Main {
-        static _fps = 0;
-        static _origin;
-        static _canvasAr = [];
-        static _canvasAktif;
-        static _skalaOtomatis = true;
-        static merah = 0;
-        static hijau = 0;
-        static biru = 0;
-        static transparan = 0;
         static Fps(n) {
             ha.Main.fps = Math.floor(1000 / n);
             if (n >= 60) {
@@ -181,6 +172,13 @@ var ha;
             Main._skalaOtomatis = value;
         }
     }
+    Main._fps = 0;
+    Main._canvasAr = [];
+    Main._skalaOtomatis = true;
+    Main.merah = 0;
+    Main.hijau = 0;
+    Main.biru = 0;
+    Main.transparan = 0;
     ha.Main = Main;
 })(ha || (ha = {}));
 var ha;
@@ -622,17 +620,15 @@ var ha;
 var ha;
 (function (ha) {
     class Sprite {
-        static daftar = [];
-        _buffer;
-        _x = 0;
-        _y = 0;
-        _dragged = false;
-        _down = false;
-        _hit = 0;
-        _dragStartY = 0;
-        _dragStartX = 0;
-        _dragable = false;
         constructor(buffer, dragable = false) {
+            this._x = 0;
+            this._y = 0;
+            this._dragged = false;
+            this._down = false;
+            this._hit = 0;
+            this._dragStartY = 0;
+            this._dragStartX = 0;
+            this._dragable = false;
             this.buffer = buffer;
             this.dragable = dragable;
         }
@@ -800,21 +796,25 @@ var ha;
             this._dragable = value;
         }
     }
+    Sprite.daftar = [];
     ha.Sprite = Sprite;
 })(ha || (ha = {}));
 /** INPUT.TS */
 var ha;
 (function (ha) {
     class Input {
-        _inputs = []; //any input,
-        //data untuk simpan state tiap input type
-        //tidak support multiple finger
-        _touchGlobal; //global touch
-        _mouseGlobal; //global mouse
-        _keybGlobal; //global keyb
-        _inputGlobal; //global input
-        _event = new EventHandler();
         constructor() {
+            this._inputs = []; //any input,
+            this._event = new EventHandler();
+            this.pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
+                let rect = buffer.canvas.getBoundingClientRect();
+                let poslx = Math.floor((cx - rect.x) / canvasScaleX);
+                let posly = Math.floor((cy - rect.y) / canvasScaleY);
+                return {
+                    x: poslx,
+                    y: posly
+                };
+            };
             this._touchGlobal = this.buatInputDefault();
             this._mouseGlobal = this.buatInputDefault();
             this._keybGlobal = this.buatInputDefault();
@@ -1015,15 +1015,6 @@ var ha;
             }
             return input;
         }
-        pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
-            let rect = buffer.canvas.getBoundingClientRect();
-            let poslx = Math.floor((cx - rect.x) / canvasScaleX);
-            let posly = Math.floor((cy - rect.y) / canvasScaleY);
-            return {
-                x: poslx,
-                y: posly
-            };
-        };
         get inputs() {
             return this._inputs;
         }
@@ -1421,7 +1412,14 @@ var ha;
 var ha;
 (function (ha) {
     class Blijs {
-        static _skalaOtomatis = true;
+        /**
+         * Setup Blitz Edu
+         * @param panjang (angka) panjang dari kanvas
+         * @param lebar (angka) lebar dari kanvs
+         * @param canvas (HTMLCanvasElement) referensi ke kanvas
+         * @param skalaOtomatis (boolean) apakah akan men-skala kanvas mengikuti ukuran layar
+         * @returns
+         */
         static init(panjang = 320, lebar = 240, canvas = null, skalaOtomatis = true) {
             //coba cari canvas
             if (!canvas)
@@ -1520,6 +1518,7 @@ var ha;
             Blijs._skalaOtomatis = value;
         }
     }
+    Blijs._skalaOtomatis = true;
     ha.Blijs = Blijs;
 })(ha || (ha = {}));
 // setTimeout(() => {
@@ -1528,10 +1527,6 @@ var ha;
 var ha;
 (function (ha) {
     class Transform {
-        static RAD2DEG = 180.0 / Math.PI;
-        static DEG2RAD = Math.PI / 180.0;
-        static _lastX = 0;
-        static _lastY = 0;
         static get lastX() {
             return this._lastX;
         }
@@ -1652,6 +1647,10 @@ var ha;
             this._lastY = y1 + yt;
         }
     }
+    Transform.RAD2DEG = 180.0 / Math.PI;
+    Transform.DEG2RAD = Math.PI / 180.0;
+    Transform._lastX = 0;
+    Transform._lastY = 0;
     ha.Transform = Transform;
 })(ha || (ha = {}));
 ///<reference path="../ha/Main.ts"/>
@@ -1797,10 +1796,15 @@ const FlushMouse = () => {
  * 	GRAPHICS
  */
 const Bersih = ha.Main.Bersih;
+/**
+ * Setup Blitz Edu
+ * @param panjang (angka) panjang dari kanvas
+ * @param lebar (angka) lebar dari kanvs
+ * @param canvas (HTMLCanvasElement) referensi ke kanvas
+ * @param skalaOtomatis (boolean) apakah akan men-skala kanvas mengikuti ukuran layar
+ * @returns
+ */
 const Grafis = ha.Blijs.init;
-const Garis = ha.Main.Garis;
-const Kotak = ha.Main.Kotak;
-const SetBuffer = ha.Main.SetBuffer;
 const Warna = ha.Main.warna;
 const Merah = ha.Main.Merah;
 const Hijau = ha.Main.Hijau;
@@ -1808,6 +1812,9 @@ const Biru = ha.Main.Biru;
 const Transparan = ha.Main.Transparan;
 const AmbilPiksel = ha.Main.warna;
 const SetPiksel = ha.Main.warna;
+const Garis = ha.Main.Garis;
+const Kotak = ha.Main.Kotak;
+const SetBuffer = ha.Main.SetBuffer;
 // const GraphicsBuffer = () => { }
 // const Origin = () => { }
 // const Oval = () => { }

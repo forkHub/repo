@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+
+	<title>Blitz</title>
+</head>
+
+<body>
+	<iframe src="index.html"></iframe>
+	<p>
+		Ada banyak cara untuk menggunkan Blitz Edu. Cara yang paling mudah adalah dengan mendownload template dan
+		mengeditnya.
+	</p>
+	<p>
+		Anda bisa mendownload template disini:
+		[template.js]
+	</p>
+	<p>
+		Struktur minimal dari BE adalah sebagai berikut:
+	</p>
+	<pre>
+Grafis(240, 320);
+
+let spr = Muat("./gbr/box.png", true);
+Posisi(spr, 160, 120);
+
+function Loop() {
+	Bersih();
+	Gambar(spr);
+}
+	</pre>
+	<p>
+		<code>Grafis(240, 320);</code>
+	</p>
+	<p>
+		Ini adalah pintu masuk dari BE. Fungsi ini harus dipanggil di awal, untuk mengeset
+		kanvas.<br />
+		BE bekerja di kanvas dan butuh kanvas untuk bisa berfungsi. <br />
+		Fungsi ini memiliki 3 parameter: panjang, lebar dan skala.<br />
+		panjang dan lebar menentukan panjang dan lebar kanvas.<br />
+		skala menentukan skala kanvas apakah akan dibuat memenuhi layar, ataukah mengikuti panjang dan lebar yang telah
+		ditentukan.<br />
+		parameter skala bersifat opsional. Defaultnya adalah true. Kanvas akan di buat memenuhi layar.
+	</p>
+	<p><code>let spr = Muat("./gbr/box.png", true);</code>
+	</p>
+	<p>
+		Fungsi Muat() berfungsi untuk memuat gambar dan di konvert ke dalam bentuk Sprite. <br />
+		Sprite adalah tokoh utma dari BE. Tanpa Sprite maka tidak akan ada yang ditampilkan di layar.<br />
+		Kita memuat Sprite dari URL. URL bisa lokal ataupun online.<br />
+		BE memungkinkan Anda untuk memuat gambar dari internet.<br />
+		Parameter kedua dari fungsi ini adalah untuk menentukan apakah Sprite bisa di drag atau tidak.<br />
+	</p>
+</body>
+
+</html>
