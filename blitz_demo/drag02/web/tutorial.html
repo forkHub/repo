@@ -7,54 +7,102 @@
         target-densityDpi=device-dpi">
 
 	<title>Blitz</title>
+	<link href="./css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		iframe {
+			width: 240px;
+			height: 320px;
+			margin: auto;
+			display: inherit;
+		}
+
+		pre {
+			color: #d63384;
+		}
+	</style>
 </head>
 
 <body>
-	<iframe src="index.html"></iframe>
-	<p>
-		Ada banyak cara untuk menggunkan Blitz Edu. Cara yang paling mudah adalah dengan mendownload template dan
-		mengeditnya.
-	</p>
-	<p>
-		Anda bisa mendownload template disini:
-		[template.js]
-	</p>
-	<p>
-		Struktur minimal dari BE adalah sebagai berikut:
-	</p>
-	<pre>
+	<div class="container">
+		<a href="https://forkhub.github.io/blitz_edu/">&larr; Beranda</a> |
+		<p></p>
+		<iframe src="index.html"></iframe>
+		<p style="text-align:center"><small>Demo drag-drop, geser kotak merah dengan mouse/jari</small></p>
+		<p>
+			Ada banyak cara untuk menggunkan Blitz Edu. Salah satunya adalah dengan mendownload template dan
+			mengeditnya.
+		</p>
+		<p>
+			Anda bisa mendownload template disini:
+			[template.js]
+		</p>
+		<p>
+			Kode minimal dari BE adalah sebagai berikut:
+		</p>
+		<pre>
 Grafis(240, 320);
 
 let spr = Muat("./gbr/box.png", true);
 Posisi(spr, 160, 120);
 
 function Loop() {
-	Bersih();
-	Gambar(spr);
+    Bersih();
+    Gambar(spr);
 }
-	</pre>
-	<p>
-		<code>Grafis(240, 320);</code>
-	</p>
-	<p>
-		Ini adalah pintu masuk dari BE. Fungsi ini harus dipanggil di awal, untuk mengeset
-		kanvas.<br />
-		BE bekerja di kanvas dan butuh kanvas untuk bisa berfungsi. <br />
-		Fungsi ini memiliki 3 parameter: panjang, lebar dan skala.<br />
-		panjang dan lebar menentukan panjang dan lebar kanvas.<br />
-		skala menentukan skala kanvas apakah akan dibuat memenuhi layar, ataukah mengikuti panjang dan lebar yang telah
-		ditentukan.<br />
-		parameter skala bersifat opsional. Defaultnya adalah true. Kanvas akan di buat memenuhi layar.
-	</p>
-	<p><code>let spr = Muat("./gbr/box.png", true);</code>
-	</p>
-	<p>
-		Fungsi Muat() berfungsi untuk memuat gambar dan di konvert ke dalam bentuk Sprite. <br />
-		Sprite adalah tokoh utma dari BE. Tanpa Sprite maka tidak akan ada yang ditampilkan di layar.<br />
-		Kita memuat Sprite dari URL. URL bisa lokal ataupun online.<br />
-		BE memungkinkan Anda untuk memuat gambar dari internet.<br />
-		Parameter kedua dari fungsi ini adalah untuk menentukan apakah Sprite bisa di drag atau tidak.<br />
-	</p>
+		</pre>
+		<p>
+			Penjelasan tiap baris adalah sebagai berikut:
+		</p>
+		<p>
+			<code>Grafis(240, 320);</code>
+		</p>
+		<p>
+			Ini adalah pintu masuk dari BE. Fungsi ini harus dipanggil di awal, untuk mengeset
+			kanvas, dan mengatur semuanya agar bisa berjalan dengan baik dan benar.<br />
+			Fungsi ini memiliki dua parameter utama: <code>panjang</code> dan <code>lebar</code>.<br />
+			keduanya menentukan panjang dan lebar kanvas.<br />
+			Parameter sisanya bisa Anda baca di <a href="">sini</a>
+		</p>
+		<p><code>let spr = Muat("./gbr/box.png", true);</code>
+		</p>
+		<p>
+			Fungsi Muat() berfungsi untuk memuat gambar dan mengkonvertnya ke dalam bentuk Sprite. <br />
+			Sprite adalah tokoh utama dari BE. Tanpa Sprite maka tidak akan ada yang ditampilkan di layar.<br />
+			Parameter pertama adalah URL, bisa lokal ataupun online.<br /> Bila Anda meload gambar dari online, pastikan
+			Anda
+			mendapatkan dari yang punya gambar.
+			Parameter kedua dari fungsi ini adalah untuk menentukan apakah Sprite bisa di drag atau tidak.<br />
+			Drag-Drop adalah fitur bawaan dari Sprite. <br />
+			BE fokus pada interaksi, dan sepertinya drag-drop adalah feature yang
+			bakal banyak dipakai.
+			Maka dari itulah Saya memutuskan bahwa drag-drop harus ada secara default.
+		</p>
+		<p><code>Posisi(spr, 160, 120);</code></p>
+		Fungsi ini untuk menentukan posisi Sprite. Parameternya adalah object Sprite dan posisi X serta Y.
+		<p>
+			<code>
+		<pre>
+function Loop() {
+    Bersih();
+    Gambar(spr);
+}
+		</pre>
+		</code>
+		</p>
+		<p>
+			Fungsi Loop() adalah fungsi untuk perulangan, akan dipanggil 60 kali per detiknya (60 fps) -- tergantung
+			kecepatan
+			device. Dalam fungsi ini kita memanggil dua fungsi lainnya:
+		</p>
+		<p><code>Bersih()</code></p>
+		<p>
+			Sesuai namanya, maka fungsi ini akan membersihkan layar.
+		</p>
+		<p><code>Gambar(spr)</code></p>
+		<p>
+			Sesuai namanya juga, fungsi ini akan menggambar di layar. Parameternya adalah Sprite yang akan digambar.
+		</p>
+	</div>
 </body>
 
 </html>

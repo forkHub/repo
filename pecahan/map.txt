@@ -2,7 +2,7 @@ pecahan
 membandingkan
     campuran - campuran
         penyebut sama   
-        penyebut acak   
+        penyebut acak   06
     biasa - biasa
         penyebut sama   03
         penyebut acak   01

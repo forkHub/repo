@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+
+	<title>Soal Pecahan</title>
+	<link href="./css/umum.css" rel="stylesheet">
+	<link href="./css/css.css" rel="stylesheet">
+
+	<style>
+		body {
+			padding: 32px;
+			font-size: 11px;
+		}
+
+		@media (orientation: landscape) {
+			body {
+				max-width: 100vh;
+				margin: auto;
+			}
+		}
+
+		div.hal-soal {
+			font-size: x-large;
+		}
+
+		div.tombol-jawaban button {
+			font-size: xx-large;
+		}
+
+		div.dialog {
+			font-size: 16px;
+		}
+	</style>
+</head>
+
+<body class="">
+
+	<div class="hal-soal disp-flex flex-dir-col">
+
+		<div class="disp-flex">
+			<div>
+				<button onclick="tombolTutupKlik()">✖</button>
+			</div>
+			<div class="padding"></div>
+			<div class="progress-cont flex-grow-1">
+
+			</div>
+		</div>
+
+		<br />
+
+		<h4 class="text-align-center">Isilah dengan tanda yang benar</h4>
+		<br />
+
+		<div class="soal-cont disp-flex border flex-grow-1 text-align-center">
+			<div class="flex-grow-1"></div>
+			<div class="soal-1 tengah-tengah"></div>
+			<div class="jawaban tengah-tengah padding"> ... </div>
+			<div class=" soal-2 tengah-tengah"></div>
+			<div class="flex-grow-1"></div>
+		</div>
+
+		<br />
+
+		<div class="tombol-jawaban disp-flex border justify-content-center padding">
+			<button onclick="tombolKurangDariKlik()">&lt;</button>
+			<div class="padding"></div>
+			<button onclick="tombolSamaDenganKlik()">=</button>
+			<div class="padding"></div>
+			<button onclick="tombolLebihDariKlik()">&gt;</button>
+		</div>
+
+	</div>
+
+
+	<script src="./js/comp/Util.js"></script>
+	<script src="./js/comp/BaseComponent.js"></script>
+	<script src="./js/comp/Dialog.js"></script>
+	<script src="./js/comp/File.js"></script>
+	<script src="./js/comp/Loading.js"></script>
+
+	<script src="./js/config.js"></script>
+	<script src="./js/progress_bar.js"></script>
+	<script src="./js/pecahan.js"></script>
+	<script src="./js/hal_selesai.js"></script>
+
+	<script src="./js/pecahan_umum.js"></script>
+	<script src="./js/pecahan06.js"></script>
+</body>
+
+</html>
