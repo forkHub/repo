@@ -269,11 +269,6 @@ namespace ha {
 			gbr.rotation = sudut;
 		}
 
-		// static skalaGambar(gbr: IGambar, skalaX: number = 1, skalaY: number = 1) {
-		// 	gbr.scaleX = skalaX;
-		// 	gbr.scaleY = skalaY;
-		// }
-
 		static ambilPiksel(x: number = 0, y: number = 0): number[] {
 			try {
 				let data: Uint8ClampedArray = ha.Main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
@@ -285,12 +280,16 @@ namespace ha {
 				hasil.push(data[2]);
 				hasil.push(data[3]);
 
-				ha.Main.warna(data[0], data[1], data[2], data[3]);
+				ha.Main.merah = data[0];
+				ha.Main.hijau = data[1];
+				ha.Main.biru = data[2];
+				ha.Main.transparan = data[3];
+				debugger;
 
 				return hasil;
 			}
 			catch (e) {
-				console.error(e);
+				// console.error(e);
 			}
 
 			return [0, 0, 0];

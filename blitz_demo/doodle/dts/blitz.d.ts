@@ -5,16 +5,16 @@ declare namespace ha {
         private static _canvasAr;
         private static _canvasAktif;
         private static _skalaOtomatis;
-        private static merah;
-        private static hijau;
-        private static biru;
-        private static transparan;
+        private static _merah;
+        private static _hijau;
+        private static _biru;
+        private static _transparan;
         static Fps(n: number): void;
         static buatCanvas(canvasEl: HTMLCanvasElement): IGambar;
         static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void;
         static Bersih(): void;
         static warna(r?: number, g?: number, b?: number, a?: number): void;
-        static updateWarna(): void;
+        static updateStyleWarna(): void;
         static Hijau(a?: number): number;
         static Merah(a?: number): number;
         static Biru(a?: number): number;
@@ -33,6 +33,14 @@ declare namespace ha {
         static set fps(value: number);
         static get skalaOtomatis(): boolean;
         static set skalaOtomatis(value: boolean);
+        static get merah(): number;
+        static set merah(value: number);
+        static get hijau(): number;
+        static set hijau(value: number);
+        static get biru(): number;
+        static set biru(value: number);
+        static get transparan(): number;
+        static set transparan(value: number);
     }
 }
 declare namespace ha {
@@ -337,22 +345,14 @@ interface ITransform {
     rotation: number;
 }
 declare const Bersih: typeof ha.Main.Bersih;
-/**
- * Setup Blitz Edu
- * @param panjang (angka) panjang dari kanvas
- * @param lebar (angka) lebar dari kanvs
- * @param canvas (HTMLCanvasElement) referensi ke kanvas
- * @param skalaOtomatis (boolean) apakah akan men-skala kanvas mengikuti ukuran layar
- * @returns
- */
 declare const Grafis: typeof ha.Blijs.init;
 declare const Warna: typeof ha.Main.warna;
 declare const Merah: typeof ha.Main.Merah;
 declare const Hijau: typeof ha.Main.Hijau;
 declare const Biru: typeof ha.Main.Biru;
 declare const Transparan: typeof ha.Main.Transparan;
-declare const AmbilPiksel: typeof ha.Main.warna;
-declare const SetPiksel: typeof ha.Main.warna;
+declare const AmbilPiksel: typeof ha.Image.ambilPiksel;
+declare const SetPiksel: typeof ha.Image.setPiksel;
 declare const Garis: typeof ha.Main.Garis;
 declare const Kotak: typeof ha.Main.Kotak;
 declare const SetBuffer: typeof ha.Main.SetBuffer;

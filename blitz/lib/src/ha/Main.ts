@@ -7,10 +7,11 @@ namespace ha {
 		private static _canvasAr: IGambar[] = [];
 		private static _canvasAktif: IGambar;
 		private static _skalaOtomatis: boolean = true;
-		private static merah: number = 0;
-		private static hijau: number = 0;
-		private static biru: number = 0;
-		private static transparan: number = 0;
+
+		private static _merah: number = 0;
+		private static _hijau: number = 0;
+		private static _biru: number = 0;
+		private static _transparan: number = 0;
 
 		static Fps(n: number) {
 			ha.Main.fps = Math.floor(1000 / n);
@@ -46,11 +47,11 @@ namespace ha {
 		}
 
 		static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void {
-			let canvas: IGambar = this.buatCanvas(canvasBelakang);
-			this._canvasAr.push(canvas);
+			let canvas: IGambar = ha.Main.buatCanvas(canvasBelakang);
+			ha.Main._canvasAr.push(canvas);
 
-			canvas = this.buatCanvas(canvasDepan);
-			this._canvasAr.push(canvas);
+			canvas = ha.Main.buatCanvas(canvasDepan);
+			ha.Main._canvasAr.push(canvas);
 
 			ha.Main.canvasAktif = canvas;
 		}
@@ -63,56 +64,57 @@ namespace ha {
 
 		static warna(r: number = 0, g: number = 0, b: number = 0, a: number = 255): void {
 
-			this.merah = r;
-			this.biru = b;
-			this.hijau = g;
-			this.transparan = a / 255;
+			ha.Main.merah = r;
+			ha.Main.biru = b;
+			ha.Main.hijau = g;
+			ha.Main.transparan = a / 255;
 
-			this.updateWarna();
+			ha.Main.updateStyleWarna();
 		}
 
-		static updateWarna(): void {
+		static updateStyleWarna(): void {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 
-			ctx.fillStyle = `rgba(${this.merah}, ${this.hijau}, ${this.biru}, ${this.transparan})`;
-			ctx.strokeStyle = `rgba(${this.merah}, ${this.hijau}, ${this.biru}, ${this.transparan})`;
+			ctx.fillStyle = `rgba(${ha.Main.merah}, ${ha.Main.hijau}, ${ha.Main.biru}, ${ha.Main.transparan})`;
+			ctx.strokeStyle = `rgba(${ha.Main.merah}, ${ha.Main.hijau}, ${ha.Main.biru}, ${ha.Main.transparan})`;
 		}
 
-		static Hijau(a: number = 0): number {
+		static Hijau(a?: number): number {
 			if (typeof (a) == 'number') {
-				this.hijau = a;
-				this.updateWarna();
+				ha.Main.hijau = a;
+				ha.Main.updateStyleWarna();
 			}
 
-			return this.hijau;
+			return ha.Main.hijau;
 		}
-		static Merah(a: number = 0): number {
+
+		static Merah(a?: number): number {
 			if (typeof (a) == 'number') {
-				this.merah = a;
-				this.updateWarna();
+				ha.Main.merah = a;
+				ha.Main.updateStyleWarna();
 			}
 
-			return this.merah;
+			return ha.Main.merah;
 		}
 
-		static Biru(a: number = 0): number {
+		static Biru(a?: number): number {
 			if (typeof (a) == 'number') {
-				this.biru = a;
-				this.updateWarna();
+				ha.Main.biru = a;
+				ha.Main.updateStyleWarna();
 			}
 
-			return this.biru;
+			debugger;
+			return ha.Main.biru;
 		}
 
-		static Transparan(a: number = 0): number {
+		static Transparan(a?: number): number {
 			if (typeof (a) == 'number') {
-				this.transparan = a / 255;
-				this.updateWarna();
+				ha.Main.transparan = a / 255;
+				ha.Main.updateStyleWarna();
 			}
 
-			return this.transparan;
+			return ha.Main.transparan;
 		}
-
 
 		static Grafis(width: number = 320, height: number = 240): void {
 			let canvas: IGambar = ha.Main.canvasAktif;
@@ -169,32 +171,32 @@ namespace ha {
 		}
 
 		public static get canvasAktif(): IGambar {
-			return this._canvasAktif;
+			return ha.Main._canvasAktif;
 		}
 
 		public static set canvasAktif(value: IGambar) {
-			this._canvasAktif = value;
+			ha.Main._canvasAktif = value;
 		}
 
 		public static get canvasAr(): IGambar[] {
-			return this._canvasAr;
+			return ha.Main._canvasAr;
 		}
 		public static set canvasAr(value: IGambar[]) {
-			this._canvasAr = value;
+			ha.Main._canvasAr = value;
 		}
 
 		public static get origin(): IV2D {
-			return this._origin;
+			return ha.Main._origin;
 		}
 		public static set origin(value: IV2D) {
-			this._origin = value;
+			ha.Main._origin = value;
 		}
 
 		public static get fps(): number {
-			return this._fps;
+			return ha.Main._fps;
 		}
 		public static set fps(value: number) {
-			this._fps = value;
+			ha.Main._fps = value;
 		}
 		public static get skalaOtomatis(): boolean {
 			return Main._skalaOtomatis;
@@ -202,6 +204,29 @@ namespace ha {
 		public static set skalaOtomatis(value: boolean) {
 			Main._skalaOtomatis = value;
 		}
-
+		public static get merah(): number {
+			return Main._merah;
+		}
+		public static set merah(value: number) {
+			Main._merah = value;
+		}
+		public static get hijau(): number {
+			return Main._hijau;
+		}
+		public static set hijau(value: number) {
+			Main._hijau = value;
+		}
+		public static get biru(): number {
+			return Main._biru;
+		}
+		public static set biru(value: number) {
+			Main._biru = value;
+		}
+		public static get transparan(): number {
+			return Main._transparan;
+		}
+		public static set transparan(value: number) {
+			Main._transparan = value;
+		}
 	}
 }

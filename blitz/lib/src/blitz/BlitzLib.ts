@@ -11,8 +11,8 @@ const Merah = ha.Main.Merah;
 const Hijau = ha.Main.Hijau;
 const Biru = ha.Main.Biru;
 const Transparan = ha.Main.Transparan;
-const AmbilPiksel = ha.Main.warna;
-const SetPiksel = ha.Main.warna;
+const AmbilPiksel = ha.Image.ambilPiksel;
+const SetPiksel = ha.Image.setPiksel;
 
 const Garis = ha.Main.Garis;
 const Kotak = ha.Main.Kotak;

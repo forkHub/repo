@@ -2,6 +2,15 @@ var ha;
 (function (ha) {
     //TODO: beberapa perintah harus mengecheck apakah kanvas sudah di init, dan coba lagi kalau belum bisa
     class Main {
+        static _fps = 0;
+        static _origin;
+        static _canvasAr = [];
+        static _canvasAktif;
+        static _skalaOtomatis = true;
+        static _merah = 0;
+        static _hijau = 0;
+        static _biru = 0;
+        static _transparan = 0;
         static Fps(n) {
             ha.Main.fps = Math.floor(1000 / n);
             if (n >= 60) {
@@ -33,10 +42,10 @@ var ha;
             return canvas;
         }
         static init(canvasBelakang, canvasDepan) {
-            let canvas = this.buatCanvas(canvasBelakang);
-            this._canvasAr.push(canvas);
-            canvas = this.buatCanvas(canvasDepan);
-            this._canvasAr.push(canvas);
+            let canvas = ha.Main.buatCanvas(canvasBelakang);
+            ha.Main._canvasAr.push(canvas);
+            canvas = ha.Main.buatCanvas(canvasDepan);
+            ha.Main._canvasAr.push(canvas);
             ha.Main.canvasAktif = canvas;
         }
         static Bersih() {
@@ -45,60 +54,48 @@ var ha;
             ctx.fillRect(0, 0, ha.Main.canvasAktif.panjang, ha.Main.canvasAktif.lebar);
         }
         static warna(r = 0, g = 0, b = 0, a = 255) {
-            this.merah = r;
-            this.biru = b;
-            this.hijau = g;
-            this.transparan = a / 255;
-            this.updateWarna();
+            ha.Main.merah = r;
+            ha.Main.biru = b;
+            ha.Main.hijau = g;
+            ha.Main.transparan = a / 255;
+            ha.Main.updateStyleWarna();
         }
-        static updateWarna() {
+        static updateStyleWarna() {
             let ctx = ha.Main.canvasAktif.ctx;
-            ctx.fillStyle = `rgba(${this.merah}, ${this.hijau}, ${this.biru}, ${this.transparan})`;
-            ctx.strokeStyle = `rgba(${this.merah}, ${this.hijau}, ${this.biru}, ${this.transparan})`;
+            ctx.fillStyle = `rgba(${ha.Main.merah}, ${ha.Main.hijau}, ${ha.Main.biru}, ${ha.Main.transparan})`;
+            ctx.strokeStyle = `rgba(${ha.Main.merah}, ${ha.Main.hijau}, ${ha.Main.biru}, ${ha.Main.transparan})`;
         }
-        static Hijau(a = 0) {
+        static Hijau(a) {
             if (typeof (a) == 'number') {
-                this.hijau = a;
-                this.updateWarna();
+                ha.Main.hijau = a;
+                ha.Main.updateStyleWarna();
             }
-            return this.hijau;
+            return ha.Main.hijau;
         }
-        static Merah(a = 0) {
+        static Merah(a) {
             if (typeof (a) == 'number') {
-                this.merah = a;
-                this.updateWarna();
+                ha.Main.merah = a;
+                ha.Main.updateStyleWarna();
             }
-            return this.merah;
+            return ha.Main.merah;
         }
-        static Biru(a = 0) {
+        static Biru(a) {
             if (typeof (a) == 'number') {
-                this.biru = a;
-                this.updateWarna();
+                ha.Main.biru = a;
+                ha.Main.updateStyleWarna();
             }
-            return this.biru;
+            debugger;
+            return ha.Main.biru;
         }
-        static Transparan(a = 0) {
+        static Transparan(a) {
             if (typeof (a) == 'number') {
-                this.transparan = a / 255;
-                this.updateWarna();
+                ha.Main.transparan = a / 255;
+                ha.Main.updateStyleWarna();
             }
-            return this.transparan;
+            return ha.Main.transparan;
         }
         static Grafis(width = 320, height = 240) {
             let canvas = ha.Main.canvasAktif;
-            //check canvas sudah diinit atau belum
-            // if (!canvas) {
-            // 	if (canvas2) {
-            // 		this.init(canvas,)
-            // 	}
-            // 	// return;
-            // 	// setTimeout(() => {
-            // 	// 	ha.Main.Grafis(width, height);
-            // 	// }, 0);
-            // 	// console.log('failed');
-            // 	// return;
-            // }
-            // console.log('ok');
             canvas.canvas.width = width;
             canvas.canvas.height = height;
             canvas.canvas.style.width = width + 'px';
@@ -142,28 +139,28 @@ var ha;
             ha.Main.canvasAktif = buffer;
         }
         static get canvasAktif() {
-            return this._canvasAktif;
+            return ha.Main._canvasAktif;
         }
         static set canvasAktif(value) {
-            this._canvasAktif = value;
+            ha.Main._canvasAktif = value;
         }
         static get canvasAr() {
-            return this._canvasAr;
+            return ha.Main._canvasAr;
         }
         static set canvasAr(value) {
-            this._canvasAr = value;
+            ha.Main._canvasAr = value;
         }
         static get origin() {
-            return this._origin;
+            return ha.Main._origin;
         }
         static set origin(value) {
-            this._origin = value;
+            ha.Main._origin = value;
         }
         static get fps() {
-            return this._fps;
+            return ha.Main._fps;
         }
         static set fps(value) {
-            this._fps = value;
+            ha.Main._fps = value;
         }
         static get skalaOtomatis() {
             return Main._skalaOtomatis;
@@ -171,14 +168,31 @@ var ha;
         static set skalaOtomatis(value) {
             Main._skalaOtomatis = value;
         }
+        static get merah() {
+            return Main._merah;
+        }
+        static set merah(value) {
+            Main._merah = value;
+        }
+        static get hijau() {
+            return Main._hijau;
+        }
+        static set hijau(value) {
+            Main._hijau = value;
+        }
+        static get biru() {
+            return Main._biru;
+        }
+        static set biru(value) {
+            Main._biru = value;
+        }
+        static get transparan() {
+            return Main._transparan;
+        }
+        static set transparan(value) {
+            Main._transparan = value;
+        }
     }
-    Main._fps = 0;
-    Main._canvasAr = [];
-    Main._skalaOtomatis = true;
-    Main.merah = 0;
-    Main.hijau = 0;
-    Main.biru = 0;
-    Main.transparan = 0;
     ha.Main = Main;
 })(ha || (ha = {}));
 var ha;
@@ -408,10 +422,6 @@ var ha;
         static putarGambar(gbr, sudut = 0) {
             gbr.rotation = sudut;
         }
-        // static skalaGambar(gbr: IGambar, skalaX: number = 1, skalaY: number = 1) {
-        // 	gbr.scaleX = skalaX;
-        // 	gbr.scaleY = skalaY;
-        // }
         static ambilPiksel(x = 0, y = 0) {
             try {
                 let data = ha.Main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
@@ -420,11 +430,15 @@ var ha;
                 hasil.push(data[1]);
                 hasil.push(data[2]);
                 hasil.push(data[3]);
-                ha.Main.warna(data[0], data[1], data[2], data[3]);
+                ha.Main.merah = data[0];
+                ha.Main.hijau = data[1];
+                ha.Main.biru = data[2];
+                ha.Main.transparan = data[3];
+                debugger;
                 return hasil;
             }
             catch (e) {
-                console.error(e);
+                // console.error(e);
             }
             return [0, 0, 0];
         }
@@ -620,15 +634,17 @@ var ha;
 var ha;
 (function (ha) {
     class Sprite {
+        static daftar = [];
+        _buffer;
+        _x = 0;
+        _y = 0;
+        _dragged = false;
+        _down = false;
+        _hit = 0;
+        _dragStartY = 0;
+        _dragStartX = 0;
+        _dragable = false;
         constructor(buffer, dragable = false) {
-            this._x = 0;
-            this._y = 0;
-            this._dragged = false;
-            this._down = false;
-            this._hit = 0;
-            this._dragStartY = 0;
-            this._dragStartX = 0;
-            this._dragable = false;
             this.buffer = buffer;
             this.dragable = dragable;
         }
@@ -796,25 +812,21 @@ var ha;
             this._dragable = value;
         }
     }
-    Sprite.daftar = [];
     ha.Sprite = Sprite;
 })(ha || (ha = {}));
 /** INPUT.TS */
 var ha;
 (function (ha) {
     class Input {
+        _inputs = []; //any input,
+        //data untuk simpan state tiap input type
+        //tidak support multiple finger
+        _touchGlobal; //global touch
+        _mouseGlobal; //global mouse
+        _keybGlobal; //global keyb
+        _inputGlobal; //global input
+        _event = new EventHandler();
         constructor() {
-            this._inputs = []; //any input,
-            this._event = new EventHandler();
-            this.pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
-                let rect = buffer.canvas.getBoundingClientRect();
-                let poslx = Math.floor((cx - rect.x) / canvasScaleX);
-                let posly = Math.floor((cy - rect.y) / canvasScaleY);
-                return {
-                    x: poslx,
-                    y: posly
-                };
-            };
             this._touchGlobal = this.buatInputDefault();
             this._mouseGlobal = this.buatInputDefault();
             this._keybGlobal = this.buatInputDefault();
@@ -1015,6 +1027,15 @@ var ha;
             }
             return input;
         }
+        pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
+            let rect = buffer.canvas.getBoundingClientRect();
+            let poslx = Math.floor((cx - rect.x) / canvasScaleX);
+            let posly = Math.floor((cy - rect.y) / canvasScaleY);
+            return {
+                x: poslx,
+                y: posly
+            };
+        };
         get inputs() {
             return this._inputs;
         }
@@ -1412,6 +1433,7 @@ var ha;
 var ha;
 (function (ha) {
     class Blijs {
+        static _skalaOtomatis = true;
         /**
          * Setup Blitz Edu
          * @param panjang (angka) panjang dari kanvas
@@ -1518,7 +1540,6 @@ var ha;
             Blijs._skalaOtomatis = value;
         }
     }
-    Blijs._skalaOtomatis = true;
     ha.Blijs = Blijs;
 })(ha || (ha = {}));
 // setTimeout(() => {
@@ -1527,6 +1548,10 @@ var ha;
 var ha;
 (function (ha) {
     class Transform {
+        static RAD2DEG = 180.0 / Math.PI;
+        static DEG2RAD = Math.PI / 180.0;
+        static _lastX = 0;
+        static _lastY = 0;
         static get lastX() {
             return this._lastX;
         }
@@ -1647,10 +1672,6 @@ var ha;
             this._lastY = y1 + yt;
         }
     }
-    Transform.RAD2DEG = 180.0 / Math.PI;
-    Transform.DEG2RAD = Math.PI / 180.0;
-    Transform._lastX = 0;
-    Transform._lastY = 0;
     ha.Transform = Transform;
 })(ha || (ha = {}));
 ///<reference path="../ha/Main.ts"/>
@@ -1796,22 +1817,14 @@ const FlushMouse = () => {
  * 	GRAPHICS
  */
 const Bersih = ha.Main.Bersih;
-/**
- * Setup Blitz Edu
- * @param panjang (angka) panjang dari kanvas
- * @param lebar (angka) lebar dari kanvs
- * @param canvas (HTMLCanvasElement) referensi ke kanvas
- * @param skalaOtomatis (boolean) apakah akan men-skala kanvas mengikuti ukuran layar
- * @returns
- */
 const Grafis = ha.Blijs.init;
 const Warna = ha.Main.warna;
 const Merah = ha.Main.Merah;
 const Hijau = ha.Main.Hijau;
 const Biru = ha.Main.Biru;
 const Transparan = ha.Main.Transparan;
-const AmbilPiksel = ha.Main.warna;
-const SetPiksel = ha.Main.warna;
+const AmbilPiksel = ha.Image.ambilPiksel;
+const SetPiksel = ha.Image.setPiksel;
 const Garis = ha.Main.Garis;
 const Kotak = ha.Main.Kotak;
 const SetBuffer = ha.Main.SetBuffer;
