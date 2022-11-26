@@ -63,7 +63,7 @@ class Edit2 {
 			console.log(ar);
 
 			console.log('loading: ' + ha.comp.loading);
-			ha.comp.Util.Ajax2('get', "./datajs/" + ar[1] + ".js", '').then((value: string) => {
+			ha.comp.Util.Ajax2('get', "./data/" + ar[1] + ".js", '').then((value: string) => {
 				this.myCodeMirror.setValue(value);
 				// this.compile();
 			}).catch((e) => {
@@ -73,7 +73,6 @@ class Edit2 {
 
 			//load query
 			console.log(ar);
-
 		}
 		catch (e) {
 			console.error(e);
@@ -166,12 +165,10 @@ let hal: string = `
 	</head>
 
 	<body>
-		<canvas class='buffer back-buffer'></canvas>
 		<canvas class='buffer front-buffer'></canvas>
 		<div class='debug' style="z-index:1; position:relative"></div>
 
-		<script src="./js/halib.js?r=${Math.floor(Math.random() * 1000)}"></script>
-		<script src="./js/blijs.js?r=${Math.floor(Math.random() * 1000)}"></script>
+		<script src="./js/blitz.js?r=${Math.floor(Math.random() * 1000)}"></script>
 		<script>{{script}}</script>
 	</body>
 
