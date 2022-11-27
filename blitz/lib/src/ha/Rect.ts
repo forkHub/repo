@@ -22,9 +22,9 @@ namespace ha {
 			// console.log('copy:');
 			// console.log(r.vs);
 
-			// let hasil: IRect = this.create(r.vs[0].x, r.vs[0].y, r.vs[2].x, r.vs[2].y);
-			let hasil: IRect = this.create();
-			this.copyInfo(r, hasil);
+			// let hasil: IRect = ha.Rect.create(r.vs[0].x, r.vs[0].y, r.vs[2].x, r.vs[2].y);
+			let hasil: IRect = ha.Rect.create();
+			ha.Rect.copyInfo(r, hasil);
 
 			// console.log(hasil.vs);
 
@@ -40,25 +40,25 @@ namespace ha {
 		static collideBound(r1: IRect, r2: IRect): boolean {
 			// console.debug('collide bound');
 
-			if (this.maxX(r1) < this.minX(r2)) {
+			if (ha.Rect.maxX(r1) < ha.Rect.minX(r2)) {
 				// console.debug('maxX gagal');
 				return false;
 			}
 
-			// console.log('maxx ' + this.maxX(r1));
-			// console.log('minx ' + this.minX(r2));
+			// console.log('maxx ' + ha.Rect.maxX(r1));
+			// console.log('minx ' + ha.Rect.minX(r2));
 
-			if (this.minX(r1) > this.maxX(r2)) {
+			if (ha.Rect.minX(r1) > ha.Rect.maxX(r2)) {
 				// console.debug('min x gagal');
 				return false;
 			}
 
-			if (this.maxY(r1) < this.minY(r2)) {
+			if (ha.Rect.maxY(r1) < ha.Rect.minY(r2)) {
 				// console.debug('max y gagal');
 				return false;
 			}
 
-			if (this.minY(r1) > this.maxY(r2)) {
+			if (ha.Rect.minY(r1) > ha.Rect.maxY(r2)) {
 				// console.debug('min y gagal');
 				return false;
 			}
@@ -67,7 +67,7 @@ namespace ha {
 		}
 
 		static collide(r1: IRect, r2: IRect): boolean {
-			let bound: boolean = this.collideBound(r1, r2);
+			let bound: boolean = ha.Rect.collideBound(r1, r2);
 			if (!bound) return false;
 
 			for (let i: number = 0; i < r1.segs.length; i++) {
@@ -82,25 +82,25 @@ namespace ha {
 		}
 
 		static collideDotBound(r: IRect, d: IPoint2D): boolean {
-			if (d.x < this.minX(r)) {
+			if (d.x < ha.Rect.minX(r)) {
 				// console.log('minx failed');
 				return false;
 			}
 
-			if (d.x > this.maxX(r)) {
+			if (d.x > ha.Rect.maxX(r)) {
 				// console.log('maxX failed');
 				// console.log(d);
-				// console.log(this.maxX(r));
+				// console.log(ha.Rect.maxX(r));
 				// console.log(r.vs);
 				return false;
 			}
 
-			if (d.y < this.minY(r)) {
+			if (d.y < ha.Rect.minY(r)) {
 				// console.log('minY failed');
 				return false;
 			}
 
-			if (d.y > this.maxY(r)) {
+			if (d.y > ha.Rect.maxY(r)) {
 				// console.log('maxY failed');
 				return false;
 			}
@@ -114,14 +114,14 @@ namespace ha {
 			let d: number = ha.Segment.deg(r2.segs[0]);
 			let pRot: IPoint2D = r2.vs[0];
 
-			if (!this.collideDotBound(r, p)) {
+			if (!ha.Rect.collideDotBound(r, p)) {
 				return false;
 			}
 
 			Rect.rotate(r2, -d, pRot.x, pRot.y);
 			ha.Point.putarPoros(p, pRot.x, pRot.y, -d);
 
-			if (!this.collideDotBound(r2, p)) {
+			if (!ha.Rect.collideDotBound(r2, p)) {
 				// console.log('collide bound 2 failed');
 				// console.log('deg ' + d);
 				// console.log('rect');

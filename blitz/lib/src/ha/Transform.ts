@@ -8,10 +8,10 @@ namespace ha {
 		private static _lastY: number = 0;
 
 		public static get lastX(): number {
-			return this._lastX;
+			return ha.Transform._lastX;
 		}
 		public static get lastY(): number {
-			return this._lastY;
+			return ha.Transform._lastY;
 		}
 
 		static equal(n1: number, n2: number, toleransi: number = 1): boolean {
@@ -68,9 +68,9 @@ namespace ha {
 
 			sin = y / l;
 			sin = Math.asin(sin);
-			sin *= this.RAD2DEG;
-			sin = this.quadDeg2(x, y, sin);
-			sin = this.normalizeDeg(sin);
+			sin *= ha.Transform.RAD2DEG;
+			sin = ha.Transform.quadDeg2(x, y, sin);
+			sin = ha.Transform.normalizeDeg(sin);
 
 			return sin;
 		}
@@ -91,10 +91,10 @@ namespace ha {
 		}
 
 		static degDistMax(angleS: number = 0, angleT: number): number {
-			angleS = this.normalizeDeg(angleS);
-			angleT = this.normalizeDeg(angleT);
+			angleS = ha.Transform.normalizeDeg(angleS);
+			angleT = ha.Transform.normalizeDeg(angleT);
 
-			let deg: number = this.degDistMin(angleS, angleT);
+			let deg: number = ha.Transform.degDistMin(angleS, angleT);
 			if (deg >= 0) {
 				return -(360 - deg);
 			}
@@ -104,8 +104,8 @@ namespace ha {
 		}
 
 		static degDistMin(angleS: number = 0, angleT: number): number {
-			angleS = this.normalizeDeg(angleS);
-			angleT = this.normalizeDeg(angleT);
+			angleS = ha.Transform.normalizeDeg(angleS);
+			angleT = ha.Transform.normalizeDeg(angleT);
 
 			if (angleT >= angleS) {
 				if (angleT - angleS > 180) {
@@ -137,13 +137,13 @@ namespace ha {
 			let x1: number;
 			let y1: number;
 
-			deg *= this.DEG2RAD;
+			deg *= ha.Transform.DEG2RAD;
 
 			x1 = xr * Math.cos(deg) - yr * Math.sin(deg);
 			y1 = xr * Math.sin(deg) + yr * Math.cos(deg);
 
-			this._lastX = x1 + xt;
-			this._lastY = y1 + yt;
+			ha.Transform._lastX = x1 + xt;
+			ha.Transform._lastY = y1 + yt;
 		}
 	}
 }

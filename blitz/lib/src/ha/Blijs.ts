@@ -52,21 +52,6 @@ namespace ha {
 
 				setTimeout(() => {
 					ha.Blijs.repeat();
-					// if (typeof _window.Mulai__ == "function") {
-					// 	console.log('window start function called');
-
-					// 	_window.Mulai()
-					// 		.then(() => {
-					// 			this.repeat();
-					// 		})
-					// 		.catch((e: Error) => {
-					// 			console.error(e);
-					// 		})
-					// }
-					// else {
-					// 	console.warn('start not found');
-					// 	this.repeat();
-					// }
 				}, 0);
 			}
 		}

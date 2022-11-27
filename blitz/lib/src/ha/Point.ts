@@ -14,7 +14,7 @@ namespace ha {
 		}
 
 		static clone(p: IPoint2D): IPoint2D {
-			let h: IPoint2D = this.create(p.x, p.y);
+			let h: IPoint2D = ha.Point.create(p.x, p.y);
 			return h;
 		}
 

@@ -9,41 +9,41 @@ namespace ha {
 		}
 
 		static boundCollide(seg1: ISegment, seg2: ISegment): boolean {
-			if (this.maxX(seg1) < this.minX(seg2)) return false;
-			if (this.minX(seg1) > this.maxX(seg2)) return false;
+			if (ha.Segment.maxX(seg1) < ha.Segment.minX(seg2)) return false;
+			if (ha.Segment.minX(seg1) > ha.Segment.maxX(seg2)) return false;
 
-			if (this.maxY(seg1) < this.minY(seg2)) return false;
-			if (this.minY(seg1) > this.maxY(seg2)) return false;
+			if (ha.Segment.maxY(seg1) < ha.Segment.minY(seg2)) return false;
+			if (ha.Segment.minY(seg1) > ha.Segment.maxY(seg2)) return false;
 
 			return true;
 		}
 
 		static collide(seg1: ISegment, seg2: ISegment): boolean {
-			let bound: boolean = this.boundCollide(seg1, seg2);
+			let bound: boolean = ha.Segment.boundCollide(seg1, seg2);
 			if (!bound) return false;
 
-			// let deg: number = this.deg(seg2);
-			let seg2Copy: ISegment = this.clone(seg2);
-			let seg1Copy: ISegment = this.clone(seg1);
-			let deg: number = this.deg(seg2);
+			// let deg: number = ha.Segment.deg(seg2);
+			let seg2Copy: ISegment = ha.Segment.clone(seg2);
+			let seg1Copy: ISegment = ha.Segment.clone(seg1);
+			let deg: number = ha.Segment.deg(seg2);
 
-			this.rotate(seg2Copy, -deg, seg2.v1.x, seg2.v1.y);
-			this.rotate(seg1Copy, -deg, seg2.v1.x, seg2.v1.y);
+			ha.Segment.rotate(seg2Copy, -deg, seg2.v1.x, seg2.v1.y);
+			ha.Segment.rotate(seg1Copy, -deg, seg2.v1.x, seg2.v1.y);
 
-			if (!this.boundCollide(seg1Copy, seg2Copy)) return false;
+			if (!ha.Segment.boundCollide(seg1Copy, seg2Copy)) return false;
 
-			this.translate(seg1Copy, -seg2.v1.x, -seg2.v1.y);
-			this.translate(seg2Copy, -seg2.v1.x, -seg2.v1.y);
+			ha.Segment.translate(seg1Copy, -seg2.v1.x, -seg2.v1.y);
+			ha.Segment.translate(seg2Copy, -seg2.v1.x, -seg2.v1.y);
 
-			if (!this.crossHor(seg1Copy)) {
+			if (!ha.Segment.crossHor(seg1Copy)) {
 				return false;
 			}
 
-			let idx: number = this.xHorIdx(seg1Copy);
-			let x: number = this.getXAtIdx(seg1Copy, idx);
+			let idx: number = ha.Segment.xHorIdx(seg1Copy);
+			let x: number = ha.Segment.getXAtIdx(seg1Copy, idx);
 
-			if (x > this.maxX(seg2Copy)) return false;
-			if (x < this.minX(seg2Copy)) return false;
+			if (x > ha.Segment.maxX(seg2Copy)) return false;
+			if (x < ha.Segment.minX(seg2Copy)) return false;
 
 			return true;
 		}
@@ -61,8 +61,8 @@ namespace ha {
 		}
 
 		static crossHor(seg: ISegment): boolean {
-			if (this.maxY(seg) > 0) {
-				if (this.minY(seg) < 0) {
+			if (ha.Segment.maxY(seg) > 0) {
+				if (ha.Segment.minY(seg) < 0) {
 					return true;
 				}
 			}
@@ -78,11 +78,11 @@ namespace ha {
 		}
 
 		static getXAtIdx(seg: ISegment, idx: number): number {
-			return seg.v1.x + (idx * this.vecI(seg));
+			return seg.v1.x + (idx * ha.Segment.vecI(seg));
 		}
 
 		static getYAtIdx(seg: ISegment, idx: number): number {
-			return seg.v1.y + (idx * this.vecJ(seg));
+			return seg.v1.y + (idx * ha.Segment.vecJ(seg));
 		}
 
 		static vecI(seg: ISegment): number {
@@ -123,7 +123,7 @@ namespace ha {
 
 		//tested
 		static xHorIdx(seg: ISegment): number {
-			if (!this.crossHor(seg)) return NaN;
+			if (!ha.Segment.crossHor(seg)) return NaN;
 
 			let idx: number = 0;
 			idx = (0 - seg.v1.y) / (seg.v2.y - seg.v1.y)
