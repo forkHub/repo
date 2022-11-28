@@ -28,7 +28,8 @@ var ha;
                 handleY: 0,
                 img: null,
                 isAnim: false,
-                rotation: 0,
+                rotasi: 0,
+                alpha: 1,
                 rect: ha.Rect.create(),
                 load: true,
                 panjangDiSet: true,
@@ -49,11 +50,11 @@ var ha;
             let ctx = ha.Main.canvasAktif.ctx;
             ctx.fillRect(0, 0, ha.Main.canvasAktif.panjang, ha.Main.canvasAktif.lebar);
         }
-        static warna(r = 0, g = 0, b = 0, a = 255) {
+        static warna(r = 0, g = 0, b = 0, a = 1) {
             ha.Main.merah = r;
             ha.Main.biru = b;
             ha.Main.hijau = g;
-            ha.Main.transparan = a / 255;
+            ha.Main.transparan = a;
             ha.Main.updateStyleWarna();
         }
         static updateStyleWarna() {
@@ -61,33 +62,16 @@ var ha;
             ctx.fillStyle = `rgba(${ha.Main.merah}, ${ha.Main.hijau}, ${ha.Main.biru}, ${ha.Main.transparan})`;
             ctx.strokeStyle = `rgba(${ha.Main.merah}, ${ha.Main.hijau}, ${ha.Main.biru}, ${ha.Main.transparan})`;
         }
-        static Hijau(a) {
-            if (typeof (a) == 'number') {
-                ha.Main.hijau = a;
-                ha.Main.updateStyleWarna();
-            }
+        static Hijau() {
             return ha.Main.hijau;
         }
-        static Merah(a) {
-            if (typeof (a) == 'number') {
-                ha.Main.merah = a;
-                ha.Main.updateStyleWarna();
-            }
+        static Merah() {
             return ha.Main.merah;
         }
-        static Biru(a) {
-            if (typeof (a) == 'number') {
-                ha.Main.biru = a;
-                ha.Main.updateStyleWarna();
-            }
-            debugger;
+        static Biru() {
             return ha.Main.biru;
         }
-        static Transparan(a) {
-            if (typeof (a) == 'number') {
-                ha.Main.transparan = a / 255;
-                ha.Main.updateStyleWarna();
-            }
+        static Transparan() {
             return ha.Main.transparan;
         }
         static Grafis(width = 320, height = 240) {
@@ -117,9 +101,15 @@ var ha;
             ctx.lineTo(x2, y2);
             ctx.stroke();
         }
-        static Kotak(x1, y1, x2, y2) {
+        static Kotak(x1, y1, x2, y2, isi = false, garis = true, rotasi = 0) {
             let ctx = ha.Main.canvasAktif.ctx;
-            ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+            rotasi;
+            if (isi) {
+                ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+            }
+            if (garis) {
+                ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+            }
         }
         static SetBuffer(buffer) {
             ha.Main.canvasAktif = buffer;
@@ -184,7 +174,7 @@ var ha;
 var ha;
 (function (ha) {
     class Image {
-        static buatGambar(w = 32, h = 32, frameW = 32, frameH = 32) {
+        static buat(w = 32, h = 32, frameW = 32, frameH = 32) {
             let canvas = document.createElement('canvas');
             let img;
             canvas.width = w;
@@ -198,7 +188,8 @@ var ha;
                 frameW: frameW,
                 handleX: 0,
                 handleY: 0,
-                rotation: 0,
+                rotasi: 0,
+                alpha: 1,
                 isAnim: false,
                 canvas: canvas,
                 ctx: canvas.getContext('2d'),
@@ -209,33 +200,29 @@ var ha;
             };
             return img;
         }
-        static panjangGambar(gbr) { return gbr.panjang; }
+        static panjang(gbr) { return gbr.panjang; }
         ;
-        static lebarGambar(gbr) { return gbr.lebar; }
+        static lebar(gbr) { return gbr.lebar; }
         ;
-        static handleXGambar(gbr) { return gbr.handleX; }
+        static handleX(gbr) { return gbr.handleX; }
         ;
-        static handleYGambar(gbr) { return gbr.handleY; }
+        static handleY(gbr) { return gbr.handleY; }
         ;
-        static gambarOverlap(gbr1, x1, y1, gbr2, x2, y2) {
-            ha.Image.gambarTabrakan(gbr1, x1, y1, gbr2, x2, y2);
-        }
-        ;
-        static gambarTabrakan(gbr1, x1, y1, gbr2, x2, y2) {
-            ha.Image.resetImageRect(gbr1);
+        static tabrakan(gbr1, x1, y1, gbr2, x2, y2) {
+            ha.Image.resetRect(gbr1);
             ha.Image.rectToImageTransform(gbr1, x1, y1);
-            ha.Image.resetImageRect(gbr2);
+            ha.Image.resetRect(gbr2);
             ha.Image.rectToImageTransform(gbr2, x2, y2);
             return ha.Rect.collide(gbr1.rect, gbr2.rect);
         }
         ;
         static dotDidalamGambar(gbr1, x1, y1, x2, y2) {
-            ha.Image.resetImageRect(gbr1);
+            ha.Image.resetRect(gbr1);
             ha.Image.rectToImageTransform(gbr1, x1, y1);
             return ha.Rect.collideDot(gbr1.rect, x2, y2);
         }
         ;
-        static muatGambarAnimasiAsync(url, fw = 32, fh = 32) {
+        static muatAnimAsync(url, fw = 32, fh = 32) {
             let img = document.createElement('img');
             let canvas = document.createElement('canvas');
             let ctx = canvas.getContext('2d');
@@ -250,7 +237,8 @@ var ha;
                 isAnim: true,
                 handleX: 0,
                 handleY: 0,
-                rotation: 0,
+                rotasi: 0,
+                alpha: 1,
                 ctx: ctx,
                 canvas: canvas,
                 rect: rect,
@@ -293,7 +281,8 @@ var ha;
                 isAnim: false,
                 handleX: 0,
                 handleY: 0,
-                rotation: 0,
+                rotasi: 0,
+                alpha: 1,
                 ctx: ctx,
                 canvas: canvas,
                 rect: rect,
@@ -351,7 +340,7 @@ var ha;
             }
         }
         static putarGambar(gbr, sudut = 0) {
-            gbr.rotation = sudut;
+            gbr.rotasi = sudut;
         }
         static ambilPiksel(x = 0, y = 0) {
             try {
@@ -365,7 +354,7 @@ var ha;
                 ha.Main.hijau = data[1];
                 ha.Main.biru = data[2];
                 ha.Main.transparan = data[3];
-                debugger;
+                ha.Main.warna(ha.Main.merah, ha.Main.hijau, ha.Main.biru, ha.Main.transparan);
                 return hasil;
             }
             catch (e) {
@@ -375,18 +364,12 @@ var ha;
         static setPiksel(x = 0, y = 0) {
             ha.Main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
         }
-        static posisiHandleGambar(gbr, x = 0, y = 0) {
+        static handle(gbr, x = 0, y = 0) {
             gbr.handleX = x;
             gbr.handleY = y;
         }
         static grabGambar(gbr, x = 0, y = 0) {
             gbr.ctx.drawImage(ha.Main.canvasAktif.canvas, x, y, gbr.panjang, gbr.lebar, 0, 0, gbr.panjang, gbr.lebar);
-        }
-        static async tungguLoad() {
-            return new Promise((resolve, reject) => {
-                resolve;
-                reject;
-            });
         }
         static gambar(gbr, x = 0, y = 0, frame = 0) {
             let ctx = ha.Main.canvasAktif.ctx;
@@ -410,24 +393,28 @@ var ha;
             let h2 = Math.floor(gbr.lebar);
             x2 -= (gbr.handleX);
             y2 -= (gbr.handleY);
-            if (gbr.rotation != 0) {
+            if (gbr.rotasi != 0) {
                 ctx.save();
                 ctx.translate(x, y);
-                ctx.rotate(gbr.rotation * (Math.PI / 180));
+                ctx.rotate(gbr.rotasi * (Math.PI / 180));
+                ctx.globalAlpha = gbr.alpha;
                 ctx.drawImage(gbr.img, frameX, frameY, gbr.frameW, gbr.frameH, -gbr.handleX, -gbr.handleY, w2, h2);
                 ctx.restore();
             }
             else {
+                ctx.save();
+                ctx.globalAlpha = gbr.alpha;
                 ctx.drawImage(gbr.canvas, frameX, frameY, gbr.frameW, gbr.frameH, x2, y2, w2, h2);
+                ctx.restore();
             }
         }
-        static ukuranGambar(gbr, w, h) {
+        static ukuran(gbr, w, h) {
             gbr.panjang = w;
             gbr.lebar = h;
             gbr.panjangDiSet = true;
             gbr.lebarDiSet = true;
         }
-        static resetImageRect(img) {
+        static resetRect(img) {
             let rect = img.rect;
             let p;
             p = rect.vs[0];
@@ -459,7 +446,7 @@ var ha;
             p.y = y2;
             ha.Rect.translate(rect, x, y);
             ha.Rect.translate(rect, -image.handleX, -image.handleY);
-            ha.Rect.rotate(rect, image.rotation, x, y, false);
+            ha.Rect.rotate(rect, image.rotasi, x, y, false);
         }
     }
     ha.Image = Image;
@@ -468,7 +455,7 @@ var ha;
 (function (ha) {
     class Sprite {
         static daftar = [];
-        _buffer;
+        _buff;
         _x = 0;
         _y = 0;
         _dragged = false;
@@ -481,15 +468,21 @@ var ha;
             this.buffer = buffer;
             this.dragable = dragable;
         }
-        static rotasi(sprite, sudut) {
-            if (sprite && (typeof (sudut) == 'number')) {
-                sprite.buffer.rotation = sudut;
+        static alpha(spr, alpha) {
+            if (typeof (alpha) == 'number') {
+                spr.buffer.alpha = alpha / 255;
             }
-            return sprite.buffer.rotation;
+            return spr.buffer.alpha;
         }
-        static posisi(sprite, x = 0, y = 0) {
-            sprite.x = x;
-            sprite.y = y;
+        static rotasi(spr, sudut) {
+            if (spr && (typeof (sudut) == 'number')) {
+                spr.buffer.rotasi = sudut;
+            }
+            return spr.buffer.rotasi;
+        }
+        static posisi(spr, x = 0, y = 0) {
+            spr.x = x;
+            spr.y = y;
         }
         static posisiX(spr, x = null) {
             if (typeof (x) == 'number') {
@@ -517,10 +510,10 @@ var ha;
             }
         }
         static tabrakan(spr, spr2) {
-            return ha.Image.gambarTabrakan(spr.buffer, ha.Sprite.posisiX(spr), ha.Sprite.posisiY(spr), spr2.buffer, ha.Sprite.posisiX(spr2), ha.Sprite.posisiY(spr2));
+            return ha.Image.tabrakan(spr.buffer, ha.Sprite.posisiX(spr), ha.Sprite.posisiY(spr), spr2.buffer, ha.Sprite.posisiX(spr2), ha.Sprite.posisiY(spr2));
         }
         static muatAnimasiAsync(url, pf, lf, bisaDiDrag = false) {
-            let img = ha.Image.muatGambarAnimasiAsync(url, pf, lf);
+            let img = ha.Image.muatAnimAsync(url, pf, lf);
             return ha.Sprite.buat(img, bisaDiDrag);
         }
         static muatAsync(url, dragable = false) {
@@ -529,7 +522,7 @@ var ha;
             return ha.Sprite.buat(img, dragable);
         }
         static ukuranGambar(gbr, w, h) {
-            ha.Image.ukuranGambar(gbr.buffer, w, h);
+            ha.Image.ukuran(gbr.buffer, w, h);
         }
         static buat(image, dragable = false) {
             let hasil;
@@ -601,10 +594,10 @@ var ha;
             this._dragged = value;
         }
         get buffer() {
-            return this._buffer;
+            return this._buff;
         }
         set buffer(value) {
-            this._buffer = value;
+            this._buff = value;
         }
         get x() {
             return this._x;
@@ -1073,9 +1066,6 @@ var ha;
             });
             return y;
         }
-        static scale(r) {
-            r;
-        }
         static translate(rect, x, y) {
             rect.vs.forEach((v) => {
                 v.x += x;
@@ -1521,7 +1511,6 @@ const AmbilPiksel = ha.Image.ambilPiksel;
 const SetPiksel = ha.Image.setPiksel;
 const Garis = ha.Main.Garis;
 const Kotak = ha.Main.Kotak;
-const SetBuffer = ha.Main.SetBuffer;
 const Sudut = ha.Transform.deg;
 const Buat = ha.Sprite.buat;
 const Muat = ha.Sprite.muatAsync;
@@ -1534,6 +1523,7 @@ const PosisiX = ha.Sprite.posisiX;
 const PosisiY = ha.Sprite.posisiY;
 const Handle = ha.Sprite.handle;
 const Rotasi = ha.Sprite.rotasi;
+const Alpha = ha.Sprite.alpha;
 const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
 const Tabrakan = ha.Sprite.tabrakan;
 const PosisiJarakSprite = () => { };

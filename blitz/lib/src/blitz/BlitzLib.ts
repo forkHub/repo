@@ -16,17 +16,13 @@ const SetPiksel = ha.Image.setPiksel;
 
 const Garis = ha.Main.Garis;
 const Kotak = ha.Main.Kotak;
-const SetBuffer = ha.Main.SetBuffer;
+// const Oval = () => { }
+//Kurva
 
+//Kanvas() setter getter
+//Kontek() setter getter
+
+// const SetBuffer = ha.Main.SetBuffer;
 // const GraphicsBuffer = () => { }
 // const Origin = () => { }
-// const Oval = () => { }
-// const WritePixel = () => { }
-// const ReadPixel = () => { }
 // const Plot = () => { }
-
-// const ClsColor = () => { }
-// const CopyPixel = () => { }
-// const CopyRect = () => { }
-// const FrontBuffer = () => { }
-// const BackBuffer = () => { }

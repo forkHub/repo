@@ -1,6 +1,5 @@
 namespace ha {
 
-	//TODO: beberapa perintah harus mengecheck apakah kanvas sudah di init, dan coba lagi kalau belum bisa
 	export class Main {
 		private static _fps: number = 0;
 		private static _origin: IV2D;
@@ -12,6 +11,8 @@ namespace ha {
 		private static _hijau: number = 0;
 		private static _biru: number = 0;
 		private static _transparan: number = 0;
+
+		//TODO: gradient
 
 		static Fps(n: number) {
 			ha.Main.fps = Math.floor(1000 / n);
@@ -35,6 +36,7 @@ namespace ha {
 				img: null,
 				isAnim: false,
 				rotasi: 0,
+				alpha: 1,
 				rect: ha.Rect.create(),
 				load: true,
 				panjangDiSet: true,
@@ -58,61 +60,39 @@ namespace ha {
 
 		static Bersih(): void {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
-			// ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
 			ctx.fillRect(0, 0, ha.Main.canvasAktif.panjang, ha.Main.canvasAktif.lebar);
 		}
 
-		static warna(r: number = 0, g: number = 0, b: number = 0, a: number = 255): void {
+		static warna(r: number = 0, g: number = 0, b: number = 0, a: number = 1): void {
 
 			ha.Main.merah = r;
 			ha.Main.biru = b;
 			ha.Main.hijau = g;
-			ha.Main.transparan = a / 255;
+			ha.Main.transparan = a;
 
 			ha.Main.updateStyleWarna();
 		}
 
-		static updateStyleWarna(): void {
+		private static updateStyleWarna(): void {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 
 			ctx.fillStyle = `rgba(${ha.Main.merah}, ${ha.Main.hijau}, ${ha.Main.biru}, ${ha.Main.transparan})`;
 			ctx.strokeStyle = `rgba(${ha.Main.merah}, ${ha.Main.hijau}, ${ha.Main.biru}, ${ha.Main.transparan})`;
 		}
 
-		static Hijau(a?: number): number {
-			if (typeof (a) == 'number') {
-				ha.Main.hijau = a;
-				ha.Main.updateStyleWarna();
-			}
-
+		static Hijau(): number {
 			return ha.Main.hijau;
 		}
 
-		static Merah(a?: number): number {
-			if (typeof (a) == 'number') {
-				ha.Main.merah = a;
-				ha.Main.updateStyleWarna();
-			}
-
+		static Merah(): number {
 			return ha.Main.merah;
 		}
 
-		static Biru(a?: number): number {
-			if (typeof (a) == 'number') {
-				ha.Main.biru = a;
-				ha.Main.updateStyleWarna();
-			}
-
-			debugger;
+		static Biru(): number {
 			return ha.Main.biru;
 		}
 
-		static Transparan(a?: number): number {
-			if (typeof (a) == 'number') {
-				ha.Main.transparan = a / 255;
-				ha.Main.updateStyleWarna();
-			}
-
+		static Transparan(): number {
 			return ha.Main.transparan;
 		}
 
@@ -151,19 +131,32 @@ namespace ha {
 
 		static Garis(x1: number, y1: number, x2: number, y2: number) {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
+
 			x1 = Math.floor(x1);
 			y1 = Math.floor(y1);
 			x2 = Math.floor(x2);
 			y2 = Math.floor(y2);
+
 			ctx.beginPath();
 			ctx.moveTo(x1, y1);
 			ctx.lineTo(x2, y2);
 			ctx.stroke();
 		}
 
-		static Kotak(x1: number, y1: number, x2: number, y2: number) {
+		//kotak
+		static Kotak(x1: number, y1: number, x2: number, y2: number, isi: boolean = false, garis: boolean = true, rotasi: number = 0) {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
-			ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+
+			//TODO: rotasi
+			rotasi;
+
+			if (isi) {
+				ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+			}
+
+			if (garis) {
+				ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+			}
 		}
 
 		static SetBuffer(buffer: IGambar) {
@@ -188,6 +181,7 @@ namespace ha {
 		public static get origin(): IV2D {
 			return ha.Main._origin;
 		}
+
 		public static set origin(value: IV2D) {
 			ha.Main._origin = value;
 		}
@@ -195,36 +189,47 @@ namespace ha {
 		public static get fps(): number {
 			return ha.Main._fps;
 		}
+
 		public static set fps(value: number) {
 			ha.Main._fps = value;
 		}
+
 		public static get skalaOtomatis(): boolean {
 			return Main._skalaOtomatis;
 		}
+
 		public static set skalaOtomatis(value: boolean) {
 			Main._skalaOtomatis = value;
 		}
+
 		public static get merah(): number {
 			return Main._merah;
 		}
+
 		public static set merah(value: number) {
 			Main._merah = value;
 		}
+
 		public static get hijau(): number {
 			return Main._hijau;
 		}
+
 		public static set hijau(value: number) {
 			Main._hijau = value;
 		}
+
 		public static get biru(): number {
 			return Main._biru;
 		}
+
 		public static set biru(value: number) {
 			Main._biru = value;
 		}
+
 		public static get transparan(): number {
 			return Main._transparan;
 		}
+
 		public static set transparan(value: number) {
 			Main._transparan = value;
 		}

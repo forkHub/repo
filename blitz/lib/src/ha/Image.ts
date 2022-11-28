@@ -287,7 +287,7 @@ namespace ha {
 				ha.Main.hijau = data[1];
 				ha.Main.biru = data[2];
 				ha.Main.transparan = data[3];
-				debugger;
+				ha.Main.warna(ha.Main.merah, ha.Main.hijau, ha.Main.biru, ha.Main.transparan);
 
 				return hasil;
 			}
@@ -420,7 +420,10 @@ namespace ha {
 				ctx.restore();
 			}
 			else {
+				ctx.save();
+				ctx.globalAlpha = gbr.alpha;
 				ctx.drawImage(gbr.canvas, frameX, frameY, gbr.frameW, gbr.frameH, x2, y2, w2, h2);
+				ctx.restore();
 			}
 
 			// debugger;
