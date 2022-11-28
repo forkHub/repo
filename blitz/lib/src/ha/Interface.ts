@@ -67,7 +67,8 @@ interface IGambar {
 	img: HTMLImageElement;
 	frameW: number;
 	frameH: number;
-	rotation: number;
+	rotasi: number;
+	alpha: number;
 	isAnim: boolean;
 	canvas: HTMLCanvasElement;
 	ctx: CanvasRenderingContext2D;

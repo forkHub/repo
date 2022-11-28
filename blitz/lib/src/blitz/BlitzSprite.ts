@@ -12,6 +12,7 @@ const PosisiX = ha.Sprite.posisiX;
 const PosisiY = ha.Sprite.posisiY;
 const Handle = ha.Sprite.handle;
 const Rotasi = ha.Sprite.rotasi;
+const Alpha = ha.Sprite.alpha;
 const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
 const Tabrakan = ha.Sprite.tabrakan;
 

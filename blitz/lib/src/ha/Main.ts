@@ -34,7 +34,7 @@ namespace ha {
 				handleY: 0,
 				img: null,
 				isAnim: false,
-				rotation: 0,
+				rotasi: 0,
 				rect: ha.Rect.create(),
 				load: true,
 				panjangDiSet: true,

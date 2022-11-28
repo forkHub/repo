@@ -172,9 +172,9 @@ namespace ha {
 			return y;
 		}
 
-		static scale(r: IRect): void {
-			r;
-		}
+		// static scale(r: IRect): void {
+		// 	r;
+		// }
 
 		static translate(rect: IRect, x: number, y: number): void {
 			rect.vs.forEach((v: IPoint2D) => {
