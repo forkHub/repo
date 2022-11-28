@@ -3,48 +3,53 @@ echo off
 echo snow:
 echo =====
 copy ..\blitz\output\*.d.ts .\snow\dts
-copy ..\blitz\output\*.js .\snow\web\js
+copy ..\blitz\output\*.min.js .\snow\web\js
 
 echo drag_inline:
 echo ============
 copy ..\blitz\output\*.d.ts .\drag_inline\dts
-copy ..\blitz\output\*.js .\drag_inline\web\js
+copy ..\blitz\output\*.min.js .\drag_inline\web\js
 
 
 echo tile:
 echo =====
 copy ..\blitz\output\*.d.ts .\tile\dts
-copy ..\blitz\output\*.js .\tile\web\js
+copy ..\blitz\output\*.min.js .\tile\web\js
 
 echo doodle:
 echo =====
 copy ..\blitz\output\*.d.ts .\doodle\dts
-copy ..\blitz\output\*.js .\doodle\web\js
+copy ..\blitz\output\*.min.js .\doodle\web\js
 
 echo expl:
 echo =====
 copy ..\blitz\output\*.d.ts .\expl\dts
-copy ..\blitz\output\*.js .\expl\web\js
+copy ..\blitz\output\*.min.js .\expl\web\js
 
 echo collision:
 echo ==========
 copy ..\blitz\output\*.d.ts .\collision\dts
-copy ..\blitz\output\*.js .\collision\web\js
+copy ..\blitz\output\*.min.js .\collision\web\js
 
 echo drag2:
 echo ======
 copy ..\blitz\output\*.d.ts .\drag02\dts
-copy ..\blitz\output\*.js .\drag02\web\js
+copy ..\blitz\output\*.min.js .\drag02\web\js
 
 echo orbit:
 echo ======
 copy ..\blitz\output\*.d.ts .\orbit\dts
-copy ..\blitz\output\*.js .\orbit\web\js
+copy ..\blitz\output\*.min.js .\orbit\web\js
 
 echo orbit_mbb:
 echo ==========
 copy ..\blitz\output\*.d.ts .\orbit_mbb\dts
-copy ..\blitz\output\*.js .\orbit_mbb\web\js
+copy ..\blitz\output\*.min.js .\orbit_mbb\web\js
+
+echo knob:
+echo =====
+copy ..\blitz\output\*.d.ts .\knob\dts
+copy ..\blitz\output\*.min.js .\knob\web\js
 
 pause
 pause
