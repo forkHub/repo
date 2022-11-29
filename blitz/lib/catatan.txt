@@ -1,7 +1,2 @@
-Warna(m=255, h=255, b=255, alpha=0);
-WarnaMerah(m=255);
-WarnaBiru();
-WarnaHijau();
 
-AmbilPiksel(x,y); => mengeset warna variable
-SetPiksel();
+Perintah bersifat redundant sebaiknya dihapus: Merah(255), Merah(), agar ukuran jadi lebih kecil

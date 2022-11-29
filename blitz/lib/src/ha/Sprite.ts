@@ -6,7 +6,7 @@ namespace ha {
 	export class Sprite implements ISprite {
 		static readonly daftar: ISprite[] = [];
 
-		private _buffer: IGambar;
+		private _buff: IGambar;
 		private _x: number = 0;
 		private _y: number = 0;
 		private _dragged: boolean = false;
@@ -21,17 +21,25 @@ namespace ha {
 			this.dragable = dragable;
 		}
 
-		static rotasi(sprite: ISprite, sudut?: number): number {
-			if (sprite && (typeof (sudut) == 'number')) {
-				sprite.buffer.rotation = sudut;
+		static alpha(spr: ISprite, alpha?: number): number {
+			if (typeof (alpha) == 'number') {
+				spr.buffer.alpha = alpha / 255;
 			}
 
-			return sprite.buffer.rotation;
+			return spr.buffer.alpha;
 		}
 
-		static posisi(sprite: ISprite, x: number = 0, y: number = 0) {
-			sprite.x = x;
-			sprite.y = y;
+		static rotasi(spr: ISprite, sudut?: number): number {
+			if (spr && (typeof (sudut) == 'number')) {
+				spr.buffer.rotasi = sudut;
+			}
+
+			return spr.buffer.rotasi;
+		}
+
+		static posisi(spr: ISprite, x: number = 0, y: number = 0) {
+			spr.x = x;
+			spr.y = y;
 		}
 
 		static posisiX(spr: ISprite, x: number | null | undefined = null): number {
@@ -67,11 +75,11 @@ namespace ha {
 		}
 
 		static tabrakan(spr: ISprite, spr2: ISprite): boolean {
-			return ha.Image.gambarTabrakan(spr.buffer, ha.Sprite.posisiX(spr), ha.Sprite.posisiY(spr), spr2.buffer, ha.Sprite.posisiX(spr2), ha.Sprite.posisiY(spr2))
+			return ha.Image.tabrakan(spr.buffer, ha.Sprite.posisiX(spr), ha.Sprite.posisiY(spr), spr2.buffer, ha.Sprite.posisiX(spr2), ha.Sprite.posisiY(spr2))
 		}
 
 		static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag: boolean = false): ISprite {
-			let img: IGambar = ha.Image.muatGambarAnimasiAsync(url, pf, lf);
+			let img: IGambar = ha.Image.muatAnimAsync(url, pf, lf);
 			return ha.Sprite.buat(img, bisaDiDrag);
 		}
 
@@ -87,7 +95,7 @@ namespace ha {
 		// }
 
 		static ukuranGambar(gbr: ISprite, w: number, h: number): void {
-			ha.Image.ukuranGambar(gbr.buffer, w, h);
+			ha.Image.ukuran(gbr.buffer, w, h);
 		}
 
 		// static handleTengah(gbr: ISprite): void {
@@ -181,10 +189,10 @@ namespace ha {
 			this._dragged = value;
 		}
 		public get buffer(): IGambar {
-			return this._buffer;
+			return this._buff;
 		}
 		public set buffer(value: IGambar) {
-			this._buffer = value;
+			this._buff = value;
 		}
 		public get x(): number {
 			return this._x;

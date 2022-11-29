@@ -1,3 +1,6 @@
+kebutuhan buag demo knob
+alpha
+
 tombol UI
     slider
     tombol
