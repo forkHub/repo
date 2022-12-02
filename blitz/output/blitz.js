@@ -1,15 +1,6 @@
 var ha;
 (function (ha) {
     class Main {
-        static _fps = 0;
-        static _origin;
-        static _canvasAr = [];
-        static _canvasAktif;
-        static _skalaOtomatis = true;
-        static _merah = 0;
-        static _hijau = 0;
-        static _biru = 0;
-        static _transparan = 0;
         static Fps(n) {
             ha.Main.fps = Math.floor(1000 / n);
             if (n >= 60) {
@@ -169,6 +160,13 @@ var ha;
             Main._transparan = value;
         }
     }
+    Main._fps = 0;
+    Main._canvasAr = [];
+    Main._skalaOtomatis = true;
+    Main._merah = 0;
+    Main._hijau = 0;
+    Main._biru = 0;
+    Main._transparan = 0;
     ha.Main = Main;
 })(ha || (ha = {}));
 var ha;
@@ -332,7 +330,6 @@ var ha;
             frame = Math.floor(frame);
             jmlH = Math.ceil((ha.Main.canvasAktif.panjang + Math.abs(x)) / w2);
             jmlV = Math.ceil((ha.Main.canvasAktif.lebar + Math.abs(y)) / h2);
-            debugger;
             for (let i = 0; i < jmlH; i++) {
                 for (let j = 0; j < jmlV; j++) {
                     ha.Image.gambar(gbr, x + (i * w2), y + (j * h2), frame);
@@ -454,17 +451,15 @@ var ha;
 var ha;
 (function (ha) {
     class Sprite {
-        static daftar = [];
-        _buff;
-        _x = 0;
-        _y = 0;
-        _dragged = false;
-        _down = false;
-        _hit = 0;
-        _dragStartY = 0;
-        _dragStartX = 0;
-        _dragable = false;
         constructor(buffer, dragable = false) {
+            this._x = 0;
+            this._y = 0;
+            this._dragged = false;
+            this._down = false;
+            this._hit = 0;
+            this._dragStartY = 0;
+            this._dragStartX = 0;
+            this._dragable = false;
             this.buffer = buffer;
             this.dragable = dragable;
         }
@@ -630,18 +625,24 @@ var ha;
             this._dragable = value;
         }
     }
+    Sprite.daftar = [];
     ha.Sprite = Sprite;
 })(ha || (ha = {}));
 var ha;
 (function (ha) {
     class Input {
-        _inputs = [];
-        _touchGlobal;
-        _mouseGlobal;
-        _keybGlobal;
-        _inputGlobal;
-        _event = new EventHandler();
         constructor() {
+            this._inputs = [];
+            this._event = new EventHandler();
+            this.pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
+                let rect = buffer.canvas.getBoundingClientRect();
+                let poslx = Math.floor((cx - rect.x) / canvasScaleX);
+                let posly = Math.floor((cy - rect.y) / canvasScaleY);
+                return {
+                    x: poslx,
+                    y: posly
+                };
+            };
             this._touchGlobal = this.buatInputDefault();
             this._mouseGlobal = this.buatInputDefault();
             this._keybGlobal = this.buatInputDefault();
@@ -829,15 +830,6 @@ var ha;
             }
             return input;
         }
-        pos = (cx, cy, buffer, canvasScaleX, canvasScaleY) => {
-            let rect = buffer.canvas.getBoundingClientRect();
-            let poslx = Math.floor((cx - rect.x) / canvasScaleX);
-            let posly = Math.floor((cy - rect.y) / canvasScaleY);
-            return {
-                x: poslx,
-                y: posly
-            };
-        };
         get inputs() {
             return this._inputs;
         }
@@ -907,7 +899,7 @@ var ha;
             p2.y = p1.y;
         }
         static clone(p) {
-            let h = this.create(p.x, p.y);
+            let h = ha.Point.create(p.x, p.y);
             return h;
         }
         static sama(p1, p2) {
@@ -967,8 +959,8 @@ var ha;
             return r;
         }
         static copy(r) {
-            let hasil = this.create();
-            this.copyInfo(r, hasil);
+            let hasil = ha.Rect.create();
+            ha.Rect.copyInfo(r, hasil);
             return hasil;
         }
         static copyInfo(r1, r2) {
@@ -977,22 +969,22 @@ var ha;
             }
         }
         static collideBound(r1, r2) {
-            if (this.maxX(r1) < this.minX(r2)) {
+            if (ha.Rect.maxX(r1) < ha.Rect.minX(r2)) {
                 return false;
             }
-            if (this.minX(r1) > this.maxX(r2)) {
+            if (ha.Rect.minX(r1) > ha.Rect.maxX(r2)) {
                 return false;
             }
-            if (this.maxY(r1) < this.minY(r2)) {
+            if (ha.Rect.maxY(r1) < ha.Rect.minY(r2)) {
                 return false;
             }
-            if (this.minY(r1) > this.maxY(r2)) {
+            if (ha.Rect.minY(r1) > ha.Rect.maxY(r2)) {
                 return false;
             }
             return true;
         }
         static collide(r1, r2) {
-            let bound = this.collideBound(r1, r2);
+            let bound = ha.Rect.collideBound(r1, r2);
             if (!bound)
                 return false;
             for (let i = 0; i < r1.segs.length; i++) {
@@ -1005,16 +997,16 @@ var ha;
             return false;
         }
         static collideDotBound(r, d) {
-            if (d.x < this.minX(r)) {
+            if (d.x < ha.Rect.minX(r)) {
                 return false;
             }
-            if (d.x > this.maxX(r)) {
+            if (d.x > ha.Rect.maxX(r)) {
                 return false;
             }
-            if (d.y < this.minY(r)) {
+            if (d.y < ha.Rect.minY(r)) {
                 return false;
             }
-            if (d.y > this.maxY(r)) {
+            if (d.y > ha.Rect.maxY(r)) {
                 return false;
             }
             return true;
@@ -1024,12 +1016,12 @@ var ha;
             let p = ha.Point.create(x, y);
             let d = ha.Segment.deg(r2.segs[0]);
             let pRot = r2.vs[0];
-            if (!this.collideDotBound(r, p)) {
+            if (!ha.Rect.collideDotBound(r, p)) {
                 return false;
             }
             Rect.rotate(r2, -d, pRot.x, pRot.y);
             ha.Point.putarPoros(p, pRot.x, pRot.y, -d);
-            if (!this.collideDotBound(r2, p)) {
+            if (!ha.Rect.collideDotBound(r2, p)) {
                 return false;
             }
             return true;
@@ -1098,37 +1090,37 @@ var ha;
             };
         }
         static boundCollide(seg1, seg2) {
-            if (this.maxX(seg1) < this.minX(seg2))
+            if (ha.Segment.maxX(seg1) < ha.Segment.minX(seg2))
                 return false;
-            if (this.minX(seg1) > this.maxX(seg2))
+            if (ha.Segment.minX(seg1) > ha.Segment.maxX(seg2))
                 return false;
-            if (this.maxY(seg1) < this.minY(seg2))
+            if (ha.Segment.maxY(seg1) < ha.Segment.minY(seg2))
                 return false;
-            if (this.minY(seg1) > this.maxY(seg2))
+            if (ha.Segment.minY(seg1) > ha.Segment.maxY(seg2))
                 return false;
             return true;
         }
         static collide(seg1, seg2) {
-            let bound = this.boundCollide(seg1, seg2);
+            let bound = ha.Segment.boundCollide(seg1, seg2);
             if (!bound)
                 return false;
-            let seg2Copy = this.clone(seg2);
-            let seg1Copy = this.clone(seg1);
-            let deg = this.deg(seg2);
-            this.rotate(seg2Copy, -deg, seg2.v1.x, seg2.v1.y);
-            this.rotate(seg1Copy, -deg, seg2.v1.x, seg2.v1.y);
-            if (!this.boundCollide(seg1Copy, seg2Copy))
+            let seg2Copy = ha.Segment.clone(seg2);
+            let seg1Copy = ha.Segment.clone(seg1);
+            let deg = ha.Segment.deg(seg2);
+            ha.Segment.rotate(seg2Copy, -deg, seg2.v1.x, seg2.v1.y);
+            ha.Segment.rotate(seg1Copy, -deg, seg2.v1.x, seg2.v1.y);
+            if (!ha.Segment.boundCollide(seg1Copy, seg2Copy))
                 return false;
-            this.translate(seg1Copy, -seg2.v1.x, -seg2.v1.y);
-            this.translate(seg2Copy, -seg2.v1.x, -seg2.v1.y);
-            if (!this.crossHor(seg1Copy)) {
+            ha.Segment.translate(seg1Copy, -seg2.v1.x, -seg2.v1.y);
+            ha.Segment.translate(seg2Copy, -seg2.v1.x, -seg2.v1.y);
+            if (!ha.Segment.crossHor(seg1Copy)) {
                 return false;
             }
-            let idx = this.xHorIdx(seg1Copy);
-            let x = this.getXAtIdx(seg1Copy, idx);
-            if (x > this.maxX(seg2Copy))
+            let idx = ha.Segment.xHorIdx(seg1Copy);
+            let x = ha.Segment.getXAtIdx(seg1Copy, idx);
+            if (x > ha.Segment.maxX(seg2Copy))
                 return false;
-            if (x < this.minX(seg2Copy))
+            if (x < ha.Segment.minX(seg2Copy))
                 return false;
             return true;
         }
@@ -1143,8 +1135,8 @@ var ha;
             };
         }
         static crossHor(seg) {
-            if (this.maxY(seg) > 0) {
-                if (this.minY(seg) < 0) {
+            if (ha.Segment.maxY(seg) > 0) {
+                if (ha.Segment.minY(seg) < 0) {
                     return true;
                 }
             }
@@ -1156,10 +1148,10 @@ var ha;
             return ha.Transform.deg(i, j);
         }
         static getXAtIdx(seg, idx) {
-            return seg.v1.x + (idx * this.vecI(seg));
+            return seg.v1.x + (idx * ha.Segment.vecI(seg));
         }
         static getYAtIdx(seg, idx) {
-            return seg.v1.y + (idx * this.vecJ(seg));
+            return seg.v1.y + (idx * ha.Segment.vecJ(seg));
         }
         static vecI(seg) {
             return seg.v2.x - seg.v1.x;
@@ -1190,7 +1182,7 @@ var ha;
             seg.v2.y += y;
         }
         static xHorIdx(seg) {
-            if (!this.crossHor(seg))
+            if (!ha.Segment.crossHor(seg))
                 return NaN;
             let idx = 0;
             idx = (0 - seg.v1.y) / (seg.v2.y - seg.v1.y);
@@ -1202,7 +1194,6 @@ var ha;
 var ha;
 (function (ha) {
     class Blijs {
-        static _skalaOtomatis = true;
         static init(panjang = 320, lebar = 240, canvas = null, skalaOtomatis = true) {
             if (!canvas)
                 canvas = document.body.querySelector('canvas');
@@ -1277,15 +1268,12 @@ var ha;
             Blijs._skalaOtomatis = value;
         }
     }
+    Blijs._skalaOtomatis = true;
     ha.Blijs = Blijs;
 })(ha || (ha = {}));
 var ha;
 (function (ha) {
     class Transform {
-        static RAD2DEG = 180.0 / Math.PI;
-        static DEG2RAD = Math.PI / 180.0;
-        static _lastX = 0;
-        static _lastY = 0;
         static get lastX() {
             return ha.Transform._lastX;
         }
@@ -1406,6 +1394,10 @@ var ha;
             ha.Transform._lastY = y1 + yt;
         }
     }
+    Transform.RAD2DEG = 180.0 / Math.PI;
+    Transform.DEG2RAD = Math.PI / 180.0;
+    Transform._lastX = 0;
+    Transform._lastY = 0;
     ha.Transform = Transform;
 })(ha || (ha = {}));
 const Prompt = (m, def) => {

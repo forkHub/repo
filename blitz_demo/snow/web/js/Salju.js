@@ -1,6 +1,12 @@
 Grafis(120, 160);
 
+
+
+
 let salju = [];
+
+
+
 
 for (let i = 0; i < 100; i++) {
     salju.push({
@@ -9,14 +15,26 @@ for (let i = 0; i < 100; i++) {
     });
 }
 
+
+
+
 function Loop() {
     salju.forEach((item) => {
+
+
+
 
         if (turun(item))
             return;
 
+
+
+
         if (kanan(item))
             return;
+
+
+
 
         if (kiri(item))
             return;
@@ -25,11 +43,20 @@ function Loop() {
     });
 }
 
+
+
+
 function kiri(salju) {
+
+
+
 
     if (salju.y >= 159)
         return false;
     AmbilPiksel(salju.x - 1, salju.y + 1);
+
+
+
 
     if (Biru() > 0) {
         return false;
@@ -38,11 +65,20 @@ function kiri(salju) {
     return true;
 }
 
+
+
+
 function kanan(salju) {
+
+
+
 
     if (salju.y >= 159)
         return false;
     AmbilPiksel(salju.x + 1, salju.y + 1);
+
+
+
 
     if (Biru() > 0) {
         return false;
@@ -51,11 +87,20 @@ function kanan(salju) {
     return true;
 }
 
+
+
+
 function turun(salju) {
+
+
+
 
     if (salju.y >= 159)
         return false;
     AmbilPiksel(salju.x, salju.y + 1);
+
+
+
 
     if (Biru() > 0) {
         return false;
@@ -63,6 +108,9 @@ function turun(salju) {
     gambarSalju(0, 1, salju);
     return true;
 }
+
+
+
 
 function gambarSalju(tambahX, tambahY, salju) {
     Warna(0, 0, 0, 255);
@@ -72,4 +120,7 @@ function gambarSalju(tambahX, tambahY, salju) {
     Warna(255, 255, 255, 255);
     SetPiksel(salju.x, salju.y);
 }
+
+
+
 

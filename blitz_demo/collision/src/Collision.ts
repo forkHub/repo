@@ -37,7 +37,8 @@ function Loop(): void {
 		}
 
 		//TODO:
-		if (ha.Image.gambarTabrakan(box.buffer, box.x, box.y, imgBig.buffer, PosisiX(imgBig), PosisiY(imgBig))) {
+		// if (ha.Image.gambarTabrakan(box.buffer, box.x, box.y, imgBig.buffer, PosisiX(imgBig), PosisiY(imgBig))) {
+		if (Tabrakan(box, imgBig)) {
 			PosisiX(box, 0);
 			PosisiY(box, Math.floor(Math.random() * 240));
 		}

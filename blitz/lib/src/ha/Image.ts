@@ -260,7 +260,7 @@ namespace ha {
 			jmlH = Math.ceil((ha.Main.canvasAktif.panjang + Math.abs(x)) / w2);
 			jmlV = Math.ceil((ha.Main.canvasAktif.lebar + Math.abs(y)) / h2);
 
-			debugger;
+			// debugger;
 			for (let i: number = 0; i < jmlH; i++) {
 				for (let j: number = 0; j < jmlV; j++) {
 					ha.Image.gambar(gbr, x + (i * w2), y + (j * h2), frame);

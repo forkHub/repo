@@ -1,16 +1,16 @@
-set baca_js=..\..\..\..\..\cemcem\blitz\bacajs\target\baca.js
-set file_js=expl.js
-set publish_dir=..\..\..\forkHub.github.io\blitz_edu
+set file_js=Expl.js
+set folder=expl
 
-call call tsc -p .\tsconfig.json
+call tsc -p .\tsconfig.json
 
 cd .\web\js
-node %baca_js% %file_js% %file_js%
+node %BACA_JS% %file_js% %file_js%
 
 cd ..
 cd ..
 
-xcopy web %publish_dir%\demo\expl /s /i /y
-xcopy .\web\js\%file_js% %publish_dir%\pg\data\%file_js% /y
+xcopy web %FORKHUB%\blitz_edu\demo\%folder% /s /i /y
+copy .\web\js\%file_js% %FORKHUB%\pg\data\%file_js% /y
 
+pause
 pause
