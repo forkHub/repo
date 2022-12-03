@@ -19,6 +19,14 @@ call copy.bat
 cd ..\blitz
 echo.
 
+echo copy demo2:
+echo ===========
+cd demo
+cd
+call copy.bat
+cd ..
+echo.
+
 echo copy pg:
 echo ========
 cd playground

@@ -19,7 +19,7 @@ namespace ha {
 			t: 1
 		}
 
-		static kontek(spr: ISprite): CanvasRenderingContext2D {
+		static kontek(spr?: ISprite): CanvasRenderingContext2D {
 			if (spr && spr.buffer.ctx) {
 				return spr.buffer.ctx;
 			}
@@ -190,6 +190,45 @@ namespace ha {
 			if (garis) {
 				ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
 			}
+		}
+
+		static Oval(x: number = 0, y: number = 0, radius: number, skalaX: number = 1, skalaY = .5, rotasi: number = 0) {
+			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
+
+			// save state
+			ctx.save();
+
+			// translate context
+			ctx.translate(x, y);
+
+			ctx.rotate(rotasi * (Math.PI / 180));
+
+			// scale context horizontally
+			ctx.scale(skalaX, skalaY);
+
+			// draw circle which will be stretched into an oval
+			ctx.beginPath();
+			ctx.arc(0, 0, radius, 0, 2 * Math.PI, false);
+
+			// restore to original state
+			ctx.restore();
+
+			// apply styling
+			// ctx.fillStyle = '#8ED6FF';
+			// ctx.fill();
+			// ctx.lineWidth = 5;
+			// ctx.strokeStyle = 'black';
+
+			ctx.stroke();
+
+			// ctx.beginPath();
+			// ctx.moveTo(x - w / 2, y);
+			// ctx.quadraticCurveTo(x - w / 2, y + h / 2, x, y + h / 2);
+			// ctx.quadraticCurveTo(x + w / 2, y + h / 2, x + w / 2, y);
+			// ctx.quadraticCurveTo(x + w / 2, y - h / 2, x, y - h / 2);
+			// ctx.quadraticCurveTo(x - w / 2, y - h / 2, x - w / 2, y);
+			// ctx.stroke();
+
 		}
 
 		static SetBuffer(buffer: IGambar) {

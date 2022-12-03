@@ -9,10 +9,14 @@ declare namespace ha {
         private static _hijau;
         private static _biru;
         private static _transparan;
+        private static warnaBackup;
+        static kontek(spr?: ISprite): CanvasRenderingContext2D;
         static Fps(n: number): void;
         static buatCanvas(canvasEl: HTMLCanvasElement): IGambar;
         static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void;
-        static Bersih(): void;
+        static backupWarna(): void;
+        static restoreWarna(): void;
+        static Bersih(m?: number, h?: number, b?: number, t?: number): void;
         static warna(r?: number, g?: number, b?: number, a?: number): void;
         private static updateStyleWarna;
         static Hijau(): number;
@@ -22,6 +26,7 @@ declare namespace ha {
         static Grafis(width?: number, height?: number): void;
         static Garis(x1: number, y1: number, x2: number, y2: number): void;
         static Kotak(x1: number, y1: number, x2: number, y2: number, isi?: boolean, garis?: boolean, rotasi?: number): void;
+        static Oval(x: number, y: number, radius: number, skalaX?: number, skalaY?: number, rotasi?: number): void;
         static SetBuffer(buffer: IGambar): void;
         static get canvasAktif(): IGambar;
         static set canvasAktif(value: IGambar);
@@ -45,6 +50,7 @@ declare namespace ha {
 }
 declare namespace ha {
     class Image {
+        static buatBagiCanvas(canvas: HTMLCanvasElement, w?: number, h?: number, frameW?: number, frameH?: number): IGambar;
         static buat(w?: number, h?: number, frameW?: number, frameH?: number): IGambar;
         static panjang(gbr: IGambar): number;
         static lebar(gbr: IGambar): number;
@@ -53,7 +59,9 @@ declare namespace ha {
         static tabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean;
         static dotDidalamGambar(gbr1: IGambar, x1: number, y1: number, x2: number, y2: number): boolean;
         static muatAnimAsync(url: string, fw?: number, fh?: number): IGambar;
+        static muatAnimAsyncCanvas(url: string, fw: number, fh: number, canvas: HTMLCanvasElement): IGambar;
         static muatAsync(url: string): IGambar;
+        static muatAsyncKanvas(url: string, canvas: HTMLCanvasElement): IGambar;
         static gambarUbin(gbr: IGambar, x?: number, y?: number, frame?: number): void;
         static putarGambar(gbr: IGambar, sudut?: number): void;
         static ambilPiksel(x?: number, y?: number): number[];
@@ -61,7 +69,7 @@ declare namespace ha {
         static handle(gbr: IGambar, x?: number, y?: number): void;
         static grabGambar(gbr: IGambar, x?: number, y?: number): void;
         static gambar(gbr: IGambar, x?: number, y?: number, frame?: number): void;
-        static ukuran(gbr: IGambar, w: number, h: number): void;
+        static ukuran(gbr: IGambar, w?: number, h?: number): void;
         private static resetRect;
         private static rectToImageTransform;
     }
@@ -78,7 +86,13 @@ declare namespace ha {
         private _dragStartY;
         private _dragStartX;
         private _dragable;
+        private _url;
+        get url(): string;
+        set url(value: string);
         constructor(buffer: IGambar, dragable?: boolean);
+        static copy(sprS: ISprite): ISprite;
+        static panjang(spr: ISprite): number;
+        static lebar(spr: ISprite): number;
         static alpha(spr: ISprite, alpha?: number): number;
         static rotasi(spr: ISprite, sudut?: number): number;
         static posisi(spr: ISprite, x?: number, y?: number): void;
@@ -87,16 +101,19 @@ declare namespace ha {
         static handle(spr: ISprite, x?: number, y?: number): void;
         static gambarSemua(): void;
         static tabrakan(spr: ISprite, spr2: ISprite): boolean;
+        static muatAnimasiAsyncKanvas(url: string, pf: number, lf: number, bisaDiDrag: boolean, canvas: HTMLCanvasElement): ISprite;
         static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag?: boolean): ISprite;
+        static muatAsyncBerbagiKanvas(url: string, dragable: boolean, canvas: HTMLCanvasElement): ISprite;
         static muatAsync(url: string, dragable?: boolean): ISprite;
         static ukuranGambar(gbr: ISprite, w: number, h: number): void;
-        static buat(image: IGambar, dragable?: boolean): ISprite;
+        static buat(image: IGambar, dragable: boolean, url: string): ISprite;
         static inputDown(pos: any): void;
         static inputMove(pos: any): void;
         static inputUp(): void;
         static gambar(sprite: ISprite, frame?: number): void;
-        static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void;
+        static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number, skalaX?: number, skalaY?: number): void;
         static ubin(spr: ISprite, x?: number, y?: number, frame?: number): void;
+        static semuaDiLoad(): boolean;
         get dragStartX(): number;
         set dragStartX(value: number);
         get dragStartY(): number;
@@ -127,6 +144,7 @@ interface ISprite {
     hit: number;
     dragStartX: number;
     dragStartY: number;
+    url: string;
 }
 declare namespace ha {
     class Input {
@@ -218,7 +236,10 @@ declare namespace ha {
 declare namespace ha {
     class Blijs {
         private static _skalaOtomatis;
-        static init(panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, skalaOtomatis?: boolean): void;
+        private static _inputStatus;
+        static get inputStatus(): boolean;
+        static set inputStatus(value: boolean);
+        static init(panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, skalaOtomatis?: boolean, input?: boolean): void;
         static loop(): void;
         static repeat(): void;
         static windowResize(): void;
@@ -242,6 +263,19 @@ declare namespace ha {
         static degDistMin(angleS: number, angleT: number): number;
         static jarak(x: number, y: number, xt: number, yt: number): number;
         static rotateRel(x?: number, y?: number, xt?: number, yt?: number, deg?: number): void;
+    }
+}
+declare namespace ha {
+    class Teks {
+        private static get ctx();
+        static font(font?: string): void;
+        static rata(rata?: CanvasTextAlign): void;
+        static tulis(teks: string, x: number, y: number, warna?: boolean, garis?: boolean): void;
+    }
+}
+declare namespace ha {
+    class Route {
+        static ukuran(obj: ISprite | "teks", w?: number, h?: number): void;
     }
 }
 declare const Prompt: (m: string, def: string) => string;
@@ -323,8 +357,10 @@ declare const Biru: typeof ha.Main.Biru;
 declare const Transparan: typeof ha.Main.Transparan;
 declare const AmbilPiksel: typeof ha.Image.ambilPiksel;
 declare const SetPiksel: typeof ha.Image.setPiksel;
+declare const Kontek: typeof ha.Main.kontek;
 declare const Garis: typeof ha.Main.Garis;
 declare const Kotak: typeof ha.Main.Kotak;
+declare const Oval: typeof ha.Main.Oval;
 declare const Sudut: typeof ha.Transform.deg;
 declare const Buat: typeof ha.Sprite.buat;
 declare const Muat: typeof ha.Sprite.muatAsync;
@@ -340,19 +376,23 @@ declare const Rotasi: typeof ha.Sprite.rotasi;
 declare const Alpha: typeof ha.Sprite.alpha;
 declare const MuatAnimasi: typeof ha.Sprite.muatAnimasiAsync;
 declare const Tabrakan: typeof ha.Sprite.tabrakan;
-declare const PosisiJarakSprite: () => void;
-declare const Copy: () => void;
-declare const PosisiHandle: () => void;
-declare const Panjang: () => void;
-declare const Lebar: () => void;
-declare const HandleX: () => void;
-declare const HandleY: () => void;
-declare const Overlap: () => void;
-declare const DotDiDalam: () => void;
+declare const Panjang: typeof ha.Sprite.panjang;
+declare const Lebar: typeof ha.Sprite.lebar;
+declare const Copy: typeof ha.Sprite.copy;
 declare const Ubin: typeof ha.Sprite.ubin;
-declare const Skala: () => void;
-declare const Piksel: () => void;
 declare const FPS: typeof ha.Main.Fps;
+declare var Font: typeof ha.Teks.font;
+declare var Tulis: typeof ha.Teks.tulis;
+declare var Rata: typeof ha.Teks.rata;
+declare namespace ha {
+    class Cache {
+        private files;
+        getGbr(url: string): HTMLImageElement;
+        setFile(url: string, img: HTMLImageElement): void;
+    }
+    export const cache: Cache;
+    export {};
+}
 interface IConfig {
     input: IInput;
 }

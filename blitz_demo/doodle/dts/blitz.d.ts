@@ -10,6 +10,7 @@ declare namespace ha {
         private static _biru;
         private static _transparan;
         private static warnaBackup;
+        static kontek(spr?: ISprite): CanvasRenderingContext2D;
         static Fps(n: number): void;
         static buatCanvas(canvasEl: HTMLCanvasElement): IGambar;
         static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void;
@@ -25,6 +26,7 @@ declare namespace ha {
         static Grafis(width?: number, height?: number): void;
         static Garis(x1: number, y1: number, x2: number, y2: number): void;
         static Kotak(x1: number, y1: number, x2: number, y2: number, isi?: boolean, garis?: boolean, rotasi?: number): void;
+        static Oval(x: number, y: number, radius: number, skalaX?: number, skalaY?: number, rotasi?: number): void;
         static SetBuffer(buffer: IGambar): void;
         static get canvasAktif(): IGambar;
         static set canvasAktif(value: IGambar);
@@ -109,8 +111,9 @@ declare namespace ha {
         static inputMove(pos: any): void;
         static inputUp(): void;
         static gambar(sprite: ISprite, frame?: number): void;
-        static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void;
+        static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number, skalaX?: number, skalaY?: number): void;
         static ubin(spr: ISprite, x?: number, y?: number, frame?: number): void;
+        static semuaDiLoad(): boolean;
         get dragStartX(): number;
         set dragStartX(value: number);
         get dragStartY(): number;
@@ -233,7 +236,10 @@ declare namespace ha {
 declare namespace ha {
     class Blijs {
         private static _skalaOtomatis;
-        static init(panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, skalaOtomatis?: boolean): void;
+        private static _inputStatus;
+        static get inputStatus(): boolean;
+        static set inputStatus(value: boolean);
+        static init(panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, skalaOtomatis?: boolean, input?: boolean): void;
         static loop(): void;
         static repeat(): void;
         static windowResize(): void;
@@ -351,8 +357,10 @@ declare const Biru: typeof ha.Main.Biru;
 declare const Transparan: typeof ha.Main.Transparan;
 declare const AmbilPiksel: typeof ha.Image.ambilPiksel;
 declare const SetPiksel: typeof ha.Image.setPiksel;
+declare const Kontek: typeof ha.Main.kontek;
 declare const Garis: typeof ha.Main.Garis;
 declare const Kotak: typeof ha.Main.Kotak;
+declare const Oval: typeof ha.Main.Oval;
 declare const Sudut: typeof ha.Transform.deg;
 declare const Buat: typeof ha.Sprite.buat;
 declare const Muat: typeof ha.Sprite.muatAsync;

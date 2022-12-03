@@ -185,8 +185,17 @@ namespace ha {
 			ha.Image.gambar(sprite.buffer, sprite.x, sprite.y, frame);
 		}
 
-		static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number): void {
+		static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number, skalaX: number = 1, skalaY: number = 1): void {
 			let p: IPoint2D = ha.Point.posPolar(jarak, sudut, x2, y2);
+
+			p.y -= y2;
+			p.y *= skalaY;
+			p.y += y2;
+
+			p.x -= x2;
+			p.x *= skalaX;
+			p.x += x2;
+
 			sprite.x = p.x;
 			sprite.y = p.y;
 		}

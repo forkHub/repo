@@ -17,8 +17,8 @@ const Kontek = ha.Main.kontek;
 
 const Garis = ha.Main.Garis;
 const Kotak = ha.Main.Kotak;
+const Oval = ha.Main.Oval;
 
-// const Oval = () => { }
 //Kurva
 
 //Kanvas() setter getter

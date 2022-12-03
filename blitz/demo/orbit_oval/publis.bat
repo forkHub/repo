@@ -1,5 +1,5 @@
-set file_js=orbit_mbb.js
-set folder=orbit_mbb
+set file_js=orbit_oval.js
+set folder=orbit_oval
 
 call tsc -p .\tsconfig.json
 

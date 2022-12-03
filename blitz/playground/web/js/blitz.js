@@ -16,6 +16,12 @@ var ha;
             h: 0,
             t: 1
         };
+        static kontek(spr) {
+            if (spr && spr.buffer.ctx) {
+                return spr.buffer.ctx;
+            }
+            return ha.Main.canvasAktif.ctx;
+        }
         static Fps(n) {
             ha.Main.fps = Math.floor(1000 / n);
             if (n >= 60) {
@@ -133,6 +139,17 @@ var ha;
             if (garis) {
                 ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
             }
+        }
+        static Oval(x = 0, y = 0, radius, skalaX = 1, skalaY = .5, rotasi = 0) {
+            let ctx = ha.Main.canvasAktif.ctx;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(rotasi * (Math.PI / 180));
+            ctx.scale(skalaX, skalaY);
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, 0, 2 * Math.PI, false);
+            ctx.restore();
+            ctx.stroke();
         }
         static SetBuffer(buffer) {
             ha.Main.canvasAktif = buffer;
@@ -637,13 +654,28 @@ var ha;
         static gambar(sprite, frame) {
             ha.Image.gambar(sprite.buffer, sprite.x, sprite.y, frame);
         }
-        static posisiPolar(sprite, sudut, jarak, x2, y2) {
+        static posisiPolar(sprite, sudut, jarak, x2, y2, skalaX = 1, skalaY = 1) {
             let p = ha.Point.posPolar(jarak, sudut, x2, y2);
+            p.y -= y2;
+            p.y *= skalaY;
+            p.y += y2;
+            p.x -= x2;
+            p.x *= skalaX;
+            p.x += x2;
             sprite.x = p.x;
             sprite.y = p.y;
         }
         static ubin(spr, x = 0, y = 0, frame = 0) {
             ha.Image.gambarUbin(spr.buffer, x, y, frame);
+        }
+        static semuaDiLoad() {
+            let hasil = true;
+            ha.Sprite.daftar.forEach((item) => {
+                if (!item.buffer.load) {
+                    hasil = false;
+                }
+            });
+            return hasil;
         }
         get dragStartX() {
             return this._dragStartX;
@@ -1273,7 +1305,14 @@ var ha;
 (function (ha) {
     class Blijs {
         static _skalaOtomatis = true;
-        static init(panjang = 320, lebar = 240, canvas = null, skalaOtomatis = true) {
+        static _inputStatus = true;
+        static get inputStatus() {
+            return Blijs._inputStatus;
+        }
+        static set inputStatus(value) {
+            Blijs._inputStatus = value;
+        }
+        static init(panjang = 320, lebar = 240, canvas = null, skalaOtomatis = true, input = true) {
             if (!canvas)
                 canvas = document.body.querySelector('canvas');
             if (!canvas) {
@@ -1281,6 +1320,7 @@ var ha;
                 return;
             }
             ha.Blijs.skalaOtomatis = skalaOtomatis;
+            ha.Blijs._inputStatus = input;
             if (ha.Main.canvasAktif) {
                 console.warn('init lebih dari sekali');
                 ha.Main.Grafis(panjang, lebar);
@@ -1289,7 +1329,9 @@ var ha;
                 console.log('inisialisasi');
                 ha.Main.init(canvas, canvas);
                 ha.Main.Grafis(panjang, lebar);
-                ha.input.init(ha.Main.canvasAktif);
+                if (input) {
+                    ha.input.init(ha.Main.canvasAktif);
+                }
                 window.onresize = () => {
                     if (ha.Blijs.skalaOtomatis) {
                         ha.Blijs.windowResize();
@@ -1619,8 +1661,10 @@ const Biru = ha.Main.Biru;
 const Transparan = ha.Main.Transparan;
 const AmbilPiksel = ha.Image.ambilPiksel;
 const SetPiksel = ha.Image.setPiksel;
+const Kontek = ha.Main.kontek;
 const Garis = ha.Main.Garis;
 const Kotak = ha.Main.Kotak;
+const Oval = ha.Main.Oval;
 const Sudut = ha.Transform.deg;
 const Buat = ha.Sprite.buat;
 const Muat = ha.Sprite.muatAsync;
