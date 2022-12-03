@@ -1,3 +1,4 @@
+@echo off
 set file_js=Collision.js
 set folder=collision
 
