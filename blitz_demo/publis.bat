@@ -3,13 +3,15 @@ echo off
 echo snow:
 echo =====
 cd snow
+cd
 call publis.bat
 cd ..
 echo
 
 echo drag_inline:
 echo ============
-cd snow
+cd drag_inline
+cd
 call publis.bat
 cd ..
 echo
@@ -17,6 +19,7 @@ echo
 echo tile:
 echo =====
 cd tile
+cd
 call publis.bat
 cd ..
 echo
@@ -45,6 +48,7 @@ echo
 echo drag2:
 echo ======
 cd drag2
+cd
 call publis.bat
 cd ..
 echo
@@ -52,6 +56,7 @@ echo
 echo orbit:
 echo ======
 cd orbit
+cd
 call publis.bat
 cd ..
 echo
@@ -59,6 +64,7 @@ echo
 echo orbit_mbb:
 echo ==========
 cd orbit_mbb
+cd
 call publis.bat
 cd ..
 echo
@@ -66,6 +72,7 @@ echo
 echo knob:
 echo =====
 cd knob
+cd
 call publis.bat
 cd ..
 echo
