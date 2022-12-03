@@ -7,6 +7,8 @@
 ///<reference path="../ha/Segment.ts"/>
 ///<reference path="../ha/Blijs.ts"/>
 ///<reference path="../ha/Transform.ts"/>
+///<reference path="../ha/Teks.ts"/>
+///<reference path="../ha/Route.ts"/>
 
 
 

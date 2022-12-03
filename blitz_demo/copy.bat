@@ -1,5 +1,10 @@
 echo off
 
+cd ..\blitz
+call minim.bat
+cd ..\blitz_demo
+pause
+
 echo snow:
 echo =====
 copy ..\blitz\output\*.d.ts .\snow\dts

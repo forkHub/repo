@@ -440,9 +440,7 @@ namespace ha {
 		 * @param w 
 		 * @param h 
 		 */
-		static ukuran(gbr: IGambar, w: number, h: number): void {
-			// gbr.scaleX = Math.floor(w) / gbr.frameW;
-			// gbr.scaleY = Math.floor(h) / gbr.frameH;
+		static ukuran(gbr: IGambar, w: number = 32, h: number = 32): void {
 			gbr.panjang = w;
 			gbr.lebar = h;
 			gbr.panjangDiSet = true;

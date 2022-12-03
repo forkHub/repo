@@ -42,17 +42,23 @@ namespace ha {
 					}
 				}
 
+				if (ha.Blijs.skalaOtomatis) {
+					ha.Blijs.windowResize();
+				}
+
 				setTimeout(() => {
 					if (ha.Blijs.skalaOtomatis) {
 						ha.Blijs.windowResize();
 					}
 				}, 100);
 
-				// let _window: any = window;
-
 				setTimeout(() => {
 					ha.Blijs.repeat();
 				}, 0);
+
+				//font
+				ha.Teks.font("30px Arial");
+				ha.Teks.rata("left");
 			}
 		}
 
@@ -65,7 +71,7 @@ namespace ha {
 			}
 			else if (typeof (_window.Update) == 'function') {
 				//TODO: pre loop
-				_window.update();
+				_window.Update();
 				//TODO: post loop
 
 			}
@@ -75,6 +81,7 @@ namespace ha {
 			//check semua image sudah diload
 
 			ha.Blijs.loop();
+
 			setTimeout(() => {
 				requestAnimationFrame(() => {
 					ha.Blijs.repeat();

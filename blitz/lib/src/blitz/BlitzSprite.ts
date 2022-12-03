@@ -4,7 +4,7 @@
 const Buat = ha.Sprite.buat;
 const Muat = ha.Sprite.muatAsync;
 const Posisi = ha.Sprite.posisi;
-const Ukuran = ha.Sprite.ukuranGambar;
+const Ukuran = ha.Route.ukuran;	//ukuran
 const PosisiPolar = ha.Sprite.posisiPolar;
 const Gambar = ha.Sprite.gambar;
 const GambarSemua = ha.Sprite.gambarSemua;
@@ -16,16 +16,20 @@ const Alpha = ha.Sprite.alpha;
 const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
 const Tabrakan = ha.Sprite.tabrakan;
 
-const PosisiJarakSprite = () => { }
-const Copy = () => { };
-const PosisiHandle = () => { }
 const Panjang = () => { }
 const Lebar = () => { }
-const HandleX = () => { }
-const HandleY = () => { }
-const Overlap = () => { }
-const DotDiDalam = () => { }
+const Copy = () => { };
+const Klon = () => { };
 const Ubin = ha.Sprite.ubin;
-const Skala = () => { }
 
-const Piksel = () => { }
+// const PosisiJarakSprite = () => { }
+// const PosisiHandle = () => { }
+
+// const HandleX = () => { }
+// const HandleY = () => { }
+
+// const Overlap = () => { }
+// const DotDiDalam = () => { }
+// const Skala = () => { }
+
+// const Piksel = () => { }
