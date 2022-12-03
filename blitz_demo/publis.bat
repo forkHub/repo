@@ -8,14 +8,6 @@ call publis.bat
 cd ..
 echo. 
 
-echo drag_inline:
-echo ============
-cd drag_inline
-cd
-call publis.bat
-cd ..
-echo. 
-
 echo tile:
 echo =====
 cd tile

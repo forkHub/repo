@@ -1,4 +1,5 @@
 Grafis(320, 240);
+
 let rot = 0;
 let jml = 10;
 let boxAr = [];
@@ -34,3 +35,4 @@ function Loop() {
     Rotasi(imgBesar, rot);
     Gambar(imgBesar);
 }
+

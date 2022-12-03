@@ -8,9 +8,9 @@ let handel = Muat("./gbr/box.png", true);
 Handle(handel, 16, 16);
 Posisi(handel, 284, 200);
 Alpha(handel, 128);
-
 function Loop() {
     Bersih();
+
     // Sudut
     let sudut = Sudut(PosisiX(handel) - PosisiX(tombol), PosisiY(handel) - PosisiY(tombol));
     Rotasi(tombol, sudut);
