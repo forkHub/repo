@@ -14,7 +14,6 @@ namespace ha {
 		}
 
 		static tulis(teks: string, x: number, y: number, warna: boolean = true, garis: boolean = false): void {
-			ha.Teks.ctx.textAlign = 'left';
 
 			if (warna) {
 				ha.Teks.ctx.fillText(teks, x, y);

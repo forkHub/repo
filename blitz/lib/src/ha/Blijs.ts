@@ -5,6 +5,13 @@
 namespace ha {
 	export class Blijs {
 		private static _skalaOtomatis: boolean = true;
+		private static _inputStatus: boolean = true;
+		public static get inputStatus(): boolean {
+			return Blijs._inputStatus;
+		}
+		public static set inputStatus(value: boolean) {
+			Blijs._inputStatus = value;
+		}
 
 		/**
 		 * Setup Blitz Edu
@@ -14,7 +21,7 @@ namespace ha {
 		 * @param skalaOtomatis (boolean) apakah akan men-skala kanvas mengikuti ukuran layar  
 		 * @returns 
 		 */
-		static init(panjang: number = 320, lebar: number = 240, canvas: HTMLCanvasElement = null, skalaOtomatis: boolean = true) {
+		static init(panjang: number = 320, lebar: number = 240, canvas: HTMLCanvasElement = null, skalaOtomatis: boolean = true, input: boolean = true) {
 
 			//coba cari canvas
 			if (!canvas) canvas = document.body.querySelector('canvas') as HTMLCanvasElement;
@@ -24,6 +31,7 @@ namespace ha {
 			}
 
 			ha.Blijs.skalaOtomatis = skalaOtomatis;
+			ha.Blijs._inputStatus = input
 
 			//sudah diinisialisasi atau belum
 			if (ha.Main.canvasAktif) {
@@ -34,7 +42,10 @@ namespace ha {
 				console.log('inisialisasi');
 				ha.Main.init(canvas, canvas);
 				ha.Main.Grafis(panjang, lebar);
-				ha.input.init(ha.Main.canvasAktif);
+
+				if (input) {
+					ha.input.init(ha.Main.canvasAktif);
+				}
 
 				window.onresize = (): void => {
 					if (ha.Blijs.skalaOtomatis) {
@@ -56,9 +67,10 @@ namespace ha {
 					ha.Blijs.repeat();
 				}, 0);
 
-				//font
-				ha.Teks.font("30px Arial");
-				ha.Teks.rata("left");
+				//font default
+				ha.Teks.font("16px Arial");
+				ha.Teks.rata("center");
+				ha.Main.warna(255, 255, 255, 1);
 			}
 		}
 
@@ -83,9 +95,10 @@ namespace ha {
 			ha.Blijs.loop();
 
 			setTimeout(() => {
-				requestAnimationFrame(() => {
-					ha.Blijs.repeat();
-				});
+				// requestAnimationFrame(() => {
+				// 	ha.Blijs.repeat();
+				// });
+				requestAnimationFrame(ha.Blijs.repeat);
 			}, ha.Main.fps);
 		}
 

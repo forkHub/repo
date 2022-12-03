@@ -15,10 +15,35 @@ namespace ha {
 		private _dragStartY: number = 0;
 		private _dragStartX: number = 0;
 		private _dragable: boolean = false;
+		private _url: string;
+
+		public get url(): string {
+			return this._url;
+		}
+		public set url(value: string) {
+			this._url = value;
+		}
 
 		constructor(buffer: IGambar, dragable: boolean = false) {
 			this.buffer = buffer;
 			this.dragable = dragable;
+		}
+
+		static copy(sprS: ISprite): ISprite {
+			if (sprS.buffer.isAnim) {
+				return ha.Sprite.muatAnimasiAsyncKanvas(sprS.url, sprS.buffer.frameW, sprS.buffer.frameH, sprS.dragable, sprS.buffer.canvas);
+			}
+			else {
+				return ha.Sprite.muatAsyncBerbagiKanvas(sprS.url, sprS.dragable, sprS.buffer.canvas)
+			}
+		}
+
+		static panjang(spr: ISprite): number {
+			return ha.Image.panjang(spr.buffer);
+		}
+
+		static lebar(spr: ISprite): number {
+			return ha.Image.lebar(spr.buffer);
 		}
 
 		static alpha(spr: ISprite, alpha?: number): number {
@@ -78,34 +103,35 @@ namespace ha {
 			return ha.Image.tabrakan(spr.buffer, ha.Sprite.posisiX(spr), ha.Sprite.posisiY(spr), spr2.buffer, ha.Sprite.posisiX(spr2), ha.Sprite.posisiY(spr2))
 		}
 
+		static muatAnimasiAsyncKanvas(url: string, pf: number, lf: number, bisaDiDrag: boolean = false, canvas: HTMLCanvasElement): ISprite {
+			let img: IGambar = ha.Image.muatAnimAsyncCanvas(url, pf, lf, canvas);
+			return ha.Sprite.buat(img, bisaDiDrag, url);
+		}
+
 		static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag: boolean = false): ISprite {
 			let img: IGambar = ha.Image.muatAnimAsync(url, pf, lf);
-			return ha.Sprite.buat(img, bisaDiDrag);
+			return ha.Sprite.buat(img, bisaDiDrag, url);
+		}
+
+		static muatAsyncBerbagiKanvas(url: string, dragable = false, canvas: HTMLCanvasElement): ISprite {
+			let img: IGambar = ha.Image.muatAsyncKanvas(url, canvas);
+			return ha.Sprite.buat(img, dragable, url);
 		}
 
 		static muatAsync(url: string, dragable = false): ISprite {
 			let img: IGambar = ha.Image.muatAsync(url);
-			console.log(img);
-			return ha.Sprite.buat(img, dragable);
+			return ha.Sprite.buat(img, dragable, url);
 		}
-
-		// static async muat(url: string, dragable = false): Promise<ISprite> {
-		//     let img: IGambar = await ha.Image.muat(url);
-		//     return this.buat(img, dragable);
-		// }
 
 		static ukuranGambar(gbr: ISprite, w: number, h: number): void {
 			ha.Image.ukuran(gbr.buffer, w, h);
 		}
 
-		// static handleTengah(gbr: ISprite): void {
-		//     ha.image.handleTengah(gbr.buffer);
-		// }
-
-		static buat(image: IGambar, dragable: boolean = false): ISprite {
+		static buat(image: IGambar, dragable: boolean = false, url: string): ISprite {
 			let hasil: ISprite;
 
 			hasil = new Sprite(image, dragable);
+			hasil.url = url;
 			this.daftar.push(hasil);
 
 			console.log('buat sprite');
@@ -167,6 +193,18 @@ namespace ha {
 
 		static ubin(spr: ISprite, x: number = 0, y: number = 0, frame: number = 0) {
 			ha.Image.gambarUbin(spr.buffer, x, y, frame);
+		}
+
+		static semuaDiLoad(): boolean {
+			let hasil: boolean = true;
+
+			ha.Sprite.daftar.forEach((item: ISprite) => {
+				if (!item.buffer.load) {
+					hasil = false;
+				}
+			})
+
+			return hasil;
 		}
 
 		public get dragStartX(): number {
@@ -241,4 +279,5 @@ interface ISprite {
 	hit: number
 	dragStartX: number
 	dragStartY: number
+	url: string
 }

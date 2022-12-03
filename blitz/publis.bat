@@ -1,30 +1,29 @@
-echo off
+@echo off
 
 echo build lib:
 echo ==========
 cd lib
 call build.bat
-echo off
 cd ..
+echo.
 
 echo minim:
 echo ======
 call minim.bat
-echo off
+echo.
 
 echo copy demo:
 echo ==========
 cd ..\blitz_demo
 call copy.bat 
-echo off
 cd ..\blitz
+echo.
 
 echo copy pg:
 echo ========
 cd playground
 call copy.bat 
-echo off
 cd ..
+echo.
 
-pause
 pause

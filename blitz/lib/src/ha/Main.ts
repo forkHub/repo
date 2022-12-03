@@ -12,7 +12,20 @@ namespace ha {
 		private static _biru: number = 0;
 		private static _transparan: number = 0;
 
-		//TODO: gradient
+		private static warnaBackup: IWarna = {
+			m: 0,
+			b: 0,
+			h: 0,
+			t: 1
+		}
+
+		static kontek(spr: ISprite): CanvasRenderingContext2D {
+			if (spr && spr.buffer.ctx) {
+				return spr.buffer.ctx;
+			}
+
+			return ha.Main.canvasAktif.ctx;
+		}
 
 		static Fps(n: number) {
 			ha.Main.fps = Math.floor(1000 / n);
@@ -58,19 +71,39 @@ namespace ha {
 			ha.Main.canvasAktif = canvas;
 		}
 
-		static Bersih(): void {
-			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
-			ctx.fillRect(0, 0, ha.Main.canvasAktif.panjang, ha.Main.canvasAktif.lebar);
+		static backupWarna(): void {
+			ha.Main.warnaBackup.b = ha.Main.biru;
+			ha.Main.warnaBackup.h = ha.Main.hijau;
+			ha.Main.warnaBackup.m = ha.Main.merah;
+			ha.Main.warnaBackup.t = ha.Main.transparan;
 		}
 
-		static warna(r: number = 0, g: number = 0, b: number = 0, a: number = 1): void {
-
-			ha.Main.merah = r;
-			ha.Main.biru = b;
-			ha.Main.hijau = g;
-			ha.Main.transparan = a;
-
+		static restoreWarna(): void {
+			ha.Main.biru = ha.Main.warnaBackup.b;
+			ha.Main.hijau = ha.Main.warnaBackup.h;
+			ha.Main.merah = ha.Main.warnaBackup.m;
+			ha.Main.transparan = ha.Main.warnaBackup.t;
 			ha.Main.updateStyleWarna();
+		}
+
+		static Bersih(m: number = 0, h: number = 0, b: number = 0, t: number = 1): void {
+			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
+			ha.Main.backupWarna();
+			ctx.fillStyle = `rgba(${m}, ${h}, ${b}, ${t})`;
+			ctx.fillRect(0, 0, ha.Main.canvasAktif.panjang, ha.Main.canvasAktif.lebar);
+			ha.Main.restoreWarna();
+		}
+
+		//TODO: warna stroke mungkin beda
+		//TODO: untuk yang lain lebih baik pakai native
+		static warna(r: number = 0, g: number = 0, b: number = 0, a: number = 1): void {
+			let h = ha.Main;
+
+			h.merah = r;
+			h.biru = b;
+			h.hijau = g;
+			h.transparan = a;
+			h.updateStyleWarna();
 		}
 
 		private static updateStyleWarna(): void {
@@ -233,5 +266,12 @@ namespace ha {
 		public static set transparan(value: number) {
 			Main._transparan = value;
 		}
+	}
+
+	interface IWarna {
+		m: number,
+		h: number,
+		b: number,
+		t: number
 	}
 }

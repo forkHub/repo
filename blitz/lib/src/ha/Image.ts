@@ -3,8 +3,7 @@ namespace ha {
 	export class Image {
 		// readonly daftar: IGambar[] = [];
 
-		static buat(w: number = 32, h: number = 32, frameW: number = 32, frameH: number = 32): IGambar {
-			let canvas: HTMLCanvasElement = document.createElement('canvas') as HTMLCanvasElement;
+		static buatBagiCanvas(canvas: HTMLCanvasElement, w: number = 32, h: number = 32, frameW: number = 32, frameH: number = 32): IGambar {
 			let img: IGambar;
 
 			canvas.width = w;
@@ -36,16 +35,45 @@ namespace ha {
 			return img;
 		}
 
+		static buat(w: number = 32, h: number = 32, frameW: number = 32, frameH: number = 32): IGambar {
+			let canvas: HTMLCanvasElement = document.createElement('canvas') as HTMLCanvasElement;
+
+			return ha.Image.buatBagiCanvas(canvas, w, h, frameW, frameH);
+			// let img: IGambar;
+
+			// canvas.width = w;
+			// canvas.height = h;
+
+			// let rect: IRect = ha.Rect.create(0, 0, frameW, frameH);
+
+			// img = {
+			// 	panjang: w,
+			// 	lebar: h,
+			// 	img: null,
+			// 	frameH: frameH,
+			// 	frameW: frameW,
+			// 	handleX: 0,
+			// 	handleY: 0,
+			// 	rotasi: 0,
+			// 	alpha: 1,
+			// 	isAnim: false,
+			// 	// scaleX: 1,
+			// 	// scaleY: 1,
+			// 	canvas: canvas,
+			// 	ctx: canvas.getContext('2d'),
+			// 	rect: rect,
+			// 	load: true,
+			// 	panjangDiSet: true,
+			// 	lebarDiSet: true
+			// }
+
+			// return img;
+		}
+
 		static panjang(gbr: IGambar): number { return gbr.panjang; };
 		static lebar(gbr: IGambar): number { return gbr.lebar; };
 		static handleX(gbr: IGambar): number { return gbr.handleX; };
 		static handleY(gbr: IGambar): number { return gbr.handleY; };
-
-		// //TODO:
-		// static gambarOverlap(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number) {
-
-		// 	ha.Image.gambarTabrakan(gbr1, x1, y1, gbr2, x2, y2);
-		// };
 
 		static tabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean {
 			ha.Image.resetRect(gbr1);
@@ -64,51 +92,75 @@ namespace ha {
 			return ha.Rect.collideDot(gbr1.rect, x2, y2);
 		};
 
-		//
-		// static async muatGambarAnimasi(url: string, fw: number = 32, fh: number = 32): Promise<IGambar> {
-		// 	let img: HTMLImageElement = await ha.image.loadImage(url);
-		// 	let canvas: HTMLCanvasElement = document.createElement('canvas');
-		// 	let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-		// 	let rect: IRect;
-
-		// 	canvas.width = img.naturalWidth;
-		// 	canvas.height = img.naturalHeight;
-		// 	ctx.drawImage(img, 0, 0);
-
-		// 	rect = ha.Rect.create(0, 0, fw, fh);
-
-		// 	return {
-		// 		img: img,
-		// 		panjang: img.naturalWidth,
-		// 		lebar: img.naturalHeight,
-		// 		frameH: fw,
-		// 		frameW: fh,
-		// 		// width2: w,
-		// 		// height2: h,
-		// 		isAnim: true,
-		// 		handleX: 0,
-		// 		handleY: 0,
-		// 		rotation: 0,
-		// 		// scaleX: 1,
-		// 		// scaleY: 1,
-		// 		ctx: ctx,
-		// 		canvas: canvas,
-		// 		rect: rect,
-		// 		load: true,
-		// 		panjangDiSet: true,
-		// 		lebarDiSet: true
-		// 	}
-		// }
-
 		static muatAnimAsync(url: string, fw: number = 32, fh: number = 32): IGambar {
-			let img: HTMLImageElement = document.createElement('img'); //;
+			// let img: HTMLImageElement = document.createElement('img'); //;
 			let canvas: HTMLCanvasElement = document.createElement('canvas');
-			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-			let rect: IRect;
+			// let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+			// let rect: IRect;
+
+			return ha.Image.muatAnimAsyncCanvas(url, fw, fh, canvas);
 
 			// canvas.width = img.naturalWidth;
 			// canvas.height = img.naturalHeight;
 			// ctx.drawImage(img, 0, 0);
+
+			// rect = ha.Rect.create(0, 0, fw, fh);
+
+			// let gbr: IGambar = {
+			// 	img: img,
+			// 	panjang: img.naturalWidth,
+			// 	lebar: img.naturalHeight,
+			// 	frameH: fw,
+			// 	frameW: fh,
+			// 	// width2: w,
+			// 	// height2: h,
+			// 	isAnim: true,
+			// 	handleX: 0,
+			// 	handleY: 0,
+			// 	rotasi: 0,
+			// 	alpha: 1,
+			// 	// scaleX: 1,
+			// 	// scaleY: 1,
+			// 	ctx: ctx,
+			// 	canvas: canvas,
+			// 	rect: rect,
+			// 	load: false,
+			// 	panjangDiSet: false,
+			// 	lebarDiSet: false
+			// }
+
+			// img.onload = () => {
+			// 	canvas.width = img.naturalWidth;
+			// 	canvas.height = img.naturalHeight;
+			// 	ctx.drawImage(img, 0, 0);
+			// 	// gbr.rect = ha.Rect.create(0, 0, fw, fh);
+			// 	gbr.load = true;
+
+			// 	if (!gbr.panjangDiSet) {
+			// 		gbr.panjang = img.naturalWidth;
+			// 		gbr.panjangDiSet = true;
+			// 	}
+
+			// 	if (!gbr.lebarDiSet) {
+			// 		gbr.lebarDiSet = true;
+			// 		gbr.lebar = img.naturalHeight;
+			// 	}
+			// }
+
+			// img.onerror = () => {
+			// 	console.log('gagal load image, url ' + url);
+			// 	//TODO: default image
+			// }
+
+			// img.src = url;
+
+			// return gbr;
+		}
+
+		static muatAnimAsyncCanvas(url: string, fw: number = 32, fh: number = 32, canvas: HTMLCanvasElement): IGambar {
+			let img: HTMLImageElement = document.createElement('img'); //;
+			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+			let rect: IRect;
 
 			rect = ha.Rect.create(0, 0, fw, fh);
 
@@ -118,15 +170,11 @@ namespace ha {
 				lebar: img.naturalHeight,
 				frameH: fw,
 				frameW: fh,
-				// width2: w,
-				// height2: h,
 				isAnim: true,
 				handleX: 0,
 				handleY: 0,
 				rotasi: 0,
 				alpha: 1,
-				// scaleX: 1,
-				// scaleY: 1,
 				ctx: ctx,
 				canvas: canvas,
 				rect: rect,
@@ -139,7 +187,6 @@ namespace ha {
 				canvas.width = img.naturalWidth;
 				canvas.height = img.naturalHeight;
 				ctx.drawImage(img, 0, 0);
-				// gbr.rect = ha.Rect.create(0, 0, fw, fh);
 				gbr.load = true;
 
 				if (!gbr.panjangDiSet) {
@@ -151,11 +198,6 @@ namespace ha {
 					gbr.lebarDiSet = true;
 					gbr.lebar = img.naturalHeight;
 				}
-
-				// gbr.lebar = img.naturalHeight;
-				// gbr.frameH = img.naturalHeight;
-				// gbr.frameW = img.naturalWidth;
-				// console.log(gbr);
 			}
 
 			img.onerror = () => {
@@ -169,8 +211,109 @@ namespace ha {
 		}
 
 		static muatAsync(url: string): IGambar {
-			let img: HTMLImageElement = document.createElement('img'); //ha_blitz.image.loadImageAsync(url, () => { }, () => { });
+			// let img: HTMLImageElement = document.createElement('img'); //ha_blitz.image.loadImageAsync(url, () => { }, () => { });
 			let canvas: HTMLCanvasElement = document.createElement('canvas');
+			// let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+			// let rect: IRect;
+
+			return ha.Image.muatAsyncKanvas(url, canvas);
+
+			// rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+
+			// let gbr: IGambar = {
+			// 	img: img,
+			// 	panjang: img.naturalWidth,
+			// 	lebar: img.naturalHeight,
+			// 	frameH: img.naturalHeight,
+			// 	frameW: img.naturalWidth,
+			// 	isAnim: false,
+			// 	handleX: 0,
+			// 	handleY: 0,
+			// 	rotasi: 0,
+			// 	alpha: 1,
+			// 	// scaleX: 1,
+			// 	// scaleY: 1,
+			// 	ctx: ctx,
+			// 	canvas: canvas,
+			// 	rect: rect,
+			// 	load: false,
+			// 	panjangDiSet: false,
+			// 	lebarDiSet: false
+			// }
+
+			// img.onload = () => {
+			// 	imgOnLoad(img);
+
+			// 	// canvas.width = img.naturalWidth;
+			// 	// canvas.height = img.naturalHeight;
+			// 	// ctx.drawImage(img, 0, 0);
+			// 	// gbr.rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+
+			// 	// gbr.load = true;
+
+			// 	// if (!gbr.panjangDiSet) {
+			// 	// 	gbr.panjangDiSet = true;
+			// 	// 	gbr.panjang = img.naturalWidth;
+			// 	// }
+
+			// 	// if (!gbr.lebarDiSet) {
+			// 	// 	gbr.lebar = img.naturalHeight;
+			// 	// 	gbr.lebarDiSet = true;
+			// 	// }
+
+			// 	// gbr.frameH = img.naturalHeight;
+			// 	// gbr.frameW = img.naturalWidth;
+
+			// 	// // console.log(gbr);
+			// 	// console.log('gambar di load');
+			// 	// ha.cache.setFile(url, img);
+			// }
+
+			// img.onerror = () => {
+			// 	console.log('gagal load image, url ' + url);
+			// 	//TODO: default image
+			// }
+
+			// let img2: HTMLImageElement = ha.cache.getGbr(url);
+			// if (img2) {
+			// 	imgOnLoad(img2);
+			// }
+			// else {
+			// 	img.src = url;
+			// }
+
+			// function imgOnLoad(img: HTMLImageElement): void {
+			// 	canvas.width = img.naturalWidth;
+			// 	canvas.height = img.naturalHeight;
+			// 	ctx.drawImage(img, 0, 0);
+			// 	gbr.rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+
+			// 	gbr.load = true;
+			// 	gbr.img = img;
+
+			// 	if (!gbr.panjangDiSet) {
+			// 		gbr.panjangDiSet = true;
+			// 		gbr.panjang = img.naturalWidth;
+			// 	}
+
+			// 	if (!gbr.lebarDiSet) {
+			// 		gbr.lebar = img.naturalHeight;
+			// 		gbr.lebarDiSet = true;
+			// 	}
+
+			// 	gbr.frameH = img.naturalHeight;
+			// 	gbr.frameW = img.naturalWidth;
+
+			// 	// console.log(gbr);
+			// 	// console.log('gambar di load');
+			// 	ha.cache.setFile(url, img);
+			// }
+
+			// return gbr;
+		}
+
+		static muatAsyncKanvas(url: string, canvas: HTMLCanvasElement): IGambar {
+			let img: HTMLImageElement = document.createElement('img'); //ha_blitz.image.loadImageAsync(url, () => { }, () => { });
 			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
 			let rect: IRect;
 
@@ -198,13 +341,54 @@ namespace ha {
 			}
 
 			img.onload = () => {
+				imgOnLoad(img);
 
+				// canvas.width = img.naturalWidth;
+				// canvas.height = img.naturalHeight;
+				// ctx.drawImage(img, 0, 0);
+				// gbr.rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
+
+				// gbr.load = true;
+
+				// if (!gbr.panjangDiSet) {
+				// 	gbr.panjangDiSet = true;
+				// 	gbr.panjang = img.naturalWidth;
+				// }
+
+				// if (!gbr.lebarDiSet) {
+				// 	gbr.lebar = img.naturalHeight;
+				// 	gbr.lebarDiSet = true;
+				// }
+
+				// gbr.frameH = img.naturalHeight;
+				// gbr.frameW = img.naturalWidth;
+
+				// // console.log(gbr);
+				// console.log('gambar di load');
+				// ha.cache.setFile(url, img);
+			}
+
+			img.onerror = () => {
+				console.log('gagal load image, url ' + url);
+				//TODO: default image
+			}
+
+			let img2: HTMLImageElement = ha.cache.getGbr(url);
+			if (img2) {
+				imgOnLoad(img2);
+			}
+			else {
+				img.src = url;
+			}
+
+			function imgOnLoad(img: HTMLImageElement): void {
 				canvas.width = img.naturalWidth;
 				canvas.height = img.naturalHeight;
 				ctx.drawImage(img, 0, 0);
 				gbr.rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
 
 				gbr.load = true;
+				gbr.img = img;
 
 				if (!gbr.panjangDiSet) {
 					gbr.panjangDiSet = true;
@@ -220,17 +404,9 @@ namespace ha {
 				gbr.frameW = img.naturalWidth;
 
 				// console.log(gbr);
-				console.log('gambar di load');
+				// console.log('gambar di load');
+				ha.cache.setFile(url, img);
 			}
-
-			img.onerror = () => {
-				console.log('gagal load image, url ' + url);
-				//TODO: default image
-			}
-
-			img.src = url;
-
-			// ha_blitz.image.daftar.push(gbr);
 
 			return gbr;
 		}

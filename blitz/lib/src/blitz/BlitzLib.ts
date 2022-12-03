@@ -13,9 +13,11 @@ const Biru = ha.Main.Biru;
 const Transparan = ha.Main.Transparan;
 const AmbilPiksel = ha.Image.ambilPiksel;
 const SetPiksel = ha.Image.setPiksel;
+const Kontek = ha.Main.kontek;
 
 const Garis = ha.Main.Garis;
 const Kotak = ha.Main.Kotak;
+
 // const Oval = () => { }
 //Kurva
 
