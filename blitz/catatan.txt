@@ -1,5 +1,4 @@
-kebutuhan buag demo knob
-alpha
+kebutuhan buat demo knob
 
 tombol UI
     slider
@@ -7,10 +6,7 @@ tombol UI
     knop
 
 knop
-drag rotasi
-full screen
 ubah target buffer
-fungsi positionPolar ada parameter buat skala x dan y
 fungsi positionPolar ada parameter buat kemiringan
 track ball
 tombol geser putar horizontal

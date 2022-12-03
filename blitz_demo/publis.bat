@@ -72,4 +72,7 @@ call publis.bat
 cd ..
 echo. 
 
+echo copy gambar
+xcopy assets\*.* %FORKHUB%\blitz_edu\pg\gbr /q /y
+
 pause

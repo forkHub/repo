@@ -45,11 +45,11 @@ function updateStatusKomentar(str) {
     else {
         statusKomentSekarang = false;
     }
-    console.log('update status komentar');
-    console.log('str ' + str);
-    console.log('sebelum ' + statusKomentSebelum);
-    console.log('sekarang ' + statusKomentSekarang);
-    console.log('');
+    // console.log('update status komentar');
+    // console.log('str ' + str);
+    // console.log('sebelum ' + statusKomentSebelum);
+    // console.log('sekarang ' + statusKomentSekarang);
+    // console.log('');
 }
 function tambahEnterSebelum(str) {
     if (statusKomentSebelum == false) {

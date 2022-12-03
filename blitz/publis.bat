@@ -1,37 +1,24 @@
 @echo off
 
-echo build lib:
-echo ==========
-cd lib
-call build.bat
+echo demo
+echo ====
+cd demo
+call publis.bat
 cd ..
-echo.
+echo. 
 
-echo minim:
-echo ======
-call minim.bat
-echo.
+echo pg
+echo ==
+cd playground
+cd
+call publis.bat
+cd ..
+echo. 
 
-echo copy demo:
+echo blitz_demo
 echo ==========
 cd ..\blitz_demo
-call copy.bat 
+call publis.bat
 cd ..\blitz
-echo.
-
-echo copy demo2:
-echo ===========
-cd demo
-cd
-call copy.bat
-cd ..
-echo.
-
-echo copy pg:
-echo ========
-cd playground
-call copy.bat 
-cd ..
-echo.
 
 pause
