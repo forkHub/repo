@@ -34,4 +34,9 @@ call copy.bat
 cd ..
 echo.
 
+echo template:
+echo =========
+copy output\blitz.min.js template_be_ts\web\js\
+copy output\blitz.d.ts template_be_ts\dts\
+
 pause

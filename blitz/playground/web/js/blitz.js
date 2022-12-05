@@ -607,7 +607,7 @@ var ha;
             let img = ha.Image.muatAsync(url);
             return ha.Sprite.buat(img, dragable, url);
         }
-        static ukuranGambar(gbr, w, h) {
+        static ukuran(gbr, w, h) {
             ha.Image.ukuran(gbr.buffer, w, h);
         }
         static buat(image, dragable = false, url) {
@@ -1554,7 +1554,7 @@ var ha;
             if ("teks" == obj) {
             }
             else {
-                ha.Sprite.ukuranGambar(obj, w, h);
+                ha.Sprite.ukuran(obj, w, h);
             }
         }
     }
@@ -1668,8 +1668,9 @@ const Oval = ha.Main.Oval;
 const Sudut = ha.Transform.deg;
 const Buat = ha.Sprite.buat;
 const Muat = ha.Sprite.muatAsync;
+const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
 const Posisi = ha.Sprite.posisi;
-const Ukuran = ha.Sprite.ukuranGambar;
+const Ukuran = ha.Sprite.ukuran;
 const PosisiPolar = ha.Sprite.posisiPolar;
 const Gambar = ha.Sprite.gambar;
 const GambarSemua = ha.Sprite.gambarSemua;
@@ -1678,7 +1679,6 @@ const PosisiY = ha.Sprite.posisiY;
 const Handle = ha.Sprite.handle;
 const Rotasi = ha.Sprite.rotasi;
 const Alpha = ha.Sprite.alpha;
-const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
 const Tabrakan = ha.Sprite.tabrakan;
 const Panjang = ha.Sprite.panjang;
 const Lebar = ha.Sprite.lebar;
