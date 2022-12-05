@@ -9,8 +9,7 @@ node %BACA_JS% %file_js% %file_js%
 cd ..
 cd ..
 
-xcopy web %FORKHUB%\blitz_edu\demo\%folder% /s /i /y
-copy .\web\js\%file_js% %FORKHUB%\pg\data\%file_js% /y
+xcopy web ..\..\web\demo\%folder% /s /i /y
+copy .\web\js\%file_js% ..\..\web\pg\data\%file_js% /y
 
-pause
 pause

@@ -1,4 +1,4 @@
-@echo on
+@echo off
 set file_js=Collision.js
 set folder=collision
 
@@ -10,7 +10,6 @@ node %BACA_JS% %file_js% %file_js%
 cd ..
 cd ..
 
-echo on
 xcopy web ..\..\web\demo\%folder% /s /i /y
 copy .\web\js\%file_js% ..\..\web\pg\data\%file_js% /y
 
