@@ -38,17 +38,17 @@ namespace ha {
 			}
 		}
 
-		static panjang(spr: ISprite): number {
-			return ha.Image.panjang(spr.buffer);
+		static panjang(spr: ISprite, pj?: number): number {
+			return ha.Image.panjang(spr.buffer, pj);
 		}
 
-		static lebar(spr: ISprite): number {
-			return ha.Image.lebar(spr.buffer);
+		static lebar(spr: ISprite, lb?: number): number {
+			return ha.Image.lebar(spr.buffer, lb);
 		}
 
 		static alpha(spr: ISprite, alpha?: number): number {
 			if (typeof (alpha) == 'number') {
-				spr.buffer.alpha = alpha / 255;
+				spr.buffer.alpha = alpha / 100;
 			}
 
 			return spr.buffer.alpha;

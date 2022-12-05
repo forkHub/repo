@@ -70,9 +70,26 @@ namespace ha {
 			// return img;
 		}
 
-		static panjang(gbr: IGambar): number { return gbr.panjang; };
-		static lebar(gbr: IGambar): number { return gbr.lebar; };
+		static panjang(gbr: IGambar, pj?: number): number {
+			if (typeof pj == 'number') {
+				gbr.panjang = pj;
+				gbr.panjangDiSet = true;
+			}
+
+			return gbr.panjang;
+		};
+
+		static lebar(gbr: IGambar, lb?: number): number {
+			if (typeof lb == 'number') {
+				gbr.lebar = lb;
+				gbr.lebarDiSet = true;
+			}
+
+			return gbr.lebar;
+		};
+
 		static handleX(gbr: IGambar): number { return gbr.handleX; };
+
 		static handleY(gbr: IGambar): number { return gbr.handleY; };
 
 		static tabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean {

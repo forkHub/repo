@@ -1,16 +1,22 @@
-blitz sprite  dan image digabung, dari image digabung ke sprite, dan image dihapus
-static diganti instance
-rotasi bisa setter dan getter
-status sprite lain bisa setter dan getter
 stroke warna
+
 index(sprite)
 index(sprite,0)
 index(sprite,100)
 
+input ada setter dan getter buat sprite
+support double input
+
+demo:
+=====
 ubah target buffer (demo)
 fungsi positionPolar ada parameter buat kemiringan
 track ball
 tombol geser putar horizontal
+
+blitz sprite  dan image digabung, dari image digabung ke sprite, dan image dihapus
+static diganti instance
+input dibuat standard
 
 nanti:
 ======

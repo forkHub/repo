@@ -23,6 +23,41 @@ namespace ha {
 			this._mouseGlobal.type = 'mouse';
 		}
 
+		InputHit(): number {
+			let hit: number = ha.input.inputGlobal.hit;
+			ha.input.inputGlobal.hit = 0;
+
+			return hit;
+		}
+
+		InputX(): number {
+			return ha.input.inputGlobal.x;
+		}
+
+		InputY(): number {
+			return ha.input.inputGlobal.y;
+		}
+
+		GeserX(): number {
+			return ha.input.inputGlobal.xDrag
+		}
+
+		GeserY(): number {
+			return ha.input.inputGlobal.yDrag
+		}
+
+		FlushInput(): void {
+			ha.input.flush();
+		}
+
+		Pencet(): boolean {
+			return ha.input.inputGlobal.isDown;
+		}
+
+		Geser(): boolean {
+			return ha.input.inputGlobal.isDrag;
+		}
+
 		getMouseKeyId(e: PointerEvent): string {
 			if (e.pointerType == 'touch') {
 				return e.pointerId + '';
@@ -326,5 +361,5 @@ namespace ha {
 
 	}
 
-	export var input: Input = new Input();
+	export const input: Input = new Input();
 }

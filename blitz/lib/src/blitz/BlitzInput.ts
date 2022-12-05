@@ -4,40 +4,15 @@
  * BLITZ-INPUT.TS
  */
 
-const InputHit = (): number => {
-	let hit: number = ha.input.inputGlobal.hit;
-	ha.input.inputGlobal.hit = 0;
-
-	return hit;
-}
-
-const InputX = () => {
-	return ha.input.inputGlobal.x;
-}
-
-const InputY = () => {
-	return ha.input.inputGlobal.y;
-}
-
-const GeserX = (): number => {
-	return ha.input.inputGlobal.xDrag
-}
-
-const GeserY = (): number => {
-	return ha.input.inputGlobal.yDrag
-}
-
-const FlushInput = () => {
-	ha.input.flush();
-}
-
-const Pencet = (): boolean => {
-	return ha.input.inputGlobal.isDown;
-}
-
-const Geser = (): boolean => {
-	return ha.input.inputGlobal.isDrag;
-}
+//TODO: dipindah 
+const InputHit = ha.input.InputHit;
+const InputX = ha.input.InputX;
+const InputY = ha.input.InputY;
+const GeserX = ha.input.GeserX;
+const GeserY = ha.input.GeserY;
+const FlushInput = ha.input.FlushInput;
+const Pencet = ha.input.Pencet;
+const Geser = ha.input.Geser;
 
 /**
  * 	KEYBOARD (di tunda)
