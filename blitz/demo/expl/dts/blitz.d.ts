@@ -23,7 +23,7 @@ declare namespace ha {
         static Merah(): number;
         static Biru(): number;
         static Transparan(): number;
-        static Grafis(width?: number, height?: number): void;
+        static Grafis(p?: number, l?: number): void;
         static Garis(x1: number, y1: number, x2: number, y2: number): void;
         static Kotak(x1: number, y1: number, x2: number, y2: number, isi?: boolean, garis?: boolean, rotasi?: number): void;
         static Oval(x: number, y: number, radius: number, skalaX?: number, skalaY?: number, rotasi?: number): void;
@@ -178,7 +178,7 @@ declare namespace ha {
     class EventHandler {
         move(input: IInput, buffer: IGambar, e: PointerEvent): void;
         down(input: IInput, key: string, type: string, pos: IV2D): void;
-        up(input2: IInput): void;
+        up(input: IInput): void;
     }
     export var input: Input;
     export {};
@@ -278,12 +278,11 @@ declare namespace ha {
         static ukuran(obj: ISprite | "teks", w?: number, h?: number): void;
     }
 }
-declare const Prompt: (m: string, def: string) => string;
 declare const InputHit: () => number;
 declare const InputX: () => number;
 declare const InputY: () => number;
-declare const InputGeserX: () => number;
-declare const InputGeserY: () => number;
+declare const GeserX: () => number;
+declare const GeserY: () => number;
 declare const FlushInput: () => void;
 declare const Pencet: () => boolean;
 declare const Geser: () => boolean;
@@ -291,63 +290,6 @@ declare const FlushKeys: () => void;
 declare const GetKey: () => string;
 declare const KeybDiPencet: (key?: string) => boolean;
 declare const KeybHit: (key?: string) => number;
-declare const GetMouse: () => number;
-declare const MouseHit: (button?: number) => number;
-declare const MouseDown: (key: string) => boolean;
-declare const WaitMouse: () => void;
-declare const MouseX: () => number;
-declare const MouseY: () => number;
-declare const MouseZ: () => number;
-declare const FlushMouse: () => void;
-interface ILine {
-    y: number;
-    m: number;
-    b: number;
-}
-interface IRect {
-    vs?: IV2D[];
-    segs?: ISegment[];
-}
-interface ISegment {
-    v1: IV2D;
-    v2: IV2D;
-}
-interface ITimer {
-    endTime: number;
-    startTime: number;
-    time: number;
-    aktif: boolean;
-}
-interface IInput {
-    xStart: number;
-    yStart: number;
-    xDrag: number;
-    yDrag: number;
-    x: number;
-    y: number;
-    isDrag: boolean;
-    isDown: boolean;
-    isTap: boolean;
-    hit: number;
-    key: string;
-    type: string;
-    timerStart: number;
-    timerEnd: number;
-    id: number;
-}
-interface IInputData {
-    type?: string;
-    key?: string;
-}
-interface IV2D {
-    x: number;
-    y: number;
-}
-interface ITransform {
-    pos: IV2D;
-    scale: IV2D;
-    rotation: number;
-}
 declare const Bersih: typeof ha.Main.Bersih;
 declare const Grafis: typeof ha.Blijs.init;
 declare const Warna: typeof ha.Main.warna;
@@ -393,66 +335,6 @@ declare namespace ha {
     export const cache: Cache;
     export {};
 }
-interface IConfig {
-    input: IInput;
-}
-interface ILine {
-    y: number;
-    m: number;
-    b: number;
-}
-interface IRect {
-    vs?: IPoint2D[];
-    segs?: ISegment[];
-}
-interface ISegment {
-    v1: IPoint2D;
-    v2: IPoint2D;
-}
-interface ITimer {
-    endTime: number;
-    startTime: number;
-    time: number;
-    aktif: boolean;
-}
-interface IInput {
-    xStart: number;
-    yStart: number;
-    xDrag: number;
-    yDrag: number;
-    x: number;
-    y: number;
-    isDrag: boolean;
-    isDown: boolean;
-    isTap: boolean;
-    hit: number;
-    key: string;
-    type: string;
-    timerStart: number;
-    timerEnd: number;
-    id: number;
-}
-interface IInputData {
-    type?: string;
-    key?: string;
-}
-interface IPoint2D {
-    x: number;
-    y: number;
-}
-interface ITransform {
-    pos: IPoint2D;
-    scale: IPoint2D;
-    rotation: number;
-}
-interface IConfig {
-    input: IInput;
-}
-interface ILine {
-    y: number;
-    m: number;
-    b: number;
-}
 interface IRect {
     vs?: IV2D[];
     segs?: ISegment[];
@@ -461,12 +343,6 @@ interface ISegment {
     v1: IV2D;
     v2: IV2D;
 }
-interface ITimer {
-    endTime: number;
-    startTime: number;
-    time: number;
-    aktif: boolean;
-}
 interface IInput {
     xStart: number;
     yStart: number;
@@ -484,19 +360,15 @@ interface IInput {
     timerEnd: number;
     id: number;
 }
-interface IInputData {
-    type?: string;
-    key?: string;
-}
 interface IGambar {
     img: HTMLImageElement;
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
     frameW: number;
     frameH: number;
     rotasi: number;
     alpha: number;
     isAnim: boolean;
-    canvas: HTMLCanvasElement;
-    ctx: CanvasRenderingContext2D;
     rect: IRect;
     load: boolean;
     panjang: number;
@@ -512,8 +384,7 @@ interface IV2D {
     x: number;
     y: number;
 }
-interface ITransform {
-    pos: IV2D;
-    scale: IV2D;
-    rotation: number;
+interface IPoint2D {
+    x: number;
+    y: number;
 }
