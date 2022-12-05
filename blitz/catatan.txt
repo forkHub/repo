@@ -1,18 +1,12 @@
-kebutuhan buat demo knob
-
-tombol UI
+tombol UI (pustaka tambahan)
+============================
     slider
     tombol
     knop
 
-knop
-ubah target buffer
-fungsi positionPolar ada parameter buat kemiringan
-track ball
-tombol geser putar horizontal
 
-geometri:
-=========
+geometri (pustaka tambahan):
+============================
 titik di dalam polygon
 titik di sebelah kiri garis
 garis swap ke atas
@@ -45,3 +39,4 @@ simulasi jantung
 atom dan electron
 fx per sinus
 fx gelombang air
+fx cls separuh

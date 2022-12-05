@@ -24,10 +24,12 @@ namespace ha {
 		static init(panjang: number = 320, lebar: number = 240, canvas: HTMLCanvasElement = null, skalaOtomatis: boolean = true, input: boolean = true) {
 
 			//coba cari canvas
-			if (!canvas) canvas = document.body.querySelector('canvas') as HTMLCanvasElement;
 			if (!canvas) {
-				console.log('gagal init');
-				return;
+				canvas = document.body.querySelector('canvas') as HTMLCanvasElement;
+			}
+
+			if (!canvas) {
+				document.body.appendChild(document.createElement('canvas'));
 			}
 
 			ha.Blijs.skalaOtomatis = skalaOtomatis;

@@ -474,13 +474,6 @@ namespace ha {
 			return [0, 0, 0];
 		}
 
-		//TODO: dep
-		// static setWarna(r: number = 255, g: number = 255, b: number = 255, a: number = 1) {
-		// 	let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
-		// 	ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-		// 	ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-		// }
-
 		static setPiksel(x: number = 0, y: number = 0) {
 			ha.Main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
 		}
@@ -493,68 +486,6 @@ namespace ha {
 		static grabGambar(gbr: IGambar, x: number = 0, y: number = 0) {
 			gbr.ctx.drawImage(ha.Main.canvasAktif.canvas, x, y, gbr.panjang, gbr.lebar, 0, 0, gbr.panjang, gbr.lebar);
 		}
-
-		// static copyGambar(src: IGambar): IGambar {
-		// 	return {
-		// 		canvas: src.canvas,
-		// 		ctx: src.ctx,
-		// 		frameH: src.frameH,
-		// 		frameW: src.frameW,
-		// 		handleX: src.handleX,
-		// 		handleY: src.handleY,
-		// 		height: src.height,
-		// 		img: src.img,
-		// 		isAnim: src.isAnim,
-		// 		rect: ha.Rect.copy(src.rect),
-		// 		rotation: src.rotation,
-		// 		scaleX: src.scaleX,
-		// 		scaleY: src.scaleY,
-		// 		width: src.width,
-		// 		load: src.load
-		// 	}
-		// }
-
-		// static async tungguLoad(): Promise<void> {
-		// 	return new Promise((resolve, reject) => {
-		// 		resolve;
-		// 		reject
-		// 	});
-		// }
-
-		// static async muat(url: string): Promise<IGambar> {
-		// 	let img: HTMLImageElement = await ha.image.loadImage(url);
-		// 	let canvas: HTMLCanvasElement = document.createElement('canvas');
-		// 	let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-		// 	let rect: IRect;
-
-		// 	canvas.width = img.naturalWidth;
-		// 	canvas.height = img.naturalHeight;
-		// 	ctx.drawImage(img, 0, 0);
-
-		// 	rect = ha.Rect.create(0, 0, img.naturalWidth, img.naturalHeight);
-
-		// 	let gbr: IGambar = {
-		// 		img: img,
-		// 		panjang: img.naturalWidth,
-		// 		lebar: img.naturalHeight,
-		// 		frameH: img.naturalHeight,
-		// 		frameW: img.naturalWidth,
-		// 		isAnim: false,
-		// 		handleX: 0,
-		// 		handleY: 0,
-		// 		rotation: 0,
-		// 		// scaleX: 1,
-		// 		// scaleY: 1,
-		// 		ctx: ctx,
-		// 		canvas: canvas,
-		// 		rect: rect,
-		// 		load: true
-		// 	}
-
-		// 	// ha_blitz.image.daftar.push(gbr);
-
-		// 	return gbr;
-		// }
 
 		static gambar(gbr: IGambar, x: number = 0, y: number = 0, frame: number = 0) {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;

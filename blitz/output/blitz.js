@@ -103,14 +103,17 @@ var ha;
         static Transparan() {
             return ha.Main.transparan;
         }
-        static Grafis(width = 320, height = 240) {
+        static Grafis(p = 320, l = 240) {
             let canvas = ha.Main.canvasAktif;
-            canvas.canvas.width = width;
-            canvas.canvas.height = height;
-            canvas.canvas.style.width = width + 'px';
-            canvas.canvas.style.height = height + 'px';
-            canvas.panjang = width;
-            canvas.lebar = height;
+            canvas.canvas.width = p;
+            canvas.canvas.height = l;
+            canvas.canvas.style.width = p + 'px';
+            canvas.canvas.style.height = l + 'px';
+            canvas.canvas.style.padding = '0px';
+            canvas.canvas.style.margin = '0px';
+            canvas.canvas.style.touchAction = 'none';
+            canvas.panjang = p;
+            canvas.lebar = l;
             setTimeout(() => {
                 if (ha.Blijs.skalaOtomatis) {
                     ha.Blijs.windowResize();
@@ -763,8 +766,6 @@ var ha;
         }
         init(buffer) {
             console.log('input init');
-            console.log('buffer');
-            console.log(buffer);
             buffer.canvas.onpointerdown = (e) => {
                 e.stopPropagation();
                 e.preventDefault();
@@ -782,22 +783,24 @@ var ha;
             buffer.canvas.onpointermove = (e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                let input = this.baru(e.button + '', e.pointerType);
+                let pos = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
+                let key = this.getMouseKeyId(e);
+                let input = this.baru(key, e.pointerType);
                 ha.input.event.move(input, buffer, e);
                 ha.input.event.move(this.inputGlobal, buffer, e);
                 if (e.pointerType == 'touch')
                     ha.input.event.move(ha.input.touchGlobal, buffer, e);
                 if (e.pointerType == 'mouse')
                     ha.input.event.move(ha.input.mouseGlobal, buffer, e);
-                let pos = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
                 ha.Sprite.inputMove(pos);
             };
             buffer.canvas.onpointerout = (e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                let input = ha.input.baru(e.button + '', e.pointerType);
+                let key = ha.input.getMouseKeyId(e);
+                let input = ha.input.baru(key, e.pointerType);
                 ha.input.event.up(input);
-                ha.input.event.up(this.inputGlobal);
+                ha.input.event.up(ha.input.inputGlobal);
                 if (e.pointerType == 'touch')
                     ha.input.event.up(ha.input.touchGlobal);
                 if (e.pointerType == 'mouse')
@@ -810,7 +813,8 @@ var ha;
             buffer.canvas.onpointerup = (e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                let input = ha.input.baru(e.button + '', e.pointerType);
+                let key = this.getMouseKeyId(e);
+                let input = this.baru(key, e.pointerType);
                 ha.input.event.up(input);
                 ha.input.event.up(this.inputGlobal);
                 if (e.pointerType == 'touch')
@@ -986,11 +990,11 @@ var ha;
             input.type = type;
             input.timerStart = Date.now();
         }
-        up(input2) {
-            input2.isDown = false;
-            input2.isDrag = false;
-            input2.timerEnd = Date.now();
-            input2.isTap = ((input2.timerEnd - input2.timerStart) < 500);
+        up(input) {
+            input.isDown = false;
+            input.isDrag = false;
+            input.timerEnd = Date.now();
+            input.isTap = ((input.timerEnd - input.timerStart) < 500);
         }
     }
     ha.input = new Input();
@@ -1313,11 +1317,11 @@ var ha;
             Blijs._inputStatus = value;
         }
         static init(panjang = 320, lebar = 240, canvas = null, skalaOtomatis = true, input = true) {
-            if (!canvas)
-                canvas = document.body.querySelector('canvas');
             if (!canvas) {
-                console.log('gagal init');
-                return;
+                canvas = document.body.querySelector('canvas');
+            }
+            if (!canvas) {
+                document.body.appendChild(document.createElement('canvas'));
             }
             ha.Blijs.skalaOtomatis = skalaOtomatis;
             ha.Blijs._inputStatus = input;
@@ -1560,10 +1564,6 @@ var ha;
     }
     ha.Route = Route;
 })(ha || (ha = {}));
-const Prompt = (m, def) => {
-    let hasil = window.prompt(m, def);
-    return hasil;
-};
 const InputHit = () => {
     let hit = ha.input.inputGlobal.hit;
     ha.input.inputGlobal.hit = 0;
@@ -1575,10 +1575,10 @@ const InputX = () => {
 const InputY = () => {
     return ha.input.inputGlobal.y;
 };
-const InputGeserX = () => {
+const GeserX = () => {
     return ha.input.inputGlobal.xDrag;
 };
-const InputGeserY = () => {
+const GeserY = () => {
     return ha.input.inputGlobal.yDrag;
 };
 const FlushInput = () => {
@@ -1624,33 +1624,6 @@ const KeybHit = (key = '') => {
         }
         return n;
     }
-};
-const GetMouse = () => {
-    return parseInt(ha.input.mouseGlobal.key);
-};
-const MouseHit = (button = -1) => {
-    if (button == -1) {
-    }
-    else {
-    }
-    return 0;
-};
-const MouseDown = (key) => {
-    key;
-    return false;
-};
-const WaitMouse = () => {
-};
-const MouseX = () => {
-    return 0;
-};
-const MouseY = () => {
-    return 0;
-};
-const MouseZ = () => {
-    return 0;
-};
-const FlushMouse = () => {
 };
 const Bersih = ha.Main.Bersih;
 const Grafis = ha.Blijs.init;

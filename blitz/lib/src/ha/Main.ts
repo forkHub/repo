@@ -129,15 +129,19 @@ namespace ha {
 			return ha.Main.transparan;
 		}
 
-		static Grafis(width: number = 320, height: number = 240): void {
+		static Grafis(p: number = 320, l: number = 240): void {
 			let canvas: IGambar = ha.Main.canvasAktif;
 
-			canvas.canvas.width = width;
-			canvas.canvas.height = height;
-			canvas.canvas.style.width = width + 'px';
-			canvas.canvas.style.height = height + 'px';
-			canvas.panjang = width;
-			canvas.lebar = height;
+			canvas.canvas.width = p;
+			canvas.canvas.height = l;
+			canvas.canvas.style.width = p + 'px';
+			canvas.canvas.style.height = l + 'px';
+			canvas.canvas.style.padding = '0px';
+			canvas.canvas.style.margin = '0px';
+			canvas.canvas.style.touchAction = 'none';
+
+			canvas.panjang = p;
+			canvas.lebar = l;
 
 			setTimeout(() => {
 				if (ha.Blijs.skalaOtomatis) {

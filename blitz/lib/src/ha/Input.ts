@@ -36,13 +36,10 @@ namespace ha {
 
 		init(buffer: IGambar): void {
 			console.log('input init');
-			console.log('buffer');
-			console.log(buffer);
 
 			buffer.canvas.onpointerdown = (e: PointerEvent) => {
 				e.stopPropagation();
 				e.preventDefault();
-				// e.preventDefault();
 
 				let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
 				let key: string = this.getMouseKeyId(e);
@@ -61,7 +58,9 @@ namespace ha {
 				e.stopPropagation();
 				e.preventDefault();
 
-				let input: IInput = this.baru(e.button + '', e.pointerType);
+				let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
+				let key: string = this.getMouseKeyId(e);
+				let input: IInput = this.baru(key, e.pointerType);
 
 				ha.input.event.move(input, buffer, e);
 				ha.input.event.move(this.inputGlobal, buffer, e);
@@ -69,10 +68,7 @@ namespace ha {
 				if (e.pointerType == 'touch') ha.input.event.move(ha.input.touchGlobal, buffer, e);
 				if (e.pointerType == 'mouse') ha.input.event.move(ha.input.mouseGlobal, buffer, e);
 
-
-				//sprite	
-				//sprite move
-				let pos: any = ha.input.pos(e.clientX, e.clientY, buffer, buffer.ratioX, buffer.ratioY);
+				//sprite
 				ha.Sprite.inputMove(pos);
 			}
 
@@ -80,10 +76,12 @@ namespace ha {
 				e.stopPropagation();
 				e.preventDefault();
 
-				let input: IInput = ha.input.baru(e.button + '', e.pointerType);
+				let key: string = ha.input.getMouseKeyId(e);
+				let input: IInput = ha.input.baru(key, e.pointerType);
 
 				ha.input.event.up(input);
-				ha.input.event.up(this.inputGlobal);
+				ha.input.event.up(ha.input.inputGlobal);
+
 				if (e.pointerType == 'touch') ha.input.event.up(ha.input.touchGlobal);
 				if (e.pointerType == 'mouse') ha.input.event.up(ha.input.mouseGlobal);
 			}
@@ -97,9 +95,8 @@ namespace ha {
 				e.stopPropagation();
 				e.preventDefault();
 
-				// console.log('on pointer up');
-
-				let input: IInput = ha.input.baru(e.button + '', e.pointerType);
+				let key: string = this.getMouseKeyId(e);
+				let input: IInput = this.baru(key, e.pointerType);
 
 				ha.input.event.up(input);
 				ha.input.event.up(this.inputGlobal);
@@ -115,8 +112,6 @@ namespace ha {
 
 					item.down = false;
 					item.dragged = false;
-
-					// console.log("item drag end");
 				});
 			}
 
@@ -322,14 +317,11 @@ namespace ha {
 			input.timerStart = Date.now();
 		}
 
-		up(input2: IInput): void {
-			input2.isDown = false;
-			input2.isDrag = false;
-			input2.timerEnd = Date.now();
-			input2.isTap = ((input2.timerEnd - input2.timerStart) < 500);
-
-
-
+		up(input: IInput): void {
+			input.isDown = false;
+			input.isDrag = false;
+			input.timerEnd = Date.now();
+			input.isTap = ((input.timerEnd - input.timerStart) < 500);
 		}
 
 	}
