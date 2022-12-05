@@ -123,7 +123,7 @@ namespace ha {
 			return ha.Sprite.buat(img, dragable, url);
 		}
 
-		static ukuranGambar(gbr: ISprite, w: number, h: number): void {
+		static ukuran(gbr: ISprite, w: number, h: number): void {
 			ha.Image.ukuran(gbr.buffer, w, h);
 		}
 

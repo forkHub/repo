@@ -3,8 +3,9 @@
 /** BLITZ-SPRITE.TS */
 const Buat = ha.Sprite.buat;
 const Muat = ha.Sprite.muatAsync;
+const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
 const Posisi = ha.Sprite.posisi;
-const Ukuran = ha.Sprite.ukuranGambar;
+const Ukuran = ha.Sprite.ukuran;
 const PosisiPolar = ha.Sprite.posisiPolar;
 const Gambar = ha.Sprite.gambar;
 const GambarSemua = ha.Sprite.gambarSemua;
@@ -13,7 +14,6 @@ const PosisiY = ha.Sprite.posisiY;
 const Handle = ha.Sprite.handle;
 const Rotasi = ha.Sprite.rotasi;
 const Alpha = ha.Sprite.alpha;
-const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
 const Tabrakan = ha.Sprite.tabrakan;
 
 const Panjang = ha.Sprite.panjang;

@@ -5,7 +5,7 @@ namespace ha {
 				//TODO: ukuran teks
 			}
 			else {
-				ha.Sprite.ukuranGambar(obj as ISprite, w, h);
+				ha.Sprite.ukuran(obj as ISprite, w, h);
 			}
 		}
 	}

@@ -1,2 +1,11 @@
+blitz sprite  dan image digabung, dari image digabung ke sprite, dan image dihapus
+static diganti instance
+rotasi bisa setter dan getter
+index(sprite)
+index(sprite,0)
+index(sprite,100)
 
-Perintah bersifat redundant sebaiknya dihapus: Merah(255), Merah(), agar ukuran jadi lebih kecil
+
+nanti:
+======
+Copy diganti duplikat
