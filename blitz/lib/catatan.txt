@@ -1,11 +1,16 @@
 stroke warna
+println (baris berikutnya)
+
+ctx.font = 'bold 10px Arial';
+lineHeight = ctx.measureText('M').width;
+width = height
 
 index(sprite)
 index(sprite,0)
 index(sprite,100)
 
 input ada setter dan getter buat sprite
-support double input
+
 
 demo:
 =====
@@ -21,3 +26,5 @@ input dibuat standard
 nanti:
 ======
 Copy diganti duplikat
+support double input
+
