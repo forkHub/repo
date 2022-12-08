@@ -21,7 +21,7 @@
 <body>
 	<div class="container">
 		<div class="navigasi">
-			<a href="./index.html">&larr; Beranda</a> |
+			<a href="./index.html">&larr; Beranda</a>
 		</div>
 		<h1>Umum</h1>
 		<a href="#grafis">Grafis</a><br />
@@ -41,9 +41,7 @@
 		<a href="#fps">FPS</a><br />
 
 		<!-- text -->
-		<a href="#font">font</a><br />
 		<a href="#tulis">Tulis</a><br />
-		<a href="#rata">Rata</a><br />
 
 		<hr />
 
@@ -63,7 +61,6 @@
 
 		<h4 id="warna"><code>Warna(merah, hijau, biru, alpha)</code>
 		</h4>
-		<p>Mengeset warna yang dipakai untuk perintah-perintah berikutnya, seperti SetPiksel, Bersih() dll</p>
 		<p>Mengeset warna yang dipakai untuk perintah-perintah berikutnya, seperti SetPiksel, Bersih() dll</p>
 		<hr />
 
@@ -100,8 +97,23 @@
 
 		<h4 id="sudut"><code>Sudut(x, y)</code>
 		</h4>
-		<p>Mengeset Piksel pada layar pada posisi x dan y</p>
-		<p>Perintah ini akan otomatis menggunakan warna yang sedang aktif.</p>
+		<p>Menghitung sudut pada posisi x dan y</p>
+		<hr />
+
+		<h4 id="fps"><code>Fps(n)</code>
+		</h4>
+		<p>Mengubah kecepatn update dari aplikasi, dalam satuan frame/detik.
+			Normalnya adalah 60, artinya layar akan di update 60 kali perdetik.
+			Fungsi ini tidak akurat, dan tidak menjamin kecepatan akan stabil.</p>
+		<hr />
+
+		<h4 id="tulis"><code>Tulis(teks, x, y)</code>
+		</h4>
+		<p><code>Tulis(teks, x, y)</code></p>
+		<p><code>Tulis(teks, x, y, true)</code></p>
+		<p>Menulis pada posisi x, y, dengan warna</p>
+		<p><code>Tulis(teks, x, y, true, true)</code></p>
+		<p>Menulis pada posisi x, y, dengn warna dan garis pinggir</p>
 		<hr />
 
 	</div>

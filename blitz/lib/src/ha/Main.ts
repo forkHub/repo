@@ -86,31 +86,27 @@ namespace ha {
 			ha.Main.updateStyleWarna();
 		}
 
-		static Bersih(m: number = 0, h: number = 0, b: number = 0, t: number = 1): void {
+		static Bersih(m: number = 0, h: number = 0, b: number = 0, t: number = 100): void {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
 			ha.Main.backupWarna();
-			ctx.fillStyle = `rgba(${m}, ${h}, ${b}, ${t})`;
+			ctx.fillStyle = `rgba(${m}, ${h}, ${b}, ${t / 100})`;
 			ctx.fillRect(0, 0, ha.Main.canvasAktif.panjang, ha.Main.canvasAktif.lebar);
 			ha.Main.restoreWarna();
 		}
 
-		//TODO: warna stroke mungkin beda
-		//TODO: untuk yang lain lebih baik pakai native
-		static warna(r: number = 0, g: number = 0, b: number = 0, a: number = 1): void {
+		static warna(r: number = 0, g: number = 0, b: number = 0, a: number = 100): void {
 			let h = ha.Main;
 
 			h.merah = r;
 			h.biru = b;
 			h.hijau = g;
-			h.transparan = a;
+			h.transparan = a / 100;
 			h.updateStyleWarna();
 		}
 
 		private static updateStyleWarna(): void {
 			let ctx: CanvasRenderingContext2D = ha.Main.canvasAktif.ctx;
-
 			ctx.fillStyle = `rgba(${ha.Main.merah}, ${ha.Main.hijau}, ${ha.Main.biru}, ${ha.Main.transparan})`;
-			ctx.strokeStyle = `rgba(${ha.Main.merah}, ${ha.Main.hijau}, ${ha.Main.biru}, ${ha.Main.transparan})`;
 		}
 
 		static Hijau(): number {
@@ -126,7 +122,7 @@ namespace ha {
 		}
 
 		static Transparan(): number {
-			return ha.Main.transparan;
+			return Math.floor(ha.Main.transparan * 100);
 		}
 
 		static Grafis(p: number = 320, l: number = 240): void {

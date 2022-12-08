@@ -53,15 +53,17 @@
 			Saat memuat
 			gambar dari internet, pastikan bahwa Anda memiliki ijin.</p>
 		<p><code>Muat(url, true)</code></p>
-		<p>Gambar bisa di drag</p>
+		<p>Membuat Sprite bisa di drag</p>
 		<hr />
 
 		<h4 id="muat_animasi"><code>MuatAnimasi()</code></h4>
 		<p><code>MuatAnimasi(url, panjang_frame, lebar_frame)</code></p>
-		<p>Memuat gambar dan menjadikannya sebagai Sprite dengn animasi. panjang_frame dan lebar_frame adalah panjang
-			dan lebar dari tiap frame</p>
+		<p>Memuat gambar dan menjadikannya sebagai Sprite dengn animasi.
+			<code>panjang_frame</code> dan <code>lebar_frame</code> adalah panjang
+			dan lebar dari tiap framenya.
+		</p>
 		<p><code>MuatAnimasi(url, panjang_frame, lebar_frame, true)</code></p>
-		<p>Sprite bisa di drag</p>
+		<p>Membuat Sprite bisa di drag</p>
 		<hr />
 
 		<h4 id="copy"><code>Copy()</code></h4>
@@ -84,18 +86,17 @@
 		<hr />
 
 		<h4 id="posisi_polar"><code>PosisiPolar()</code></h4>
-		<p>Memposisikan sprite berdasarkan sudut dan jarak relatif terhadap sprite yang lain.
-			Perintah ini bisa digunakan untuk menghasilkan gerakan melingkar.
+		<p>Memposisikan sprite berdasarkan sudut dan jarak relatif terhadap posisi tertentu.
+			Perintah ini bisa digunakan untuk menghasilkan gerakan melingkar atau oval.
 		</p>
 		<p><code>PosisiPolar(sprite, sudut, jarak, x, y)</code></p>
 		<p>
-			<code>sudut</code> adalah sudut dari posisi relatif terhadap sprite target.
-			<code>jarak </code> adalah jarak dari sprite relatif terhadap sprite target.
-			<code>x, y</code> adalah posisi dari sprite target.
+			<code>sudut</code> adalah sudut putaran.
+			<code>jarak </code> adalah jarak ke titik tengah.
+			<code>x, y</code> adalah posisi tengah putaran.
 		</p>
 		<p><code>PosisiPolar(sprite, sudut, jarak, x, y, skalaX, skalaY)</code></p>
-		<p><code>skalaX, skalaY</code> dipakai untuk menskala posisi horisontal dan vertikal.
-			gunakan parameter <code>skalaX</code> dan <code>skalaY</code> untuk membuat gerakan oval.
+		<p><code>skalaX, skalaY</code> dipakai untuk menskala posisi horisontal dan vertikal untuk membuat gerakan oval.
 		</p>
 		<hr />
 
@@ -105,13 +106,17 @@
 		<hr />
 
 		<h4 id="rotasi"><code>Rotasi()</code></h4>
+		<p><code>Rotasi(sprite)</code></p>
+		<p>Mengemblikan sudut putar dri sprite</p>
 		<p><code>Rotasi(sprite, sudut)</code></p>
 		<p>Memutar sprite.</p>
 		<hr />
 
 		<h4 id="alpha"><code>Alpha()</code></h4>
+		<p><code>Alpha(sprite)</code></p>
+		<p>Mengembalikan nilai transparansi dari sprite</p>
 		<p><code>Alpha(sprite, alpha)</code></p>
-		<p>Mengeset transparansi dari sprite. Nilai dari alpha adalah dari 0 - 255.</p>
+		<p>Mengeset transparansi dari sprite. Nilai dari alpha adalah dari 0 - 100.</p>
 		<hr />
 
 		<h4 id="panjang"><code>Panjang()</code></h4>
