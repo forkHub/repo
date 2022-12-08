@@ -52,8 +52,8 @@ declare namespace ha {
     class Image {
         static buatBagiCanvas(canvas: HTMLCanvasElement, w?: number, h?: number, frameW?: number, frameH?: number): IGambar;
         static buat(w?: number, h?: number, frameW?: number, frameH?: number): IGambar;
-        static panjang(gbr: IGambar): number;
-        static lebar(gbr: IGambar): number;
+        static panjang(gbr: IGambar, pj?: number): number;
+        static lebar(gbr: IGambar, lb?: number): number;
         static handleX(gbr: IGambar): number;
         static handleY(gbr: IGambar): number;
         static tabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean;
@@ -91,8 +91,8 @@ declare namespace ha {
         set url(value: string);
         constructor(buffer: IGambar, dragable?: boolean);
         static copy(sprS: ISprite): ISprite;
-        static panjang(spr: ISprite): number;
-        static lebar(spr: ISprite): number;
+        static panjang(spr: ISprite, pj?: number): number;
+        static lebar(spr: ISprite, lb?: number): number;
         static alpha(spr: ISprite, alpha?: number): number;
         static rotasi(spr: ISprite, sudut?: number): number;
         static posisi(spr: ISprite, x?: number, y?: number): void;
@@ -155,6 +155,14 @@ declare namespace ha {
         private _inputGlobal;
         private _event;
         constructor();
+        InputHit(): number;
+        InputX(): number;
+        InputY(): number;
+        GeserX(): number;
+        GeserY(): number;
+        FlushInput(): void;
+        Pencet(): boolean;
+        Geser(): boolean;
         getMouseKeyId(e: PointerEvent): string;
         init(buffer: IGambar): void;
         buatInputDefault(): IInput;
@@ -180,7 +188,7 @@ declare namespace ha {
         down(input: IInput, key: string, type: string, pos: IV2D): void;
         up(input: IInput): void;
     }
-    export var input: Input;
+    export const input: Input;
     export {};
 }
 declare namespace ha {
