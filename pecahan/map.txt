@@ -2,7 +2,7 @@ pecahan
 membandingkan
     campuran - campuran
         penyebut sama   06
-        penyebut acak   
+        penyebut acak   07 (proses)
         angka sama      
     biasa - biasa
         penyebut sama   03

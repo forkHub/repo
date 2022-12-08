@@ -1,0 +1,23 @@
+body {
+    padding: 32px;
+    font-size: 11px;
+}
+
+@media (orientation: landscape) {
+    body {
+        max-width: 100vh;
+        margin: auto;
+    }
+}
+
+div.hal-soal {
+    font-size: x-large;
+}
+
+div.tombol-jawaban button {
+    font-size: xx-large;
+}
+
+div.dialog {
+    font-size: 16px;
+}
