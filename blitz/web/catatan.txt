@@ -1,2 +1,0 @@
-perintah di kasih link ke contoh
-catatan buat setter getter
