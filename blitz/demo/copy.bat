@@ -30,6 +30,12 @@ copy ..\output\*.d.ts .\knob\dts
 copy ..\output\*.min.js .\knob\web\js
 echo.
 
+echo knob02:
+echo =======
+copy ..\output\*.d.ts .\knob02\dts
+copy ..\output\*.min.js .\knob02\web\js
+echo.
+
 echo orbit:
 echo ======
 copy ..\output\*.d.ts .\orbit\dts

@@ -72,7 +72,7 @@ namespace ha {
 				//font default
 				ha.Teks.font("12px sans-serif");
 				ha.Teks.rata("center");
-				ha.Main.warna(255, 255, 255, 1);
+				ha.Main.warna(255, 255, 255, 100);
 			}
 		}
 

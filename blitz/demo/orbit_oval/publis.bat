@@ -1,7 +1,7 @@
 set file_js=orbit_oval.js
 set folder=orbit_oval
 
-call tsc -p .\tsconfig.json
+REM call tsc -p .\tsconfig.json
 
 cd .\web\js
 node %BACA_JS% %file_js% %file_js%

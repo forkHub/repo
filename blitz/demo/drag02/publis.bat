@@ -1,7 +1,7 @@
 set file_js=Drag.js
 set folder=drag02
 
-call tsc -p .\tsconfig.json
+REM call tsc -p .\tsconfig.json
 
 cd .\web\js
 node %BACA_JS% %file_js% %file_js%

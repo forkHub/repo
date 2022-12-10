@@ -1,7 +1,7 @@
 set file_js=Doodle.js
 set folder=doodle
 
-call tsc -p .\tsconfig.json
+REM call tsc -p .\tsconfig.json
 
 cd .\web\js
 node %BACA_JS% %file_js% %file_js%

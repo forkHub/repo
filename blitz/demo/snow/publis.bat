@@ -1,7 +1,7 @@
 set file_js=Salju.js
 set folder=snow
 
-call tsc -p .\tsconfig.json
+REM call tsc -p .\tsconfig.json
 
 cd .\web\js
 node %BACA_JS% %file_js% %file_js%

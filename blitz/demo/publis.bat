@@ -40,6 +40,14 @@ call publis.bat
 cd ..
 echo. 
 
+echo knob02:
+echo =======
+cd knob02
+cd
+call publis.bat
+cd ..
+echo. 
+
 echo orbit:
 echo ======
 cd orbit

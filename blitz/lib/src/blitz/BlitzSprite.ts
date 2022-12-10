@@ -1,7 +1,7 @@
 ///<reference path="./Route.ts"/>
 
 /** BLITZ-SPRITE.TS */
-const Buat = ha.Sprite.buat;
+// const Buat = ha.Sprite.buat;
 const Muat = ha.Sprite.muatAsync;
 const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
 const Posisi = ha.Sprite.posisi;

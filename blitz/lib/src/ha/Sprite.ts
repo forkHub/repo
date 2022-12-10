@@ -1,4 +1,3 @@
-
 ///<reference path="./Image.ts"/>
 
 /** SPRITE.TS */
@@ -16,25 +15,22 @@ namespace ha {
 		private _dragStartX: number = 0;
 		private _dragable: boolean = false;
 		private _url: string;
-
-		public get url(): string {
-			return this._url;
-		}
-		public set url(value: string) {
-			this._url = value;
-		}
+		private _tipeDrag: number;
+		private _sudutTekanAwal: number;
+		private _sudutAwal: number;
 
 		constructor(buffer: IGambar, dragable: boolean = false) {
 			this.buffer = buffer;
 			this.dragable = dragable;
 		}
 
+		//library
 		static copy(sprS: ISprite): ISprite {
 			if (sprS.buffer.isAnim) {
-				return ha.Sprite.muatAnimasiAsyncKanvas(sprS.url, sprS.buffer.frameW, sprS.buffer.frameH, sprS.dragable, sprS.buffer.canvas);
+				return ha.Sprite.muatAnimasiAsyncKanvas(sprS.url, sprS.buffer.frameW, sprS.buffer.frameH, sprS.dragable, sprS.buffer.canvas, sprS.tipeDrag);
 			}
 			else {
-				return ha.Sprite.muatAsyncBerbagiKanvas(sprS.url, sprS.dragable, sprS.buffer.canvas)
+				return ha.Sprite.muatAsyncBerbagiKanvas(sprS.url, sprS.dragable, sprS.buffer.canvas, sprS.tipeDrag)
 			}
 		}
 
@@ -103,34 +99,53 @@ namespace ha {
 			return ha.Image.tabrakan(spr.buffer, ha.Sprite.posisiX(spr), ha.Sprite.posisiY(spr), spr2.buffer, ha.Sprite.posisiX(spr2), ha.Sprite.posisiY(spr2))
 		}
 
-		static muatAnimasiAsyncKanvas(url: string, pf: number, lf: number, bisaDiDrag: boolean = false, canvas: HTMLCanvasElement): ISprite {
+		private static muatAnimasiAsyncKanvas(
+			url: string,
+			pf: number,
+			lf: number,
+			bisaDiDrag: boolean = false,
+			canvas: HTMLCanvasElement,
+			tipeDrag: number): ISprite {
+
 			let img: IGambar = ha.Image.muatAnimAsyncCanvas(url, pf, lf, canvas);
-			return ha.Sprite.buat(img, bisaDiDrag, url);
+			return ha.Sprite.buatPrivate(img, bisaDiDrag, url, tipeDrag);
 		}
 
-		static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag: boolean = false): ISprite {
+		static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag: boolean = false, tipeDrag: number = 0): ISprite {
 			let img: IGambar = ha.Image.muatAnimAsync(url, pf, lf);
-			return ha.Sprite.buat(img, bisaDiDrag, url);
+			return ha.Sprite.buatPrivate(img, bisaDiDrag, url, tipeDrag);
 		}
 
-		static muatAsyncBerbagiKanvas(url: string, dragable = false, canvas: HTMLCanvasElement): ISprite {
+		private static muatAsyncBerbagiKanvas(
+			url: string,
+			dragable = false,
+			canvas: HTMLCanvasElement,
+			tipeDrag: number): ISprite {
+
 			let img: IGambar = ha.Image.muatAsyncKanvas(url, canvas);
-			return ha.Sprite.buat(img, dragable, url);
+			return ha.Sprite.buatPrivate(img, dragable, url, tipeDrag);
 		}
 
-		static muatAsync(url: string, dragable = false): ISprite {
+		static muatAsync(url: string, dragable = false, tipeDrag: number = 0): ISprite {
 			let img: IGambar = ha.Image.muatAsync(url);
-			return ha.Sprite.buat(img, dragable, url);
+			let spr: ISprite = ha.Sprite.buatPrivate(img, dragable, url, tipeDrag);
+			return spr;
 		}
 
 		static ukuran(gbr: ISprite, w: number, h: number): void {
 			ha.Image.ukuran(gbr.buffer, w, h);
 		}
 
-		static buat(image: IGambar, dragable: boolean = false, url: string): ISprite {
+		private static buatPrivate(
+			image: IGambar,
+			dragable: boolean = false,
+			url: string,
+			tipeDrag: number): ISprite {
+
 			let hasil: ISprite;
 
 			hasil = new Sprite(image, dragable);
+			hasil.tipeDrag = tipeDrag;
 			hasil.url = url;
 			this.daftar.push(hasil);
 
@@ -139,47 +154,17 @@ namespace ha {
 			return hasil;
 		}
 
-		static inputDown(pos: any): void {
-			ha.Sprite.daftar.forEach((item: ISprite) => {
-				item.down = false;
-			});
+		// static inputDown(pos: any): void {
+		// 	sprite2.inputDown(pos);
+		// }
 
-			//sprite down
-			for (let i: number = ha.Sprite.daftar.length - 1; i >= 0; i--) {
-				let item: ISprite;
+		// static inputMove(pos: any): void {
+		// 	sprite2.inputMove(pos);
+		// }
 
-				item = ha.Sprite.daftar[i];
-
-				if (ha.Image.dotDidalamGambar(item.buffer, item.x, item.y, pos.x, pos.y)) {
-					item.down = true;
-					item.dragStartX = pos.x - item.x;
-					item.dragStartY = pos.y - item.y
-					return;
-				}
-			}
-		}
-
-		static inputMove(pos: any): void {
-			ha.Sprite.daftar.forEach((item: ISprite) => {
-
-				if (item.down && item.dragable) {
-					item.dragged = true;
-					item.x = pos.x - item.dragStartX
-					item.y = pos.y - item.dragStartY
-				}
-			});
-		}
-
-		static inputUp(): void {
-			ha.Sprite.daftar.forEach((item: ISprite) => {
-				if (item.down) {
-					item.hit++;
-				}
-
-				item.down = false;
-				item.dragged = false;
-			});
-		}
+		// static inputUp(): void {
+		// 	sprite2.inputUp();
+		// }
 
 		static gambar(sprite: ISprite, frame?: number): void {
 			ha.Image.gambar(sprite.buffer, sprite.x, sprite.y, frame);
@@ -272,7 +257,33 @@ namespace ha {
 		public set dragable(value: boolean) {
 			this._dragable = value;
 		}
+		public get sudutAwal(): number {
+			return this._sudutAwal;
+		}
+		public set sudutAwal(value: number) {
+			this._sudutAwal = value;
+		}
 
+		public get sudutTekanAwal(): number {
+			return this._sudutTekanAwal;
+		}
+		public set sudutTekanAwal(value: number) {
+			this._sudutTekanAwal = value;
+		}
+
+		public get tipeDrag(): number {
+			return this._tipeDrag;
+		}
+		public set tipeDrag(value: number) {
+			this._tipeDrag = value;
+		}
+
+		public get url(): string {
+			return this._url;
+		}
+		public set url(value: string) {
+			this._url = value;
+		}
 
 	}
 
@@ -289,4 +300,9 @@ interface ISprite {
 	dragStartX: number
 	dragStartY: number
 	url: string
+
+	//
+	tipeDrag: number; //0 drag, 1 rotasi, 2 skew (todo)
+	sudutTekanAwal: number
+	sudutAwal: number
 }

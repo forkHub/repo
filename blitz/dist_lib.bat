@@ -1,11 +1,12 @@
 @echo off
 
-echo build lib:
-echo ==========
-cd lib
-call build.bat
-cd ..
-echo.
+REM echo build lib:
+REM echo ==========
+REM cd lib
+REM call build.bat
+REM cd ..
+REM echo.
+REM echo.
 
 echo minim:
 echo ======

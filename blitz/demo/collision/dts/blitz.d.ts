@@ -51,6 +51,7 @@ declare namespace ha {
 declare namespace ha {
     class Image {
         static buatBagiCanvas(canvas: HTMLCanvasElement, w?: number, h?: number, frameW?: number, frameH?: number): IGambar;
+        static gambarRect(spr: ISprite): void;
         static buat(w?: number, h?: number, frameW?: number, frameH?: number): IGambar;
         static panjang(gbr: IGambar, pj?: number): number;
         static lebar(gbr: IGambar, lb?: number): number;
@@ -70,7 +71,7 @@ declare namespace ha {
         static grabGambar(gbr: IGambar, x?: number, y?: number): void;
         static gambar(gbr: IGambar, x?: number, y?: number, frame?: number): void;
         static ukuran(gbr: IGambar, w?: number, h?: number): void;
-        private static resetRect;
+        static resetRect(img: IGambar): void;
         private static rectToImageTransform;
     }
 }
@@ -87,8 +88,9 @@ declare namespace ha {
         private _dragStartX;
         private _dragable;
         private _url;
-        get url(): string;
-        set url(value: string);
+        private _tipeDrag;
+        private _sudutTekanAwal;
+        private _sudutAwal;
         constructor(buffer: IGambar, dragable?: boolean);
         static copy(sprS: ISprite): ISprite;
         static panjang(spr: ISprite, pj?: number): number;
@@ -101,15 +103,12 @@ declare namespace ha {
         static handle(spr: ISprite, x?: number, y?: number): void;
         static gambarSemua(): void;
         static tabrakan(spr: ISprite, spr2: ISprite): boolean;
-        static muatAnimasiAsyncKanvas(url: string, pf: number, lf: number, bisaDiDrag: boolean, canvas: HTMLCanvasElement): ISprite;
-        static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag?: boolean): ISprite;
-        static muatAsyncBerbagiKanvas(url: string, dragable: boolean, canvas: HTMLCanvasElement): ISprite;
-        static muatAsync(url: string, dragable?: boolean): ISprite;
+        private static muatAnimasiAsyncKanvas;
+        static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag?: boolean, tipeDrag?: number): ISprite;
+        private static muatAsyncBerbagiKanvas;
+        static muatAsync(url: string, dragable?: boolean, tipeDrag?: number): ISprite;
         static ukuran(gbr: ISprite, w: number, h: number): void;
-        static buat(image: IGambar, dragable: boolean, url: string): ISprite;
-        static inputDown(pos: any): void;
-        static inputMove(pos: any): void;
-        static inputUp(): void;
+        private static buatPrivate;
         static gambar(sprite: ISprite, frame?: number): void;
         static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number, skalaX?: number, skalaY?: number): void;
         static ubin(spr: ISprite, x?: number, y?: number, frame?: number): void;
@@ -132,6 +131,14 @@ declare namespace ha {
         set down(value: boolean);
         get dragable(): boolean;
         set dragable(value: boolean);
+        get sudutAwal(): number;
+        set sudutAwal(value: number);
+        get sudutTekanAwal(): number;
+        set sudutTekanAwal(value: number);
+        get tipeDrag(): number;
+        set tipeDrag(value: number);
+        get url(): string;
+        set url(value: string);
     }
 }
 interface ISprite {
@@ -145,6 +152,9 @@ interface ISprite {
     dragStartX: number;
     dragStartY: number;
     url: string;
+    tipeDrag: number;
+    sudutTekanAwal: number;
+    sudutAwal: number;
 }
 declare namespace ha {
     class Input {
@@ -312,7 +322,6 @@ declare const Garis: typeof ha.Main.Garis;
 declare const Kotak: typeof ha.Main.Kotak;
 declare const Oval: typeof ha.Main.Oval;
 declare const Sudut: typeof ha.Transform.deg;
-declare const Buat: typeof ha.Sprite.buat;
 declare const Muat: typeof ha.Sprite.muatAsync;
 declare const MuatAnimasi: typeof ha.Sprite.muatAnimasiAsync;
 declare const Posisi: typeof ha.Sprite.posisi;
@@ -395,4 +404,13 @@ interface IV2D {
 interface IPoint2D {
     x: number;
     y: number;
+}
+declare namespace ha {
+    class Sprite2 {
+        inputDown(pos: any): void;
+        inputMove(pos: any): void;
+        inputUp(): void;
+    }
+    export const sprite2: Sprite2;
+    export {};
 }

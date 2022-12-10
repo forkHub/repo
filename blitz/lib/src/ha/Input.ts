@@ -86,7 +86,7 @@ namespace ha {
 				if ("mouse" == e.pointerType) ha.input.event.down(this._mouseGlobal, key, 'mouse', pos);
 				if ("touch" == e.pointerType) ha.input.event.down(this._touchGlobal, key, 'touch', pos);
 
-				ha.Sprite.inputDown(pos)
+				ha.sprite2.inputDown(pos)
 			}
 
 			buffer.canvas.onpointermove = (e: PointerEvent) => {
@@ -104,7 +104,7 @@ namespace ha {
 				if (e.pointerType == 'mouse') ha.input.event.move(ha.input.mouseGlobal, buffer, e);
 
 				//sprite
-				ha.Sprite.inputMove(pos);
+				ha.sprite2.inputMove(pos);
 			}
 
 			buffer.canvas.onpointerout = (e: PointerEvent) => {

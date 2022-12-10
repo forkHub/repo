@@ -118,7 +118,7 @@ namespace ha {
 				return false;
 			}
 
-			Rect.rotate(r2, -d, pRot.x, pRot.y);
+			Rect.rotate(r2, -d, pRot.x, pRot.y, false);
 			ha.Point.putarPoros(p, pRot.x, pRot.y, -d);
 
 			if (!ha.Rect.collideDotBound(r2, p)) {
