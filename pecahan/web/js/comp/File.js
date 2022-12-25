@@ -3,7 +3,6 @@ var ha;
     var comp;
     (function (comp) {
         class File {
-            static cacheStr = [];
             static async load(url) {
                 let str = '';
                 //console.log('load: ' + url);
@@ -25,6 +24,7 @@ var ha;
                 return str;
             }
         }
+        File.cacheStr = [];
         comp.File = File;
     })(comp = ha.comp || (ha.comp = {}));
 })(ha || (ha = {}));

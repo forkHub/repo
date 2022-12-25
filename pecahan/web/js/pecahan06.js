@@ -1,6 +1,7 @@
 /**
  * membandingkan pecahan campuran
  * dengan penyebut sama
+ * dengan angka sama
  */
 var p6;
 (function (p6) {

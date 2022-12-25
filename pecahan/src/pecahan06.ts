@@ -1,6 +1,7 @@
 /**
  * membandingkan pecahan campuran
  * dengan penyebut sama
+ * dengan angka sama
  */
 namespace p6 {
 	export function mulai(): void {

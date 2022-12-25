@@ -1,6 +1,7 @@
 /**
  * membandingkan pecahan campuran
- * dengan penyebut sama
+ * dengan penyebut campur
+ * dengan angka yang sama
  */
 namespace p7 {
 	export function mulai(): void {
@@ -25,19 +26,25 @@ namespace p7 {
 
 	function buatSoal(): ISoal {
 		let hasil: ISoal;
-		let s1: number = 0;
-		let s2: number = 0;
-		let b1: number = 0;
-		let b2: number = 0;
+		let sebut1: number = 0;
+		let sebut2: number = 0;
+		let bilang1: number = 0;
+		let bilang2: number = 0;
 		let a: number = 0;
 
-		s1 = Math.floor(Math.random() * 5) + 2;
-		s2 = Math.floor(Math.random() * 5) + 2;
+		hasil = {
+			pecahan: []
+		};
 
+		//penyebut bebas
+		sebut1 = Math.floor(Math.random() * 5) + 2;
+		sebut2 = Math.floor(Math.random() * 5) + 2;
+
+		//pembilang bebas
 		//buat b1 yang tidak habis dibagi s1
 		while (true) {
-			b1 = Math.floor(Math.random() * 10) + 1;
-			if (b1 % s1 != 0) {
+			bilang1 = Math.floor(Math.random() * 10) + 1;
+			if (bilang1 % sebut1 != 0) {
 				break;
 			}
 			debugger;
@@ -45,19 +52,18 @@ namespace p7 {
 
 		//buat b2 yang tidak habis dibagi s2
 		while (true) {
-			b2 = Math.floor(Math.random() * 10) + 1;
-			if (b2 % s2 != 0) {
+			bilang2 = Math.floor(Math.random() * 10) + 1;
+			if (bilang2 % sebut2 != 0) {
 				break;
 			}
 		}
 
-		hasil = {
-			pecahan: []
-		};
+		//bilangan bulat bebas
+		a = Math.floor(Math.random() * 5) + 1;
+		hasil.pecahan.push(Pecahan.buat(a, bilang1, sebut1));
 
 		a = Math.floor(Math.random() * 5) + 1;
-		hasil.pecahan.push(Pecahan.buat(a, b1, s1));
-		hasil.pecahan.push(Pecahan.buat(a, b2, s2));
+		hasil.pecahan.push(Pecahan.buat(a, bilang2, sebut2));
 
 		let p1: IPecahan = hasil.pecahan[0];
 		let p2: IPecahan = hasil.pecahan[1];
@@ -77,76 +83,6 @@ namespace p7 {
 		}
 
 		return hasil;
-
-		// let hasil: ISoal;
-		// let angka: number = Math.floor(Math.random() * 5) + 1;
-		// let kurang: boolean = Math.floor(Math.random() * 2) == 1;
-		// let pecahan: IPecahan = Pecahan.buatAcak(angkMaks);
-
-		// if (kurang) {
-		// 	pecahan.angka = angka - 1;
-		// }
-		// else {
-		// 	pecahan.angka = angka + 1;
-		// }
-
-
-		// hasil = {
-		// 	pecahan: []
-		// };
-
-		// hasil.pecahan[0] = pecahan;
-		// hasil.pecahan[1] = angka;
-
-		// if (Math.floor(Math.random() * 2) == 1) {
-		// 	let p: any;
-
-		// 	p = hasil.pecahan[0];
-		// 	hasil.pecahan[0] = hasil.pecahan[1];
-		// 	hasil.pecahan[1] = p;
-		// }
-
-		// let p1: number;
-		// let p2: number;
-
-		// if (typeof (hasil.pecahan[0]) == 'number') {
-		// 	p1 = (hasil.pecahan[0]);
-		// }
-		// else {
-		// 	p1 = (hasil.pecahan[0] as IPecahan).dec;
-		// }
-
-		// if (typeof (hasil.pecahan[1]) == 'number') {
-		// 	p2 = hasil.pecahan[1];
-		// }
-		// else {
-		// 	p2 = (hasil.pecahan[1] as IPecahan).dec;
-		// }
-
-		// let a = typeof (hasil.pecahan[0]);
-		// let b = typeof (hasil.pecahan[1]);
-
-		// a; b; //
-
-		// if (p1 < p2) {
-		// 	hasil.jawaban = '<';
-		// }
-		// else if (p1 > p2) {
-		// 	hasil.jawaban = '>';
-		// }
-		// else if (p1 == p2) {
-		// 	hasil.jawaban = '=';
-		// }
-		// else {
-		// 	debugger;
-		// 	throw Error();
-		// }
-
-		// console.log(hasil.pecahan[0]);
-		// console.log(hasil.pecahan[1]);
-		// console.log(hasil.jawaban);
-
-		// return hasil;
 	}
 
 }
