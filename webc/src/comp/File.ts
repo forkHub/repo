@@ -2,17 +2,19 @@ namespace ha.comp {
 	export class File {
 		private static cacheStr: ICache[] = [];
 
-		static async load(url: string): Promise<string> {
+		static async load(url: string, cache: boolean): Promise<string> {
 			let str: string = '';
 
 			console.log('load: ' + url);
 
-			this.cacheStr.forEach((item: ICache) => {
-				if (item.url == url) {
-					str = item.str;
-					console.log('cached');
-				}
-			});
+			if (cache) {
+				this.cacheStr.forEach((item: ICache) => {
+					if (item.url == url) {
+						str = item.str;
+						console.log('cached');
+					}
+				});
+			}
 
 			if (str && str != '') {
 				return str;
