@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		//"module": "system",
+		"outDir": "js",
+		"outFile": "./js/game.js",
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"watch": true,
+		// "declaration": true
+	}
+}

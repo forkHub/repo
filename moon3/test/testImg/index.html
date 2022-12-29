@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <script src="js/game.js"></script>
+    <script src="js/createjs.js"></script>
+    <script src="js/Data.js"></script>
+    <style>
+        canvas {
+            width: 640;
+            height: 480;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        div#preloader {
+            display: none;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div id="preloader">
+        <!-- <img id="box" src="images/box.png" crossorigin="anonymous"/> -->
+        <img id="jalan" src="images/jln.png" crossorigin="anonymous"/>
+    </div>
+    <canvas id="canvas" width="320" height="240"></canvas>
+</body>
+
+<script>
+    window.onload = () => {
+        game = new fg.Game();
+    }
+</script>
+
+</html>

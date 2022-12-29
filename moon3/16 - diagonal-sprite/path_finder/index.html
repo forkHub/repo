@@ -1,0 +1,58 @@
+<html>
+
+<head>
+    <script src="js/game.js"></script>
+    <script src="js/createjs.js"></script>
+    <script src="js/Data.js"></script>
+    <style>
+        canvas {
+            width: 640;
+            height: 480;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            margin: auto;
+            display: block;
+        }
+
+        div#preloader {
+            display: none;
+        }
+
+        body {
+            padding: 0px;
+            margin: 0px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="preloader">
+        <img id="box" src="images/box.png" />
+        <img id="jalan" src="images/jln.png" />
+    </div>
+    <canvas id="canvas" width="320" height="240"></canvas>
+</body>
+
+<script>
+    window.onresize = function () {
+        let canvas = document.getElementById('canvas');
+        let w = window.innerWidth;
+        let h = window.innerHeight;
+        let wratio = w / 640;
+        let hratio = h / 480;
+        let rmin = Math.min(wratio, hratio);
+
+        canvas.style.width = Math.floor(640 * rmin) + 'px';
+        canvas.style.height = Math.floor(480 * rmin) + 'px';
+    }
+
+    window.onload = () => {
+        game = new fg.Game();
+        window.onresize();
+    }
+
+</script>
+
+</html>
