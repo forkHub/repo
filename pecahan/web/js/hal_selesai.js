@@ -1,5 +1,4 @@
 class HalSelesai {
-    static _el;
     static get el() {
         return HalSelesai._el;
     }

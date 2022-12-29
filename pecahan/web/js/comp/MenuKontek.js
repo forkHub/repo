@@ -3,8 +3,8 @@ var ha;
     var comp;
     (function (comp) {
         class MenuKontek {
-            view = new View();
             constructor() {
+                this.view = new View();
             }
             buatTombol(t) {
                 let button = document.createElement('button');
