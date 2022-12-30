@@ -1,7 +1,0 @@
-link article:
-https://hagarden.blogspot.com/2019/11/pada-tulisan-kemarin-kita-telah.html
-
-contoh penerapan algorithma path-finding
-dengan struktur peta yang berbeda.
-Tulisan ini adalah bagian dari seri tulisan algorithma path finding. 
-Ditulis dengan bahasa pemrograman typsecript.
