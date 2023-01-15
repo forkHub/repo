@@ -7,7 +7,7 @@ namespace fg {
 		 * 1. berhenti
 		 * 2. cari posisi terdekat dan ganti target ke posisi tersebut
 		 */
-		static readonly BL_STOPPED: number = 1;
+		static readonly BL_STOP: number = 1;
 		static readonly BL_TERDEKAT: number = 2;
 
 		private _cells: Array<fg.PFCell> = [];
@@ -19,11 +19,11 @@ namespace fg {
 
 		constructor() {
 			this._cells = [];
-			this._flBlocked = PathFinder.BL_STOPPED;
+			this._flBlocked = PathFinder.BL_STOP;
 		}
 
 		//dipakai saat algorithma selesai
-		getCellTerdekatKeTarget(tx: number, ty: number): fg.PFCell {
+		private getCellTerdekatKeTarget(tx: number, ty: number): fg.PFCell {
 			let jarakTerdekat: number = 1000;
 			let jarakSementara: number = 0;
 			let cellRes: PFCell = null;
@@ -42,7 +42,7 @@ namespace fg {
 			return cellRes;
 		}
 
-		buildPath(cell: PFCell, res: Array<PFCell>): void {
+		private buildPath(cell: PFCell, res: Array<PFCell>): void {
 			let i: number = 0;
 			let cellTemp: PFCell;
 			let cellParent: PFCell;
@@ -75,7 +75,7 @@ namespace fg {
 
 		}
 
-		cellCreate(parent: PFCell, i: number, j: number, targetX: number, targetY: number): PFCell {
+		private cellCreate(parent: PFCell, i: number, j: number, targetX: number, targetY: number): PFCell {
 			let cell: PFCell;
 
 			cell = new PFCell();
@@ -96,7 +96,7 @@ namespace fg {
 			return cell;
 		}
 
-		resToArray(res: Array<PFCell>): Array<any> {
+		private resToArray(res: Array<PFCell>): Array<any> {
 			let ar: Array<any> = [];
 
 			res.forEach(cell => {
@@ -106,7 +106,7 @@ namespace fg {
 			return ar;
 		}
 
-		find(sx: number, sy: number, tx: number, ty: number): Array<any> {
+		cari(sx: number, sy: number, tx: number, ty: number): Array<any> {
 			let res: Array<PFCell> = new Array<PFCell>();
 			let resAr: Array<any>;
 
@@ -134,7 +134,7 @@ namespace fg {
 			}
 		}
 
-		getOpenCell(): PFCell {
+		private getOpenCell(): PFCell {
 			let i: number;
 			let cell: PFCell;
 			let maxLen: number;
@@ -158,7 +158,7 @@ namespace fg {
 			return cellTemp;
 		}
 
-		cellOpen(cellCr: PFCell, tx: number, ty: number): void {
+		private cellOpen(cellCr: PFCell, tx: number, ty: number): void {
 			//up
 			if (this.cellPosPossible(cellCr.x, cellCr.y - 1)) {
 				this._cells.push(this.cellCreate(cellCr, cellCr.x, cellCr.y - 1, tx, ty));
@@ -200,7 +200,7 @@ namespace fg {
 			}
 		}
 
-		getPath(sx: number, sy: number, tx: number, ty: number): Array<PFCell> {
+		private getPath(sx: number, sy: number, tx: number, ty: number): Array<PFCell> {
 			let cellCr: PFCell;
 			let res: Array<PFCell> = new Array<PFCell>();
 
@@ -214,7 +214,7 @@ namespace fg {
 			while (true) {
 				if ((this._cells.length >= this._maxCells)) {
 
-					if (this._flBlocked == PathFinder.BL_STOPPED) {
+					if (this._flBlocked == PathFinder.BL_STOP) {
 						return [];
 					}
 					else if (this._flBlocked == PathFinder.BL_TERDEKAT) {
@@ -248,7 +248,7 @@ namespace fg {
 				}
 				else {
 
-					if (this._flBlocked == PathFinder.BL_STOPPED) {
+					if (this._flBlocked == PathFinder.BL_STOP) {
 						return [];
 					}
 					else if (this._flBlocked == PathFinder.BL_TERDEKAT) {
@@ -269,7 +269,7 @@ namespace fg {
 
 		}
 
-		cellExistsAtPos(ix: number, jx: number): boolean {
+		private cellExistsAtPos(ix: number, jx: number): boolean {
 			let res: boolean = false;
 
 			this._cells.forEach(cell => {
@@ -281,7 +281,7 @@ namespace fg {
 			return res;
 		}
 
-		cellPosPossible(ix: number, jx: number): boolean {
+		private cellPosPossible(ix: number, jx: number): boolean {
 			if (this.cellExistsAtPos(ix, jx)) {
 				return false;
 			}

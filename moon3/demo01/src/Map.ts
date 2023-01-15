@@ -1,12 +1,22 @@
 namespace fg {
     export class Map {
-        private _map: Array<string> = Data.map;
+        readonly map: Array<string> = [];
 
         getCellValue(i: number, j: number): number {
-            if (this._map[j].charAt(i) == "X") {
+            if (this.map[j].charAt(i) == "X") {
                 return 1;
             }
             return 0;
+        }
+
+        setMap(maps: string[]) {
+            while (this.map.length > 0) {
+                this.map.pop();
+            }
+
+            maps.forEach((item: string) => {
+                this.map.push(item);
+            })
         }
 
         isPassable(x: number, y: number): boolean {
@@ -17,15 +27,15 @@ namespace fg {
                 return false;
             }
 
-            if (x >= this._map[y].length) {
+            if (x >= this.map[y].length) {
                 return false;
             }
 
-            if (y >= this._map.length) {
+            if (y >= this.map.length) {
                 return false;
             }
 
-            if (this._map[y].charAt(x) == " ") {
+            if (this.map[y].charAt(x) == " ") {
                 return true;
             }
             else {
@@ -35,11 +45,11 @@ namespace fg {
         }
 
         public get width(): number {
-            return this._map[0].length;
+            return this.map[0].length;
         }
 
         public get height(): number {
-            return this._map.length;
+            return this.map.length;
         }
 
     }
