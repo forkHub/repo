@@ -1,8 +1,9 @@
 class Pecahan {
+    _angka = 0;
+    _pembilang = 0;
+    _penyebut = 0;
+    _dec;
     constructor(a, bilang, sebut) {
-        this._angka = 0;
-        this._pembilang = 0;
-        this._penyebut = 0;
         this.angka = a;
         this.pembilang = bilang;
         this.penyebut = sebut;
