@@ -273,3 +273,12 @@ a.bersih {
 .width-12 {
 	width: 100%;
 }
+
+/* table */
+.disp-table {
+	display: table;
+}
+
+.disp-table-cell {
+	display: table-cell;
+}

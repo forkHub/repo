@@ -3,6 +3,6 @@ interface ISlAnggota {
 	nama?: string,
 
 	populated?: boolean
-	pas?: ISlAnggota;
+	pas?: string;
 	anak?: ISlAnggota[]
 }

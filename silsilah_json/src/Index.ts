@@ -1,4 +1,3 @@
-declare var data: ISlAnggota;
 
 class App {
 	renderAnggota(anggota: ISlAnggota, cont: HTMLDivElement, indek: number): void {
@@ -13,7 +12,7 @@ class App {
 		view.foto.style.backgroundSize = 'cover';
 
 		view.anggota = anggota;
-		view.profileUtama.setAttribute('id', anggota.id + '');
+		// view.profileUtama.setAttribute('id', anggota.id + '');
 
 		view.attach(cont);
 
@@ -60,27 +59,24 @@ class App {
 			console.debug('anggota belum di populate');
 			view.anggota.populated = true;
 
-			if (view.anggota.pas) {
-				console.debug('load pasangan');
-				let pas: ISlAnggota = view.anggota.pas //(await app.anggotaDao.bacaPasangan(view.anggota))[0];
-				if (pas) {
-					console.debug('pasangan loaded');
-					// view.anggota.pasangan_id = pas.id;
-					view.anggota.pas = pas;
-					view.imgPasangan.src = '/gbr/thumb.png';
-					view.imgPasangan.src = '/gbr/thumb.png'; //override buat hilangin foto
-					view.profilePasangan.setAttribute('id', pas.id + '');
+			if (view.anggota.pas && view.anggota.pas != '') {
+				console.debug('pasangan loaded');
 
-					view.fotoPasangan.style.backgroundImage = 'url(' + view.imgPasangan.src + ')';
-					view.fotoPasangan.style.backgroundRepeat = 'no-repeat';
-					view.fotoPasangan.style.backgroundSize = 'cover';
-				}
-				else {
-					console.debug('pasangan tidak ketemu');
-				}
+				// view.anggota.pasangan_id = pas.id;
+				// view.anggota.pas = pas;
+
+				view.imgPasangan.src = '/gbr/thumb.png';
+				view.imgPasangan.src = '/gbr/thumb.png'; //override buat hilangin foto
+
+				// view.profilePasangan.setAttribute('id', pas.id + '');
+
+				view.fotoPasangan.style.backgroundImage = 'url(' + view.imgPasangan.src + ')';
+				view.fotoPasangan.style.backgroundRepeat = 'no-repeat';
+				view.fotoPasangan.style.backgroundSize = 'cover';
 			}
 			else {
-				console.debug('pasangan relasi tidak ada')
+				view.pasangan.style.display = 'none';
+				console.debug('pasangan tidak ketemu');
 			}
 
 			//load anak
@@ -94,7 +90,7 @@ class App {
 
 		if (view.anggota.pas) {
 			console.debug('render pasangan');
-			view.namaPasangan.innerHTML = view.anggota.pas.nama;
+			view.namaPasangan.innerHTML = view.anggota.pas;
 			// view.pasangan.classList.toggle('display-none');
 		}
 
@@ -159,9 +155,9 @@ class AnggotaView extends ha.comp.BaseComponent {
 
 	}
 
-	get profileUtama(): HTMLButtonElement {
-		return this.getEl('div.atas div.utama button.profile') as HTMLButtonElement;
-	}
+	// get profileUtama(): HTMLButtonElement {
+	// 	return this.getEl('div.atas div.utama button.profile') as HTMLButtonElement;
+	// }
 
 	get profilePasangan(): HTMLButtonElement {
 		return this.getEl('div.atas div.pasangan button.profile') as HTMLButtonElement;
@@ -210,7 +206,7 @@ class AnggotaView extends ha.comp.BaseComponent {
 
 }
 
-export class Hubung extends ha.comp.BaseComponent {
+class Hubung extends ha.comp.BaseComponent {
 	constructor() {
 		super();
 		this._template = `

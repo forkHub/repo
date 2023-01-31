@@ -9,7 +9,7 @@ class App {
         view.foto.style.backgroundRepeat = 'no-repeat';
         view.foto.style.backgroundSize = 'cover';
         view.anggota = anggota;
-        view.profileUtama.setAttribute('id', anggota.id + '');
+        // view.profileUtama.setAttribute('id', anggota.id + '');
         view.attach(cont);
         let hubung = new Hubung();
         hubung.attach(view.hubungCont);
@@ -49,26 +49,20 @@ class App {
         if (!view.anggota.populated) {
             console.debug('anggota belum di populate');
             view.anggota.populated = true;
-            if (view.anggota.pas) {
-                console.debug('load pasangan');
-                let pas = view.anggota.pas; //(await app.anggotaDao.bacaPasangan(view.anggota))[0];
-                if (pas) {
-                    console.debug('pasangan loaded');
-                    // view.anggota.pasangan_id = pas.id;
-                    view.anggota.pas = pas;
-                    view.imgPasangan.src = '/gbr/thumb.png';
-                    view.imgPasangan.src = '/gbr/thumb.png'; //override buat hilangin foto
-                    view.profilePasangan.setAttribute('id', pas.id + '');
-                    view.fotoPasangan.style.backgroundImage = 'url(' + view.imgPasangan.src + ')';
-                    view.fotoPasangan.style.backgroundRepeat = 'no-repeat';
-                    view.fotoPasangan.style.backgroundSize = 'cover';
-                }
-                else {
-                    console.debug('pasangan tidak ketemu');
-                }
+            if (view.anggota.pas && view.anggota.pas != '') {
+                console.debug('pasangan loaded');
+                // view.anggota.pasangan_id = pas.id;
+                // view.anggota.pas = pas;
+                view.imgPasangan.src = '/gbr/thumb.png';
+                view.imgPasangan.src = '/gbr/thumb.png'; //override buat hilangin foto
+                // view.profilePasangan.setAttribute('id', pas.id + '');
+                view.fotoPasangan.style.backgroundImage = 'url(' + view.imgPasangan.src + ')';
+                view.fotoPasangan.style.backgroundRepeat = 'no-repeat';
+                view.fotoPasangan.style.backgroundSize = 'cover';
             }
             else {
-                console.debug('pasangan relasi tidak ada');
+                view.pasangan.style.display = 'none';
+                console.debug('pasangan tidak ketemu');
             }
             //load anak
             console.group('load anak');
@@ -80,8 +74,8 @@ class App {
         }
         if (view.anggota.pas) {
             console.debug('render pasangan');
-            view.namaPasangan.innerHTML = view.anggota.pas.nama;
-            view.pasangan.classList.toggle('display-none');
+            view.namaPasangan.innerHTML = view.anggota.pas;
+            // view.pasangan.classList.toggle('display-none');
         }
         if (view.pasangan.classList.contains('display-none')) {
             view.pasangan.classList.remove('disp-table-cell');
@@ -112,8 +106,8 @@ class App {
             }
             this.renderAnggota(anak, view.bawah, hubung);
         }
-        view.bawah.classList.toggle('display-none');
-        view.bawah.classList.toggle('display-table');
+        // view.bawah.classList.toggle('display-none');
+        // view.bawah.classList.toggle('display-table');
         console.groupEnd();
     }
 }
@@ -129,9 +123,9 @@ class AnggotaView extends ha.comp.BaseComponent {
         super();
         this._elHtml = document.body.querySelector('template').content.querySelector('div.cont').cloneNode(true);
     }
-    get profileUtama() {
-        return this.getEl('div.atas div.utama button.profile');
-    }
+    // get profileUtama(): HTMLButtonElement {
+    // 	return this.getEl('div.atas div.utama button.profile') as HTMLButtonElement;
+    // }
     get profilePasangan() {
         return this.getEl('div.atas div.pasangan button.profile');
     }
@@ -166,7 +160,7 @@ class AnggotaView extends ha.comp.BaseComponent {
         return this.getEl('div.hubung-cont');
     }
 }
-export class Hubung extends ha.comp.BaseComponent {
+class Hubung extends ha.comp.BaseComponent {
     constructor() {
         super();
         this._template = `

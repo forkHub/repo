@@ -1,4 +1,4 @@
-const data = {
+const data: ISlAnggota = {
     nama: 'kakek',
     pas: 'nenek',
     anak: [
@@ -22,6 +22,7 @@ const data = {
                     nama: 'adik',
                     anak: []
                 }
+
             ]
         },
         {
@@ -30,7 +31,8 @@ const data = {
             anak: []
         }
     ]
-};
+}
+
 // const data: ISlAnggota = {
 //     nama: 'kakek',
 //     pas: 'nenek',
