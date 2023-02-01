@@ -150,7 +150,7 @@ namespace ha.comp {
 
 			if (x.status == 200 || x.status == 0) {
 				console.log('loaded: ');
-				// console.log(x.responseText);
+				console.log(x.responseText);
 				return x.responseText;
 			}
 

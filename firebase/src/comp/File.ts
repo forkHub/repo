@@ -2,16 +2,6 @@ namespace ha.comp {
 	export class File {
 		private static cacheStr: ICache[] = [];
 
-		static fromCache(url: string): string {
-			for (let i: number = 0; i < this.cacheStr.length; i++) {
-				if (this.cacheStr[i].url == url) {
-					return this.cacheStr[i].str;
-				}
-			}
-
-			throw Error('');
-		}
-
 		static async load(url: string): Promise<string> {
 			let str: string = '';
 
@@ -34,6 +24,7 @@ namespace ha.comp {
 				str: str
 			});
 
+			console.log('str ' + str);
 			return str;
 		}
 

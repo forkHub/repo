@@ -9,7 +9,7 @@ namespace ha.comp {
 				}
 			}
 
-			throw Error('');
+			throw Error('url: ' + url);
 		}
 
 		static async load(url: string): Promise<string> {
