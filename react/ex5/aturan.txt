@@ -1,0 +1,10 @@
+ada h1 buat info sharable
+ada tiga link
+ada tiga halaman
+tiap halaman ada input text
+
+
+jika link di klik => pindah ke halaman
+jika input di edit => update info yang di share
+
+

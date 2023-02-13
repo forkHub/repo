@@ -1,0 +1,14 @@
+{
+  "name": "existing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./target/index.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10"
+  }
+}
