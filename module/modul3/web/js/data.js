@@ -2,26 +2,29 @@ let data = {
     id: ha.comp.Id.id,
     tipe: "modul",
     nama: 'root',
-    anak: [
+    variabel: [
+        {
+            id: ha.comp.Id.id,
+            tipe: 'variable',
+            nama: 'var1',
+            tipeVar: 'angka',
+            value: '123'
+        }
+    ],
+    subModul: [
         {
             id: ha.comp.Id.id,
             tipe: "modul",
             nama: 'modul 1',
-            anak: [
-                {
-                    id: ha.comp.Id.id,
-                    tipe: 'variable',
-                    nama: 'var_angka',
-                    tipeVar: 'angka',
-                    value: '2'
-                }
-            ]
+            subModul: [],
+            variabel: []
         },
         {
             id: ha.comp.Id.id,
             tipe: "modul",
             nama: 'modul 2',
-            anak: []
+            subModul: [],
+            variabel: []
         }
     ]
 };

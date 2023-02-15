@@ -5,11 +5,18 @@ interface IEntity {
 
 interface IModul extends IEntity {
     nama: string,
-    anak: IModul[] | IVariable[]
+    subModul: IModul[]
+    variabel: IVariable[]
 }
 
 interface IVariable extends IEntity {
     nama: string,
-    tipeVar: 'angka' | 'teks',
+    tipeVar: 'angka' | 'teks' | 'object',
     value: string
+}
+
+type IAnakModul = IModul | IVariable
+
+interface IData extends IEntity, IModul, IVariable {
+
 }

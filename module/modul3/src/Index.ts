@@ -1,25 +1,27 @@
 
-function render(data: IModul | IVariable, cont: HTMLElement) {
+function renderModul(data: IModul, cont: HTMLElement) {
     let item: HTMLElement = document.createElement('modul-item');
 
-    if (data.tipe == 'modul') {
-        let modul: IModul = data as IModul;
-        item.setAttribute('nama', modul.nama);
-        cont.appendChild(item);
+    item.setAttribute('nama', data.nama);
+    cont.appendChild(item);
 
-        modul.anak.forEach((anak: IModul | IVariable) => {
-            render(anak, item.querySelector('div.anak-cont'));
-        })
+    data.subModul.forEach((anak: IModul) => {
+        renderModul(anak, item.querySelector('div.anak-cont'));
+    });
 
-    }
-    else {
-        //
-    }
+    //render variable
+    data.variabel.forEach((variabel: IVariable) => {
+        let el: HTMLElement = document.createElement('dek-var');
+        item.querySelector('div.var-cont').appendChild(el);
+        el.setAttribute('id', variabel.id + '');
+    });
+
 }
 
 async function start(): Promise<void> {
     await ha.comp.File.load('template/modul-item.html');
-    render(data, document.body);
+    await ha.comp.File.load('template/dek-var.html');
+    renderModul(data, document.body);
 }
 
 start().catch((e) => {

@@ -41,7 +41,7 @@ class modulItem extends HTMLElement {
     }
 
     static get observedAttributes(): any[] {
-        return ['nama'];
+        return ['nama', 'id'];
     }
 
     attributeChangedCallback(_name: any, _oldValue: any, _newValue: any) {

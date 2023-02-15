@@ -49,6 +49,7 @@ function MainPage() {
         function wrappupKlik() {
             Customer.reset(Data.customer);
             setMenuAktif(false);
+            globalHook.activePage.setter("");
         }
 
         function contactHistoryKlik() {

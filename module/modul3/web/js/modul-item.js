@@ -33,7 +33,7 @@ class modulItem extends HTMLElement {
         // (can be called many times if an element is repeatedly added/removed)
     }
     static get observedAttributes() {
-        return ['nama'];
+        return ['nama', 'id'];
     }
     attributeChangedCallback(_name, _oldValue, _newValue) {
         this.update();
