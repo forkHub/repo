@@ -33,7 +33,11 @@ function Loop(): void {
     Bersih();
 
     if (InputHit()) {
-        mainChar.jalanKePos(Math.floor(InputX() / 32), Math.floor(InputY() / 32));
+        if (InputType() == EInput.TOUCH || InputType() == EInput.MOUSE) {
+            let posX: number = Math.floor(InputX() / 32);
+            let posY: number = Math.floor(InputY() / 32);
+            mainChar.jalanKePos(posX, posY);
+        }
     }
 
     mainChar.update();

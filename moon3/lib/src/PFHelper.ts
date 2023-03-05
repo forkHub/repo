@@ -46,7 +46,7 @@ namespace fg {
             this._pos.y = data[0][1] * this._cellHeight;
         }
 
-        updateArah(): void {
+        private updateArah(): void {
             let x1: number;
             let y1: number;
 
@@ -124,7 +124,7 @@ namespace fg {
         // console.log("WARN: arah tidak terdefinisi x1 " + x1 + '/y1 ' + y1 + '/x2' + x2 + '/y2 ' + y2);
         // console.log('rute jalan: ' + this.ruteJalan);
         // console.log('jalan idx ' + this.jalanIdx);
-        updatePos(): void {
+        private updatePos(): void {
             this._pos.x = this.ruteJalan[this.jalanIdx][0] * this._cellWidth;
             this._pos.y = this.ruteJalan[this.jalanIdx][1] * this._cellHeight;
 
@@ -137,9 +137,9 @@ namespace fg {
             }
         }
 
-        gantiCell(): boolean {
-            return true;
-        }
+        // private gantiCell(): boolean {
+        //     return true;
+        // }
 
         update(): void {
             if (this._sedangJalan) {

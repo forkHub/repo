@@ -8,9 +8,7 @@ namespace fg {
         readonly pfHelper: fg.PFHelper = new fg.PFHelper();
         readonly pos: fg.Point = new fg.Point();
 
-
         private ruteJalan: Array<any> = [];
-
 
         private _map: Map = new fg.Map();
         public get map(): Map {
@@ -21,7 +19,6 @@ namespace fg {
         }
 
         readonly view: ISprite = MuatAnimasi('./gbr/jln.png', 32, 32);
-        readonly seqs: Sequence[] = [];
 
         private state: number = 1;
 
@@ -32,6 +29,8 @@ namespace fg {
         initPathFinder() {
             this.pf.flBlocked = PathFinder.BL_TERDEKAT;
             this.pfHelper.langkahTotal = 10;
+            // this.pfHelper.
+
             this.pf.checkCanMoveToPos = (x: number, y: number): boolean => {
                 return this.map.isPassable(x, y);
             }
@@ -45,6 +44,7 @@ namespace fg {
 
                 if (jrkX == 0) {
                     if (jrkY <= 1) {
+
                         return true;
                     }
                 }
@@ -57,41 +57,6 @@ namespace fg {
 
                 return false;
             }
-
-            this.pfHelper.updateArahCallBack = () => {
-                this.updateAnim();
-            }
-        }
-
-        updateAnim(): void {
-            /*
-            // console.log('arah ' + this.pfHelper.arah);
-            if (this.pfHelper.arah == PFHelper.ATAS && (this.animation.currentAnimation != "jalanat")) {
-                this.animation.gotoAndPlay("jalanat");
-            }
-            else if (this.pfHelper.arah == PFHelper.KANAN && (this.animation.currentAnimation != "jalanka")) {
-                this.animation.gotoAndPlay("jalanka");
-            }
-            else if (this.pfHelper.arah == PFHelper.BAWAH && (this.animation.currentAnimation != "jalanba")) {
-                this.animation.gotoAndPlay("jalanba");
-            }
-            else if (this.pfHelper.arah == PFHelper.KIRI && (this.animation.currentAnimation != "jalanki")) {
-                this.animation.gotoAndPlay("jalanki");
-            }
-            else if (this.pfHelper.arah == PFHelper.KANAN_ATAS && (this.animation.currentAnimation != "jalankaat")) {
-                this.animation.gotoAndPlay("jalankaat");
-            }
-            else if (this.pfHelper.arah == PFHelper.KANAN_BAWAH && (this.animation.currentAnimation != "jalankaba")) {
-                // console.log('anim jalan kanan bawah');
-                this.animation.gotoAndPlay("jalankaba");
-            }
-            else if (this.pfHelper.arah == PFHelper.KIRI_ATAS && (this.animation.currentAnimation != "jalankiat")) {
-                // console.log('anim jalan kiri atas');
-                this.animation.gotoAndPlay("jalankiat");
-            }
-            else if (this.pfHelper.arah == PFHelper.KIRI_BAWAH && (this.animation.currentAnimation != "jalankiba")) {
-                this.animation.gotoAndPlay("jalankiba");
-            }*/
         }
 
         jalanKePos(i: number, j: number): void {
@@ -99,7 +64,7 @@ namespace fg {
                 this.ruteJalan = this.pf.cari(Math.floor(this.pos.x / 32), Math.floor(this.pos.y / 32), i, j);
                 if (this.ruteJalan.length > 0) {
                     this.pfHelper.start(this.ruteJalan);
-                    this.updateAnim();
+                    // this.updateAnim();
                     this.state = MainChar.JALAN;
                 }
             }
@@ -112,6 +77,7 @@ namespace fg {
 
         update(): void {
             if (this.state == MainChar.BERDIRI) {
+                //kosong
             }
             else {
                 this.pfHelper.update();
@@ -120,7 +86,6 @@ namespace fg {
 
                 if (!this.pfHelper.sedangJalan) {
                     this.state = MainChar.BERDIRI;
-                    // this.animation.gotoAndStop("berdiri");
                 }
             }
 

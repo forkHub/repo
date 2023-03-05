@@ -26,7 +26,11 @@ mainChar.map = map;
 function Loop() {
     Bersih();
     if (InputHit()) {
-        mainChar.jalanKePos(Math.floor(InputX() / 32), Math.floor(InputY() / 32));
+        if (InputType() == EInput.TOUCH || InputType() == EInput.MOUSE) {
+            let posX = Math.floor(InputX() / 32);
+            let posY = Math.floor(InputY() / 32);
+            mainChar.jalanKePos(posX, posY);
+        }
     }
     mainChar.update();
     gambarTembok();

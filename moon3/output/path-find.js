@@ -167,9 +167,9 @@ var fg;
                 this._pos.y = this._pos.y + (this._langkahIdx / this._langkahTotal) * (this.posTemp.y - this._pos.y);
             }
         }
-        gantiCell() {
-            return true;
-        }
+        // private gantiCell(): boolean {
+        //     return true;
+        // }
         update() {
             if (this._sedangJalan) {
                 this._langkahIdx++;
@@ -334,12 +334,12 @@ var fg;
             }
             return resAr;
         }
-        checkSampaiTujuan(i, j, tx, ty) {
+        checkSampaiTujuan(charX, charY, tx, ty) {
             if (this._checkSampai != null) {
-                return this._checkSampai(i, j, tx, ty);
+                return this._checkSampai(charX, charY, tx, ty);
             }
             else {
-                if ((i == tx) && (j == ty))
+                if ((charX == tx) && (charY == ty))
                     return true;
                 return false;
             }

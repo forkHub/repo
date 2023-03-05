@@ -13,7 +13,7 @@ namespace fg {
 		private _cells: Array<fg.PFCell> = [];
 		private _maxCells: number = 100;
 		private _checkCanMoveToPos: Function;
-		private _checkSampai: Function;
+		private _checkSampai: (charX: number, charY: number, tx: number, ty: number) => boolean;
 		private _flBlocked: number = 0;
 		private _flDiagonal: boolean = false;
 
@@ -124,12 +124,12 @@ namespace fg {
 			return resAr;
 		}
 
-		private checkSampaiTujuan(i: number, j: number, tx: number, ty: number): boolean {
+		private checkSampaiTujuan(charX: number, charY: number, tx: number, ty: number): boolean {
 			if (this._checkSampai != null) {
-				return this._checkSampai(i, j, tx, ty);
+				return this._checkSampai(charX, charY, tx, ty);
 			}
 			else {
-				if ((i == tx) && (j == ty)) return true;
+				if ((charX == tx) && (charY == ty)) return true;
 				return false;
 			}
 		}
@@ -318,7 +318,7 @@ namespace fg {
 		public set flDiagonal(value: boolean) {
 			this._flDiagonal = value;
 		}
-		public set checkSampai(value: Function) {
+		public set checkSampai(value: (charX: number, charY: number, tx: number, ty: number) => boolean) {
 			this._checkSampai = value;
 		}
 

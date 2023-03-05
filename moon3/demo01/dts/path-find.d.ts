@@ -47,9 +47,8 @@ declare namespace fg {
         constructor();
         reset(): void;
         start(data: Array<any>): void;
-        updateArah(): void;
-        updatePos(): void;
-        gantiCell(): boolean;
+        private updateArah;
+        private updatePos;
         update(): void;
         get cellWidth(): number;
         set cellWidth(value: number);
@@ -99,7 +98,7 @@ declare namespace fg {
         set flBlocked(value: number);
         get flDiagonal(): boolean;
         set flDiagonal(value: boolean);
-        set checkSampai(value: Function);
+        set checkSampai(value: (charX: number, charY: number, tx: number, ty: number) => boolean);
     }
 }
 declare namespace fg {
