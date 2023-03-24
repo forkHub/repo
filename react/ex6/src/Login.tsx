@@ -30,7 +30,7 @@ function LoginPage() {
         </div>
     </>
 
-    function handleSubmit(e): boolean {
+    function handleSubmit(e: any): boolean {
         e.preventDefault();
         e.stopPropagation();
 

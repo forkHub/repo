@@ -1,4 +1,5 @@
-namespace fg {
+
+namespace ha.pf {
     export class Point {
         x: number;
         y: number;
@@ -7,8 +8,5 @@ namespace fg {
             this.x = i;
             this.y = j;
         }
-
     }
-
-
 }

@@ -1,4 +1,4 @@
-declare namespace fg {
+declare namespace ha.pf {
     class PFCell {
         protected _dist: number;
         protected _parent: PFCell;
@@ -23,7 +23,7 @@ declare namespace fg {
         set parent(value: PFCell);
     }
 }
-declare namespace fg {
+declare namespace ha.pf {
     class PFHelper {
         static readonly ATAS: number;
         static readonly KANAN: number;
@@ -65,7 +65,7 @@ declare namespace fg {
         set updateArahCallBack(value: Function);
     }
 }
-declare namespace fg {
+declare namespace ha.pf {
     class PathFinder {
         /**
          * aksi yang diambil saat jalan terblock
@@ -101,7 +101,7 @@ declare namespace fg {
         set checkSampai(value: (charX: number, charY: number, tx: number, ty: number) => boolean);
     }
 }
-declare namespace fg {
+declare namespace ha.pf {
     class Point {
         x: number;
         y: number;

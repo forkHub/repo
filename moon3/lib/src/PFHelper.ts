@@ -1,4 +1,5 @@
-namespace fg {
+
+namespace ha.pf {
     export class PFHelper {
 
         static readonly ATAS: number = 1;
@@ -215,5 +216,4 @@ namespace fg {
         }
 
     }
-
 }

@@ -1,0 +1,6 @@
+kondisi panah
+hitung posisi panah di sebelah kanan
+padding left
+padding right
+posisi tab terakhir
+getter dan setter dibuat primitive

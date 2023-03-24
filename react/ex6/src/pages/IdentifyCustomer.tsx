@@ -31,7 +31,7 @@ function IdentifyCustomer() {
 
     </form >
 
-    function formSubmit(e): boolean {
+    function formSubmit(e: any): boolean {
         e.stopPropagation();
         e.preventDefault();
 

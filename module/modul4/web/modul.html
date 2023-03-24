@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, 
+        target-densityDpi=device-dpi">
+
+	<link href="./css/umum.css" rel="stylesheet" />
+	<link href="./css/css.css" rel="stylesheet" />
+
+	<title>Modul</title>
+	<style>
+		div.modul-item div.anak {
+			padding-left: 8px;
+		}
+
+		div.modul-item div.nama {
+			width: 200px;
+		}
+
+		div.modul-item div.el-cont.dipilih {
+			border: 1px solid;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="disp-flex flex-dir-col height-12">
+		<h1>Edit Modul</h1>
+		<div class="daftar flex-grow-1">
+
+		</div>
+		<div class="menu">
+			<button class="tambah">+</button>
+		</div>
+	</div>
+
+	<template>
+		<div class="modul-item">
+			<div class="el-cont disp-flex">
+				<button class="expand">[+]</button>
+				<div class="nama"></div>
+				<div class="menu disp-flex">
+					<button class="lihat">👀</button>
+					<button class="hapus">🗑️</button>
+					<button class="edit">✏️</button>
+				</div>
+			</div>
+			<div class="anak">
+
+			</div>
+		</div>
+	</template>
+	<script type="module" src="./js/hal_module.js"></script>
+</body>
+
+</html>
