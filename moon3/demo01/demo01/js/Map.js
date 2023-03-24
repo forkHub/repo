@@ -1,55 +1,43 @@
-
 export class PfMap {
-    readonly map: Array<string> = [];
-
-    getCellValue(i: number, j: number): number {
+    map = [];
+    getCellValue(i, j) {
         if (this.map[j].charAt(i) == "X") {
             return 1;
         }
         return 0;
     }
-
-    setMap(maps: string[]) {
+    setMap(maps) {
         while (this.map.length > 0) {
             this.map.pop();
         }
-
-        maps.forEach((item: string) => {
+        maps.forEach((item) => {
             this.map.push(item);
-        })
+        });
     }
-
-    isPassable(x: number, y: number): boolean {
+    isPassable(x, y) {
         if (x < 0) {
             return false;
         }
         if (y < 0) {
             return false;
         }
-
         if (x >= this.map[y].length) {
             return false;
         }
-
         if (y >= this.map.length) {
             return false;
         }
-
         if (this.map[y].charAt(x) == " ") {
             return true;
         }
         else {
             return false;
         }
-
     }
-
-    public get width(): number {
+    get width() {
         return this.map[0].length;
     }
-
-    public get height(): number {
+    get height() {
         return this.map.length;
     }
-
 }

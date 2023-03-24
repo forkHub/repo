@@ -4,7 +4,6 @@ import { ModulObj } from "./modulEnt.js";
 
 export class ModulView extends BaseComponent {
     private static list: ModulView[] = [];
-    // private static _dipilih: ModulView = null;
 
     private _item: ModulObj;
     private namaEl: HTMLElement;
@@ -14,13 +13,6 @@ export class ModulView extends BaseComponent {
     private hapusTbl: HTMLButtonElement;
     private editTbl: HTMLButtonElement;
     private elCont: HTMLDivElement;
-
-    // public static get dipilih(): ModulView {
-    //     return ModulView._dipilih;
-    // }
-    // public static set dipilih(value: ModulView) {
-    //     ModulView._dipilih = value;
-    // }
 
     public get item(): ModulObj {
         return this._item;
@@ -53,6 +45,7 @@ export class ModulView extends BaseComponent {
 
         this.lihatTbl.onclick = () => {
             console.debug('lihat klik');
+            this.lihatKlik();
         }
 
         this.expandTbl.onclick = () => {
@@ -73,6 +66,10 @@ export class ModulView extends BaseComponent {
         ModulObj.getByParentId(this.item.id).forEach((item: ModulObj) => {
             ModulView.tambah(this.anakEl, item);
         });
+    }
+
+    private lihatKlik(): void {
+        window.top.location.href = "edit_modul.html?id=" + this._item.id;
     }
 
     private hapusKlik(): void {

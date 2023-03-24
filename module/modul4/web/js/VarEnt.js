@@ -1,72 +1,73 @@
-import { Id } from "./comp/Id.js";
-export class ModulObj {
-    static tableName = 'ha.modul.modul';
+export class VariableObj {
+    static tableName = 'ha.modul.variable';
     static list = [];
-    static _modulDitambah;
+    static _ditambah;
     static _dihapus;
     static _diedit;
     static get diedit() {
-        return ModulObj._diedit;
+        return VariableObj._diedit;
     }
     static set diedit(value) {
-        ModulObj._diedit = value;
+        VariableObj._diedit = value;
     }
     static get dihapus() {
-        return ModulObj._dihapus;
+        return VariableObj._dihapus;
     }
     static set dihapus(value) {
-        ModulObj._dihapus = value;
+        VariableObj._dihapus = value;
     }
-    static get modulDitambah() {
-        return this._modulDitambah;
+    static get ditambah() {
+        return this._ditambah;
     }
-    static set modulDitambah(value) {
-        this._modulDitambah = value;
+    static set ditambah(value) {
+        this._ditambah = value;
     }
-    constructor(id, nama, parentId) {
+    constructor(id, nama, parentId, type) {
         this._id = id;
         this._nama = nama;
         this._parentId = parentId;
+        this._parentType = type;
     }
     static getAll() {
         return this.list.slice();
     }
     static loadData() {
         try {
-            let str = window.localStorage.getItem(ModulObj.tableName);
+            let str = window.localStorage.getItem(VariableObj.tableName);
             let list = JSON.parse(str);
             this.list = [];
             list.forEach((m) => {
-                this.list.push(new ModulObj(m.id, m.nama, m.parentId));
+                this.list.push(new VariableObj(m.id, m.nama, m.parentId, m.parentType));
             });
         }
         catch (e) {
             console.warn(e);
-            let modul = new ModulObj(Id.id, 'root', 0);
-            ModulObj.list = [];
-            ModulObj.list.push(modul);
-            ModulObj.save();
+            // let modul: VariableObj = new VariableObj(Id.id, 'root', 0);
+            // VariableObj.list = [];
+            // VariableObj.list.push(modul);
+            // VariableObj.save();
         }
     }
     static save() {
         let data = [];
         this.list.forEach((item) => {
-            data.push(ModulObj.toObj(item));
+            data.push(VariableObj.toObj(item));
         });
-        window.localStorage.setItem(ModulObj.tableName, JSON.stringify(data));
+        window.localStorage.setItem(VariableObj.tableName, JSON.stringify(data));
     }
     static toObj(m) {
         return {
             id: m.id,
             nama: m.nama,
-            parentId: m.parentId
+            parentId: m.parentId,
+            parentType: m.parentType
         };
     }
     static tambah(m) {
         this.list.push(m);
         this.save();
         setTimeout(() => {
-            this.modulDitambah(m);
+            this.ditambah(m);
         }, 0);
     }
     static edit() {
@@ -99,6 +100,13 @@ export class ModulObj {
         return this.list.filter((item) => {
             return item._parentId == id;
         });
+    }
+    _parentType;
+    get parentType() {
+        return this._parentType;
+    }
+    set parentType(value) {
+        this._parentType = value;
     }
     _id;
     get id() {

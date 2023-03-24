@@ -5,6 +5,25 @@ export class Util {
     static sLevel = 'level';
     static sFilter = 'filter';
     static storageId = 'xyz.hagarden.tugas';
+    static getParam(key) {
+        try {
+            let s = window.top.location.search.slice(1, Number.MAX_VALUE);
+            let kv = [];
+            kv = s.split('&');
+            for (let i = 0; i < kv.length; i++) {
+                let ar = [];
+                ar = kv[i].split('=');
+                if (ar[0] == key) {
+                    return ar[1];
+                }
+            }
+        }
+        catch (e) {
+            console.warn(e);
+        }
+        console.warn('key not found, param: ' + window.top.location.search);
+        return null;
+    }
     static createEl(str) {
         let div = document.createElement('div');
         let el;

@@ -95,6 +95,12 @@ export class ModulObj implements IModul {
         }, 0);
     }
 
+    static getById(id: number): ModulObj {
+        return this.list.find((item) => {
+            return item.id == id;
+        });
+    }
+
     static hapus(m: ModulObj): void {
         this.list = this.list.filter((item) => {
             console.log('hapus ' + m.id);
@@ -119,7 +125,7 @@ export class ModulObj implements IModul {
         });
     }
 
-    
+
 
     private _id: number;
     public get id(): number {

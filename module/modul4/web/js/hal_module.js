@@ -52,7 +52,7 @@ function refresh() {
     window.location.reload();
 }
 function reload() {
-    ModulObj.load();
+    ModulObj.loadData();
     ModulView.reload();
     ModulObj.getByNoparent().forEach((item) => {
         ModulView.tambah(daftarEl, item);

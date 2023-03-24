@@ -10,14 +10,16 @@ export class Util {
 
 	static getParam(key: string): string {
 		try {
-			let s: string = window.top.location.search;
+			let s: string = window.top.location.search.slice(1, Number.MAX_VALUE);
 			let kv: string[] = [];
 			kv = s.split('&');
 
 			for (let i: number = 0; i < kv.length; i++) {
 				let ar: string[] = [];
 				ar = kv[i].split('=');
-				if (ar[0] == key) return ar[1];
+				if (ar[0] == key) {
+					return ar[1];
+				}
 			}
 		}
 		catch (e) {

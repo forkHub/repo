@@ -1,7 +1,10 @@
+import { MainChar } from "./MainChar.js";
+import { PfMap } from "./Map.js";
 Grafis(480, 480);
-const mainChar = new fg.MainChar();
-const map = new fg.Map();
+const mainChar = new MainChar();
+const map = new PfMap();
 const tembokGbr = Muat('gbr/box.png');
+mainChar.init();
 map.setMap([
     'XXXXXXXXXXXXXXX',
     'X             X',
@@ -36,6 +39,7 @@ function Loop() {
     gambarTembok();
     Gambar(mainChar.view);
 }
+window["Loop"] = Loop;
 function gambarTembok() {
     for (let j = 0; j < map.height; j++) {
         for (let i = 0; i < map.width; i++) {
