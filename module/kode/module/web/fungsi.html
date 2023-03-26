@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+	<link href="css/umum.css" rel="stylesheet">
+
+	<title>fungsi</title>
+
+	<style>
+		html {
+			padding: 16px;
+			height: 100vh;
+		}
+
+		body {
+			height: 100%;
+			width: 100%;
+			position: relative;
+		}
+
+		halaman {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+		}
+
+		daftar {
+			flex-grow: 1;
+		}
+
+		daftar-param,
+		daftar-var,
+		daftar-stmt {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+		}
+
+		daftar-param item,
+		daftar-var item,
+		daftar-stmt item {
+			box-sizing: border-box;
+			width: 100%;
+			padding: 8px;
+			border: 1px solid lightgray;
+			cursor: pointer;
+		}
+
+		daftar-param item.dipilih,
+		daftar-var item.dipilih,
+		daftar-stmt item.dipilih {
+			background-color: lightgray;
+		}
+
+		ha-blok {
+			position: fixed;
+			background-color: rgba(0, 0, 0, .1);
+			left: 0px;
+			right: 0px;
+			display: none;
+			top: 0px;
+			bottom: 0px;
+		}
+
+		var-baru,
+		param-baru,
+		stmt-baru {
+			position: absolute;
+			background-color: white;
+			padding: 16px;
+			margin: auto;
+			top: 0px;
+			left: 0px;
+		}
+	</style>
+</head>
+
+<body>
+	<halaman>
+
+		<daftar>
+			<daftar-param></daftar-param>
+			<daftar-var></daftar-var>
+			<daftar-stmt></daftar-stmt>
+		</daftar>
+
+		<menu>
+			<button class="tambah">tambah</button>
+			<button class="edit">edit</button>
+			<button class="hapus">hapus</button>
+		</menu>
+
+
+	</halaman>
+
+	<ha-blok>
+
+	</ha-blok>
+
+	<template>
+
+		<var-isi>
+			<form>
+				<label>variable:</label><br />
+				<input type="text" name="nama" class="nama" readonly>
+				<button class="cari">...</button>
+
+				<label>value:</label><br />
+				<input type="text" name="value" class="value">
+				<br />
+
+				<button type="submit" class="simpan">OK</button>
+				<button type="button" class="batal">Batal</button>
+			</form>
+		</var-isi>
+
+		<menu-popup>
+			<menu-tambah>
+				<button class="var">variable</button>
+				<button class="param">param</button>
+				<button class="stmt">stmt</button>
+			</menu-tambah>
+
+			<menu-stmt>
+				<button class="var-isi">isi var</button>
+				<button class="for">for</button>
+				<button class="if">if</button>
+				<button class="else-if">else if</button>
+				<button class="else">else</button>
+				<button class="while">while</button>
+			</menu-stmt>
+		</menu-popup>
+
+		<item>
+			<judul></judul>
+		</item>
+
+		<var-baru desk="deklarasi variable baru" class="form-var-baru">
+			<form>
+				<label>nama:</label>
+				<input type="text" name="nama" class="nama" required>
+				<button type="submit" class="simpan">OK</button>
+				<button type="button" class="batal">Batal</button>
+			</form>
+		</var-baru>
+
+		<fungsi-baru desk="deklarasi fungsi baru" class="form-fungsi-baru">
+			<form>
+				<label>nama:</label><br />
+				<input type="text" name="nama" class="nama" required><br />
+				<br />
+				<label>return:</label><br />
+				<input type="return" name="return" class="return" required><br />
+				<button type="submit" class="simpan">OK</button>
+				<button type="button" class="batal">Batal</button>
+			</form>
+		</fungsi-baru>
+
+	</template>
+
+	<script src="js/comp/BaseComponent.js"></script>
+	<script src="js/comp/Util.js"></script>
+	<script src="js/ItemView.js"></script>
+	<script src="js/IdGen.js"></script>
+	<script src="js/Kons.js"></script>
+	<script src="js/Data.js"></script>
+	<script src="js/Menu.js"></script>
+	<script src="js/Session.js"></script>
+	<script src="js/Modul.js"></script>
+	<script src="js/hal/HalModul.js"></script>
+	<script src="js/Index.js"></script>
+</body>
+
+</html>
