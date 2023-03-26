@@ -12,7 +12,7 @@ export class VarView extends BaseComponent {
     }
     constructor(item) {
         super();
-        this._elHtml = this.getTemplate('div.entry');
+        this._elHtml = this.getTemplate('div.var-entry');
         this._item = item;
         this.namaEl = this.getEl('div.nama');
         this.hapusTbl = this.getEl('button.hapus');

@@ -3,7 +3,7 @@ import { VariableObj } from "../VarEnt.js";
 
 export class VarView extends BaseComponent {
     private static list: VarView[] = [];
-    private static dipilih: VarView = null;
+    // private static dipilih: VarView = null;
 
     private _item: VariableObj;
     private namaEl: HTMLElement;
@@ -35,16 +35,16 @@ export class VarView extends BaseComponent {
             this.hapusDiKlik();
         }
 
-        this._elHtml.onclick = (e: MouseEvent) => {
-            e.stopPropagation();
+        // this._elHtml.onclick = (e: MouseEvent) => {
+        //     e.stopPropagation();
 
-            if (VarView.dipilih) {
-                VarView.dipilih.dipilih(false);
-            }
+        //     if (VarView.dipilih) {
+        //         VarView.dipilih.dipilih(false);
+        //     }
 
-            VarView.dipilih = this;
-            this.dipilih(true);
-        }
+        //     VarView.dipilih = this;
+        //     this.dipilih(true);
+        // }
     }
 
     private hapusDiKlik(): void {
@@ -73,10 +73,10 @@ export class VarView extends BaseComponent {
         }
     }
 
-    dipilih(dipilih: boolean) {
-        //TODO:
-        dipilih;
-    }
+    // dipilih(dipilih: boolean) {
+    //     //TODO:
+    //     dipilih;
+    // }
 
     static tambah(cont: HTMLDivElement, item: VariableObj): void {
         let view: VarView = new VarView(item);

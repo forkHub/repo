@@ -1,0 +1,22 @@
+type var isi:
+============
+var ref
+exp
+
+
+exp var ref
+===========
+id
+
+exp binop
+=========
+id
+
+exp value
+=========
+value
+
+exp func call
+=============
+id fungsi
+param

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, 
+        target-densityDpi=device-dpi">
+
+    <link href="./css/umum.css" rel="stylesheet" />
+    <link href="./css/css.css" rel="stylesheet" />
+
+    <title>Modul</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .section {
+            border: 1px solid;
+            padding: 4px;
+        }
+
+        body {
+            padding: 8px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Edit Fungsi</h1>
+    <div class="nama"></div>
+    <div class="path"></div>
+    <br />
+
+    <!-- PARAM -->
+    <div class="section">
+        <h2>Parameter:</h2>
+        <button class="tambah-param">[+]</button>
+        <hr />
+    </div>
+    <div class="daftar-param-cont">
+    </div>
+    <br />
+
+    <!-- VARIABLE -->
+    <div class="section">
+        <h2>Variable:</h2>
+        <button class="tambah-var">[+]</button>
+        <hr />
+        <div class="daftar-var-cont"></div>
+    </div>
+    <br />
+
+    <!-- STMT -->
+    <div class="section">
+        <h2>Stmt:</h2>
+        <button class="tambah-stmt">[+]</button>
+        <hr />
+        <div class="daftar-stmt-cont"></div>
+    </div>
+    <br />
+
+    <!-- MENU STMT -->
+    <div class="menu">
+        <button>tambah</button>
+        <button>hapus</button>
+    </div>
+
+    <template>
+
+        <div class="param-entry disp-flex">
+            <div class="nama flex-grow-1"></div>
+            <div class="menu disp-flex">
+                <button class="hapus">🗑️</button>
+                <button class="edit">✏️</button>
+            </div>
+        </div>
+
+        <div class="var-entry disp-flex">
+            <div class="nama flex-grow-1"></div>
+            <div class="menu disp-flex">
+                <button class="hapus">🗑️</button>
+                <button class="edit">✏️</button>
+            </div>
+        </div>
+
+        <div class="stmt-entry disp-flex">
+            <div class="nama flex-grow-1"></div>
+            <div class="menu disp-flex">
+                <button class="hapus">🗑️</button>
+                <button class="edit">✏️</button>
+            </div>
+
+        </div>
+
+    </template>
+
+    <script type="module" src="./js/edit_fung/edit_fungsi.js"></script>
+</body>
+
+</html>

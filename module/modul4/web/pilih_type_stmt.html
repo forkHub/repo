@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, 
+        target-densityDpi=device-dpi">
+
+    <link href="./css/umum.css" rel="stylesheet" />
+    <link href="./css/css.css" rel="stylesheet" />
+
+    <title>tambah_stmt</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 
+        tambah stmt
+        kontek fungsi id
+     -->
+    <h1>pilih type stmt:</h1>
+    <form method="POST">
+        <p>Type:</p>
+        <input type="radio" id="var_isi" name="type" value="var_isi">
+        <label for="var_isi">var isi</label><br>
+        <input type="radio" id="panggil_fungsi" name="type" value="panggil_fungsi">
+        <label for="panggil_fungsi">panggil fungsi</label><br>
+        <hr />
+        <input type="submit" value="OK">
+    </form>
+
+    <script type="module" src="./js/pilihTypeStmt.js"></script>
+</body>
+
+</html>

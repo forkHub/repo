@@ -6,6 +6,7 @@ import { ModulView } from "./ModulView.js";
 let btnTambah: HTMLButtonElement = Util.getEl('button.tambah') as HTMLButtonElement;
 let daftarEl: HTMLDivElement = Util.getEl('div.daftar') as HTMLDivElement;
 
+
 interface IStore {
     dipilih: number
 }
