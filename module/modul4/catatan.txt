@@ -1,22 +1,25 @@
-type var isi:
-============
-var ref
-exp
+table:
+======
+table semakin banyak
+table diload manual berulang2
+table di mount sekali/berulang2
+dibuat supaya table auto save dan loads
+tiap operasi crud akan autosave ke db
+table berfungsi sebagai store
+ada listener
 
+dualisme list:
+==============
+entity:
+single:
+list of entity (db);
+complex entity punya list => facade?/sublist
+storage -> list -> object
+list -> object -> sublist -> object2
+list berisi object bukan database database
 
-exp var ref
-===========
-id
+listener pada object komplek/nested list
 
-exp binop
-=========
-id
+stmt dibuat seperti bundle:
+===========================
 
-exp value
-=========
-value
-
-exp func call
-=============
-id fungsi
-param

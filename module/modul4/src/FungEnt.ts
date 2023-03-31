@@ -1,38 +1,40 @@
-import { IStmt2, StmtObj } from "./StmtEnt.js";
+// import { IStmt2 as StmtObj, StmtObj } from "./StmtEnt.js";
 // import { VarIsiList } from "./VarIsiList.js";
+
+import { IStmt2, StmtObj } from "./StmtEnt";
 
 export interface IFungsi {
     id: number;
     parentId: number;
     nama: string;
-    stmtAr: IStmt2[];
+    stmtAr: StmtObj[];
 }
 
 class StmtList {
-    private _list: IStmt2[] = [];
-    private _ditambah: (stmt: IStmt2) => void;
-    private _diedit: (stmt: IStmt2) => void;
-    private _dihapus: (stmt: IStmt2) => void;
+    private _list: StmtObj[] = [];
+    private _ditambah: (stmt: StmtObj) => void;
+    private _diedit: (stmt: StmtObj) => void;
+    private _dihapus: (stmt: StmtObj) => void;
 
-    public get diedit(): (stmt: IStmt2) => void {
+    public get diedit(): (stmt: StmtObj) => void {
         return this._diedit;
     }
-    public set diedit(value: (stmt: IStmt2) => void) {
+    public set diedit(value: (stmt: StmtObj) => void) {
         this._diedit = value;
     }
 
-    public get ditambah(): (stmt: IStmt2) => void {
+    public get ditambah(): (stmt: StmtObj) => void {
         return this._ditambah;
     }
-    public set ditambah(value: (stmt: IStmt2) => void) {
+    public set ditambah(value: (stmt: StmtObj) => void) {
         this._ditambah = value;
     }
 
-    public get list(): IStmt2[] {
+    public get list(): StmtObj[] {
         return this._list;
     }
 
-    tambah(m: IStmt2): void {
+    tambah(m: StmtObj): void {
         this._list.push(m);
 
         setTimeout(() => {
@@ -40,19 +42,19 @@ class StmtList {
         }, 0);
     }
 
-    edit(stmt: IStmt2): void {
+    edit(stmt: StmtObj): void {
         setTimeout(() => {
             this._diedit(stmt);
         }, 0);
     }
 
-    getById(id: number): IStmt2 {
+    getById(id: number): StmtObj {
         return this.list.find((item) => {
             return item.id == id;
         });
     }
 
-    hapus(m: IStmt2): void {
+    hapus(m: StmtObj): void {
         this._list = this.list.filter((item) => {
             console.log('hapus ' + m.id);
             return item.id != m.id;
@@ -63,20 +65,30 @@ class StmtList {
         }, 0);
     }
 
-    getByParentId(id: number): IStmt2[] {
-        return this._list.filter((item: IStmt2) => {
+    getByParentId(id: number): StmtObj[] {
+        return this._list.filter((item: StmtObj) => {
             return item.parentId == id;
         });
     }
 
-
-    getAll(): IStmt2[] {
+    getAll(): StmtObj[] {
         return this._list.slice();
     }
+
+    toObj(): IStmt2[] {
+        return [];
+    }
+
+    fromObj(obj: StmtObj[]): void {
+        //TODO:
+        obj;
+    }
+
+
 }
 
 class FungList {
-    readonly stmtList: StmtList = new StmtList();
+    // readonly stmtList: StmtList = new StmtList();
     readonly tableName: string = 'ha.modul.fungsi';
 
     private _list: FungObj[] = [];
@@ -187,15 +199,13 @@ export class FungObj implements IFungsi {
         this._parentId = parentId;
     }
 
-
-
-
-    toObj(m: IFungsi): IFungsi {
+    toObj(m: FungObj): IFungsi {
         return {
             id: m.id,
             nama: m.nama,
             parentId: m.parentId,
-            stmtAr: StmtObj.toObjAr(m.stmtAr)
+            // stmtAr: m.stmtList
+            stmtAr: [] //TODO:
         }
     }
 
@@ -204,8 +214,8 @@ export class FungObj implements IFungsi {
     //     return _stmt;
     // }
 
-    private _stmtAr: IStmt2[] = [];
-    public get stmtAr(): IStmt2[] {
+    private _stmtAr: StmtObj[] = [];
+    public get stmtAr(): StmtObj[] {
         return this._stmtAr;
     }
 
