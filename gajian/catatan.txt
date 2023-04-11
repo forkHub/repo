@@ -1,0 +1,37 @@
+entity:
+=======
+karyawan
+gaji
+
+master:
+=======
+karyawan baru (get/post)
+	karyawan/baru
+
+info karyawan (get)
+	karyawan/:id/info
+
+hapus karyawan (post)
+	karyawan/:id/hapus
+
+transaksi:
+==========
+pembayaran gaji karyawan (get/post)
+	karyawan/:id/gaji/bayar
+
+perubahan gaji karyawan (get/post)
+	karyawan/:id/gaji/ubah
+
+laporan:
+========
+daftar semua karyawan (get)
+	karyawan/daftar
+	
+status gaji semua karyawan (get)
+	karyawan/gaji/transaksi/status/laporan?filter
+		
+laporan transaksi pembayaran gaji (get)
+	karyawan/gaji/transaksi/laporan?filter
+	
+laporan transaksi perubahan gaji (get)
+	karyawan/gaji/ubah/laporan

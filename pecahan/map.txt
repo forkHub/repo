@@ -4,9 +4,7 @@ membandingkan
         penyebut sama angka sama 06 
         penyebut sama angka beda 09 (belum)
         penyebut acak angka beda 07 
-        penyebut acak angka sama 08 (proses)
-
-        angka sama      
+        penyebut acak angka sama 08 (proses)    
     biasa - biasa
         penyebut sama   03
         penyebut acak   01

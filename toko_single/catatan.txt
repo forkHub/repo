@@ -1,0 +1,40 @@
+daftar barang di toko
+	/
+detail barang di toko
+	toko/barang/:id/info
+	
+masukkan barang ke keranjang
+	keranjang/barang/:id/masuk
+	
+hapus barang dari keranjang
+	keranjang/barang/:id/hapus
+	
+daftar barang sudah dibeli
+	keranjang/barang/daftar
+	
+lihat info barang yang sudah dibeli per item???
+	keranjang/barang/:id/info
+
+checkout
+	checkout
+
+daftar barang di gudang
+	gudang/barang/daftar
+	
+barang baru
+	gudang/barang/baru
+	
+hapus barang
+	gudang/barang/:id/hapus
+
+edit barang
+	gudang/barang/:id/edit
+
+lihat barang
+	gudang/barang/:id/info
+	
+upload foto
+	foto/upload
+	
+hapus foto
+	foto/:id/hapus
