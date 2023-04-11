@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+
+	<link href="./css/umum.css" rel="stylesheet">
+
+	<style>
+		div {
+			box-sizing: border-box;
+		}
+
+		div.padding {
+			padding: 8px;
+		}
+
+		div.widget {
+			border: 1px solid;
+			width: fit-content;
+			padding: 8px;
+		}
+
+		div.table-bulan {
+			display: table;
+		}
+
+		div.minggu {
+			display: table-row;
+		}
+
+		div.minggu.judul {
+			background-color: lightgray;
+		}
+
+		div.tanggal {
+			border: 1px solid white;
+			box-sizing: border-box;
+			display: table-cell;
+			padding: 8px;
+			text-align: center;
+			cursor: pointer;
+		}
+
+		div.tanggal:hover {
+			border: 1px solid;
+		}
+
+		div.tanggal.hari-ini {
+			border: 1px solid red;
+		}
+
+		.tanggal.sebelum,
+		.tanggal.sesudah {
+			opacity: .5;
+		}
+	</style>
+</head>
+
+<body class="padding">
+	<div class="padding container border" style="width:fit-content; margin: auto;">
+
+		<div class="disp-flex padding">
+			<div class="tempat-nama-bulan flex-grow-1 tengah-tengah">
+				<span></span>
+			</div>
+			<div class="panah">
+				<button class="atas">⬆</button>
+				<button class="bawah">⬇</button>
+			</div>
+		</div>
+		<div class="tempat-tanggal" data-info="tempat tanggalan">
+
+		</div>
+	</div>
+	<script type="module" src="./js/Demo_04.js"></script>
+</body>
+
+</html>

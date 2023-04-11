@@ -1,2 +1,0 @@
-demo penambahan menu, baru satu menu
-menu di klik akan menampilkan belum ada pembelajaran dan menanyakan kembali

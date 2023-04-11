@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, 
+        target-densityDpi=device-dpi">
+
+    <link href="./css/umum.css" rel="stylesheet" />
+    <link href="./css/css.css" rel="stylesheet" />
+
+    <title>Modul</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <h1>Edit Modul</h1>
+    <div class="nama"></div>
+    <div class="path"></div>
+    <div>
+        <h2>Variable:</h2>
+        <button class="tambah-var">[+]</button>
+    </div>
+    <div class="daftar-var-cont"></div>
+
+    <div>
+        <h2>Fungsi:</h2>
+        <button class="tambah-fung">[+]</button>
+    </div>
+    <div class="daftar-fungsi-cont"></div>
+
+    <template>
+        <div class="entry disp-flex">
+            <div class="nama flex-grow-1"></div>
+            <div class="menu disp-flex">
+                <button class="hapus">🗑️</button>
+                <button class="edit">✏️</button>
+            </div>
+        </div>
+
+        <div class="fung-entry disp-flex">
+            <div class="nama flex-grow-1"></div>
+            <div class="menu disp-flex">
+                <button class="lihat">👀</button>
+                <button class="hapus">🗑️</button>
+                <button class="edit">✏️</button>
+            </div>
+
+        </div>
+
+    </template>
+
+    <script type="module" src="./js/edit_modul/edit_modul.js"></script>
+</body>
+
+</html>

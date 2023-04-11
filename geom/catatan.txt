@@ -1,0 +1,2 @@
+tambahin fungsi utilitinya
+import pakai url buat demonya
