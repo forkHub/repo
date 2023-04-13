@@ -4,13 +4,7 @@ membandingkan
         penyebut sama angka sama 06 
         penyebut sama angka beda 09 (progress)
         penyebut acak angka beda 07 
-<<<<<<< HEAD
         penyebut acak angka sama 08 (proses)    
-=======
-        penyebut acak angka sama 08
-
-        angka sama      
->>>>>>> 758459be1625c486b507c2a3661e45b3f0c74d97
     biasa - biasa
         penyebut sama   03
         penyebut acak   01
