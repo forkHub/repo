@@ -98,29 +98,40 @@ namespace ha.geom {
 			return true;
 		}
 
-		static tabrakan(g1: IGaris, g2: IGaris): boolean {
+		static _tabrakan(g1: IGaris, g2: IGaris): boolean {
 			let g1c: IGaris;
 			let g2c: IGaris;
+			let sudut: number;
+			let x: number;
+			let y: number;
+
+			g1c = Garis.klon(g1);
+			g2c = Garis.klon(g2);
+
+			Garis.keAtas(g1c, false);
+			sudut = Garis.sudut(g1c);
+
+			x = g1c.v1.x;
+			y = g1c.v1.y;
+
+			Garis.putar(g2c, -sudut, x, y, false);
+			Garis.putar(g1c, -sudut, x, y, false);
+
+			if (!Garis.boundCollide(g1c, g2c)) return false;
+
+			return true;
+		}
+
+		static tabrakan(g1: IGaris, g2: IGaris): boolean {
 
 			if (Garis.boundCollide(g1, g2) == false) {
 				return false;
 			}
 
-			//g1 melewati horizontal saat diputar relatif ke g2
-			g1c = Garis.klon(g1);
-			g2c = Garis.klon(g2);
+			if (!Garis._tabrakan(g1, g2)) return false;
+			if (!Garis._tabrakan(g2, g1)) return false;
 
-			Garis.keAtas(g2c, false);
-			let sudut: number = Garis.sudut(g2c);
-
-			Garis.putar(g2c, -sudut, g2c.v1.x, g2c.v1.y, false);
-			Garis.putar(g1c, -sudut, g2c.v1.x, g2c.v2.y, false);
-
-
-			//g2 melewati horizontal saat diputar relatif ke g1
-
-
-			return false; //TODO:
+			return true;
 		}
 
 		static collide2(seg1: IGaris, seg2: IGaris): boolean {
@@ -241,12 +252,23 @@ namespace ha.geom {
 			return garis.v2.y - garis.v1.y;
 		}
 
+		/** putar garis
+		 * 
+		 */
+		static putarGaris(gs: IGaris[], sdt: number, klon: boolean): void {
+			let g: IGaris = gs[0];
+
+			gs.forEach((item: IGaris) => {
+				Garis.putar(item, sdt, g.v1.x, g.v1.y, klon);
+			});
+		}
+
 		/**
 		 * memutar garis
 		 * @param g garis
 		 * @param sdt sudut perputaran
-		 * @param xc posisi tengah x
-		 * @param yc posisi tengah y
+		 * @param xc posisi pusat putaran x
+		 * @param yc posisi pusat putaran y
 		 */
 		static putar(g: IGaris, sdt: number = 0, xc: number = 0, yc: number = 0, klon: boolean): IGaris {
 			let gc: IGaris;
