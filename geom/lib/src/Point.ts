@@ -75,6 +75,7 @@ namespace ha.geom {
 			hasil.x = i * rasio;
 			hasil.y = j * rasio;
 
+			//hasi global
 			hasil.x = xt - hasil.x;
 			hasil.y = yt - hasil.y;
 
@@ -93,5 +94,6 @@ namespace ha.geom {
 
 			return hasil;
 		}
+
 	}
 }
