@@ -86,11 +86,10 @@ namespace ha.geom {
 		static posPolar(jarak: number, sudut: number, xt: number, yt: number): IPoint2D {
 			let hasil: IPoint2D = Point.create();
 
-			hasil.x = jarak * Math.cos(sudut * Transform.DEG2RAD);
-			hasil.y = jarak * Math.sin(sudut * Transform.DEG2RAD);
+			Transform.posPolar(jarak, sudut);
 
-			hasil.x += xt;
-			hasil.y += yt;
+			hasil.x = Transform.lastX + xt;
+			hasil.y = Transform.lastY + yt;
 
 			return hasil;
 		}

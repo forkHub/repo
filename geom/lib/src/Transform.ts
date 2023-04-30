@@ -144,5 +144,11 @@ namespace ha.geom {
 			Transform._lastX = x1 + xt;
 			Transform._lastY = y1 + yt;
 		}
+
+		static posPolar(jrk: number, sdt: number): void {
+			let sdtrad: number = sdt * Transform.DEG2RAD;
+			Transform._lastX = Math.cos(sdtrad) * jrk;
+			Transform._lastY = Math.sin(sdtrad) * jrk;
+		}
 	}
 }
