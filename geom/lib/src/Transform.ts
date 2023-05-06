@@ -1,4 +1,7 @@
 namespace ha.geom {
+	/**
+	 * menghitung geometri relative terhadap titik 0
+	 */
 	export class Transform {
 		static readonly RAD2DEG: number = 180.0 / Math.PI;
 		static readonly DEG2RAD: number = Math.PI / 180.0;
@@ -13,7 +16,7 @@ namespace ha.geom {
 			return Transform._lastY;
 		}
 
-		static equal(n1: number, n2: number, toleransi: number = 1): boolean {
+		static sama(n1: number, n2: number, toleransi: number = 1): boolean {
 			if (Math.abs(n1 - n2) <= toleransi) return true;
 			return false;
 		}
@@ -56,7 +59,7 @@ namespace ha.geom {
 			throw Error();
 		}
 
-		static deg(x: number, y: number): number {
+		static sudut(x: number, y: number): number {
 			let l: number;
 			let sin: number;
 
@@ -89,6 +92,7 @@ namespace ha.geom {
 			return deg;
 		}
 
+		//TODO: refaktor
 		static degDistMax(angleS: number = 0, angleT: number): number {
 			angleS = Transform.normalizeDeg(angleS);
 			angleT = Transform.normalizeDeg(angleT);
@@ -102,6 +106,7 @@ namespace ha.geom {
 			}
 		}
 
+		//TODO: refaktor
 		static degDistMin(angleS: number = 0, angleT: number): number {
 			angleS = Transform.normalizeDeg(angleS);
 			angleT = Transform.normalizeDeg(angleT);
@@ -124,12 +129,14 @@ namespace ha.geom {
 			}
 		}
 
+		//TODO: refaktor
 		static jarak(x: number, y: number, xt: number, yt: number): number {
 			let pjx: number = xt - x;
 			let pjy: number = yt - y;
 			return Math.sqrt(pjx * pjx + pjy * pjy);
 		}
 
+		//TODO: refaktor
 		static rotateRel(x: number = 0, y: number = 0, xt: number = 0, yt: number = 0, deg: number = 10): void {
 			let xr: number = x - xt;
 			let yr: number = y - yt;
@@ -150,5 +157,9 @@ namespace ha.geom {
 			Transform._lastX = Math.cos(sdtrad) * jrk;
 			Transform._lastY = Math.sin(sdtrad) * jrk;
 		}
+
+		//dorong
+		//tarik
+
 	}
 }

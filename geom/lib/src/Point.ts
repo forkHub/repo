@@ -38,8 +38,8 @@ namespace ha.geom {
 		}
 
 		static sama(p1: IPoint2D, p2: IPoint2D): boolean {
-			if (false == Transform.equal(p1.x, p2.x)) return false;
-			if (false == Transform.equal(p1.y, p2.y)) return false;
+			if (false == Transform.sama(p1.x, p2.x)) return false;
+			if (false == Transform.sama(p1.y, p2.y)) return false;
 			return true;
 		}
 

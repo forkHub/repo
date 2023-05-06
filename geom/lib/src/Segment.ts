@@ -232,7 +232,7 @@ namespace ha.geom {
 			let j: number = garis.v2.y - garis.v1.y;
 			let i: number = garis.v2.x - garis.v1.x;
 
-			return Transform.deg(i, j);
+			return Transform.sudut(i, j);
 		}
 
 		/**
