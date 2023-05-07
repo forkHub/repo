@@ -1,19 +1,11 @@
+app-foto 360
 todo list
 toko json
 todo list dan catatan digabung
-silsilah json
-tutorial chatbot
 parser
-binop
-histogram
-image64 pakai histogram
-color palet maker pakai gelombang
-color palet maker pakai lingkaran warna
-tutorial canvas:
-	skaling
-tutorial camera 360
-node upload cloudinary
-	- credential
-	- sample
+binop json
+color palet maker
 app quiz juz 30
 app soal matematika
+app json be => be berbasis json => pre editor
+tween
