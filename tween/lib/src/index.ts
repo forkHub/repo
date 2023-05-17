@@ -51,6 +51,15 @@ namespace ha.tw {
 			return this._frames;
 		}
 
+		checkKeyFrame(pos: number): boolean {
+			for (let i = 0; i < this._frames.length; i++) {
+				let frame = this._frames[i];
+				if (frame.posisi == pos) return true;
+			}
+
+			return false;
+		}
+
 		urut() {
 			for (let i: number = 0; i < this._frames.length; i++) {
 				for (let j: number = i + 1; j < this._frames.length; j++) {
@@ -79,8 +88,35 @@ namespace ha.tw {
 			id;
 		}
 
-		baca(id: number): Frame {
-			return this._frames[id];
+		bacaByIdx(idx: number): Frame {
+			let hasil: Frame;
+
+			hasil = this._frames[idx];
+
+			if (hasil) {
+				console.log(hasil);
+				return hasil;
+			}
+
+			throw Error('idx tidak ketemu, idx ' + idx);
+		}
+
+		bacaByPos(pos: number): Frame {
+			let hasil: Frame;
+
+			this._frames.forEach((frame) => {
+				console.log(frame.posisi);
+				if (frame.posisi == pos) {
+					hasil = frame;
+				}
+			})
+
+			if (!hasil) {
+				console.log(this._frames);
+				throw Error();
+			}
+
+			return hasil;
 		}
 
 		get jml(): number {
@@ -93,16 +129,16 @@ namespace ha.tw {
 	 * 
 	 */
 	export class TweenObj {
-		private _frameList: FrameList = new FrameList();
+		readonly frameList: FrameList = new FrameList();
 		private _pos: number = 0;
 
 		constructor() {
-			this._frameList.frames.push(new Frame())
+			this.frameList.frames.push(new Frame())
 		}
 
 		tambahFrame(fr: Frame): void {
-			this._frameList.frames.push(fr);
-			this._frameList.urut();
+			this.frameList.frames.push(fr);
+			this.frameList.urut();
 		}
 
 		/**
@@ -113,8 +149,8 @@ namespace ha.tw {
 		private framePadaPosSeb(pos: number): Frame {
 			let hasil: Frame;
 
-			for (let i: number = 0; i < this._frameList.jml; i++) {
-				let fr: Frame = this._frameList.baca(i);
+			for (let i: number = 0; i < this.frameList.jml; i++) {
+				let fr: Frame = this.frameList.bacaByIdx(i);
 				if (fr.posisi < pos) hasil = fr;
 			}
 
@@ -127,8 +163,8 @@ namespace ha.tw {
 		 * @returns 
 		 */
 		private framePadaPosSetelah(pos: number): Frame {
-			for (let i: number = 0; i < this._frameList.jml; i++) {
-				let fr: Frame = this._frameList.baca(i);
+			for (let i: number = 0; i < this.frameList.jml; i++) {
+				let fr: Frame = this.frameList.bacaByIdx(i);
 				if (fr.posisi >= pos) return fr;
 			}
 
@@ -136,14 +172,20 @@ namespace ha.tw {
 		}
 
 		/**
-		 * nilai pada posisi
+		 * nilai pada posisi sekarang dihitung dari posisi sebelumnya
 		 * @param pos 
 		 * @returns 
 		 */
 		nilai(pos: number): number {
+
+			if (this.frameList.checkKeyFrame(pos)) {
+				return this.frameList.bacaByPos(pos).nilai;
+			}
+
 			let f: Frame = this.framePadaPosSeb(pos);
 			let f2: Frame = this.framePadaPosSetelah(pos);
-			return tween.tweenC(f.posisi, f2.posisi, pos, f.mode);
+
+			return tween.tweenBC(f.nilai, f2.nilai, pos, f.posisi, f2.posisi, f2.mode);
 		}
 
 		public get pos(): number {
@@ -157,28 +199,47 @@ namespace ha.tw {
 
 	export class Tween {
 
-		/**
-		 * 
-		 * @param mulai angka awal
-		 * @param akhir angka akhir
-		 * @param idx index, mulai .. akhir
-		 * @param mode 
-		 * @returns 
-		 */
-		tweenC(mulai: number, akhir: number, idx: number, mode: number): number {
-			let jrk: number = akhir - mulai + 1;
-			let idx2: number = idx - mulai;
-			return this.tween(idx2 / jrk, mode);
+		tweenBC(awal: number, target: number, idx: number, idxAwal: number, idxAkhir: number, mode: number): number {
+			let idxMak2 = idxAkhir - idxAwal;
+			idx = idx - idxAwal;
+			return this.tweenBB(awal, target, idx, idxMak2, mode);
 		}
 
 		/**
 		 * 
-		 * @param idx 
+		 * @param awal 
+		 * @param target 
+		 * @param idx 0 .. idMak
+		 * @param idxMak 0 .. idxMak
+		 * @param mode 
+		 * @returns 
+		 */
+		tweenBB(awal: number, target: number, idx: number, idxMak: number, mode: number): number {
+			idx = idx / idxMak;
+			return this.tweenBA(awal, target, idx, mode);
+		}
+
+		/**
+		 * 
+		 * @param awal 
+		 * @param target 
+		 * @param idx 0 .. 1
+		 * @param mode 
+		 * @returns 
+		 */
+		tweenBA(awal: number, target: number, idx: number, mode: number): number {
+			return this.tween(idx, mode) * (target - awal) + awal;
+		}
+
+		/**
+		 * dari 0 ke target
+		 * @param target
+		 * @param idx 0 .. 1
 		 * @param mode 
 		 * @returns 
 		 */
 		tweenB(target: number, idx: number, mode: number): number {
-			return this.tween(idx / target, mode);
+			return this.tween(idx, mode) * target;
 		}
 
 		/**

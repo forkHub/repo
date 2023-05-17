@@ -50,6 +50,14 @@ var ha;
             get frames() {
                 return this._frames;
             }
+            checkKeyFrame(pos) {
+                for (let i = 0; i < this._frames.length; i++) {
+                    let frame = this._frames[i];
+                    if (frame.posisi == pos)
+                        return true;
+                }
+                return false;
+            }
             urut() {
                 for (let i = 0; i < this._frames.length; i++) {
                     for (let j = i + 1; j < this._frames.length; j++) {
@@ -70,8 +78,28 @@ var ha;
             hapus(id) {
                 id;
             }
-            baca(id) {
-                return this._frames[id];
+            bacaByIdx(idx) {
+                let hasil;
+                hasil = this._frames[idx];
+                if (hasil) {
+                    console.log(hasil);
+                    return hasil;
+                }
+                throw Error('idx tidak ketemu, idx ' + idx);
+            }
+            bacaByPos(pos) {
+                let hasil;
+                this._frames.forEach((frame) => {
+                    console.log(frame.posisi);
+                    if (frame.posisi == pos) {
+                        hasil = frame;
+                    }
+                });
+                if (!hasil) {
+                    console.log(this._frames);
+                    throw Error();
+                }
+                return hasil;
             }
             get jml() {
                 return this._frames.length;
@@ -82,13 +110,13 @@ var ha;
          */
         class TweenObj {
             constructor() {
-                this._frameList = new FrameList();
+                this.frameList = new FrameList();
                 this._pos = 0;
-                this._frameList.frames.push(new Frame());
+                this.frameList.frames.push(new Frame());
             }
             tambahFrame(fr) {
-                this._frameList.frames.push(fr);
-                this._frameList.urut();
+                this.frameList.frames.push(fr);
+                this.frameList.urut();
             }
             /**
              * cari frame yang posisinya mendekati pos
@@ -97,8 +125,8 @@ var ha;
              */
             framePadaPosSeb(pos) {
                 let hasil;
-                for (let i = 0; i < this._frameList.jml; i++) {
-                    let fr = this._frameList.baca(i);
+                for (let i = 0; i < this.frameList.jml; i++) {
+                    let fr = this.frameList.bacaByIdx(i);
                     if (fr.posisi < pos)
                         hasil = fr;
                 }
@@ -110,22 +138,25 @@ var ha;
              * @returns
              */
             framePadaPosSetelah(pos) {
-                for (let i = 0; i < this._frameList.jml; i++) {
-                    let fr = this._frameList.baca(i);
+                for (let i = 0; i < this.frameList.jml; i++) {
+                    let fr = this.frameList.bacaByIdx(i);
                     if (fr.posisi >= pos)
                         return fr;
                 }
                 return null;
             }
             /**
-             * nilai pada posisi
+             * nilai pada posisi sekarang dihitung dari posisi sebelumnya
              * @param pos
              * @returns
              */
             nilai(pos) {
+                if (this.frameList.checkKeyFrame(pos)) {
+                    return this.frameList.bacaByPos(pos).nilai;
+                }
                 let f = this.framePadaPosSeb(pos);
                 let f2 = this.framePadaPosSetelah(pos);
-                return tw.tween.tweenC(f.posisi, f2.posisi, pos, f.mode);
+                return tw.tween.tweenBC(f.nilai, f2.nilai, pos, f.posisi, f2.posisi, f2.mode);
             }
             get pos() {
                 return this._pos;
@@ -136,27 +167,44 @@ var ha;
         }
         tw.TweenObj = TweenObj;
         class Tween {
-            /**
-             *
-             * @param mulai angka awal
-             * @param akhir angka akhir
-             * @param idx index, mulai .. akhir
-             * @param mode
-             * @returns
-             */
-            tweenC(mulai, akhir, idx, mode) {
-                let jrk = akhir - mulai + 1;
-                let idx2 = idx - mulai;
-                return this.tween(idx2 / jrk, mode);
+            tweenBC(awal, target, idx, idxAwal, idxAkhir, mode) {
+                let idxMak2 = idxAkhir - idxAwal;
+                idx = idx - idxAwal;
+                return this.tweenBB(awal, target, idx, idxMak2, mode);
             }
             /**
              *
-             * @param idx
+             * @param awal
+             * @param target
+             * @param idx 0 .. idMak
+             * @param idxMak 0 .. idxMak
+             * @param mode
+             * @returns
+             */
+            tweenBB(awal, target, idx, idxMak, mode) {
+                idx = idx / idxMak;
+                return this.tweenBA(awal, target, idx, mode);
+            }
+            /**
+             *
+             * @param awal
+             * @param target
+             * @param idx 0 .. 1
+             * @param mode
+             * @returns
+             */
+            tweenBA(awal, target, idx, mode) {
+                return this.tween(idx, mode) * (target - awal) + awal;
+            }
+            /**
+             * dari 0 ke target
+             * @param target
+             * @param idx 0 .. 1
              * @param mode
              * @returns
              */
             tweenB(target, idx, mode) {
-                return this.tween(idx / target, mode);
+                return this.tween(idx, mode) * target;
             }
             /**
              *

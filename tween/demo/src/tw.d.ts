@@ -2,7 +2,7 @@ declare namespace ha.tw {
     /**
      *
      */
-    class Frame {
+    export class Frame {
         private _posisi;
         private _nilai;
         private _mode;
@@ -23,8 +23,23 @@ declare namespace ha.tw {
     /**
      *
      */
-    class TweenObj {
-        private _frameList;
+    class FrameList {
+        private _frames;
+        get frames(): Frame[];
+        checkKeyFrame(pos: number): boolean;
+        urut(): void;
+        tukar(f1: number, f2: number): void;
+        tambah(): void;
+        hapus(id: number): void;
+        bacaByIdx(idx: number): Frame;
+        bacaByPos(pos: number): Frame;
+        get jml(): number;
+    }
+    /**
+     *
+     */
+    export class TweenObj {
+        readonly frameList: FrameList;
         private _pos;
         constructor();
         tambahFrame(fr: Frame): void;
@@ -41,7 +56,7 @@ declare namespace ha.tw {
          */
         private framePadaPosSetelah;
         /**
-         * nilai pada posisi
+         * nilai pada posisi sekarang dihitung dari posisi sebelumnya
          * @param pos
          * @returns
          */
@@ -49,19 +64,31 @@ declare namespace ha.tw {
         get pos(): number;
         set pos(value: number);
     }
-    class Tween {
+    export class Tween {
+        tweenBC(awal: number, target: number, idx: number, idxAwal: number, idxAkhir: number, mode: number): number;
         /**
          *
-         * @param mulai angka awal
-         * @param akhir angka akhir
-         * @param idx index, mulai .. akhir
+         * @param awal
+         * @param target
+         * @param idx 0 .. idMak
+         * @param idxMak 0 .. idxMak
          * @param mode
          * @returns
          */
-        tweenC(mulai: number, akhir: number, idx: number, mode: number): number;
+        tweenBB(awal: number, target: number, idx: number, idxMak: number, mode: number): number;
         /**
          *
-         * @param idx
+         * @param awal
+         * @param target
+         * @param idx 0 .. 1
+         * @param mode
+         * @returns
+         */
+        tweenBA(awal: number, target: number, idx: number, mode: number): number;
+        /**
+         * dari 0 ke target
+         * @param target
+         * @param idx 0 .. 1
          * @param mode
          * @returns
          */
@@ -74,5 +101,6 @@ declare namespace ha.tw {
          */
         tween(idx: number, mode: number): number;
     }
-    const tween: Tween;
+    export const tween: Tween;
+    export {};
 }
