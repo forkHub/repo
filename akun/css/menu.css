@@ -1,0 +1,44 @@
+div.header
+button.menu {
+	margin-bottom: 0px;
+}
+
+div.header
+div.menu-cont {
+	position: absolute;
+	width: 100%;
+	background-color: white;
+	border:1px solid darkgray;
+}
+
+div.menu-cont
+div.menu-item {
+	position: relative;
+	z-index: 1;
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+div.menu-cont
+div.menu-item:active,
+div.menu-cont
+div.menu-item:hover {
+	background-color:lightgray;
+}
+
+
+div.menu-cont
+div.menu-item 
+button {
+	background-color: transparent;
+	border: none;
+	margin-bottom: 0px;
+	text-align: left;
+}
+
+div.menu-cont
+div.menu-item 
+hr {
+	margin-bottom: 0px;
+	margin-top: 0px;
+}

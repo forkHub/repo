@@ -1,0 +1,52 @@
+div.daftar-cont {
+	margin-top: 8px;
+}
+
+div.daftar-cont 
+div.item {
+	display: table;
+	width: 100%;
+}
+
+div.daftar-cont
+div.cell {
+	display: table-cell;
+	width: 50%;
+}
+
+div.daftar-cont
+div.cell.kanan {
+	text-align: right;
+}
+
+
+div.daftar-cont
+div.cont {
+	display: none;
+}
+
+div.daftar-cont
+div.lap-semua
+div.total {
+	padding:12px;
+	border-bottom: 1px solid lightgrey;
+}
+
+div.lap-semua
+div.total 
+span.total {
+	float: right;
+}
+
+div.daftar
+div.item-transaksi {
+	padding: 12px;
+	border-bottom: 1px solid lightgray;
+}
+
+div.daftar
+div.item-transaksi 
+p.tgl {
+	font-size: x-small;
+	font-weight: bold;
+}

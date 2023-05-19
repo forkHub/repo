@@ -1,0 +1,11 @@
+div.form-baru {
+	padding: 8px;
+	border: 1px solid darkgray;
+}
+
+div.form-baru
+p.judul {
+	font-size: larger;
+	font-weight: bold;
+	margin-bottom: 12px;
+}
