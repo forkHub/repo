@@ -1,0 +1,89 @@
+h1,
+h2,
+h3,
+h4,
+h5 {
+	margin: 0px;
+}
+
+div.silsilah-cont {
+	display: table;
+	table-layout: fixed;
+	margin: auto;
+	/* width: 100%; */
+}
+
+div.utama div.foto-cont img,
+div.pasangan div.foto-cont img {
+	display: none;
+	border-radius: 50%;
+}
+
+div.utama div.foto-cont div.foto,
+div.pasangan div.foto-cont div.foto {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	;
+	display: inline-block;
+}
+
+div.atas div.pasangan {
+	width: 50%;
+	padding-right: 8px;
+}
+
+div.atas div.utama {
+	padding-left: 8px;
+}
+
+div.atas,
+div.bawah {
+	width: 100%;
+}
+
+div.utama.penuh {
+	width: 50%;
+}
+
+div.utama div.foto-cont,
+div.pasangan div.foto-cont {
+	display: inline-block;
+	padding: 4px;
+	text-align: center;
+}
+
+div.hubung {
+	display: table;
+	word-break: keep-all;
+	/* align-content: stretch; */
+	vertical-align: top;
+	width: 100%;
+}
+
+div.hubung div.kiri,
+div.hubung div.kanan {
+	display: table-cell;
+	height: 32px;
+	width: 50%;
+}
+
+div.border {
+	border: 1px solid;
+}
+
+div.border-kanan {
+	border-right: 1px solid;
+}
+
+div.border-atas {
+	border-top: 1px solid;
+}
+
+div.border-bawah {
+	border-bottom: 1px solid;
+}
+
+div.border-kiri {
+	border-left: 1px solid;
+}

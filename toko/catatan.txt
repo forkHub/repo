@@ -1,0 +1,30 @@
+- config dipindah ke db, 
+	konstanta key
+	sql table
+	load dari db saat app mulai
+	
+- barang terkait, ada di detail barang
+- barang terkait scope lapak, detail barang
+	- sql
+	- view
+
+- tombol chat pelapak
+- barang beranda diacak
+- admin page
+	- beranda
+- gmail, email test
+- bersih2 gambar
+	- query daftar gambar di firebase
+- lapak yang gak aktif di disable
+	- terakhir aktif dihitung dari check auth session
+	- sql perubahan
+- cloudinary
+	- test node sdk
+
+ref:
+====
+- deskripsi singkat sudah tidak dipakai
+
+v02:
+====
+ALTER TABLE `tk_anggota` ADD `aktif` INT(1) NOT NULL DEFAULT '1' AFTER `setuju`;

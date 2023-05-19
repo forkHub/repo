@@ -1,0 +1,15 @@
+div.tambah-user-tbl {
+    padding: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    border-radius: 50%;
+    border: 1px solid;
+    background-color: white;
+}
+
+div.note-item {
+    border-bottom: 1px solid;
+}

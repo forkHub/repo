@@ -1,0 +1,168 @@
+/* dialog */
+div.dialog {
+	position: fixed;
+	box-sizing: border-box;
+	top:0px;
+	left:0px;
+	bottom: 0px;
+	right: 0px;;
+	background-color: rgba(0, 0, 0, .1);
+	z-index: 20000;
+	display:none;
+}
+
+div.dialog div.box {
+	display: flex;
+	flex-direction: column;
+	padding: 16px;
+	width: 100%;
+	min-height: 200px;
+	background-color: white;
+	text-align: center;
+}
+
+div.dialog div.box p {
+	flex-grow: 1;
+}
+
+/* loading */
+div.loading {
+	display: flex;
+	position: fixed;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom: 0px;
+	background-color: rgba(0, 0, 0, .1);
+	z-index: 20000;
+	text-align: center;
+}
+
+div.loading div.box {
+	width: 80%;
+	margin: auto;
+	text-align: center;
+}
+
+div.clear {
+	float: none;
+	clear: both;
+}
+
+/* FRAMEWORK */
+a.tambah {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    padding: 16px;
+    background-color: cornflowerblue;
+    border-radius: 50%;
+    color: white;
+    padding-right: 24px;
+    padding-left: 24px;
+	text-align: center;
+	z-index: 999;
+}
+
+/* font */
+button.btn-wa {
+	background-color: #25D366;
+}
+
+a.bersih {
+	text-decoration: none;
+	color: initial;
+}
+
+.fontello {
+	font-family: 'fontello';
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.border {
+	border: 1px solid grey;
+}
+
+.padding, .padding-8 {
+	padding: 8px;
+}
+
+.padding-16 {
+	padding: 16px;
+}
+
+
+.margin-bottom-8 {margin-bottom: 8px;}
+
+.white-space-pre {
+	white-space: pre;
+}
+
+.bg-putih {
+	background-color: white;
+}
+
+.text-align-center {
+	text-align: center;
+}
+
+.text-align-right {
+	text-align: right;
+}
+
+.potong, .potong-2 {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;  
+	overflow: hidden;
+}
+
+.text-overflow-elipsis {
+	text-overflow: ellipsis;
+}
+
+.white-space-nowrap {
+	white-space: nowrap;
+}
+
+.float {
+	float:left;
+}
+
+.clear {
+	clear: both;
+}
+
+.disp-none {
+	display: none;
+}
+
+.disp-block {
+	display: block;
+}
+
+.background {
+	position: fixed;
+	top:0px;
+	left:0px;
+	right: 0px;
+	bottom: 0px;
+	background-color: rgba(0, 0, 0, .1);
+	z-index: 10000;
+}
+
+/*FLEX*/
+.display-flex {display: flex}
+
+.flex-grow-1 {flex-grow: 1}
+
+.align-items-center {align-items: center}
+
+.tengah-tengah {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

@@ -1,0 +1,39 @@
+bug:
+====
+
+aktif:
+======
+nonaktifkan lapak:
+	[t] query non aktif di beranda ikut anggota => test beranda tidak munculkan anggota tidak aktif
+	[t] query non aktif di pencarian => test pencarian tidak memunculkan anggota tidak aktif
+	[t] query non aktif di daftar lapak => test daftar lapak kosong
+	[t] masih bisa masuk gudang => gak ada pengecekan => tetap bisa login walaupun inaktif
+	[t] router update aktif/nonaktifkan
+	[t] data lapak aktif di render profile dan barang untuk tombol => test aktif dan nonaktif di dua tab
+	[t] hapus aktif di object/table barang
+	[t] info aktif disimpan di session/table => test setelah edit no wa, barang baru wa berubah
+	[t] cache session diganti setiap:
+		[t] edit profile
+		[t] update aktif
+	[t] anggota baru aktif = false, setuju = 0; => test daftar anggota baru
+
+[t] anggota baru persetujuan admin, sementara masih manual di db
+	[t] validasi auth => test agent baru gak bisa login
+
+System:
+=======
+urutan masih belum benar
+	[t] ada kolom view
+	[t] tiap kali dilihat, view bertambah => test lihat barang berkali2
+	[t] tiap kali diedit, view dikurangi 1/2 nya => test edit barang, check db
+	
+reset database - database default
+
+[t] hapus wa dari session;
+
+
+[ref]
+[t]log dibetulkan
+
+[ux]
+[t] validasi duplikat err code 1062
