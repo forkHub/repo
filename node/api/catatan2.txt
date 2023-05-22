@@ -1,0 +1,7 @@
+client api
+==========
+api masih belum whitelist
+
+client server
+=============
+tombol admin dihapus dari server

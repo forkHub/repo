@@ -1,0 +1,36 @@
+[
+	{
+		img: {
+			x: 0,
+			y: 0,
+			dragX: 0,
+			// dragY: 0,
+			img: null,
+			url: "./img/depan.jpg"
+		},
+		tbl: [
+			{
+				x: 2540,
+				y: 475,
+				dragX: 2540,
+				img: null,
+				url: "./img/box.png",
+				target: 'lompongan_kanan'
+			},
+			{
+				x: 3910,
+				y: 475,
+				dragX: 3910,
+				img: null,
+				url: "./img/box.png",
+				target: 'ruang_tamu'
+			},
+			{
+				x: 5860,
+				y: 480,
+				dragX: 5860,
+				img: null,
+				url: "./img/box.png",
+				target: './img/lompongan_kiri.jpg'
+			},
+		]

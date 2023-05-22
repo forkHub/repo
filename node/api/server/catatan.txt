@@ -1,0 +1,9 @@
+next:
+=====
+tautan orang tua di halaman silsilah
+admin disederhanakan di jadikan modul terpisah (router, cont, model), dibuat api
+upload image dihapus
+
+bug:
+====
+penghitungan lek/dhe masih gagal
