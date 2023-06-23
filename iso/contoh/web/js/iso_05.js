@@ -23,6 +23,7 @@ window.onload = () => {
         x: 0,
         y: 0,
     };
+    //menyimpan informasi drag
     const isoDrag = {
         status: false,
         xgr: 0,

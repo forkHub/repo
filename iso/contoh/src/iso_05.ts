@@ -4,7 +4,6 @@
  * =========
  * 
  * drag area, untuk memilih lebih dari satu ubin
- * viewport tidak bergerak mengikuti pointer
  * 
  */
 
@@ -28,6 +27,7 @@ window.onload = () => {
 		y: 0,
 	}
 
+	//menyimpan informasi drag
 	const isoDrag = {
 		status: false,
 		xgr: 0,
