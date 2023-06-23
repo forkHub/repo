@@ -1,5 +1,0 @@
-drag bangun perumahan
-gambar perumahan sementara pakai pohon
-peta otomatis bergeser saat dipinggir
-
-drag -> build 
