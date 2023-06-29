@@ -33,9 +33,9 @@ var ha;
                 return h;
             }
             static sama(p1, p2) {
-                if (false == geom.Transform.equal(p1.x, p2.x))
+                if (false == geom.Transform.sama(p1.x, p2.x))
                     return false;
-                if (false == geom.Transform.equal(p1.y, p2.y))
+                if (false == geom.Transform.sama(p1.y, p2.y))
                     return false;
                 return true;
             }
@@ -85,8 +85,8 @@ var ha;
     var geom;
     (function (geom) {
         class PolyObj {
+            vs = [];
             constructor(vs) {
-                this.vs = [];
                 vs.forEach((item) => {
                     this.vs.push(item);
                 });
@@ -96,12 +96,12 @@ var ha;
         class PlP {
         }
         class Poly {
+            static pp = new PlP();
             static buat(p) {
                 this.pp;
                 return new PolyObj(p);
             }
         }
-        Poly.pp = new PlP();
         geom.Poly = Poly;
         const Pl = Poly;
         Pl;
@@ -278,6 +278,24 @@ var ha;
 (function (ha) {
     var geom;
     (function (geom) {
+        /**
+         * menghitung garis relatif terhadap garis horizontal / aksis x
+         */
+        class SegHor {
+        }
+        geom.segH = new SegHor();
+        /**
+         * menghitung garis relatif terhadap titik 0,0
+         */
+        class Seg0 {
+        }
+        geom.seg0 = new Seg0();
+    })(geom = ha.geom || (ha.geom = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var geom;
+    (function (geom) {
         class GP {
             /**
              * apakah sebuah garis berada di sebelah kanan titik
@@ -305,6 +323,7 @@ var ha;
             }
         }
         class Garis {
+            static gp = new GP();
             /**
              * buat garis object
              * @param v1
@@ -475,7 +494,7 @@ var ha;
             static sudut(garis) {
                 let j = garis.v2.y - garis.v1.y;
                 let i = garis.v2.x - garis.v1.x;
-                return geom.Transform.deg(i, j);
+                return geom.Transform.sudut(i, j);
             }
             /**
              * menghasilkan panjang pada sumbu x
@@ -595,7 +614,6 @@ var ha;
                 return false;
             }
         }
-        Garis.gp = new GP();
         geom.Garis = Garis;
         //alias
         geom.G = Garis;
@@ -605,14 +623,21 @@ var ha;
 (function (ha) {
     var geom;
     (function (geom) {
+        /**
+         * menghitung geometri relative terhadap titik 0
+         */
         class Transform {
+            static RAD2DEG = 180.0 / Math.PI;
+            static DEG2RAD = Math.PI / 180.0;
+            static _lastX = 0;
+            static _lastY = 0;
             static get lastX() {
                 return Transform._lastX;
             }
             static get lastY() {
                 return Transform._lastY;
             }
-            static equal(n1, n2, toleransi = 1) {
+            static sama(n1, n2, toleransi = 1) {
                 if (Math.abs(n1 - n2) <= toleransi)
                     return true;
                 return false;
@@ -653,7 +678,7 @@ var ha;
                 }
                 throw Error();
             }
-            static deg(x, y) {
+            static sudut(x, y) {
                 let l;
                 let sin;
                 l = Math.sqrt(x * x + y * y);
@@ -678,6 +703,7 @@ var ha;
                     deg = 360 + deg;
                 return deg;
             }
+            //TODO: refaktor
             static degDistMax(angleS = 0, angleT) {
                 angleS = Transform.normalizeDeg(angleS);
                 angleT = Transform.normalizeDeg(angleT);
@@ -689,6 +715,7 @@ var ha;
                     return (360 - Math.abs(deg));
                 }
             }
+            //TODO: refaktor
             static degDistMin(angleS = 0, angleT) {
                 angleS = Transform.normalizeDeg(angleS);
                 angleT = Transform.normalizeDeg(angleT);
@@ -709,11 +736,13 @@ var ha;
                     }
                 }
             }
+            //TODO: refaktor
             static jarak(x, y, xt, yt) {
                 let pjx = xt - x;
                 let pjy = yt - y;
                 return Math.sqrt(pjx * pjx + pjy * pjy);
             }
+            //TODO: refaktor
             static rotateRel(x = 0, y = 0, xt = 0, yt = 0, deg = 10) {
                 let xr = x - xt;
                 let yr = y - yt;
@@ -731,10 +760,6 @@ var ha;
                 Transform._lastY = Math.sin(sdtrad) * jrk;
             }
         }
-        Transform.RAD2DEG = 180.0 / Math.PI;
-        Transform.DEG2RAD = Math.PI / 180.0;
-        Transform._lastX = 0;
-        Transform._lastY = 0;
         geom.Transform = Transform;
     })(geom = ha.geom || (ha.geom = {}));
 })(ha || (ha = {}));

@@ -1,23 +1,56 @@
 namespace ha.fb {
-	export class Konstrain {
-		static readonly list: Konstrain[] = [];
 
-		private b1: BolaObj;
-		private b2: BolaObj;
-		private jrk: number = 0;
-
+	class KonstrainObj {
 		constructor(b1: BolaObj, b2: BolaObj) {
 			this.b1 = b1;
 			this.b2 = b2;
 			this.jrk = ha.geom.Transform.jarak(this.b1.x, this.b1.y, this.b2.x, this.b2.y);
 		}
 
+		private _id: number;
+		public get id(): number {
+			return this._id;
+		}
+		public set id(value: number) {
+			this._id = value;
+		}
+
+		private _b1: BolaObj;
+		public get b1(): BolaObj {
+			return this._b1;
+		}
+		public set b1(value: BolaObj) {
+			this._b1 = value;
+		}
+		private _b2: BolaObj;
+		public get b2(): BolaObj {
+			return this._b2;
+		}
+		public set b2(value: BolaObj) {
+			this._b2 = value;
+		}
+		private _jrk: number = 0;
+		public get jrk(): number {
+			return this._jrk;
+		}
+		public set jrk(value: number) {
+			this._jrk = value;
+		}
+
+	}
+
+	/**
+	 * 
+	 */
+	class Konstrain {
+		readonly list: KonstrainObj[] = [];
+
 		/**
 		 * cari konstrain berdasarkan bola
 		 * @param b bola
 		 * @returns 
 		 */
-		static getByBola(b: BolaObj): Konstrain {
+		getByBola(b: BolaObj): KonstrainObj {
 			return this.list.find((item) => {
 				return (item.b1 == b || item.b2 == b)
 			})
@@ -26,8 +59,8 @@ namespace ha.fb {
 		/**
 		 * menghitung ulang jarak konstrain
 		 */
-		refresh(): void {
-			this.jrk = ha.geom.Transform.jarak(this.b1.x, this.b1.y, this.b2.x, this.b2.y);
+		refresh(obj: KonstrainObj): void {
+			obj.jrk = ha.geom.Transform.jarak(obj.b1.x, obj.b1.y, obj.b2.x, obj.b2.y);
 		}
 
 		/**
@@ -36,30 +69,30 @@ namespace ha.fb {
 		 * @param b2 bola yang digeser
 		 * @returns 
 		 */
-		geser(b1: BolaObj, b2: BolaObj): void {
+		geser(obj: KonstrainObj, b1: BolaObj, b2: BolaObj): void {
 			let jrk2Bola: number;
 			let gap: number;
 			let sdt: number;
 
-			console.group('geser');
+			// console.group('geser');
 
 			jrk2Bola = ha.geom.Transform.jarak(b1.x, b1.y, b2.x, b2.y);
-			gap = jrk2Bola - this.jrk;
+			gap = jrk2Bola - obj.jrk;
 
-			console.log('jrk bola: ', jrk2Bola, 'gap: ', gap, 'jrk k', this.jrk);
+			// console.log('jrk bola: ', jrk2Bola, 'gap: ', gap, 'jrk k', obj.jrk);
 
-			if (Math.abs(gap) < .5) {
-				console.groupEnd();
+			if (Math.abs(gap) < .2) {
+				// console.groupEnd();
 				return;
 			}
 
 			gap /= 2;
-			sdt = ha.geom.Transform.deg(b2.x - b1.x, b2.y - b1.y);
-			ha.geom.Transform.posPolar(this.jrk + (gap), sdt);
+			sdt = ha.geom.Transform.sudut(b2.x - b1.x, b2.y - b1.y);
+			ha.geom.Transform.posPolar(obj.jrk + (gap), sdt);
 
-			console.log(
-				'pos polar, x:', ha.geom.Transform.lastX,
-				'y:', ha.geom.Transform.lastY);
+			// console.log(
+			// 	'pos polar, x:', ha.geom.Transform.lastX,
+			// 	'y:', ha.geom.Transform.lastY);
 
 			let b2x: number = b2.x;
 			let b2y: number = b2.y;
@@ -70,26 +103,52 @@ namespace ha.fb {
 			b1.x = b2x - ha.geom.Transform.lastX;
 			b1.y = b2y - ha.geom.Transform.lastY;
 
-			console.log('x ' + b2.x, 'y ' + b2.y);
-			console.groupEnd();
+			// console.log('x ' + b2.x, 'y ' + b2.y);
+			// console.groupEnd();
 		}
 
 		/**
 		 * update konstrain
 		 */
-		update(): void {
-			this.geser(this.b1, this.b2);
-			this.geser(this.b2, this.b1);
+		updateObj(obj: KonstrainObj): void {
+			this.geser(obj, obj.b1, obj.b2);
+			this.geser(obj, obj.b2, obj.b1);
 		}
 
-		static buat(b1: BolaObj, b2: BolaObj): Konstrain {
-			let h: Konstrain = new Konstrain(b1, b2);
+		update(): void {
+			this.list.forEach((item) => {
+				this.updateObj(item);
+			})
+		}
 
-			Konstrain.list.push(h);
+		debug(ctx: CanvasRenderingContext2D): void {
+			ctx.beginPath();
+
+			this.list.forEach((item) => {
+				ctx.moveTo(item.b1.x, item.b1.y);
+				ctx.lineTo(item.b2.x, item.b2.y);
+				let jrk: number = ha.geom.Transform.jarak(item.b1.x, item.b1.y, item.b2.x, item.b2.y);
+				jrk = Math.floor(jrk);
+
+				ctx.fillText(jrk + "",
+					item.b1.x + (item.b2.x - item.b1.x) / 2,
+					item.b1.y + (item.b2.y - item.b1.y) / 2);
+
+			});
+
+			ctx.stroke();
+		}
+
+		buat(b1: BolaObj, b2: BolaObj): KonstrainObj {
+			let h: KonstrainObj = new KonstrainObj(b1, b2);
+
+			this.list.push(h);
 
 			return h;
 		}
 
 
 	}
+
+	export const kt: Konstrain = new Konstrain();
 }

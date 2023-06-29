@@ -1,7 +1,8 @@
 window.onload = () => {
 	Grafis(300, 300);
 
-	const fb = ha.fb.fb
+	const fb = ha.fb.bola
+	const kt = ha.fb.kt;
 
 	let b: ha.fb.BolaObj = fb.buatBola();
 	b.x = 50;
@@ -11,17 +12,15 @@ window.onload = () => {
 	b2.x = 100;
 	b2.y = 50;
 
-	let k = ha.fb.Konstrain.buat(b, b2);
+	let k = kt.buat(b, b2);
 	b2.x = 65;
 	b2.y = 65;
-	// k.refresh();
 
 	window.requestAnimationFrame(update);
 
 	window.onkeyup = (e: KeyboardEvent) => {
 		if (e.key == 'p') {
-			// fb.geser(fb.bolaAr[0], fb.bolaAr[1]);
-			k.geser(b, b2);
+			kt.geser(k, k.b1, k.b2);
 		}
 		console.log(e);
 	}

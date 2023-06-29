@@ -43,6 +43,21 @@ declare namespace ha.geom {
     }
 }
 declare namespace ha.geom {
+    /**
+     * menghitung garis relatif terhadap garis horizontal / aksis x
+     */
+    class SegHor {
+    }
+    export const segH: SegHor;
+    /**
+     * menghitung garis relatif terhadap titik 0,0
+     */
+    class Seg0 {
+    }
+    export const seg0: Seg0;
+    export {};
+}
+declare namespace ha.geom {
     class Garis {
         private static readonly gp;
         /**
@@ -162,6 +177,9 @@ declare namespace ha.geom {
     const G: typeof Garis;
 }
 declare namespace ha.geom {
+    /**
+     * menghitung geometri relative terhadap titik 0
+     */
     class Transform {
         static readonly RAD2DEG: number;
         static readonly DEG2RAD: number;
@@ -169,9 +187,9 @@ declare namespace ha.geom {
         private static _lastY;
         static get lastX(): number;
         static get lastY(): number;
-        static equal(n1: number, n2: number, toleransi?: number): boolean;
+        static sama(n1: number, n2: number, toleransi?: number): boolean;
         private static quadDeg2;
-        static deg(x: number, y: number): number;
+        static sudut(x: number, y: number): number;
         private static normalizeDeg;
         static degDistMax(angleS: number, angleT: number): number;
         static degDistMin(angleS: number, angleT: number): number;

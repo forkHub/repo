@@ -3,26 +3,60 @@ var ha;
     var be;
     (function (be) {
         class Main {
-            //TODOL ganti agar bisa gonta-ganti kontek
-            //parameternya adalah sprite/canvas/kontex
-            //tujuannya agar bisa diedit langsung oleh perintah kontek yang lain
-            static Kontek(spr) {
-                let spr2 = spr;
-                if (spr2 && spr2.buffer && spr2.buffer.ctx) {
-                    return spr2.buffer.ctx;
-                }
-                let spr3 = spr;
-                if (spr3 && spr3.getContext instanceof Function) {
-                    return spr3.getContext('2d');
+            static _canvasAr = [];
+            static _canvasAktif;
+            static _skalaOtomatis = true;
+            static _merah = 0;
+            static _hijau = 0;
+            static _biru = 0;
+            static _transparan = 0;
+            static warnaBackup = {
+                m: 0,
+                b: 0,
+                h: 0,
+                t: 1
+            };
+            /**
+             * Handle saat window di resize
+             */
+            static windowResize() {
+                // console.debug('window on resize');
+                let canvas = Main.canvasAktif.canvas;
+                let cp = Main.canvasAktif.canvas.width;
+                let cl = Main.canvasAktif.canvas.height;
+                let wp = window.innerWidth;
+                let wl = window.innerHeight;
+                let ratio = Math.min((wp / cp), (wl / cl));
+                let cp2 = Math.floor(cp * ratio);
+                let cl2 = Math.floor(cl * ratio);
+                Main.canvasAktif.ratioX = ratio;
+                Main.canvasAktif.ratioY = ratio;
+                canvas.style.position = 'fixed';
+                canvas.style.zIndex = '1';
+                canvas.style.width = cp2 + 'px';
+                canvas.style.height = cl2 + 'px';
+                canvas.style.top = ((wl - cl2) / 2) + 'px';
+                canvas.style.left = ((wp - cp2) / 2) + 'px';
+                // console.debug('canvas w: ' + canvas.style.width + '/ratio: ' + ratio);
+            }
+            /**
+             * mengeset/mengembalikan Kontek yang sedang aktif
+             *
+             * @param ctx (CanvasRenderingContext2D) | null
+             * @returns CanvasRenderingContext2D
+             */
+            static Kontek(ctx) {
+                if (ctx) {
+                    Main.canvasAktif.ctx = ctx;
                 }
                 return Main.canvasAktif.ctx;
             }
-            static Fps(n) {
-                Main.fps = Math.floor(1000 / n);
-                if (n >= 60) {
-                    Main.fps = 0;
-                }
-            }
+            // static Fps(n: number) {
+            // 	Main.fps = Math.floor(1000 / n);
+            // 	if (n >= 60) {
+            // 		Main.fps = 0;
+            // 	}
+            // }
             static buatCanvas(canvasEl) {
                 let canvas = {
                     canvas: canvasEl,
@@ -68,13 +102,28 @@ var ha;
                 Main.transparan = Main.warnaBackup.t;
                 Main.updateStyleWarna();
             }
+            /**
+             * Membersihkan layar dengan warna tertentu, default hitam
+             * @param m (number) merah
+             * @param h (number) hijau
+             * @param b (b) biru
+             * @param t (t) transparan (0-100)
+             */
             static Bersih(m = 0, h = 0, b = 0, t = 100) {
                 let ctx = Main.canvasAktif.ctx;
                 Main.backupWarna();
+                ctx.clearRect(0, 0, Main.canvasAktif.panjang, Main.canvasAktif.lebar);
                 ctx.fillStyle = `rgba(${m}, ${h}, ${b}, ${t / 100})`;
                 ctx.fillRect(0, 0, Main.canvasAktif.panjang, Main.canvasAktif.lebar);
                 Main.restoreWarna();
             }
+            /**
+             * Mengeset warna untuk dipakai pada perintah menggambar setelahnya
+             * @param r (number) merah
+             * @param g (number) hijau
+             * @param b (number) biru
+             * @param a (number) alpha (0-100)
+             */
             static Warna(r = 0, g = 0, b = 0, a = 100) {
                 let h = Main;
                 h.merah = r;
@@ -87,12 +136,24 @@ var ha;
                 let ctx = Main.canvasAktif.ctx;
                 ctx.fillStyle = `rgba(${Main.merah}, ${Main.hijau}, ${Main.biru}, ${Main.transparan})`;
             }
+            /**
+             * Mengembalikan warna merah dari perintah AmbilPixel terakhir
+             * @returns (number) warna merah
+             */
             static Hijau() {
                 return Main.hijau;
             }
+            /**
+             * Mengembalikan warna merah dari perintah AmbilPixel terakhir
+             * @returns (number) warna merah
+             */
             static Merah() {
                 return Main.merah;
             }
+            /**
+             * Mengembalikan warna biru dari perintah AmbilPixel terakhir
+             * @returns (number) warna biru
+             */
             static Biru() {
                 return Main.biru;
             }
@@ -102,7 +163,62 @@ var ha;
             static Kanvas() {
                 return Main.canvasAktif.canvas;
             }
-            static Grafis(p = 320, l = 240, ubahStyle) {
+            /**
+             * Setup Blitz Edu
+             * @param panjang (angka) panjang dari kanvas
+             * @param lebar (angka) lebar dari kanvs
+             * @param canvas (HTMLCanvasElement) referensi ke kanvas
+             * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
+             * @returns
+             */
+            static Grafis(panjang = 320, lebar = 240, canvas = null, fullScreen = true, input = true) {
+                //coba cari canvas
+                if (!canvas) {
+                    canvas = document.body.querySelector('canvas');
+                }
+                if (!canvas) {
+                    document.body.appendChild(document.createElement('canvas'));
+                }
+                Main.skalaOtomatis = fullScreen;
+                // ha.be.Blijs._inputStatus = input
+                //sudah diinisialisasi atau belum
+                if (Main.canvasAktif) {
+                    console.warn('init lebih dari sekali');
+                    Main.Grafis2(panjang, lebar, Main.skalaOtomatis);
+                }
+                else {
+                    console.log('inisialisasi');
+                    Main.init(canvas, canvas);
+                    Main.Grafis2(panjang, lebar, Main.skalaOtomatis);
+                    if (input) {
+                        be.Input.init(Main.canvasAktif);
+                    }
+                    if (Main.skalaOtomatis) {
+                        window.onresize = () => {
+                            if (Main.skalaOtomatis) {
+                                Main.windowResize();
+                            }
+                        };
+                    }
+                    if (Main.skalaOtomatis) {
+                        Main.windowResize();
+                    }
+                    setTimeout(() => {
+                        if (Main.skalaOtomatis) {
+                            Main.windowResize();
+                        }
+                    }, 100);
+                    // setTimeout(() => {
+                    // 	ha.be.Blijs.repeat();
+                    // }, 0);
+                    //font default
+                    ha.be.Teks.font("12px sans-serif");
+                    ha.be.Teks.rata("center");
+                    Main.Warna(255, 255, 255, 100);
+                    Main.canvasAktif.ctx.strokeStyle = "#ffffff";
+                }
+            }
+            static Grafis2(p = 320, l = 240, ubahStyle) {
                 let canvas = Main.canvasAktif;
                 canvas.canvas.width = p;
                 canvas.canvas.height = l;
@@ -112,12 +228,11 @@ var ha;
                     canvas.canvas.style.padding = '0px';
                     canvas.canvas.style.margin = '0px';
                 }
-                //TODO: coba di check
                 canvas.panjang = p;
                 canvas.lebar = l;
                 setTimeout(() => {
-                    if (be.Blijs.skalaOtomatis) {
-                        be.Blijs.windowResize();
+                    if (Main.skalaOtomatis) {
+                        Main.windowResize();
                     }
                     else {
                     }
@@ -184,9 +299,9 @@ var ha;
                 // ctx.quadraticCurveTo(x - w / 2, y - h / 2, x - w / 2, y);
                 // ctx.stroke();
             }
-            static SetBuffer(buffer) {
-                Main.canvasAktif = buffer;
-            }
+            // static SetBuffer(buffer: IGambar) {
+            // 	Main.canvasAktif = buffer
+            // }
             static get canvasAktif() {
                 return Main._canvasAktif;
             }
@@ -199,18 +314,18 @@ var ha;
             static set canvasAr(value) {
                 Main._canvasAr = value;
             }
-            static get origin() {
-                return Main._origin;
-            }
-            static set origin(value) {
-                Main._origin = value;
-            }
-            static get fps() {
-                return Main._fps;
-            }
-            static set fps(value) {
-                Main._fps = value;
-            }
+            // public static get origin(): IV2D {
+            // 	return Main._origin;
+            // }
+            // public static set origin(value: IV2D) {
+            // 	Main._origin = value;
+            // }
+            // public static get fps(): number {
+            // 	return Main._fps;
+            // }
+            // public static set fps(value: number) {
+            // 	Main._fps = value;
+            // }
             static get skalaOtomatis() {
                 return Main._skalaOtomatis;
             }
@@ -242,19 +357,6 @@ var ha;
                 Main._transparan = value;
             }
         }
-        Main._fps = 0;
-        Main._canvasAr = [];
-        Main._skalaOtomatis = true;
-        Main._merah = 0;
-        Main._hijau = 0;
-        Main._biru = 0;
-        Main._transparan = 0;
-        Main.warnaBackup = {
-            m: 0,
-            b: 0,
-            h: 0,
-            t: 1
-        };
         be.Main = Main;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
@@ -263,31 +365,37 @@ var ha;
     var be;
     (function (be) {
         class Gambar {
-            constructor() {
-                this.frameW = 32;
-                this.frameH = 32;
-                this._rotasi = 0;
-                this.alpha = 100;
-                this.isAnim = false;
-                this.rect = new be.Rect();
-                this.load = false;
-                this.panjang = 0;
-                this.lebar = 0;
-                this.panjangDiSet = false;
-                this.lebarDiSet = false;
-                this.handleX = 0;
-                this.handleY = 0;
-                this.ratioX = 1;
-                this.ratioY = 1;
-            }
+            img;
+            canvas;
+            ctx;
+            frameW = 32;
+            frameH = 32;
+            _rotasi = 0;
+            alpha = 100;
+            isAnim = false;
+            rect = new be.Rect();
+            load = false;
+            panjang = 0;
+            lebar = 0;
+            panjangDiSet = false;
+            lebarDiSet = false;
+            handleX = 0;
+            handleY = 0;
+            ratioX = 1;
+            ratioY = 1;
             get rotasi() {
                 return this._rotasi;
             }
             set rotasi(value) {
-                console.debug('set value: ' + value);
+                // console.debug('set value: ' + value);
                 this._rotasi = value;
             }
         }
+        /**
+         * Menghandle Image object
+         * Tidak untuk dipakai langsung
+         * Image object akan di wrap oleh Sprite
+         */
         class Image {
             // private static buatObj(
             // 	img: HTMLImageElement,
@@ -476,7 +584,7 @@ var ha;
                     imgOnLoad(img);
                 };
                 img.onerror = () => {
-                    console.log('gagal load image, url ' + url);
+                    console.warn('gagal load image, url ' + url);
                     //TODO: default image
                 };
                 let img2 = ha.be.cache.getGbr(url);
@@ -487,7 +595,7 @@ var ha;
                     img.src = url;
                 }
                 function imgOnLoad(img) {
-                    console.log('img anim load ' + url);
+                    // console.log('img anim load ' + url);
                     canvas.width = img.naturalWidth;
                     canvas.height = img.naturalHeight;
                     ctx.drawImage(img, 0, 0);
@@ -504,11 +612,11 @@ var ha;
                 }
                 return gbr;
             }
-            static muatAsync(url) {
+            static muatAsync(url, onload) {
                 let canvas = document.createElement('canvas');
-                return Image.muatAsyncKanvas(url, canvas);
+                return Image.muatAsyncKanvas(url, canvas, onload);
             }
-            static muatAsyncKanvas(url, canvas) {
+            static muatAsyncKanvas(url, canvas, onload) {
                 let img = document.createElement('img'); //ha_blitz.image.loadImageAsync(url, () => { }, () => { });
                 let ctx = canvas.getContext('2d');
                 let rect;
@@ -534,10 +642,11 @@ var ha;
                     lebarDiSet: false
                 };
                 img.onload = () => {
+                    onload();
                     imgOnLoad(img);
                 };
                 img.onerror = () => {
-                    console.log('gagal load image, url ' + url);
+                    console.warn('gagal load image, url ' + url);
                     //TODO: default image
                 };
                 let img2 = ha.be.cache.getGbr(url);
@@ -595,6 +704,12 @@ var ha;
             static putarGambar(gbr, sudut = 0) {
                 gbr.rotasi = sudut;
             }
+            /**
+             * mengambil pixel di layar
+             * @param x posisi x
+             * @param y posisi y
+             * @returns (Uint8ClampedArray)
+             */
             static AmbilPiksel(x = 0, y = 0) {
                 try {
                     let data = be.Main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
@@ -722,38 +837,62 @@ var ha;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
 ///<reference path="./Image.ts"/>
-/** SPRITE.TS */
 var ha;
 (function (ha) {
+    /**
+     * Sprite
+     * Wrapper dari image agar bisa interaksi
+    */
     class Sprite {
-        constructor(buffer, dragable = false) {
-            this._x = 0;
-            this._y = 0;
-            this._dragged = false;
-            this._down = false;
-            this._hit = 0;
-            this._dragStartY = 0;
-            this._dragStartX = 0;
-            this._dragable = false;
-            this.buffer = buffer;
-            this.dragable = dragable;
-        }
+        static daftar = [];
+        _buff;
+        _x = 0;
+        _y = 0;
+        _dragged = false;
+        _down = false;
+        _hit = 0;
+        _dragStartY = 0;
+        _dragStartX = 0;
+        _dragable = false;
+        _url;
+        _tipeDrag;
+        _sudutTekanAwal;
+        _sudutAwal;
+        _inputId;
         get inputId() {
             return this._inputId;
         }
         set inputId(value) {
             this._inputId = value;
         }
-        //library
-        static copy(sprS) {
+        constructor(buffer, dragable = false) {
+            this.buffer = buffer;
+            this.dragable = dragable;
+        }
+        static kontek(spr) {
+            return spr.buffer.ctx;
+        }
+        /**
+         *
+         * @param sprS {ISprite} sprite
+         * @param onload {() => void} optional, fungsi yang dipanggil sprite selesai dimuat
+         * @returns
+         */
+        static Copy(sprS, onload) {
+            if (!onload) {
+                onload = () => { };
+            }
             if (sprS.buffer.isAnim) {
                 console.debug('copy sprite anim');
                 console.debug(sprS);
                 return ha.Sprite.muatAnimasiAsyncKanvas(sprS.url, sprS.buffer.frameW, sprS.buffer.frameH, sprS.dragable, sprS.buffer.canvas, sprS.tipeDrag);
             }
             else {
-                return ha.Sprite.muatAsyncBerbagiKanvas(sprS.url, sprS.dragable, sprS.buffer.canvas, sprS.tipeDrag);
+                return ha.Sprite.muatAsyncBerbagiKanvas(sprS.url, sprS.dragable, sprS.buffer.canvas, sprS.tipeDrag, onload);
             }
+        }
+        static Dimuat(spr) {
+            return spr.buffer.load;
         }
         static statusDrag(spr) {
             let hasil = false;
@@ -824,12 +963,14 @@ var ha;
             let img = ha.be.Image.muatAnimAsync(url, pf, lf);
             return ha.Sprite.buatPrivate(img, bisaDiDrag, url, tipeDrag);
         }
-        static muatAsyncBerbagiKanvas(url, dragable = false, canvas, tipeDrag) {
-            let img = ha.be.Image.muatAsyncKanvas(url, canvas);
+        static muatAsyncBerbagiKanvas(url, dragable = false, canvas, tipeDrag, onload) {
+            let img = ha.be.Image.muatAsyncKanvas(url, canvas, onload);
             return ha.Sprite.buatPrivate(img, dragable, url, tipeDrag);
         }
-        static muatAsync(url, bisaDiDrag = false, tipeDrag = 0) {
-            let img = ha.be.Image.muatAsync(url);
+        static Muat(url, bisaDiDrag = false, tipeDrag = 0, onload) {
+            if (!onload)
+                onload = () => { };
+            let img = ha.be.Image.muatAsync(url, onload);
             let spr = ha.Sprite.buatPrivate(img, bisaDiDrag, url, tipeDrag);
             return spr;
         }
@@ -847,8 +988,8 @@ var ha;
                 }
             }
             this.daftar.push(hasil);
-            console.debug('buat sprite');
-            console.debug(hasil);
+            // console.debug('buat sprite');
+            // console.debug(hasil);
             return hasil;
         }
         static gambar(sprite, frame) {
@@ -959,10 +1100,9 @@ var ha;
             this._url = value;
         }
     }
-    Sprite.daftar = [];
     ha.Sprite = Sprite;
 })(ha || (ha = {}));
-/** INPUT.TS */
+//TODO: depecreated
 var EInput;
 (function (EInput) {
     EInput["TOUCH"] = "touch";
@@ -974,59 +1114,215 @@ var ha;
 (function (ha) {
     var be;
     (function (be) {
+        class EventHandler {
+            move(input, buffer, e) {
+                let pos = Input.pos(e.clientX, e.clientY, buffer);
+                input.x = pos.x;
+                input.y = pos.y;
+                input.id = e.pointerId;
+                if (input.isDown) {
+                    input.isDrag = true;
+                    input.dragJml++;
+                    input.xDrag = input.x - input.xStart;
+                    input.yDrag = input.y - input.yStart;
+                }
+            }
+            down(input, key, type, pos) {
+                if (!input.isDown) {
+                    input.hit++;
+                }
+                input.xStart = pos.x;
+                input.yStart = pos.y;
+                input.xDrag = 0;
+                input.yDrag = 0;
+                input.x = pos.x;
+                input.y = pos.y;
+                input.isDown = true;
+                input.isTap = false;
+                input.isDrag = false;
+                input.key = key;
+                input.type = type;
+                input.timerStart = Date.now();
+            }
+            up(input) {
+                if (input.isDrag) {
+                    input.dragSelesaiJml++;
+                }
+                input.isDown = false;
+                input.isDrag = false;
+                input.timerEnd = Date.now();
+                //todo check tap
+                let isTap = this.checkTap(input);
+                input.isTap = (isTap == '');
+                if (input.isTap) {
+                    if (Input.debug) {
+                        console.debug('tap ok');
+                    }
+                    input.tapJml++;
+                }
+                else {
+                    input.upJml++;
+                    if (Input.debug) {
+                        console.debug('tap failed');
+                        console.debug(isTap);
+                    }
+                }
+            }
+            //check tap
+            checkTap(input) {
+                if (Math.abs(input.xDrag) > 5)
+                    return "drag x " + input.xDrag;
+                if (Math.abs(input.yDrag) > 5)
+                    return "drag y 	" + input.xDrag;
+                let timer = input.timerEnd - input.timerStart;
+                if ((timer) > 500)
+                    return "timer " + timer;
+                return '';
+            }
+        }
+        /**
+         * Input
+         */
         class Input {
+            static _inputs = []; //any input,
+            static _debug = false;
+            static get debug() {
+                return Input._debug;
+            }
+            static set debug(value) {
+                Input._debug = value;
+            }
+            // private _touchGlobal: IInput;	//global touch
+            // private _mouseGlobal: IInput;	//global mouse
+            // private _keybGlobal: IInput;	//global keyb
+            static _inputGlobal; //global input
+            static _event = new EventHandler();
             constructor() {
-                this._inputs = []; //any input,
-                this._event = new EventHandler();
-                this.pos = (cx, cy, buffer) => {
-                    let rect = buffer.canvas.getBoundingClientRect();
-                    let canvasScaleX = parseInt(window.getComputedStyle(buffer.canvas).width) / buffer.canvas.width;
-                    let canvasScaleY = parseInt(window.getComputedStyle(buffer.canvas).height) / buffer.canvas.height;
-                    let poslx = Math.floor((cx - rect.x) / canvasScaleX);
-                    let posly = Math.floor((cy - rect.y) / canvasScaleY);
-                    return {
-                        x: poslx,
-                        y: posly
-                    };
-                };
-                this._touchGlobal = this.buatInputDefault();
-                this._mouseGlobal = this.buatInputDefault();
-                this._keybGlobal = this.buatInputDefault();
-                this._inputGlobal = this.buatInputDefault();
-                this._touchGlobal.type = EInput.TOUCH;
-                this._keybGlobal.type = EInput.KEYB;
-                this._mouseGlobal.type = EInput.MOUSE;
+                // this._touchGlobal = this.buatInputDefault();
+                // this._mouseGlobal = this.buatInputDefault();
+                // this._keybGlobal = this.buatInputDefault();
+                // this._touchGlobal.type = EInput.TOUCH;
+                // this._keybGlobal.type = EInput.KEYB;
+                // this._mouseGlobal.type = EInput.MOUSE;
             }
-            InputType() {
-                return be.input.inputGlobal.type;
+            // static init() {
+            // }
+            /**
+             * berapa kali tap terjadi sejak pemanggilan terakhir kali
+             * @returns (number)
+             */
+            static JmlTap() {
+                let tap = Input.inputGlobal.tapJml;
+                Input.inputGlobal.tapJml = 0;
+                return tap;
             }
-            InputHit() {
-                let hit = be.input.inputGlobal.hit;
-                be.input.inputGlobal.hit = 0;
+            /**
+             * berapa kali pointer diangkat  sejak pemanggilan terakhir kali
+             * @returns (number)
+             */
+            static JmlUp() {
+                let up = Input.inputGlobal.upJml;
+                Input.inputGlobal.tapJml = 0;
+                return up;
+            }
+            /**
+             * berapa jumlah drag selesai sejak pemanggilan terakhir kali
+             * @returns
+             */
+            static JmlDragSelesai() {
+                let s = Input.inputGlobal.dragSelesaiJml;
+                Input.inputGlobal.dragSelesaiJml = 0;
+                return s;
+            }
+            /**
+             * (depecreated) type input dari event terkhir
+             * @returns (EInput)
+             */
+            static InputType() {
+                return Input.inputGlobal.type;
+            }
+            /**
+             * berapa kali pointer di tekan sejak terakhir kali perintah dipanggil
+             * @returns (number)
+             */
+            static InputHit() {
+                let hit = Input.inputGlobal.hit;
+                Input.inputGlobal.hit = 0;
                 return hit;
             }
-            InputX() {
-                return be.input.inputGlobal.x;
+            /**
+             * posisi x awal drag
+             * @returns (number)
+             *
+             * */
+            static InputXAwal() {
+                return Input.inputGlobal.xStart;
             }
-            InputY() {
-                return be.input.inputGlobal.y;
+            /**
+             * posisi y awal drag
+             * @returns (number)
+             */
+            static InputYAwal() {
+                return Input.inputGlobal.yStart;
             }
-            GeserX() {
-                return be.input.inputGlobal.xDrag;
+            /**
+             * posisi x pointer
+             * @returns (number)
+             */
+            static InputX() {
+                return Input.inputGlobal.x;
             }
-            GeserY() {
-                return be.input.inputGlobal.yDrag;
+            /**
+             * posisi y pointer
+             * @returns
+             */
+            static InputY() {
+                return Input.inputGlobal.y;
             }
-            FlushInput() {
-                be.input.flush();
+            /**
+             * berapa jauh pointer digeser sejajar sumbu x
+             * @returns (number)
+             */
+            static GeserX() {
+                return Input.inputGlobal.xDrag;
             }
-            Pencet() {
-                return be.input.inputGlobal.isDown;
+            /**
+             * berapa jauh pointer di drag sejajar sumbu y
+             * @returns (number)
+             */
+            static GeserY() {
+                return Input.inputGlobal.yDrag;
             }
-            Geser() {
-                return be.input.inputGlobal.isDrag;
+            /**
+             * menghapus data input
+             */
+            static FlushInput() {
+                Input.flush();
             }
-            getMouseKeyId(e) {
+            /**
+             * berapa kali drag dimulai sejak pemanggilan terakhir
+             *
+             */
+            static JmlDragMulai() {
+                let hasil = Input.inputGlobal.dragJml;
+                Input.inputGlobal.dragJml = 0;
+                return hasil;
+            }
+            /**
+             * mengecek apakah pointer sedang ditekan
+             * @returns (boolean)
+             */
+            static Pencet() {
+                return Input.inputGlobal.isDown;
+            }
+            /**
+             * mengecheck apakah pointer sedang di drag
+             * @returns (boolean)
+             */
+            static Geser() {
+                return Input.inputGlobal.isDrag;
+            }
+            static getMouseKeyId(e) {
                 if (e.pointerType == 'touch') {
                     return e.pointerId + '';
                 }
@@ -1035,49 +1331,44 @@ var ha;
                 }
                 throw Error('');
             }
-            init(buffer) {
+            static init(buffer) {
                 console.log('input init');
+                Input._inputGlobal = this.buatInputDefault();
                 buffer.canvas.style.touchAction = 'none';
                 buffer.canvas.onpointerdown = (e) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    let pos = ha.be.input.pos(e.clientX, e.clientY, buffer);
-                    let key = this.getMouseKeyId(e);
-                    let input = ha.be.input.baru(key, e.pointerType);
-                    ha.be.input.event.down(input, key, e.pointerType, pos);
-                    ha.be.input.event.down(this._inputGlobal, key, e.pointerType, pos);
-                    if ("mouse" == e.pointerType)
-                        ha.be.input.event.down(this._mouseGlobal, key, EInput.MOUSE, pos);
-                    if ("touch" == e.pointerType)
-                        ha.be.input.event.down(this._touchGlobal, key, EInput.TOUCH, pos);
-                    ha.sprite2.inputDown(pos, e.pointerId);
+                    let pos = Input.pos(e.clientX, e.clientY, buffer);
+                    let key = Input.getMouseKeyId(e);
+                    let input = Input.baru(key, e.pointerType);
+                    Input.event.down(input, key, e.pointerType, pos);
+                    Input.event.down(this._inputGlobal, key, e.pointerType, pos);
+                    // if ("mouse" == e.pointerType) ha.be.input.event.down(this._mouseGlobal, key, EInput.MOUSE, pos);
+                    // if ("touch" == e.pointerType) ha.be.input.event.down(this._touchGlobal, key, EInput.TOUCH, pos);
+                    ha.sprInteraksi.inputDown(pos, e.pointerId);
                 };
                 buffer.canvas.onpointermove = (e) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    let pos = ha.be.input.pos(e.clientX, e.clientY, buffer);
+                    let pos = Input.pos(e.clientX, e.clientY, buffer);
                     let key = this.getMouseKeyId(e);
                     let input = this.baru(key, e.pointerType);
-                    ha.be.input.event.move(input, buffer, e);
-                    ha.be.input.event.move(this.inputGlobal, buffer, e);
-                    if (e.pointerType == 'touch')
-                        ha.be.input.event.move(ha.be.input.touchGlobal, buffer, e);
-                    if (e.pointerType == 'mouse')
-                        ha.be.input.event.move(ha.be.input.mouseGlobal, buffer, e);
+                    Input.event.move(input, buffer, e);
+                    Input.event.move(this.inputGlobal, buffer, e);
+                    // if (e.pointerType == 'touch') ha.be.input.event.move(ha.be.input.touchGlobal, buffer, e);
+                    // if (e.pointerType == 'mouse') ha.be.input.event.move(ha.be.input.mouseGlobal, buffer, e);
                     //sprite
-                    ha.sprite2.inputMove(pos, e.pointerId);
+                    ha.sprInteraksi.inputMove(pos, e.pointerId);
                 };
                 buffer.canvas.onpointerout = (e) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    let key = ha.be.input.getMouseKeyId(e);
-                    let input = ha.be.input.baru(key, e.pointerType);
-                    ha.be.input.event.up(input);
-                    ha.be.input.event.up(ha.be.input.inputGlobal);
-                    if (e.pointerType == 'touch')
-                        ha.be.input.event.up(ha.be.input.touchGlobal);
-                    if (e.pointerType == 'mouse')
-                        ha.be.input.event.up(ha.be.input.mouseGlobal);
+                    // let key: string = Input.getMouseKeyId(e);
+                    // let input: IInput = Input.baru(key, e.pointerType as EInput);
+                    // Input.event.up(input);
+                    // Input.event.up(Input.inputGlobal);
+                    // if (e.pointerType == 'touch') ha.be.input.event.up(ha.be.input.touchGlobal);
+                    // if (e.pointerType == 'mouse') ha.be.input.event.up(ha.be.input.mouseGlobal);
                 };
                 buffer.canvas.onpointercancel = (e) => {
                     e.stopPropagation();
@@ -1088,12 +1379,10 @@ var ha;
                     e.preventDefault();
                     let key = this.getMouseKeyId(e);
                     let input = this.baru(key, e.pointerType);
-                    ha.be.input.event.up(input);
-                    ha.be.input.event.up(this.inputGlobal);
-                    if (e.pointerType == 'touch')
-                        ha.be.input.event.up(ha.be.input.touchGlobal);
-                    if (e.pointerType == 'mouse')
-                        ha.be.input.event.up(ha.be.input.mouseGlobal);
+                    Input.event.up(input);
+                    Input.event.up(this.inputGlobal);
+                    // if (e.pointerType == 'touch') ha.be.input.event.up(ha.be.input.touchGlobal);
+                    // if (e.pointerType == 'mouse') ha.be.input.event.up(ha.be.input.mouseGlobal);
                     //sprite up
                     //sprite hit
                     ha.Sprite.daftar.forEach((item) => {
@@ -1106,24 +1395,24 @@ var ha;
                         }
                     });
                 };
-                window.onkeydown = (e) => {
-                    // e.stopPropagation();
-                    // e.preventDefault();
-                    let input = ha.be.input.baru(e.key + '', EInput.KEYB);
-                    ha.be.input.event.down(input, e.key, EInput.KEYB, ha.be.Point.create());
-                    ha.be.input.event.down(this.inputGlobal, e.key, EInput.KEYB, ha.be.Point.create());
-                    ha.be.input.event.down(this._keybGlobal, e.key, EInput.KEYB, ha.be.Point.create());
-                    // console.log('keydown');
-                };
-                window.onkeyup = (e) => {
-                    // e.stopPropagation();
-                    let input = ha.be.input.baru(e.key + '', EInput.KEYB);
-                    ha.be.input.event.up(input);
-                    ha.be.input.event.up(this.inputGlobal);
-                    ha.be.input.event.up(this._keybGlobal);
-                };
+                // window.onkeydown = (e: KeyboardEvent) => {
+                // 	// e.stopPropagation();
+                // 	// e.preventDefault();
+                // 	let input: IInput = ha.be.input.baru(e.key + '', EInput.KEYB);
+                // 	ha.be.input.event.down(input, e.key, EInput.KEYB, ha.be.Point.create());
+                // 	ha.be.input.event.down(this.inputGlobal, e.key, EInput.KEYB, ha.be.Point.create());
+                // 	// ha.be.input.event.down(this._keybGlobal, e.key, EInput.KEYB, ha.be.Point.create());
+                // 	// console.log('keydown');
+                // };
+                // window.onkeyup = (e: KeyboardEvent) => {
+                // 	// e.stopPropagation();
+                // 	let input: IInput = ha.be.input.baru(e.key + '', EInput.KEYB);
+                // 	ha.be.input.event.up(input);
+                // 	ha.be.input.event.up(this.inputGlobal);
+                // 	// ha.be.input.event.up(this._keybGlobal);
+                // }
             }
-            buatInputDefault() {
+            static buatInputDefault() {
                 return {
                     id: 0,
                     isDown: false,
@@ -1140,53 +1429,59 @@ var ha;
                     y: 0,
                     yDrag: 0,
                     yStart: 0,
-                    hit: 0
+                    hit: 0,
+                    dragJml: 0,
+                    dragSelesaiJml: 0,
+                    tapJml: 0,
+                    upJml: 0
                 };
             }
-            reset(input) {
-                input.id = 0;
-                input.isDown = false;
-                input.isDrag = false;
-                // input.isHit = false;
-                input.isTap = false;
-                input.key = '';
-                input.timerEnd = 0;
-                input.timerStart = 0;
-                input.type = EInput.DEF;
-                input.x = 0;
-                input.y = 0;
-                input.xDrag = 0;
-                input.yDrag = 0;
-                input.xStart = 0;
-                input.yStart = 0;
-            }
-            flush() {
-                while (this.inputs.length > 0) {
-                    this.inputs.pop();
+            // private reset(input: IInput) {
+            // 	input.id = 0;
+            // 	input.isDown = false;
+            // 	input.isDrag = false;
+            // 	// input.isHit = false;
+            // 	input.isTap = false;
+            // 	input.key = '';
+            // 	input.timerEnd = 0;
+            // 	input.timerStart = 0;
+            // 	input.type = EInput.DEF;
+            // 	input.x = 0;
+            // 	input.y = 0;
+            // 	input.xDrag = 0;
+            // 	input.yDrag = 0;
+            // 	input.xStart = 0;
+            // 	input.yStart = 0;
+            // }
+            static flush() {
+                while (Input.inputs.length > 0) {
+                    Input.inputs.pop();
                 }
-                this.flushByInput(this._inputGlobal);
-                this.flushByInput(this._mouseGlobal);
-                this.flushByInput(this._touchGlobal);
-                this.flushByInput(this._keybGlobal);
+                Input.flushByInput(Input._inputGlobal);
+                // this.flushByInput(this._mouseGlobal);
+                // this.flushByInput(this._touchGlobal);
+                // this.flushByInput(this._keybGlobal);
             }
-            flushByType(type) {
-                this._inputs.forEach((input) => {
-                    if (type == input.type) {
-                        this.flushByInput(input);
-                    }
-                });
-            }
-            flushByInput(input) {
+            // flushByType(type: string): void {
+            // 	this._inputs.forEach((input: IInput) => {
+            // 		if (type == input.type) {
+            // 			this.flushByInput(input);
+            // 		}
+            // 	});
+            // }
+            static flushByInput(input) {
                 input.isDown = false;
                 input.isDrag = false;
-                // input.isHit = false;
                 input.isTap = false;
                 input.hit = 0;
+                input.tapJml = 0;
+                input.dragJml = 0;
+                input.dragSelesaiJml = 0;
             }
-            getInput(key, inputType) {
+            static getInput(key, inputType) {
                 let inputHasil;
-                for (let i = 0; i < this.inputs.length; i++) {
-                    let input = this.inputs[i];
+                for (let i = 0; i < Input.inputs.length; i++) {
+                    let input = Input.inputs[i];
                     if (input.type == inputType && input.key == key) {
                         inputHasil = input;
                         return inputHasil;
@@ -1194,8 +1489,8 @@ var ha;
                 }
                 return inputHasil;
             }
-            baru(keyId, inputType) {
-                let input = this.getInput(keyId, inputType);
+            static baru(keyId, inputType) {
+                let input = Input.getInput(keyId, inputType);
                 if (!input) {
                     input = {
                         key: keyId,
@@ -1212,73 +1507,58 @@ var ha;
                         yDrag: 0,
                         yStart: 0,
                         id: 0,
-                        hit: 0
+                        hit: 0,
+                        dragJml: 0,
+                        dragSelesaiJml: 0,
+                        tapJml: 0,
+                        upJml: 0
                     };
-                    this.inputs.push(input);
+                    Input.inputs.push(input);
                 }
                 return input;
             }
-            get inputs() {
-                return this._inputs;
+            static pos = (cx, cy, buffer) => {
+                let rect = buffer.canvas.getBoundingClientRect();
+                let canvasScaleX = parseInt(window.getComputedStyle(buffer.canvas).width) / buffer.canvas.width;
+                let canvasScaleY = parseInt(window.getComputedStyle(buffer.canvas).height) / buffer.canvas.height;
+                let poslx = Math.floor((cx - rect.x) / canvasScaleX);
+                let posly = Math.floor((cy - rect.y) / canvasScaleY);
+                return {
+                    x: poslx,
+                    y: posly
+                };
+            };
+            static get inputs() {
+                return Input._inputs;
             }
-            get event() {
-                return this._event;
+            static get event() {
+                return Input._event;
             }
-            get touchGlobal() {
-                return this._touchGlobal;
-            }
-            get mouseGlobal() {
-                return this._mouseGlobal;
-            }
-            get keybGlobal() {
-                return this._keybGlobal;
-            }
-            get inputGlobal() {
-                return this._inputGlobal;
-            }
-        }
-        class EventHandler {
-            move(input, buffer, e) {
-                let pos = ha.be.input.pos(e.clientX, e.clientY, buffer);
-                input.x = pos.x;
-                input.y = pos.y;
-                input.id = e.pointerId;
-                if (input.isDown) {
-                    input.isDrag = true;
-                    input.xDrag = input.x - input.xStart;
-                    input.yDrag = input.y - input.yStart;
-                }
-            }
-            down(input, key, type, pos) {
-                //TODO: refaktor 
-                if (!input.isDown) {
-                    input.hit++;
-                }
-                input.xStart = pos.x;
-                input.yStart = pos.y;
-                input.x = pos.x;
-                input.y = pos.y;
-                input.isDown = true;
-                input.isTap = false;
-                input.isDrag = false;
-                input.key = key;
-                input.type = type;
-                input.timerStart = Date.now();
-            }
-            up(input) {
-                input.isDown = false;
-                input.isDrag = false;
-                input.timerEnd = Date.now();
-                input.isTap = ((input.timerEnd - input.timerStart) < 500);
+            // public get touchGlobal(): IInput {
+            // 	return this._touchGlobal;
+            // }
+            // public get mouseGlobal(): IInput {
+            // 	return this._mouseGlobal;
+            // }
+            // public get keybGlobal(): IInput {
+            // 	return this._keybGlobal;
+            // }
+            static get inputGlobal() {
+                return Input._inputGlobal;
             }
         }
-        be.input = new Input();
+        be.Input = Input;
+        // export const input: Input = new Input();
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
 var ha;
 (function (ha) {
     var be;
     (function (be) {
+        /** internal class untuk menghandle geometri
+         * Point
+         *
+         */
         class Point {
             static create(x = 0, y = 0) {
                 return {
@@ -1339,6 +1619,10 @@ var ha;
 (function (ha) {
     var be;
     (function (be) {
+        /** internal class untuk menghandle geometri
+         * Kotak
+         *
+         */
         class Rect {
             static create(x1 = 0, y1 = 0, x2 = 0, y2 = 0) {
                 let r = {};
@@ -1507,6 +1791,10 @@ var ha;
 (function (ha) {
     var be;
     (function (be) {
+        /**
+         * internal class untuk menghandle geometri:
+         * garis
+         */
         class Segment {
             static create(v1 = { x: 0, y: 0 }, v2 = { x: 0, y: 0 }) {
                 return {
@@ -1571,7 +1859,7 @@ var ha;
             static deg(line) {
                 let j = line.v2.y - line.v1.y;
                 let i = line.v2.x - line.v1.x;
-                return ha.Transform.deg(i, j);
+                return ha.Transform.sudut(i, j);
             }
             static getXAtIdx(seg, idx) {
                 return seg.v1.x + (idx * Segment.vecI(seg));
@@ -1619,136 +1907,139 @@ var ha;
         be.Segment = Segment;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
-/**
- * BLIJS
- */
-var ha;
-(function (ha) {
-    var be;
-    (function (be) {
-        class Blijs {
-            static get inputStatus() {
-                return Blijs._inputStatus;
-            }
-            static set inputStatus(value) {
-                Blijs._inputStatus = value;
-            }
-            /**
-             * Setup Blitz Edu
-             * @param panjang (angka) panjang dari kanvas
-             * @param lebar (angka) lebar dari kanvs
-             * @param canvas (HTMLCanvasElement) referensi ke kanvas
-             * @param skalaOtomatis (boolean) apakah akan men-skala kanvas mengikuti ukuran layar
-             * @returns
-             */
-            static Grafis(panjang = 320, lebar = 240, canvas = null, skalaOtomatis = true, input = true) {
-                //coba cari canvas
-                if (!canvas) {
-                    canvas = document.body.querySelector('canvas');
-                }
-                if (!canvas) {
-                    document.body.appendChild(document.createElement('canvas'));
-                }
-                ha.be.Blijs.skalaOtomatis = skalaOtomatis;
-                ha.be.Blijs._inputStatus = input;
-                //sudah diinisialisasi atau belum
-                if (ha.be.Main.canvasAktif) {
-                    console.warn('init lebih dari sekali');
-                    ha.be.Main.Grafis(panjang, lebar, ha.be.Blijs.skalaOtomatis);
-                }
-                else {
-                    console.log('inisialisasi');
-                    ha.be.Main.init(canvas, canvas);
-                    ha.be.Main.Grafis(panjang, lebar, ha.be.Blijs.skalaOtomatis);
-                    if (input) {
-                        ha.be.input.init(ha.be.Main.canvasAktif);
-                    }
-                    if (ha.be.Blijs.skalaOtomatis) {
-                        window.onresize = () => {
-                            if (ha.be.Blijs.skalaOtomatis) {
-                                ha.be.Blijs.windowResize();
-                            }
-                        };
-                    }
-                    if (ha.be.Blijs.skalaOtomatis) {
-                        ha.be.Blijs.windowResize();
-                    }
-                    setTimeout(() => {
-                        if (ha.be.Blijs.skalaOtomatis) {
-                            ha.be.Blijs.windowResize();
-                        }
-                    }, 100);
-                    setTimeout(() => {
-                        ha.be.Blijs.repeat();
-                    }, 0);
-                    //font default
-                    ha.be.Teks.font("12px sans-serif");
-                    ha.be.Teks.rata("center");
-                    ha.be.Main.Warna(255, 255, 255, 100);
-                    ha.be.Main.canvasAktif.ctx.strokeStyle = "#ffffff";
-                }
-            }
-            static loop() {
-                let _window = window;
-                if (typeof (_window.Loop) == 'function') {
-                    //TODO: pre loop
-                    _window.Loop();
-                    //TODO: post loop
-                }
-                else if (typeof (_window.Update) == 'function') {
-                    //TODO: pre loop
-                    _window.Update();
-                    //TODO: post loop
-                }
-            }
-            static repeat() {
-                //check semua image sudah diload
-                ha.be.Blijs.loop();
-                setTimeout(() => {
-                    // requestAnimationFrame(() => {
-                    // 	ha.be.Blijs.repeat();
-                    // });
-                    requestAnimationFrame(ha.be.Blijs.repeat);
-                }, ha.be.Main.fps);
-            }
-            static windowResize() {
-                // console.debug('window on resize');
-                let canvas = ha.be.Main.canvasAktif.canvas;
-                let cp = ha.be.Main.canvasAktif.canvas.width;
-                let cl = ha.be.Main.canvasAktif.canvas.height;
-                let wp = window.innerWidth;
-                let wl = window.innerHeight;
-                let ratio = Math.min((wp / cp), (wl / cl));
-                let cp2 = Math.floor(cp * ratio);
-                let cl2 = Math.floor(cl * ratio);
-                ha.be.Main.canvasAktif.ratioX = ratio;
-                ha.be.Main.canvasAktif.ratioY = ratio;
-                canvas.style.position = 'fixed';
-                canvas.style.zIndex = '9999';
-                canvas.style.width = cp2 + 'px';
-                canvas.style.height = cl2 + 'px';
-                canvas.style.top = ((wl - cl2) / 2) + 'px';
-                canvas.style.left = ((wp - cp2) / 2) + 'px';
-                // console.debug('canvas w: ' + canvas.style.width + '/ratio: ' + ratio);
-            }
-            static get skalaOtomatis() {
-                return Blijs._skalaOtomatis;
-            }
-            static set skalaOtomatis(value) {
-                Blijs._skalaOtomatis = value;
-            }
-        }
-        Blijs._skalaOtomatis = true;
-        Blijs._inputStatus = true;
-        be.Blijs = Blijs;
-    })(be = ha.be || (ha.be = {}));
-})(ha || (ha = {}));
-// setTimeout(() => {
-// 	ha.be.Blijs.init()
-// }, 0);
+// namespace ha.be {
+// 	/**
+// 	 * Depecreated dan akan digabung ke Main
+// 	 * */
+// 	export class Blijs {
+// 		// private static _inputStatus: boolean = true;
+// 		// public static get inputStatus(): boolean {
+// 		// 	return Blijs._inputStatus;
+// 		// }
+// 		// public static set inputStatus(value: boolean) {
+// 		// 	Blijs._inputStatus = value;
+// 		// }
+// 		/**
+// 		 * Setup Blitz Edu
+// 		 * @param panjang (angka) panjang dari kanvas
+// 		 * @param lebar (angka) lebar dari kanvs
+// 		 * @param canvas (HTMLCanvasElement) referensi ke kanvas
+// 		 * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
+// 		 * @returns
+// 		 */
+// 		// static Grafis(panjang: number = 320, lebar: number = 240, canvas: HTMLCanvasElement = null, fullScreen: boolean = true, input: boolean = true) {
+// 		// 	//coba cari canvas
+// 		// 	if (!canvas) {
+// 		// 		canvas = document.body.querySelector('canvas') as HTMLCanvasElement;
+// 		// 	}
+// 		// 	if (!canvas) {
+// 		// 		document.body.appendChild(document.createElement('canvas'));
+// 		// 	}
+// 		// 	ha.be.Blijs.skalaOtomatis = fullScreen;
+// 		// 	// ha.be.Blijs._inputStatus = input
+// 		// 	//sudah diinisialisasi atau belum
+// 		// 	if (ha.be.Main.canvasAktif) {
+// 		// 		console.warn('init lebih dari sekali');
+// 		// 		ha.be.Main.Grafis2(panjang, lebar, ha.be.Blijs.skalaOtomatis);
+// 		// 	}
+// 		// 	else {
+// 		// 		console.log('inisialisasi');
+// 		// 		ha.be.Main.init(canvas, canvas);
+// 		// 		ha.be.Main.Grafis2(panjang, lebar, ha.be.Blijs.skalaOtomatis);
+// 		// 		if (input) {
+// 		// 			ha.be.input.init(ha.be.Main.canvasAktif);
+// 		// 		}
+// 		// 		if (ha.be.Blijs.skalaOtomatis) {
+// 		// 			window.onresize = (): void => {
+// 		// 				if (ha.be.Blijs.skalaOtomatis) {
+// 		// 					ha.be.Blijs.windowResize();
+// 		// 				}
+// 		// 			}
+// 		// 		}
+// 		// 		if (ha.be.Blijs.skalaOtomatis) {
+// 		// 			ha.be.Blijs.windowResize();
+// 		// 		}
+// 		// 		setTimeout(() => {
+// 		// 			if (ha.be.Blijs.skalaOtomatis) {
+// 		// 				ha.be.Blijs.windowResize();
+// 		// 			}
+// 		// 		}, 100);
+// 		// 		// setTimeout(() => {
+// 		// 		// 	ha.be.Blijs.repeat();
+// 		// 		// }, 0);
+// 		// 		//font default
+// 		// 		ha.be.Teks.font("12px sans-serif");
+// 		// 		ha.be.Teks.rata("center");
+// 		// 		ha.be.Main.Warna(255, 255, 255, 100);
+// 		// 		ha.be.Main.canvasAktif.ctx.strokeStyle = "#ffffff";
+// 		// 	}
+// 		// }
+// 		/** depecreated */
+// 		// static loop(): void {
+// 		// 	let _window: any = window;
+// 		// 	if (typeof (_window.Loop) == 'function') {
+// 		// 		//TODO: pre loop
+// 		// 		_window.Loop();
+// 		// 		//TODO: post loop
+// 		// 	}
+// 		// 	else if (typeof (_window.Update) == 'function') {
+// 		// 		//TODO: pre loop
+// 		// 		_window.Update();
+// 		// 		//TODO: post loop
+// 		// 	}
+// 		// }
+// 		/** depecreated */
+// 		// static repeat() {
+// 		// 	//check semua image sudah diload
+// 		// 	ha.be.Blijs.loop();
+// 		// 	setTimeout(() => {
+// 		// 		// requestAnimationFrame(() => {
+// 		// 		// 	ha.be.Blijs.repeat();
+// 		// 		// });
+// 		// 		requestAnimationFrame(ha.be.Blijs.repeat);
+// 		// 	}, ha.be.Main.fps);
+// 		// }
+// 		/**
+// 		 * Handle saat window di resize
+// 		 */
+// 		static windowResize(): void {
+// 			// console.debug('window on resize');
+// 			let canvas: HTMLCanvasElement = ha.be.Main.canvasAktif.canvas;
+// 			let cp = ha.be.Main.canvasAktif.canvas.width;
+// 			let cl = ha.be.Main.canvasAktif.canvas.height;
+// 			let wp = window.innerWidth;
+// 			let wl = window.innerHeight;
+// 			let ratio = Math.min((wp / cp), (wl / cl));
+// 			let cp2 = Math.floor(cp * ratio);
+// 			let cl2 = Math.floor(cl * ratio);
+// 			ha.be.Main.canvasAktif.ratioX = ratio;
+// 			ha.be.Main.canvasAktif.ratioY = ratio;
+// 			canvas.style.position = 'fixed';
+// 			canvas.style.zIndex = '9999';
+// 			canvas.style.width = cp2 + 'px';
+// 			canvas.style.height = cl2 + 'px';
+// 			canvas.style.top = ((wl - cl2) / 2) + 'px';
+// 			canvas.style.left = ((wp - cp2) / 2) + 'px';
+// 			// console.debug('canvas w: ' + canvas.style.width + '/ratio: ' + ratio);
+// 		}
+// 		// public static get skalaOtomatis(): boolean {
+// 		// return Blijs._skalaOtomatis;
+// 		// }
+// 		// public static set skalaOtomatis(value: boolean) {
+// 		// Blijs._skalaOtomatis = value;
+// 		// }
+// 	}
+// }
+// // setTimeout(() => {
+// // 	ha.be.Blijs.init()
+// // }, 0);
 var ha;
 (function (ha) {
     class Transform {
+        static RAD2DEG = 180.0 / Math.PI;
+        static DEG2RAD = Math.PI / 180.0;
+        static _lastX = 0;
+        static _lastY = 0;
         static get lastX() {
             return ha.Transform._lastX;
         }
@@ -1796,7 +2087,13 @@ var ha;
             }
             throw Error();
         }
-        static deg(x, y) {
+        /**
+         * Menghitung sudut dari posisi relative ke posisi 0,0
+         * @param x posisi x
+         * @param y posisi y
+         * @returns sudut relative ke posisi 0,0
+         */
+        static sudut(x, y) {
             let l;
             let sin;
             l = Math.sqrt(x * x + y * y);
@@ -1869,10 +2166,6 @@ var ha;
             ha.Transform._lastY = y1 + yt;
         }
     }
-    Transform.RAD2DEG = 180.0 / Math.PI;
-    Transform.DEG2RAD = Math.PI / 180.0;
-    Transform._lastX = 0;
-    Transform._lastY = 0;
     ha.Transform = Transform;
 })(ha || (ha = {}));
 var ha;
@@ -1889,6 +2182,14 @@ var ha;
             static rata(rata = "left") {
                 Teks.ctx.textAlign = rata;
             }
+            /**
+             * menulis teks di kanvas
+             * @param teks (string)
+             * @param x (number)
+             * @param y (number)
+             * @param warna (boolean=true) apakah akan mengisi teks dengan warna
+             * @param garis (boolean=false) apakah akan menggunakan outline
+             */
             static tulis(teks, x, y, warna = true, garis = false) {
                 if (warna) {
                     Teks.ctx.fillText(teks, x, y);
@@ -1901,21 +2202,117 @@ var ha;
         be.Teks = Teks;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
+// namespace ha.be {
+// 	export class Route {
+// 		static ukuran(obj: ISprite | "teks", w: number = 32, h: number = 32): void {
+// 			if ("teks" == obj) {
+// 				//TODO: ukuran teks
+// 			}
+// 			else {
+// 				ha.Sprite.ukuran(obj as ISprite, w, h);
+// 			}
+// 		}
+// 	}
+// }
+var ha;
+(function (ha) {
+    let TypeDrag;
+    (function (TypeDrag) {
+        TypeDrag[TypeDrag["drag"] = 1] = "drag";
+        TypeDrag[TypeDrag["rotasi"] = 2] = "rotasi";
+    })(TypeDrag || (TypeDrag = {}));
+    /**
+     * handle untuk interaksi sprite
+     */
+    class SpriteInteraksi {
+        inputDown(pos, id) {
+            // console.debug('input down');
+            // ha.Sprite.daftar.forEach((item: ISprite) => {
+            // 	item.down = false;
+            // });
+            //sprite down
+            for (let i = ha.Sprite.daftar.length - 1; i >= 0; i--) {
+                let item;
+                item = ha.Sprite.daftar[i];
+                if (ha.be.Image.dotDidalamGambar(item.buffer, item.x, item.y, pos.x, pos.y)) {
+                    item.down = true;
+                    item.dragStartX = pos.x - item.x;
+                    item.dragStartY = pos.y - item.y;
+                    item.inputId = id;
+                    item.sudutTekanAwal = ha.Transform.sudut(pos.x - item.x, pos.y - item.y);
+                    item.sudutAwal = item.buffer.rotasi;
+                    return;
+                }
+            }
+        }
+        inputMove(pos, pointerId) {
+            ha.Sprite.daftar.forEach((item) => {
+                if (item.down && item.dragable && (item.inputId == pointerId)) {
+                    item.dragged = true;
+                    if (item.tipeDrag == TypeDrag.drag) {
+                        item.x = pos.x - item.dragStartX;
+                        item.y = pos.y - item.dragStartY;
+                    }
+                    else if (item.tipeDrag == TypeDrag.rotasi) {
+                        //TODO: peruban sudut
+                        let sudut2 = ha.Transform.sudut(pos.x - item.x, pos.y - item.y);
+                        let perbedaan = sudut2 - item.sudutTekanAwal;
+                        item.buffer.rotasi = item.sudutAwal + perbedaan;
+                        // console.debug('item drag move');
+                        // console.debug('sudut ptr: ' + sudut2);
+                        // console.debug('perbedaan: ' + perbedaan);
+                        // console.debug('item rotasi: ' + item.buffer.rotasi);
+                    }
+                }
+            });
+        }
+        inputUp() {
+            ha.Sprite.daftar.forEach((item) => {
+                if (item.down) {
+                    item.hit++;
+                }
+                if (item.dragged) {
+                    console.log('input up: item rotasi ' + item.buffer.rotasi);
+                }
+                item.down = false;
+                item.dragged = false;
+            });
+        }
+    }
+    ha.sprInteraksi = new SpriteInteraksi();
+})(ha || (ha = {}));
 var ha;
 (function (ha) {
     var be;
     (function (be) {
-        class Route {
-            static ukuran(obj, w = 32, h = 32) {
-                if ("teks" == obj) {
-                    //TODO: ukuran teks
+        /**
+         * Cache image yang diload
+         */
+        class Cache {
+            files = [];
+            getGbr(url) {
+                for (let i = 0; i < this.files.length; i++) {
+                    if (this.files[i].url == url) {
+                        console.log('ambil dari cache: ' + url);
+                        return this.files[i].img;
+                    }
                 }
-                else {
-                    ha.Sprite.ukuran(obj, w, h);
+                return null;
+            }
+            setFile(url, img) {
+                let img2;
+                img2 = this.getGbr(url);
+                if (img2) {
+                    return;
                 }
+                console.log('cache: ' + url);
+                this.files.push({
+                    url: url,
+                    img: img
+                });
             }
         }
-        be.Route = Route;
+        be.cache = new Cache();
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
 ///<reference path="../ha/Main.ts"/>
@@ -1929,58 +2326,62 @@ var ha;
 ///<reference path="../ha/Transform.ts"/>
 ///<reference path="../ha/Teks.ts"/>
 ///<reference path="../ha/Route.ts"/>
+///<reference path="../ha/Sprite2.ts"/>
+///<reference path="../ha/Cache.ts"/>
 ///<reference path="./Route.ts"/>
 /**
  * shortcut buat perintah input
  * BLITZ-INPUT.TS
  */
-const InputHit = ha.be.input.InputHit;
-const InputX = ha.be.input.InputX;
-const InputY = ha.be.input.InputY;
-const GeserX = ha.be.input.GeserX;
-const GeserY = ha.be.input.GeserY;
-const FlushInput = ha.be.input.FlushInput;
-const Pencet = ha.be.input.Pencet;
-const Geser = ha.be.input.Geser;
-const InputType = ha.be.input.InputType;
-/**
- * 	KEYBOARD (di tunda/dihapus)
- */
-const FlushKeys = () => {
-    ha.be.input.flushByInput(ha.be.input.keybGlobal);
-    ha.be.input.flushByType('keyb');
-};
-const GetKey = () => {
-    return ha.be.input.keybGlobal.key;
-};
-const KeybDiPencet = (key = '') => {
-    if ("" == key) {
-        return ha.be.input.keybGlobal.isDown;
-    }
-    else {
-        let input = ha.be.input.getInput(key, 'keyb');
-        if (input) {
-            return input.isDown;
-        }
-        return false;
-    }
-};
-const KeybHit = (key = '') => {
-    if ("" == key) {
-        let n = ha.be.input.keybGlobal.hit;
-        ha.be.input.keybGlobal.hit = 0;
-        return (n);
-    }
-    else {
-        let input = ha.be.input.getInput(key, 'keyb');
-        let n = 0;
-        if (input) {
-            n = input.hit;
-            input.hit = 0;
-        }
-        return n;
-    }
-};
+const InputHit = ha.be.Input.InputHit;
+const InputX = ha.be.Input.InputX;
+const InputY = ha.be.Input.InputY;
+const InputXAwal = ha.be.Input.InputXAwal;
+const InputYAwal = ha.be.Input.InputYAwal;
+const GeserX = ha.be.Input.GeserX;
+const GeserY = ha.be.Input.GeserY;
+const FlushInput = ha.be.Input.FlushInput;
+const Pencet = ha.be.Input.Pencet;
+const Geser = ha.be.Input.Geser;
+const InputType = ha.be.Input.InputType;
+const JmlTap = ha.be.Input.JmlTap;
+const JmlDragMulai = ha.be.Input.JmlDragMulai;
+const JmlDragSelesai = ha.be.Input.JmlDragSelesai;
+// const FlushKeys = () => {
+// 	// ha.be.input.flushByInput(ha.be.input.keybGlobal);
+// 	ha.be.input.flushByType('keyb');
+// }
+// const GetKey = (): string => {
+// 	return ha.be.input.keybGlobal.key;
+// }
+// const KeybDiPencet = (key: string = ''): boolean => {
+// 	if ("" == key) {
+// 		return ha.be.input.keybGlobal.isDown;
+// 	}
+// 	else {
+// 		let input: IInput = ha.be.input.getInput(key, 'keyb');
+// 		if (input) {
+// 			return input.isDown;
+// 		}
+// 		return false;
+// 	}
+// }
+// const KeybHit = (key: string = ''): number => {
+// 	if ("" == key) {
+// 		let n: number = ha.be.input.keybGlobal.hit;
+// 		ha.be.input.keybGlobal.hit = 0;
+// 		return (n);
+// 	}
+// 	else {
+// 		let input: IInput = ha.be.input.getInput(key, 'keyb');
+// 		let n: number = 0;
+// 		if (input) {
+// 			n = input.hit;
+// 			input.hit = 0;
+// 		}
+// 		return n;
+// 	}
+// }
 // /**
 //  * INTERFACE
 // */
@@ -2036,11 +2437,11 @@ const KeybHit = (key = '') => {
 // 	rotation: number
 // }
 ///<reference path="./Route.ts"/>
-/*
- * 	GRAPHICS
+/**
+ * 	Shortcut untuk perintah-perintah utama
  */
 const Bersih = ha.be.Main.Bersih;
-const Grafis = ha.be.Blijs.Grafis;
+const Grafis = ha.be.Main.Grafis;
 const Warna = ha.be.Main.Warna;
 const Merah = ha.be.Main.Merah;
 const Hijau = ha.be.Main.Hijau;
@@ -2055,11 +2456,16 @@ const Kotak = ha.be.Main.Kotak;
 const Oval = ha.be.Main.Oval;
 ///<reference path="../ha/Main.ts"/>
 ///<reference path="../ha/Image.ts"/>
-const Sudut = ha.Transform.deg;
+/*
+ *	Shortcut untuk perintah matematika
+ */
+const Sudut = ha.Transform.sudut;
 ///<reference path="./Route.ts"/>
-/** BLITZ-SPRITE.TS */
-// const Buat = ha.Sprite.buat;
-const Muat = ha.Sprite.muatAsync;
+/**
+ * Shortcut untuk perintah-perintah Sprite
+ * */
+const Muat = ha.Sprite.Muat;
+const Dimuat = ha.Sprite.Dimuat;
 const MuatAnimasi = ha.Sprite.muatAnimasiAsync;
 const StatusMuat = ha.Sprite.statusMuat;
 const Posisi = ha.Sprite.posisi;
@@ -2074,121 +2480,24 @@ const Rotasi = ha.Sprite.rotasi;
 const Alpha = ha.Sprite.alpha;
 const Tabrakan = ha.Sprite.tabrakan;
 const StatusDrag = ha.Sprite.statusDrag;
+const SpriteKontek = ha.Sprite.kontek;
 const Panjang = ha.Sprite.panjang;
 const Lebar = ha.Sprite.lebar;
-const Copy = ha.Sprite.copy;
+const Copy = ha.Sprite.Copy;
 const Ubin = ha.Sprite.ubin;
 //status drag
 //type drag
 ///<reference path="../ha/Main.ts"/>
 ///<reference path="../ha/Image.ts"/>
 ///<reference path="./Route.ts"/>
-const FPS = ha.be.Main.Fps;
+// const FPS = ha.be.Main.Fps;
 ///<reference path="../ha/Route.ts"/>
 /**
- * TEXTS
+ * Shortcut buat perintah-perintah font
  */
 var Font = ha.be.Teks.font;
 var Tulis = ha.be.Teks.tulis;
 var Rata = ha.be.Teks.rata;
-var ha;
-(function (ha) {
-    var be;
-    (function (be) {
-        class Cache {
-            constructor() {
-                this.files = [];
-            }
-            getGbr(url) {
-                for (let i = 0; i < this.files.length; i++) {
-                    if (this.files[i].url == url) {
-                        console.log('ambil dari cache: ' + url);
-                        return this.files[i].img;
-                    }
-                }
-                return null;
-            }
-            setFile(url, img) {
-                let img2;
-                img2 = this.getGbr(url);
-                if (img2) {
-                    return;
-                }
-                console.log('cache: ' + url);
-                this.files.push({
-                    url: url,
-                    img: img
-                });
-            }
-        }
-        be.cache = new Cache();
-    })(be = ha.be || (ha.be = {}));
-})(ha || (ha = {}));
 /**
  * INTERFACE
 */
-var ha;
-(function (ha) {
-    let TypeDrag;
-    (function (TypeDrag) {
-        TypeDrag[TypeDrag["drag"] = 1] = "drag";
-        TypeDrag[TypeDrag["rotasi"] = 2] = "rotasi";
-    })(TypeDrag || (TypeDrag = {}));
-    class Sprite2 {
-        inputDown(pos, id) {
-            console.debug('input down');
-            // ha.Sprite.daftar.forEach((item: ISprite) => {
-            // 	item.down = false;
-            // });
-            //sprite down
-            for (let i = ha.Sprite.daftar.length - 1; i >= 0; i--) {
-                let item;
-                item = ha.Sprite.daftar[i];
-                if (ha.be.Image.dotDidalamGambar(item.buffer, item.x, item.y, pos.x, pos.y)) {
-                    item.down = true;
-                    item.dragStartX = pos.x - item.x;
-                    item.dragStartY = pos.y - item.y;
-                    item.inputId = id;
-                    item.sudutTekanAwal = ha.Transform.deg(pos.x - item.x, pos.y - item.y);
-                    item.sudutAwal = item.buffer.rotasi;
-                    return;
-                }
-            }
-        }
-        inputMove(pos, pointerId) {
-            ha.Sprite.daftar.forEach((item) => {
-                if (item.down && item.dragable && (item.inputId == pointerId)) {
-                    item.dragged = true;
-                    if (item.tipeDrag == TypeDrag.drag) {
-                        item.x = pos.x - item.dragStartX;
-                        item.y = pos.y - item.dragStartY;
-                    }
-                    else if (item.tipeDrag == TypeDrag.rotasi) {
-                        //TODO: peruban sudut
-                        let sudut2 = ha.Transform.deg(pos.x - item.x, pos.y - item.y);
-                        let perbedaan = sudut2 - item.sudutTekanAwal;
-                        item.buffer.rotasi = item.sudutAwal + perbedaan;
-                        // console.debug('item drag move');
-                        // console.debug('sudut ptr: ' + sudut2);
-                        // console.debug('perbedaan: ' + perbedaan);
-                        // console.debug('item rotasi: ' + item.buffer.rotasi);
-                    }
-                }
-            });
-        }
-        inputUp() {
-            ha.Sprite.daftar.forEach((item) => {
-                if (item.down) {
-                    item.hit++;
-                }
-                if (item.dragged) {
-                    console.log('input up: item rotasi ' + item.buffer.rotasi);
-                }
-                item.down = false;
-                item.dragged = false;
-            });
-        }
-    }
-    ha.sprite2 = new Sprite2();
-})(ha || (ha = {}));
-//# sourceMappingURL=blitz.js.map

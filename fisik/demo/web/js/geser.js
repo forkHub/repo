@@ -1,10 +1,10 @@
 window.onload = () => {
     const Garis = ha.geom.Garis;
     const Point = ha.geom.Point;
-    const fb = ha.fb.fb;
+    const bola = ha.fb.bola;
     let garis = Garis.create(Point.create(0, 0), Point.create(100, 100));
-    let b1 = fb.buatBola();
-    let b2 = fb.buatBola();
+    let b1 = bola.buatBola();
+    let b2 = bola.buatBola();
     Grafis(300, 300);
     let p1 = MuatAnimasi("https://forkhub.github.io/gbr/bola.png", 16, 16, true);
     Posisi(p1, 10, 10);
@@ -15,7 +15,7 @@ window.onload = () => {
     window.requestAnimationFrame(update);
     window.onkeyup = (e) => {
         if (e.key == 'p') {
-            fb.geser(b1, b2);
+            bola.geser(b1, b2);
             Posisi(p1, b1.x, b1.y);
             Posisi(p2, b2.x, b2.y);
             garis.v1.x = b1.x;
@@ -41,7 +41,7 @@ window.onload = () => {
         gambarBola(b1);
         gambarBola(b2);
         let jrk = Math.floor(ha.geom.Transform.jarak(b1.x, b1.y, b2.x, b2.y));
-        Tulis(`singgung: ${fb.singgung(b1, b2)} /jarak: ${jrk}`, 300 / 2, 20);
+        Tulis(`singgung: ${bola.singgung(b1, b2)} /jarak: ${jrk}`, 300 / 2, 20);
         window.requestAnimationFrame(update);
     }
     function gambarBola(b) {

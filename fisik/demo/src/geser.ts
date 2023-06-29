@@ -1,11 +1,11 @@
 window.onload = () => {
 	const Garis = ha.geom.Garis;
 	const Point = ha.geom.Point;
-	const fb = ha.fb.fb
+	const bola = ha.fb.bola
 
 	let garis: ha.geom.IGaris = Garis.create(Point.create(0, 0), Point.create(100, 100));
-	let b1: ha.fb.BolaObj = fb.buatBola();
-	let b2: ha.fb.BolaObj = fb.buatBola();
+	let b1: ha.fb.BolaObj = bola.buatBola();
+	let b2: ha.fb.BolaObj = bola.buatBola();
 
 	Grafis(300, 300);
 	let p1: ISprite = MuatAnimasi("https://forkhub.github.io/gbr/bola.png", 16, 16, true);
@@ -19,7 +19,7 @@ window.onload = () => {
 	window.requestAnimationFrame(update);
 	window.onkeyup = (e: KeyboardEvent) => {
 		if (e.key == 'p') {
-			fb.geser(b1, b2);
+			bola.geser(b1, b2);
 			Posisi(p1, b1.x, b1.y);
 			Posisi(p2, b2.x, b2.y);
 			garis.v1.x = b1.x;
@@ -49,7 +49,7 @@ window.onload = () => {
 		gambarBola(b2);
 
 		let jrk: number = Math.floor(ha.geom.Transform.jarak(b1.x, b1.y, b2.x, b2.y));
-		Tulis(`singgung: ${fb.singgung(b1, b2)} /jarak: ${jrk}`, 300 / 2, 20);
+		Tulis(`singgung: ${bola.singgung(b1, b2)} /jarak: ${jrk}`, 300 / 2, 20);
 
 		window.requestAnimationFrame(update);
 	}
