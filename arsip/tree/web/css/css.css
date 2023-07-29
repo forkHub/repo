@@ -1,0 +1,62 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+}
+
+button {
+    padding: 4px;
+}
+
+.padding {
+    padding: 8px;
+}
+
+.padding-hor {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+.pd-btm-8 {
+    padding-bottom: 8px;
+}
+
+.disp-flex {
+    display: flex;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;    
+}
+
+.flex-dir-col {
+    flex-direction: column;
+}
+
+/* ================================== */
+
+.container {
+    height: 100%;
+}
+
+.file-item.dipilih, .file-item.dipilih:hover,
+.folder-item.dipilih, .folder-item.dipilih:hover,
+.item.dipilih {
+    background-color: darkgray;
+}
+
+.file-item,
+.folder-item {
+    cursor: pointer;
+    user-select: none;
+    padding: 4px;
+}
+
+.file-item:hover,
+.folder-item:hover {
+    background-color: lightgray;
+}

@@ -1,0 +1,43 @@
+item
+    deskripsi:string
+    anak:item[]
+
+folder:
+    nama
+    anak:folder[]
+    file:file[]
+
+file: 
+    nama
+
+tidak ada referensi balik
+tampilan datar seperti dos
+
+Hal:
+    Project
+    Edit
+
+Menu:
+    beranda:
+        project:
+            simpan
+            baru
+            daftar:
+                baru
+                buka
+                hapus
+        Folder:
+            pilih
+            hapus
+            baru
+            rename
+            cut
+            paste
+        File:
+            pilih
+            hapus
+            baru
+            rename
+            cut
+            paste
+
