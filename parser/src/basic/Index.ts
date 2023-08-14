@@ -15,11 +15,11 @@ namespace ha.parse.basic {
 					token.pop();
 				}
 
-				await parser.pecah(barisAr[i]);
+				await leksikal.pecah(barisAr[i]);
 				console.log(renderToken(token));
 
 				if (token.length > 0) {
-					tokenDataCtr = 0;
+					tokenDataIdx = 0;
 					await Grammar.check();
 
 					console.log(renderToken(token));
@@ -50,7 +50,7 @@ namespace ha.parse.basic {
 	pushCadangan(cadangan);
 
 	binopOpr.forEach((item) => {
-		parser.binopOpr.push(item);
+		leksikal.binopOpr.push(item);
 	});
 
 	init().then(() => {

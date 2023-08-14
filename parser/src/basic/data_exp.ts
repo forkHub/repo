@@ -59,7 +59,7 @@ namespace ha.parse.basic {
 			rumus: [['var', 'let', 'const'], [Kons.KATA], ['=', '(', Kons.KURUNG, '[', '[]', '{', '{}']]
 		},
 
-		//kata - kurung => func() => exp
+		//kata kurung => func() => exp
 		{
 			nama: Kons.EXP,
 			rumus: [["function"], [Kons.KATA, Kons.KURUNG], []]

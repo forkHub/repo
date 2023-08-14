@@ -1,5 +1,6 @@
 
 namespace ha.parse {
+
 	export class Leksikal {
 		readonly kataCadangan: string[] = [];
 		readonly binopOpr: string[] = [];
@@ -15,12 +16,14 @@ namespace ha.parse {
 				//string ""
 				if (char == '\"') {
 					let str2: string = this.ambilString(Kons.dataStr);
+
 					// Kons.kata.push(str2);
 					token.push({
 						nama: Kons.TEKS,
 						nilai: [str2],
 						token: []
 					});
+
 					Kons.dataStr = Kons.dataStr.slice(str2.length);
 				}
 
@@ -211,25 +214,26 @@ namespace ha.parse {
 	}
 
 	export class Grammar {
+
 		static async check(): Promise<void> {
 			let batas: number = 0;
 
 			while (true) {
 
-				console.groupCollapsed('check grammar, ctr: ' + tokenDataCtr);
+				console.groupCollapsed('check grammar, ctr: ' + tokenDataIdx);
 				let hasil: boolean = await this.check_grammar();
 				console.groupEnd();
 
 				if (hasil) {
-					tokenDataCtr = 0;
+					tokenDataIdx = 0;
 					if (token.length == 1) {
 						break;
 					}
 
 				} else {
 					// console.log('check grammar gak ada hasil')
-					tokenDataCtr++;
-					if (tokenDataCtr >= token.length) {
+					tokenDataIdx++;
+					if (tokenDataIdx >= token.length) {
 						ha.parse.debugOn();
 						console.log('HABIS');
 						break;
@@ -261,8 +265,11 @@ namespace ha.parse {
 				console.groupEnd();
 
 				if (hasil) {
+					console.group('token baru');
 					this.tokenBaru(i);
 					adaTokenBaru = true;
+					console.groupEnd();
+
 					return true;
 				}
 			}
@@ -275,7 +282,7 @@ namespace ha.parse {
 		private static tokenBaru(i: number): void {
 
 			// console.log('token: ' + grammarAr[i].nama + '/index rumus: ' + i, true);
-			console.log('[0]: ' + this.renderToken(token.slice(Math.max(tokenDataCtr - 1, 0), tokenDataCtr + 5)), true);
+			console.log('[0]: ' + this.renderToken(token.slice(Math.max(tokenDataIdx - 1, 0), tokenDataIdx + 5)), true);
 
 			//lolos
 			//packaging
@@ -292,12 +299,12 @@ namespace ha.parse {
 
 			let rl: number = grammarAr[i].rumus[1].length;
 			for (let j: number = 0; j < rl; j++) {
-				tokenBaru.token.push(token[tokenDataCtr + j]);
+				tokenBaru.token.push(token[tokenDataIdx + j]);
 			}
 			// debugger;
 
-			let kiri: IToken[] = token.slice(0, tokenDataCtr);
-			let kanan: IToken[] = token.slice(tokenDataCtr + grammarAr[i].rumus[1].length);
+			let kiri: IToken[] = token.slice(0, tokenDataIdx);
+			let kanan: IToken[] = token.slice(tokenDataIdx + grammarAr[i].rumus[1].length);
 
 			// debugOn();
 			// debugGroupCollapsed('')
@@ -326,7 +333,7 @@ namespace ha.parse {
 
 			// tokenCtr = 0;
 			// debugGroup();
-			console.log('[1]: ' + this.renderToken(token.slice(Math.max(tokenDataCtr - 1, 0), tokenDataCtr + 5)), true);
+			console.log('[1]: ' + this.renderToken(token.slice(Math.max(tokenDataIdx - 1, 0), tokenDataIdx + 5)), true);
 			console.log('', true);
 		}
 
@@ -341,6 +348,11 @@ namespace ha.parse {
 			return hasil;
 		}
 
+		/**
+		 * menambah array token
+		 * @param sumber 
+		 * @param tambahan 
+		 */
 		private static tambah(sumber: IToken[], tambahan: IToken[]) {
 			tambahan.forEach((item: IToken) => {
 				sumber.push(item);
@@ -370,8 +382,8 @@ namespace ha.parse {
 			console.log('check awal');
 			for (let i: number = 0; i < rumusAwal.length; i++) {
 
-				if (tokenDataCtr > 0) {
-					let namaToken: string = token[tokenDataCtr - 1].nama;
+				if (tokenDataIdx > 0) {
+					let namaToken: string = token[tokenDataIdx - 1].nama;
 					let rumusAwalTeks: string = rumusAwal[i]
 
 					if (!caseSensitif) {
@@ -380,25 +392,26 @@ namespace ha.parse {
 					}
 
 					if (namaToken == rumusAwalTeks) {
-						console.log('awal salah, token: ' + namaToken + '/rumus token: ' + rumusAwalTeks);
+						console.log('awal salah, token aktif: ' + namaToken + '/rumus token expected: ' + rumusAwalTeks);
 						return false;
 					}
 					else {
 						console.log('awal gak di check');
 					}
 				}
+
 			}
 
 			//check inti
 			console.log('check inti');
 			for (let i: number = 0; i < inti.length; i++) {
 
-				if (tokenDataCtr + i >= token.length) {
-					console.log('token index lebih, tokenCtr: ' + tokenDataCtr + '/i: ' + i + '/token.length: ' + token.length);
+				if (tokenDataIdx + i >= token.length) {
+					console.log('token index lebih besar, tokenIdx: ' + tokenDataIdx + '/idx: ' + i + '/token.length: ' + token.length);
 					return false;
 				}
 
-				let namaToken: string = token[tokenDataCtr + i].nama;
+				let namaToken: string = token[tokenDataIdx + i].nama;
 				let namaInti: string = inti[i];
 
 				if (!caseSensitif) {
@@ -408,7 +421,7 @@ namespace ha.parse {
 
 				console.log('nama token ' + namaToken);
 				console.log('namaInti ' + namaInti);
-				console.log('tokenCtr ' + tokenDataCtr);
+				console.log('tokenCtr ' + tokenDataIdx);
 				console.log('i: ' + i);
 
 				if (namaToken != namaInti) {
@@ -421,8 +434,8 @@ namespace ha.parse {
 			//check akhir
 			console.log('check akhir');
 
-			if (tokenDataCtr + inti.length < token.length) {
-				let idx: number = tokenDataCtr + inti.length;
+			if (tokenDataIdx + inti.length < token.length) {
+				let idx: number = tokenDataIdx + inti.length;
 				for (let i: number = 0; i < akhir.length; i++) {
 
 					let namaToken = token[idx].nama;
@@ -437,11 +450,10 @@ namespace ha.parse {
 						console.log('akhir cocok return false');
 						return false;
 					}
-
 				}
 			}
 			else {
-				console.log('check akhir gak di check: tokenCtr ' + tokenDataCtr + '/dataStr pjg: ' + token.length);
+				console.log('check akhir gak di check: tokenCtr ' + tokenDataIdx + '/dataStr pjg: ' + token.length);
 			}
 
 			// debugGroup();
@@ -450,6 +462,6 @@ namespace ha.parse {
 
 	}
 
-	export let tokenDataCtr: number = 0;
-	export const parser: Leksikal = new Leksikal();
+	export let tokenDataIdx: number = 0;
+	export const leksikal: Leksikal = new Leksikal();
 }

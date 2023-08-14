@@ -19,11 +19,13 @@ namespace ha.parse.basic {
 			rumus: [[], ['elseif', Kons.EXP], [Kons.OPR, '+', '-', ',', Kons.KURUNG, Kons.MIN, '(']]
 		},
 
+		//else
 		{
 			nama: Kons.ELSE,
 			rumus: [[], ['else'], []]
 		},
 
+		//for
 		{
 			nama: Kons.FOR_STMT,
 			rumus: [

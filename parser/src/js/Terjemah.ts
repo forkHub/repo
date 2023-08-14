@@ -225,8 +225,8 @@ namespace ha.parse.js {
 		}
 
 		private static checkSpasi(kata: string): boolean {
-			for (let i: number = 0; i < parser.kataCadangan.length; i++) {
-				if (kata == parser.kataCadangan[i]) {
+			for (let i: number = 0; i < leksikal.kataCadangan.length; i++) {
+				if (kata == leksikal.kataCadangan[i]) {
 					if (kata == 'true') return false;
 					if (kata == 'false') return false;
 					return true;

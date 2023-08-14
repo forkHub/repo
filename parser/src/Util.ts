@@ -2,7 +2,7 @@ namespace ha.parse {
 
 	export function pushCadangan(kata: string[]) {
 		kata.forEach((item: string) => {
-			ha.parse.parser.kataCadangan.push(item);
+			ha.parse.leksikal.kataCadangan.push(item);
 		})
 	}
 

@@ -5,7 +5,7 @@ namespace ha.parse {
 		static readonly EXP: string = 'exp';
 		static readonly OPR: string = 'opr';
 		static readonly BINOP: string = 'binop';
-		static readonly MIN: string = 'min';
+		static readonly MIN: string = 'min';	//simbol minus diikuti exp
 		static readonly KATA: string = 'kata';
 		static readonly KATA_CADANGAN: string = '_kata_cadangan_';
 		static readonly KURUNG: string = '()';

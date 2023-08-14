@@ -11,7 +11,7 @@ namespace ha.parse.js {
 	pushCadangan(stmtOpr);
 
 	binopOpr.forEach((item) => {
-		parser.binopOpr.push(item);
+		leksikal.binopOpr.push(item);
 	});
 
 	export async function init(): Promise<void> {
@@ -31,7 +31,7 @@ namespace ha.parse.js {
 		}
 		else {
 
-			await parser.pecah(file);
+			await leksikal.pecah(file);
 			console.log(renderToken(token));
 
 			await Grammar.check();
