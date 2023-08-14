@@ -5,6 +5,7 @@ export var EType;
     EType["stmt"] = "stmt";
     EType["exp"] = "exp";
     EType["var"] = "var";
+    EType["df"] = "deklarasi fungsi";
 })(EType || (EType = {}));
 export var EStmtType;
 (function (EStmtType) {

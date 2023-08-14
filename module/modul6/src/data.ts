@@ -1,7 +1,9 @@
-import { EType, IModul, IVar, TEntity } from "./skema.js";
+import { EType, IDF, IModul, IVar, TEntity } from "./skema.js";
 import { EntityObj } from "./ent/Entity.js";
 import { BACK, ModulObj, ROOT, modul } from "./ent/Modul.js";
 import { VariableObj, variable } from "./ent/Var.js";
+import { DFObj, df } from "./ent/DF.js";
+
 
 let _id: number = Date.now();
 export function id(): number {
@@ -13,11 +15,47 @@ function buatList(): EntityObj[] {
     return [];
 }
 
+export class Obs<T> {
+    readonly lst: (() => void)[]
+
+    constructor(val: T) {
+        this._val = val;
+        this.update();
+    }
+
+    rm(f: () => void) {
+        for (let i = 0; i < this.lst.length; i++) {
+            if (this.lst[i] == f) {
+                this.lst.splice(i, 1);
+                return;
+            }
+        }
+    }
+
+    update(): void {
+        this.lst.forEach((item) => {
+            item();
+        });
+    }
+
+    private _val: T;
+    public get val(): T {
+        return this._val;
+    }
+
+    public set val(value: T) {
+        this._val = value;
+        this.update();
+    }
+
+}
+
 export const dataObj = {
     entList: buatList(),
     modulDipilih: 0,
     modulAktif: 0,
-    varDipilih: 0
+    varDipilih: 0,
+    dfDipilih: 0
 };
 
 class Data {
@@ -29,6 +67,8 @@ class Data {
         });
 
         if (h && h.length > 0) return h[0];
+
+        console.warn("data tidak ketemu, id " + id);
         return null;
     }
 
@@ -40,6 +80,9 @@ class Data {
             }
             else if (item.type == EType.var) {
                 h.push(variable.toObj(item as VariableObj))
+            }
+            else if (item.type == EType.df) {
+                h.push(df.toObj(item as DFObj));
             }
             else {
                 console.warn('type salah: ' + item.type);
@@ -61,10 +104,13 @@ class Data {
 
             obj.forEach((item) => {
                 if (item.type == EType.modul) {
-                    dataObj.entList.push(modul.fromObj(item as IModul));
+                    dataObj.entList.push((modul.fromObj(item as IModul)));
                 }
                 else if (item.type == EType.var) {
-                    dataObj.entList.push(variable.fromObj(item as IVar));
+                    dataObj.entList.push((variable.fromObj(item as IVar)));
+                }
+                else if (item.type == EType.df) {
+                    dataObj.entList.push(df.fromObj(item as IDF));
                 }
                 else {
                     throw Error('muat error, type undefined: type ' + item.type);
@@ -102,6 +148,7 @@ class Data {
     resetDipilih() {
         dataObj.varDipilih = 0;
         dataObj.modulDipilih = 0;
+        dataObj.dfDipilih = 0;
     }
 
 }

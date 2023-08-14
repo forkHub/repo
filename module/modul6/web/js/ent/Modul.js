@@ -48,13 +48,6 @@ class Modul {
         });
         return h;
     }
-    transpile(m) {
-        let h = '';
-        m; //TODO:
-        //declare variable
-        //declare function dek
-        return h;
-    }
 }
 export const modul = new Modul();
 export const ROOT = 1;

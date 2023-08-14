@@ -59,18 +59,6 @@ class Modul {
 
         return h;
     }
-
-    transpile(m: ModulObj): string {
-        let h = '';
-
-        m; //TODO:
-
-        //declare variable
-
-        //declare function dek
-
-        return h;
-    }
 }
 
 export const modul: Modul = new Modul();

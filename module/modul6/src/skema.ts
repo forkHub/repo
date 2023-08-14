@@ -3,7 +3,8 @@ export enum EType {
     modul = 'modul',
     stmt = 'stmt',
     exp = 'exp',
-    var = 'var'
+    var = 'var',
+    df = 'deklarasi fungsi'
 }
 
 export enum EStmtType {
@@ -32,6 +33,10 @@ export interface IModul extends TEntity, IMember {
 }
 
 export interface IVar extends TEntity {
+}
+
+export interface IDF extends TEntity, IMember {
+    param: number[]
 }
 
 export interface IProjek extends TEntity {
