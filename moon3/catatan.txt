@@ -1,0 +1,12 @@
+penggunaan store
+    sudah sampai
+
+    
+configurasi:
+    map
+    rotasi
+    interpolasi
+    
+
+
+    
