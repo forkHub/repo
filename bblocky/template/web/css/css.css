@@ -1,0 +1,52 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+}
+
+button {
+    padding: 4px;
+}
+
+.padding, .pad {
+    padding: 4px;
+}
+
+.padding-hor {
+    padding-right: 4px;
+    padding-left: 4px;
+}
+
+.pd-btm-8 {
+    padding-bottom: 8px;
+}
+
+.disp-flex {
+    display: flex;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;    
+}
+
+.flex-dir-col {
+    flex-direction: column;
+}
+
+/* COMPONENT */
+.item {
+    user-select: none;
+    cursor: pointer;
+}
+
+.item:hover {
+    background-color: lightgray;
+}
+
+.item.dipilih {
+    border: 1px solid;
+}

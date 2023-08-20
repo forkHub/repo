@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+    <title>Blitz Blockly</title>
+</head>
+
+<body>
+    <canvas></canvas>
+    <!-- script ref  -->
+    <script src="./js/be.js" defer></script>
+    <script src="./js/bbjs.js" defer></script>
+
+    <!-- main  -->
+    <script>
+        "use strict";
+        window.onload = () => {
+            console.log('start');
+            /** script here **/
+            let __w1 = window;
+            let __update;
+            for (let i in __w1) {
+                if ("update" == i.toLowerCase()) {
+                    __update = __w1[i];
+                    console.log('found update function');
+                }
+            }
+            let __updater = () => {
+                if (__update) {
+                    __update();
+                }
+                requestAnimationFrame(__updater);
+            };
+            requestAnimationFrame(__updater);
+        };
+    </script>
+</body>
+
+</html>
