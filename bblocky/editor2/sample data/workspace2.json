@@ -1,0 +1,95 @@
+{
+    "blocks": {
+        "languageVersion": 0,
+        "blocks": [
+            {
+                "type": "Grafis",
+                "id": "8j/~)J?t]PW(/gS*XPNG",
+                "x": 34,
+                "y": 51,
+                "inputs": {
+                    "width": {
+                        "shadow": {
+                            "type": "math_number",
+                            "id": "$L_=PJd=(G+cTJ)gs^dW",
+                            "fields": {
+                                "NUM": 320
+                            }
+                        }
+                    },
+                    "height": {
+                        "shadow": {
+                            "type": "math_number",
+                            "id": "TsHD,u/vaX`Y.4Xw0WYj",
+                            "fields": {
+                                "NUM": 240
+                            }
+                        }
+                    }
+                },
+                "next": {
+                    "block": {
+                        "type": "variables_set",
+                        "id": "JktE@(=h2ltVqh*|Bk+/",
+                        "fields": {
+                            "VAR": {
+                                "id": "i6hr7VM[7dfuxd_JuCsX"
+                            }
+                        },
+                        "inputs": {
+                            "VALUE": {
+                                "block": {
+                                    "type": "ha.bbjs.Sprite.LoadSprite",
+                                    "id": "TO7?X3~yxIF(ar)/f$Dp",
+                                    "inputs": {
+                                        "url": {
+                                            "shadow": {
+                                                "type": "text",
+                                                "id": ",:G.@rk|VR[?@^j?/JEf",
+                                                "fields": {
+                                                    "TEXT": "box.png"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "next": {
+                            "block": {
+                                "type": "ha.bbjs.Sprite.DrawSprite",
+                                "id": "LLw#$=cYOQb=Y8ThZ`{|",
+                                "inputs": {
+                                    "sprite": {
+                                        "shadow": {
+                                            "type": "math_number",
+                                            "id": "(935UrO$P/uibujO2;sz",
+                                            "fields": {
+                                                "NUM": 0
+                                            }
+                                        },
+                                        "block": {
+                                            "type": "variables_get",
+                                            "id": "atK$t,a_4RnsT^MQ}6Ln",
+                                            "fields": {
+                                                "VAR": {
+                                                    "id": "i6hr7VM[7dfuxd_JuCsX"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "variables": [
+        {
+            "name": "test",
+            "id": "i6hr7VM[7dfuxd_JuCsX"
+        }
+    ]
+}
