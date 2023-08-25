@@ -6,7 +6,7 @@ namespace ha.bbjs {
     }
 
     export class List {
-        private static readonly list: Obj[] = [];
+        static readonly list: Obj[] = [];
 
         static TambahSprite(obj: any): number {
 
@@ -33,8 +33,8 @@ namespace ha.bbjs {
             return null;
         }
 
-        static AmbilSprite(id: number): ha.be.Sprite {
-            return List.Ambil(id) as ha.be.Sprite;
+        static AmbilSprite(id: number): ha.bbjs.Sprite {
+            return List.Ambil(id) as ha.bbjs.Sprite;
         }
     }
 }
