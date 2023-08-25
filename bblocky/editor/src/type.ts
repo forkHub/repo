@@ -1,10 +1,11 @@
 type TBlockly = {
+    svgResize(workspace: TWorkSpace): unknown;
     Msg: any;
     JavaScript: any;
     common: {
         defineBlocksWithJsonArray: (val: any) => {}
     },
-    inject: (p: any, p2: any) => void;
+    inject: (p: any, p2: any) => TWorkSpace;
     Xml: {
         domToWorkspace: (workspaceBlocks: any, workspace: any) => void;
     },

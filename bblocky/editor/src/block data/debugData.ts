@@ -1,6 +1,6 @@
 namespace ha.blockly.debugData {
     export const list: TToolBoxBlockDef[] = [];
-    export const group = "Debug";
+    export const group = "Debug3";
 
     list.push({
         type: 'ha.bbjs.Debug.Obj',

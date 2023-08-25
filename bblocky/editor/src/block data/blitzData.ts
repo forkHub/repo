@@ -37,10 +37,6 @@ namespace ha.blockly.BlitzData {
         message0: 'Cls',
     });
 
-
-
-
-
 }
 
 //TODO: next butuh alias type, buat backward compatibility

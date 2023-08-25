@@ -11,22 +11,22 @@
 </head>
 
 <body>
-    <div class="hal main" style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column;">
-        <div class="block-cont" style="flex-grow: 1; position: relative;">
-            <div id="blocklyDiv" style="position: absolute; width: 100%; height: 100%;"></div>
+    <div class="hal main" style="position: relative; width: 100%; height: 100%; display: table;">
+        <div class="block-cont" style="position: relative; display: table-row;">
+            <div id="blocklyArea" class="block-cont" style="position: relative; display: table-cell; height: 100%;">
+            </div>
         </div>
-        <div>
-            <div style="height: 8px;"></div>
-            <div style="padding:0px 8px 0px 8px">
-                <button onclick="simpan()">simpan</button>
-                <button onclick="load()">load</button>
-                <button onclick="code()">kode</button>
-                <button onclick="tambahVar()">varBaru</button>
+        <div style="display: table-row;">
+            <div style="display: table-cell;">
+                <button onclick="simpan()">simpan</button>&nbsp;
+                <button onclick="load()">load</button>&nbsp;
+                <button onclick="code()">kode</button>&nbsp;
+                <button onclick="share()">share</button>&nbsp;
                 <button onclick="run()">run</button>
             </div>
-            <div style="height: 8px;"></div>
         </div>
     </div>
+    <div id="blocklyDiv" style="position: absolute;"></div>
 
     <script src="lib/blockly_compressed.js" defer></script>
     <script src="lib/blocks_compressed.js" defer></script>
