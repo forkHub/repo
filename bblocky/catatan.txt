@@ -1,0 +1,2 @@
+publish as one file
+    packager node.js
