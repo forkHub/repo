@@ -1,3 +1,5 @@
+import { TToolBoxBlockDef } from "../toolboxType";
+
 export class BlitzData {
     static readonly Grafis: TToolBoxBlockDef = {
         type: "Grafis",

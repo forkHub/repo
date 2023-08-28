@@ -1,6 +1,9 @@
+import { GraphicsConf } from "./block data/GraphicsConf";
+import { Teks } from "./block data/Teks";
 import { BlitzData } from "./block data/blitzData";
 import { DebugData } from "./block data/debugData";
 import { ImageBlockData } from "./block data/imgBlockData";
+import { TToolBoxBlockDef, TArgDef, EOutput, EArgType } from "./toolboxType";
 
 export class BDef {
     static defValue(t: TToolBoxBlockDef): void {
@@ -72,18 +75,29 @@ export class BDef {
             throw Error(n);
         }
 
+        if (t.args0 && t.args0.length > 0) return;
+
         t.args0 = [];
         for (let i in t.args) {
             if ("dummy" == i.toLocaleLowerCase()) {
                 t.args0.push({
                     type: EArgType.inputDummy
                 })
-            } else {
+            }
+            else if ("var" == i.toLocaleLowerCase()) {
+                t.args0.push({
+                    type: EArgType.field_variable,
+                    name: t.args[i] + '',
+                    variable: t.args[i] + ''
+                })
+            }
+            else {
                 t.args0.push({
                     check: getCheck(t.args[i]),
                     type: EArgType.inputValue,
                     default: t.args[i] + '',
-                    name: i + ''
+                    name: i + '',
+                    align: 'RIGHT'
                 })
             }
         }
@@ -97,6 +111,9 @@ export class BDef {
             if (item.type == EArgType.inputDummy) {
 
             }
+            else if (item.type == EArgType.field_variable) {
+
+            }
             else {
                 inputs[item.name] = this.createShadow(item);
             }
@@ -106,6 +123,7 @@ export class BDef {
     }
 
     static normal(t: TToolBoxBlockDef) {
+        t;
         this.defValue(t);
         this.addArg(t);
         this.addInput(t);
@@ -115,6 +133,8 @@ export class BDef {
         BlitzData.list.forEach((item) => { this.normal(item); });
         ImageBlockData.list.forEach((item) => { this.normal(item) });
         DebugData.list.forEach((item) => { this.normal(item) });
+        Teks.list.forEach((item) => { this.normal(item) });
+        GraphicsConf.list.forEach((item) => { this.normal(item) });
     }
 
 }

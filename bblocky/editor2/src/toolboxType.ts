@@ -1,4 +1,4 @@
-enum EOutput {
+export enum EOutput {
     Boolean = "Boolean",
     Number = "Number",
     String = "String",
@@ -6,23 +6,25 @@ enum EOutput {
     Dummy = "dummy"
 }
 
-enum EArgType {
+export enum EArgType {
     inputValue = "input_value",
     inputDummy = "input_dummy",
+    field_variable = 'field_variable'
 }
 
-type TArgDef = {
-    type: EArgType,
+export type TArgDef = {
+    type: EArgType | "input_dummy" | "input_value" | "field_variable",
 
     //input
-    check?: EOutput              //input
+    check?: EOutput | "Number"   //input
     name?: string                //input
     default?: string | boolean | number
-
+    variable?: string
     output?: EOutput | null
+    align?: "RIGHT" | "left"
 }
 
-type TToolBoxBlockDef = {
+export type TToolBoxBlockDef = {
     type: string,
     message0: string
     args?: any;         //=> di convert ke arg0, //TODO: support dummy input
@@ -39,18 +41,18 @@ type TToolBoxBlockDef = {
     inputs?: any
 }
 
-enum ToolBoxKind {
+export enum ToolBoxKind {
     categoryToolbox = "categoryToolbox",
     category = "category",
     block = 'block'
 }
 
-type TToolbokDef = {
+export type TToolbokDef = {
     kind: ToolBoxKind.categoryToolbox,
     contents: TToolbokContentDef[];
 }
 
-type TToolbokContentDef = {
+export type TToolbokContentDef = {
     kind: ToolBoxKind.category | string
     name?: string
     type?: string

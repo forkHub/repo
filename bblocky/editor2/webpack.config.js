@@ -1,10 +1,15 @@
 const path = require('path');
 
 module.exports = {
-  entry: './out/index.js',
+  cache: false,
+  entry: {
+    index: ['./out/index.js'],
+    iframe: ['./out/iframe.js'],
+    project: ['./out/project/halProject.js']
+  },
   output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'web/js'),
   },
   optimization: {
     minimize: false

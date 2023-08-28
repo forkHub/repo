@@ -1,34 +1,57 @@
 import { Index } from ".";
 import { Export } from "./export";
+import Blockly from 'blockly'
+import { TWorkSpace } from "./type";
+import { javascriptGenerator } from "blockly/javascript";
+import { Data } from "./Data";
 
 export class Op {
     static op() {
         let w = window as any;
+
         w.simpan = () => {
+            try {
+                let simpan = Blockly.serialization.workspaces.save(Index.workspace);
+                let simpanStr = JSON.stringify(simpan);
+                let b64 = btoa(simpanStr);
+
+                console.group("save data:");
+                console.log(b64);
+                console.log(simpan);
+
+                let file = Data.getFileById(Data.data.activeFileId);
+                // file.data = simpanStr;
+                file.data = '';
+                file.data64 = b64;
+                Data.simpan();
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+
+        w.b64 = () => {
             let simpan = Blockly.serialization.workspaces.save(Index.workspace);
-            let code = javascript.javascriptGenerator.workspaceToCode(Index.workspace);
-
-            window.localStorage.setItem("blocklytest", JSON.stringify(simpan));
-            window.localStorage.setItem("blocklycode", code);
-
-            console.log(simpan);
+            let simpanStr = JSON.stringify(simpan);
+            let b64 = btoa(simpanStr);
+            console.log(b64);
         }
 
-        w.load = () => {
-            let simpan = window.localStorage.getItem("blocklytest");
-            let code = JSON.parse(simpan);
-            console.log(code);
-            Blockly.serialization.workspaces.load(code, Index.workspace);
-        }
+        // w.load = () => {
+        //     let simpan = window.localStorage.getItem("blocklytest");
+        //     let code = JSON.parse(simpan);
+        //     console.log("code", code);
+        //     Blockly.serialization.workspaces.load(code, Index.workspace);
+        // }
 
         w.code = () => {
-            let code = javascript.javascriptGenerator.workspaceToCode(Index.workspace);
+            let code = javascriptGenerator.workspaceToCode(Index.workspace);
             console.log(code);
         }
 
         w.tambahVar = () => {
             let var1 = prompt('variable baru');
-            let simpan: TWorkSpace = Blockly.serialization.workspaces.save(Index.workspace);
+            let simpan: TWorkSpace = Blockly.serialization.workspaces.save(Index.workspace) as TWorkSpace;
             if (!simpan.variables) {
                 simpan.variables = [];
             }
@@ -40,7 +63,7 @@ export class Op {
         }
 
         w.run = () => {
-            let code = Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
+            let code = Export.export(javascriptGenerator.workspaceToCode(Index.workspace));
             w.simpan();
             window.localStorage.setItem("blocklycode", code);
             window.top.location.href = ('./play.html');
@@ -51,6 +74,11 @@ export class Op {
             let simpans = JSON.stringify(simpan);
             let b64 = btoa(simpans);
             console.log(b64);
+        }
+
+        w.home = () => {
+            w.simpan();
+            window.top.location.href = "./projek.html";
         }
     }
 

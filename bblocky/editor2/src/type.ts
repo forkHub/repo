@@ -1,4 +1,4 @@
-type TBlockly = {
+export type TBlockly = {
     svgResize(workspace: TWorkSpace): unknown;
     Msg: any;
     JavaScript: any;
@@ -17,7 +17,7 @@ type TBlockly = {
     }
 }
 
-type TJS = {
+export type TJS = {
     javascriptGenerator: {
         workspaceToCode: (workspace: any) => string;
         forBlock: any
@@ -27,25 +27,25 @@ type TJS = {
     },
 }
 
-type TVariable = {
+export type TVariable = {
     name: string,
     id: string
 }
 
-type TField = {
+export type TField = {
     VAR?: {
         id: string
     },
     NUM?: number
 }
 
-type TInput = {
+export type TInput = {
     VALUE?: {
         block: TBlock
     }
 }
 
-type TBlock = {
+export type TBlock = {
     type: string,
     id: string,
     x: number,
@@ -55,11 +55,11 @@ type TBlock = {
     next: TBlock
 }
 
-type TWorkSpace = {
+export type TWorkSpace = {
     languageVersion: number
     blocks: TBlock[],
     variables: TVariable[]
 }
 
-declare var Blockly: TBlockly;
-declare var javascript: TJS;
+// declare var Blockly: TBlockly;
+// declare var javascript: TJS;

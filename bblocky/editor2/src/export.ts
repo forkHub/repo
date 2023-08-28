@@ -8,6 +8,20 @@ export class Export {
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,
                     target-densityDpi=device-dpi">
+                    <style>
+                    
+                        * {
+                            box-sizing: border-box;
+                            margin: 0px;
+                            padding: 0px;
+                        }
+
+                        html,
+                        body {
+                            height: 100%;
+                        }
+
+                    </style>
                 <title>Blitz Blockly</title>
             </head>
 

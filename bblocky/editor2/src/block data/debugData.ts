@@ -1,3 +1,5 @@
+import { TToolBoxBlockDef } from "../toolboxType";
+
 export class DebugData {
     static readonly list: TToolBoxBlockDef[] = [];
     static readonly group = "Debug3";

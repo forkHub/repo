@@ -64,87 +64,17 @@ var ha;
 (function (ha) {
     var bbjs;
     (function (bbjs) {
-        class Sprite {
-            //load biasa
-            //load dragable
-            //load rotasi
-            static LoadSprite = (url, mode = 0) => {
-                let spr = Muat(url);
-                let n = bbjs.List.TambahSprite(spr);
-                this.setDragMode(n, mode);
-                return n;
-            };
-            static getDragMode(n) {
-                let spr = bbjs.List.Ambil(n);
-                return spr.tipeDrag;
+        bbjs.konf = {
+            useStroke: false
+        };
+        class Konf {
+            static useStroke(b = false) {
+                bbjs.konf.useStroke = b;
             }
-            static setDragMode(n, mode) {
-                let spr = bbjs.List.Ambil(n);
-                if (0 == mode) {
-                    spr.dragable = false;
-                    spr.tipeDrag = 0;
-                }
-                else {
-                    spr.tipeDrag = mode;
-                    spr.dragable = true;
-                }
-            }
-            static CopySprite = (n) => {
-                let spr = Copy(bbjs.List.AmbilSprite(n));
-                return bbjs.List.TambahSprite(spr);
-            };
-            static LoadAnimSprite = (url, frameWidth = 32, frameHeight = 32) => {
-                let spr = MuatAnimasi(url, frameWidth, frameHeight, false, 0);
-                return bbjs.List.TambahSprite(spr);
-            };
-            static SpriteBuffer = (n) => {
-                return SpriteKontek(bbjs.List.AmbilSprite(n));
-            };
-            /*
-             * DrawSprite(n)
-             * DrawSprite(n, frame)
-             * DrawSprite(n, x, y)
-             */
-            static DrawSprite = (n, x, y, frame) => {
-                let spr = bbjs.List.AmbilSprite(n);
-                //n,x,y
-                if (bbjs.Util.checkParam([n, x, y])) {
-                    Posisi(spr, x, y);
-                }
-                //n, frame
-                if (bbjs.Util.checkParam([n, x])) {
-                    frame = 0;
-                }
-                Gambar(bbjs.List.AmbilSprite(n), frame);
-            };
-            static TileSprite = Ubin;
-            static HandleSprite = Handle;
-            static ResizeSprite = Ukuran;
-            static RotateSprite = Rotasi;
-            static SpriteWidth = Panjang;
-            static SpriteHeight = Lebar;
-            static SpritesCollide = Tabrakan;
         }
-        bbjs.Sprite = Sprite;
+        bbjs.Konf = Konf;
     })(bbjs = ha.bbjs || (ha.bbjs = {}));
 })(ha || (ha = {}));
-/**
- * posisi jarak
- * posisi orbit
- * posisi mendekat
- * posisi menjauh
- *
- * sudut mendekat
- * sudut menjauh
- * sudut literal
- * sudut putar n derajat
- *
- * gerak maju
- * gerak mundur
- * gerak kiri
- * gerak kanan
- *
- */ 
 var ha;
 (function (ha) {
     var bbjs;
@@ -273,6 +203,152 @@ var ha;
         bbjs.Proses = Proses;
     })(bbjs = ha.bbjs || (ha.bbjs = {}));
 })(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var bbjs;
+    (function (bbjs) {
+        class Sprite {
+            //load biasa
+            //load dragable
+            //load rotasi
+            static LoadSprite = (url, mode = 0) => {
+                let spr = Muat(url);
+                let n = bbjs.List.TambahSprite(spr);
+                this.setDragMode(n, mode);
+                return n;
+            };
+            static getDragMode(n) {
+                let spr = bbjs.List.Ambil(n);
+                return spr.tipeDrag;
+            }
+            static setDragMode(n, mode) {
+                let spr = bbjs.List.Ambil(n);
+                if (0 == mode) {
+                    spr.dragable = false;
+                    spr.tipeDrag = 0;
+                }
+                else {
+                    spr.tipeDrag = mode;
+                    spr.dragable = true;
+                }
+            }
+            static LoadAnimSprite = (url, frameWidth = 32, frameHeight = 32) => {
+                let spr = MuatAnimasi(url, frameWidth, frameHeight, false, 0);
+                return bbjs.List.TambahSprite(spr);
+            };
+            /*
+             * INTERNAL
+             * DrawSprite(n)
+             * DrawSprite(n, frame)
+             * DrawSprite(n, x, y)
+             */
+            static DrawSprite = (n, x, y, frame) => {
+                let spr = bbjs.List.AmbilSprite(n);
+                //n,x,y
+                if (bbjs.Util.checkParam([n, x, y])) {
+                    ha.be.Sprite.Posisi(spr, x, y);
+                }
+                //n, frame
+                if (bbjs.Util.checkParam([n, x])) {
+                    frame = 0;
+                }
+                ha.be.Sprite.Gambar(spr, frame);
+            };
+            static DrawAllSprite() {
+                bbjs.List.list.forEach((item, idx) => {
+                    if (item.type == 'sprite') {
+                        Sprite.DrawSprite(idx);
+                    }
+                });
+            }
+            static Position = (n, x, y) => {
+                ha.be.Sprite.Posisi(bbjs.List.AmbilSprite(n), x, y);
+            };
+            static GetPositionX = (n) => {
+                return bbjs.List.AmbilSprite(n).x;
+            };
+            static GetPositionY = (n) => {
+                return bbjs.List.AmbilSprite(n).y;
+            };
+            static Handle = (n, x, y) => {
+                ha.be.Sprite.Handle(bbjs.List.AmbilSprite(n), x, y);
+            };
+            static GetRotation = (n) => {
+                return ha.be.Sprite.Rotasi(bbjs.List.AmbilSprite(n));
+            };
+            static RotateSprite = (n, rot) => {
+                ha.be.Sprite.Rotasi(bbjs.List.AmbilSprite(n), rot);
+            };
+            static ResizeSprite = (n, w, h) => {
+                ha.be.Sprite.Ukuran(bbjs.List.AmbilSprite(n), w, h);
+            };
+            static SpriteWidth = (n) => {
+                return ha.be.Sprite.Panjang(bbjs.List.AmbilSprite(n));
+            }; //Panjang;
+            // static SpriteHeight = Lebar;
+            static SpriteHeight = (n) => {
+                return ha.be.Sprite.Lebar(bbjs.List.AmbilSprite(n));
+            };
+        }
+        bbjs.Sprite = Sprite;
+    })(bbjs = ha.bbjs || (ha.bbjs = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var bbjs;
+    (function (bbjs) {
+        class SpriteAdv {
+            static SpriteBuffer = (n) => {
+                return SpriteKontek(bbjs.List.AmbilSprite(n));
+            };
+            static CopySprite = (n) => {
+                let spr = ha.be.Sprite.Copy(bbjs.List.AmbilSprite(n));
+                return bbjs.List.TambahSprite(spr);
+            };
+            static TileSprite = Ubin;
+            static SpritesCollide = Tabrakan;
+        }
+        bbjs.SpriteAdv = SpriteAdv;
+    })(bbjs = ha.bbjs || (ha.bbjs = {}));
+})(ha || (ha = {}));
+/**
+ * posisi xy => set [sprite] position [x] [y]
+ * posisi jarak => dari posisi, dari sprite
+ * posisi orbit
+ * posisi mendekat
+ * posisi menjauh
+ * get posisi
+ */ 
+var ha;
+(function (ha) {
+    var bbjs;
+    (function (bbjs) {
+        class SpriteMovAdv {
+        }
+        bbjs.SpriteMovAdv = SpriteMovAdv;
+    })(bbjs = ha.bbjs || (ha.bbjs = {}));
+})(ha || (ha = {}));
+/**
+ * posisi xy => set [sprite] position [x] [y]
+ *
+ * posisi jarak => dari posisi, dari sprite
+ * posisi orbit
+ * posisi mendekat
+ * posisi menjauh
+ * get posisi
+ *
+ * sudut mendekat
+ * sudut menjauh
+ * sudut literal
+ * sudut putar n derajat
+ *
+ * gerak maju
+ * gerak mundur
+ * gerak kiri
+ * gerak kanan
+ * gerak sudut => putar relative, maju, putar relative balik
+ *
+ */
 /*
 Str
 Left
@@ -302,6 +378,24 @@ Bin
 // FontHeight
 // StringWidth
 // StringHeight
+var ha;
+(function (ha) {
+    var bbjs;
+    (function (bbjs) {
+        class Text {
+            static Text(x = 0, y = 0, teks = "Hello") {
+                let ctx = ha.be.Main.Kontek();
+                if (bbjs.konf.useStroke) {
+                    ctx.strokeText(teks, x, y);
+                }
+                else {
+                    ctx.fillText(teks, x, y);
+                }
+            }
+        }
+        bbjs.Text = Text;
+    })(bbjs = ha.bbjs || (ha.bbjs = {}));
+})(ha || (ha = {}));
 var ha;
 (function (ha) {
     var bbjs;
