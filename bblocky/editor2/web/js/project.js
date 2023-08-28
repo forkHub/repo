@@ -17,13 +17,15 @@ class Data {
     static default() {
         return {
             files: [],
-            activeFileId: ''
+            activeFileId: '',
+            fileTemp: null
         };
     }
     static load() {
         if (Data.loaded)
             return;
         try {
+            console.group('load: ');
             let str = window.localStorage.getItem(this.db);
             let obj = JSON.parse(str);
             if (obj) {
@@ -43,15 +45,17 @@ class Data {
             console.log(Data.data.files);
             console.log(Data);
         }
+        finally {
+            console.groupEnd();
+        }
     }
     static baru(item) {
         this.load();
         this.data.files.push(item);
     }
-    static semua() {
-        console.log("semua", Data.data);
+    static semuaFile() {
         this.load();
-        console.log("semua", Data.data);
+        console.log("semua file", Data.data.files);
         return Data.data.files;
     }
     static simpan() {
@@ -105,8 +109,8 @@ class HalProject {
     static list(cont) {
         //get data;
         let hasil = '';
-        console.log(Data.semua());
-        Data.semua().forEach((item) => {
+        console.log(Data.semuaFile());
+        Data.semuaFile().forEach((item) => {
             hasil += (`<div>
                         <span>${item.nama}</span>
                         |
@@ -120,8 +124,7 @@ class HalProject {
         cont.innerHTML = hasil;
         return hasil;
     }
-    static init() {
-        HalProject.list(document.body.querySelector('.list'));
+    static winFunc() {
         document.body.querySelector('button.baru').onclick = () => {
             console.log('baru klik');
             let nama = window.prompt("file name: ", "file" + Id.id);
@@ -129,7 +132,8 @@ class HalProject {
                 id: Id.id + '',
                 data: '{}',
                 data64: Data.template,
-                nama: nama
+                nama: nama,
+                diedit: false
             };
             Data.baru(file);
             Data.simpan();
@@ -154,6 +158,10 @@ class HalProject {
             Data.simpan();
             window.location.reload();
         };
+    }
+    static init() {
+        HalProject.list(document.body.querySelector('.list'));
+        this.winFunc();
     }
 }
 HalProject.init();

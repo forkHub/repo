@@ -27,18 +27,19 @@ export class HalProject {
         return hasil;
     }
 
-    static init(): void {
-        HalProject.list(document.body.querySelector('.list'));
-
+    static winFunc() {
         (document.body.querySelector('button.baru') as HTMLButtonElement).onclick = () => {
             console.log('baru klik');
+
             let nama = window.prompt("file name: ", "file" + Id.id);
             let file: TFile = {
                 id: Id.id + '',
                 data: '{}',
                 data64: Data.template,
-                nama: nama
+                nama: nama,
+                diedit: false
             }
+
             Data.baru(file);
             Data.simpan();
             document.location.reload();
@@ -68,6 +69,12 @@ export class HalProject {
 
     }
 
+    static init(): void {
+        HalProject.list(document.body.querySelector('.list'));
+        this.winFunc();
+    }
+
 
 }
+
 HalProject.init();

@@ -2884,13 +2884,15 @@ class Data {
     static default() {
         return {
             files: [],
-            activeFileId: ''
+            activeFileId: '',
+            fileTemp: null
         };
     }
     static load() {
         if (Data.loaded)
             return;
         try {
+            console.group('load: ');
             let str = window.localStorage.getItem(this.db);
             let obj = JSON.parse(str);
             if (obj) {
@@ -2910,15 +2912,17 @@ class Data {
             console.log(Data.data.files);
             console.log(Data);
         }
+        finally {
+            console.groupEnd();
+        }
     }
     static baru(item) {
         this.load();
         this.data.files.push(item);
     }
-    static semua() {
-        console.log("semua", Data.data);
+    static semuaFile() {
         this.load();
-        console.log("semua", Data.data);
+        console.log("semua file", Data.data.files);
         return Data.data.files;
     }
     static simpan() {
@@ -3057,20 +3061,25 @@ class Op {
         let w = window;
         w.simpan = () => {
             try {
-                let simpan = blockly_default().serialization.workspaces.save(Index.workspace);
-                let simpanStr = JSON.stringify(simpan);
-                let b64 = btoa(simpanStr);
                 console.group("save data:");
-                console.log(b64);
-                console.log(simpan);
-                let file = Data.getFileById(Data.data.activeFileId);
-                // file.data = simpanStr;
-                file.data = '';
-                file.data64 = b64;
-                Data.simpan();
+                if (window.confirm('save changes?')) {
+                    let simpan = blockly_default().serialization.workspaces.save(Index.workspace);
+                    let simpanStr = JSON.stringify(simpan);
+                    let b64 = btoa(simpanStr);
+                    console.log(b64);
+                    console.log(simpan);
+                    console.log(simpanStr);
+                    let file = Data.getFileById(Data.data.activeFileId);
+                    file.data = simpanStr;
+                    file.data64 = b64;
+                    Data.simpan();
+                }
             }
             catch (e) {
                 console.error(e);
+            }
+            finally {
+                console.groupEnd();
             }
         };
         w.b64 = () => {

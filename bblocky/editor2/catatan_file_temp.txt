@@ -1,0 +1,15 @@
+file yang dibuka disimpen ke temporary file
+kondisi
+    saat pencet home 
+    belum disimpan
+    ada perubahan
+maka
+    tampilkan dialog
+    kondisi
+        ok
+    maka
+        simpan
+        keluar
+    kondisi
+        tidak
+        keluar tanpa simpan

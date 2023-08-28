@@ -11,22 +11,30 @@ export class Op {
 
         w.simpan = () => {
             try {
-                let simpan = Blockly.serialization.workspaces.save(Index.workspace);
-                let simpanStr = JSON.stringify(simpan);
-                let b64 = btoa(simpanStr);
-
                 console.group("save data:");
-                console.log(b64);
-                console.log(simpan);
 
-                let file = Data.getFileById(Data.data.activeFileId);
-                // file.data = simpanStr;
-                file.data = '';
-                file.data64 = b64;
-                Data.simpan();
+                if (window.confirm('save changes?')) {
+                    let simpan = Blockly.serialization.workspaces.save(Index.workspace);
+                    let simpanStr = JSON.stringify(simpan);
+                    let b64 = btoa(simpanStr);
+
+                    console.log(b64);
+                    console.log(simpan);
+                    console.log(simpanStr);
+
+                    let file = Data.getFileById(Data.data.activeFileId);
+                    file.data = simpanStr;
+                    file.data64 = b64;
+
+                    Data.simpan();
+                }
+
             }
             catch (e) {
                 console.error(e);
+            }
+            finally {
+                console.groupEnd();
             }
         }
 

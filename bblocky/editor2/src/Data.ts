@@ -13,7 +13,8 @@ export class Data {
     static default(): TData {
         return {
             files: [],
-            activeFileId: ''
+            activeFileId: '',
+            fileTemp: null
         };
     }
 
@@ -21,6 +22,7 @@ export class Data {
         if (Data.loaded) return;
 
         try {
+            console.group('load: ');
             let str = window.localStorage.getItem(this.db);
             let obj = JSON.parse(str);
 
@@ -42,6 +44,10 @@ export class Data {
             console.log(Data.data.files);
             console.log(Data);
         }
+        finally {
+            console.groupEnd();
+        }
+
     }
 
     static baru(item: TFile): void {
@@ -101,9 +107,11 @@ export type TFile = {
     nama: string
     data: string
     data64: string
+    diedit: boolean
 }
 
 export type TData = {
     files: TFile[]
     activeFileId: string
+    fileTemp: TFile
 }
