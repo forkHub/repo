@@ -33,8 +33,8 @@ namespace ha.bbjs {
             return null;
         }
 
-        static AmbilSprite(id: number): ha.bbjs.Sprite {
-            return List.Ambil(id) as ha.bbjs.Sprite;
+        static AmbilSprite(id: number): ha.be.Sprite {
+            return List.Ambil(id) as ha.be.Sprite;
         }
     }
 }

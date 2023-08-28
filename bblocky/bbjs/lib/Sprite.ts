@@ -36,11 +36,7 @@ namespace ha.bbjs {
             return List.TambahSprite(spr);
         }
 
-        static SpriteBuffer = (n: number): CanvasRenderingContext2D => {
-            return SpriteKontek(List.AmbilSprite(n) as ha.be.Sprite)
-        }
-
-        /*
+        /* 
          * INTERNAL
          * DrawSprite(n)
          * DrawSprite(n, frame)
@@ -62,7 +58,7 @@ namespace ha.bbjs {
             ha.be.Sprite.Gambar(spr as ha.be.Sprite, frame);
         }
 
-        static Render(): void {
+        static DrawAllSprite(): void {
             List.list.forEach((item, idx) => {
                 if (item.type == 'sprite') {
                     Sprite.DrawSprite(idx)
@@ -70,38 +66,42 @@ namespace ha.bbjs {
             })
         }
 
-        static TileSprite = Ubin;
-        static HandleSprite = Handle;
-        static ResizeSprite = Ukuran;
-        static RotateSprite = Rotasi;
-        static SpriteWidth = Panjang;
-        static SpriteHeight = Lebar;
-        static SpritesCollide = Tabrakan;
+        static Position = (n: number, x: number, y: number) => {
+            ha.be.Sprite.Posisi(List.AmbilSprite(n), x, y);
+        }
 
-        // static SpritesOverlap = Tabrakan;
-        // static RectsOverlap = Tabrakan
-        // static SpriteRectOverlap = Tabrakan;
-        // static SpriteRectCollide = Tabrakan;
+        static GetPositionX = (n: number) => {
+            return List.AmbilSprite(n).x;
+        }
+
+        static GetPositionY = (n: number) => {
+            return List.AmbilSprite(n).y;
+        }
+
+        static Handle = (n: number, x: number, y: number) => {
+            ha.be.Sprite.Handle(List.AmbilSprite(n), x, y);
+        }
+
+        static GetRotation = (n: number): number => {
+            return ha.be.Sprite.Rotasi(List.AmbilSprite(n));
+        }
+
+        static RotateSprite = (n: number, rot: number) => {
+            ha.be.Sprite.Rotasi(List.AmbilSprite(n), rot);
+        }
+
+        static ResizeSprite = (n: number, w: number, h: number) => {
+            ha.be.Sprite.Ukuran(List.AmbilSprite(n), w, h);
+        }
+
+        static SpriteWidth = (n: number): number => {
+            return ha.be.Sprite.Panjang(List.AmbilSprite(n));
+        }//Panjang;
+
+        // static SpriteHeight = Lebar;
+        static SpriteHeight = (n: number): number => {
+            return ha.be.Sprite.Lebar(List.AmbilSprite(n));
+        }
     }
 }
 
-/**
- * posisi xy => set [sprite] position [x] [y]
- * posisi jarak => dari posisi, dari sprite
- * posisi orbit
- * posisi mendekat
- * posisi menjauh
- * get posisi
- * 
- * sudut mendekat
- * sudut menjauh
- * sudut literal
- * sudut putar n derajat
- * 
- * gerak maju
- * gerak mundur
- * gerak kiri
- * gerak kanan
- * gerak sudut => putar relative, maju, putar relative balik
- * 
- */

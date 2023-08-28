@@ -1,10 +1,29 @@
 namespace ha.bbjs {
-    export class SpriteOp {
+    export class SpriteMovAdv {
 
-        static CopySprite = (n: number): number => {
-            let spr: ha.bbjs.Sprite = ha.be.Sprite.Copy(List.AmbilSprite(n) as ha.be.Sprite);
-            return List.TambahSprite(spr);
-        }
+
 
     }
 }
+
+/**
+ * posisi xy => set [sprite] position [x] [y]
+ * 
+ * posisi jarak => dari posisi, dari sprite
+ * posisi orbit
+ * posisi mendekat
+ * posisi menjauh
+ * get posisi
+ * 
+ * sudut mendekat
+ * sudut menjauh
+ * sudut literal
+ * sudut putar n derajat
+ * 
+ * gerak maju
+ * gerak mundur
+ * gerak kiri
+ * gerak kanan
+ * gerak sudut => putar relative, maju, putar relative balik
+ * 
+ */
