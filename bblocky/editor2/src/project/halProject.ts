@@ -7,9 +7,9 @@ export class HalProject {
     static list(cont: HTMLDivElement): string {
         //get data;
         let hasil = '';
-        console.log(Data.semua());
+        console.log(Data.semuaFile());
 
-        Data.semua().forEach((item) => {
+        Data.semuaFile().forEach((item) => {
             hasil += (
                 `<div>
                         <span>${item.nama}</span>

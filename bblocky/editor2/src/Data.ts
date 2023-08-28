@@ -49,10 +49,9 @@ export class Data {
         this.data.files.push(item);
     }
 
-    static semua(): TFile[] {
-        console.log("semua", Data.data);
+    static semuaFile(): TFile[] {
         this.load();
-        console.log("semua", Data.data);
+        console.log("semua file", Data.data.files);
         return Data.data.files;
     }
 
