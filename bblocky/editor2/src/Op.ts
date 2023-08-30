@@ -6,36 +6,74 @@ import { javascriptGenerator } from "blockly/javascript";
 import { Data } from "./Data";
 
 export class Op {
+
+    static save() {
+        try {
+            console.group("save data:");
+
+            if (window.confirm('save changes?')) {
+                let simpan = Blockly.serialization.workspaces.save(Index.workspace);
+                let simpanStr = JSON.stringify(simpan);
+                let b64 = btoa(simpanStr);
+
+                console.log(b64);
+                console.log(simpan);
+                console.log(simpanStr);
+
+                let file = Data.getFileById(Data.data.activeFileId);
+                file.data = simpanStr;
+                file.data64 = b64;
+
+                Data.simpan();
+            }
+
+        }
+        catch (e) {
+            console.error(e);
+        }
+        finally {
+            console.groupEnd();
+        }
+    }
+
+    static share() {
+        let saveobj = Blockly.serialization.workspaces.save(Index.workspace);
+        let saveStr = JSON.stringify(saveobj);
+        let saveEncoded = encodeURIComponent(saveStr);
+        let url = window.top.location.pathname;
+
+        console.group('share');
+        console.log(saveEncoded);
+        console.log(window.location.href);
+
+        console.log(url + '?share=' + saveEncoded, '_blank');
+        console.groupEnd();
+
+    }
+
+    static run() {
+        let code = Export.export(javascriptGenerator.workspaceToCode(Index.workspace));
+        if (!Data.data.share) {
+            this.save();
+        }
+        window.localStorage.setItem("blocklycode", code);
+        window.top.location.href = ('./play.html');
+
+    }
+
+    static home() {
+        if (!Data.data.share) {
+            this.save();
+        }
+        window.top.location.href = "./projek.html";
+
+    }
+
     static op() {
         let w = window as any;
 
         w.simpan = () => {
-            try {
-                console.group("save data:");
-
-                if (window.confirm('save changes?')) {
-                    let simpan = Blockly.serialization.workspaces.save(Index.workspace);
-                    let simpanStr = JSON.stringify(simpan);
-                    let b64 = btoa(simpanStr);
-
-                    console.log(b64);
-                    console.log(simpan);
-                    console.log(simpanStr);
-
-                    let file = Data.getFileById(Data.data.activeFileId);
-                    file.data = simpanStr;
-                    file.data64 = b64;
-
-                    Data.simpan();
-                }
-
-            }
-            catch (e) {
-                console.error(e);
-            }
-            finally {
-                console.groupEnd();
-            }
+            this.save();
         }
 
         w.b64 = () => {
@@ -64,33 +102,15 @@ export class Op {
         }
 
         w.run = () => {
-            let code = Export.export(javascriptGenerator.workspaceToCode(Index.workspace));
-            if (!Data.data.share) {
-                w.simpan();
-            }
-            window.localStorage.setItem("blocklycode", code);
-            window.top.location.href = ('./play.html');
+            this.run();
         }
 
         w.share = () => {
-            let saveobj = Blockly.serialization.workspaces.save(Index.workspace);
-            let saveStr = JSON.stringify(saveobj);
-            let saveEncoded = encodeURIComponent(saveStr);
-            let url = window.top.location.pathname;
-
-            console.group('share');
-            console.log(saveEncoded);
-            console.log(window.location.href);
-
-            console.log(url + '?share=' + saveEncoded, '_blank');
-            console.groupEnd();
+            this.share();
         }
 
         w.home = () => {
-            if (!Data.data.share) {
-                w.simpan();
-            }
-            window.top.location.href = "./projek.html";
+            this.home();
         }
     }
 
