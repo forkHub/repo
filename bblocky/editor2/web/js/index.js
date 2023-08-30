@@ -2885,7 +2885,8 @@ class Data {
         return {
             files: [],
             activeFileId: '',
-            fileTemp: null
+            fileTemp: null,
+            share: false
         };
     }
     static load() {
@@ -3088,12 +3089,6 @@ class Op {
             let b64 = btoa(simpanStr);
             console.log(b64);
         };
-        // w.load = () => {
-        //     let simpan = window.localStorage.getItem("blocklytest");
-        //     let code = JSON.parse(simpan);
-        //     console.log("code", code);
-        //     Blockly.serialization.workspaces.load(code, Index.workspace);
-        // }
         w.code = () => {
             let code = javascript.javascriptGenerator.workspaceToCode(Index.workspace);
             console.log(code);
@@ -3112,18 +3107,27 @@ class Op {
         };
         w.run = () => {
             let code = Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
-            w.simpan();
+            if (!Data.data.share) {
+                w.simpan();
+            }
             window.localStorage.setItem("blocklycode", code);
             window.top.location.href = ('./play.html');
         };
         w.share = () => {
-            let simpan = blockly_default().serialization.workspaces.save(Index.workspace);
-            let simpans = JSON.stringify(simpan);
-            let b64 = btoa(simpans);
-            console.log(b64);
+            let saveobj = blockly_default().serialization.workspaces.save(Index.workspace);
+            let saveStr = JSON.stringify(saveobj);
+            let saveEncoded = encodeURIComponent(saveStr);
+            let url = window.top.location.pathname;
+            console.group('share');
+            console.log(saveEncoded);
+            console.log(window.location.href);
+            console.log(url + '?share=' + saveEncoded, '_blank');
+            console.groupEnd();
         };
         w.home = () => {
-            w.simpan();
+            if (!Data.data.share) {
+                w.simpan();
+            }
             window.top.location.href = "./projek.html";
         };
     }
@@ -3969,13 +3973,42 @@ class Index {
         Index.blocklyDiv = document.body.querySelector('#blocklyDiv');
     }
     static getQuery() {
-        //TODO:
+        let query = location.search.slice(1);
+        let queryAr = query.split('&');
+        let kvAr = [];
+        let ok = false;
+        queryAr.forEach((item) => {
+            let ar = item.split('=');
+            kvAr.push({
+                key: ar[0],
+                value: ar[1]
+            });
+        });
+        kvAr.forEach((item) => {
+            if (item.key == 'share') {
+                let value = decodeURIComponent(item.value);
+                let code = JSON.parse(value);
+                code;
+                blockly.serialization.workspaces.load(code, Index.workspace);
+                ok = true;
+                Data.data.share = true;
+            }
+        });
+        console.group('get query');
+        console.log(query);
+        console.log(queryAr);
+        console.log(kvAr);
+        console.groupEnd();
+        return ok;
     }
     static init() {
+        Data.data.share = false;
         Toolbox.init();
         Index.initWorkSpace();
         Op.resize();
         Op.op();
+        if (this.getQuery())
+            return;
         //load
         try {
             console.group('load file, id ' + Data.data.activeFileId);

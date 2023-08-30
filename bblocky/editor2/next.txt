@@ -1,0 +1,7 @@
+Op command dibuat static function agar bisa direferensiin dengan mudah
+resize perlu dibetulkan
+load pakai parameter daripada pakai local storage
+
+
+phase 2:
+perlu setup firebase

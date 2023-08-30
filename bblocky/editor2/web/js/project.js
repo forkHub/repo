@@ -18,7 +18,8 @@ class Data {
         return {
             files: [],
             activeFileId: '',
-            fileTemp: null
+            fileTemp: null,
+            share: false
         };
     }
     static load() {

@@ -14,7 +14,8 @@ export class Data {
         return {
             files: [],
             activeFileId: '',
-            fileTemp: null
+            fileTemp: null,
+            share: false
         };
     }
 
@@ -113,5 +114,6 @@ export type TFile = {
 export type TData = {
     files: TFile[]
     activeFileId: string
+    share: boolean
     fileTemp: TFile
 }

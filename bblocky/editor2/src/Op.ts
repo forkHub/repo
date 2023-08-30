@@ -45,13 +45,6 @@ export class Op {
             console.log(b64);
         }
 
-        // w.load = () => {
-        //     let simpan = window.localStorage.getItem("blocklytest");
-        //     let code = JSON.parse(simpan);
-        //     console.log("code", code);
-        //     Blockly.serialization.workspaces.load(code, Index.workspace);
-        // }
-
         w.code = () => {
             let code = javascriptGenerator.workspaceToCode(Index.workspace);
             console.log(code);
@@ -72,26 +65,37 @@ export class Op {
 
         w.run = () => {
             let code = Export.export(javascriptGenerator.workspaceToCode(Index.workspace));
-            w.simpan();
+            if (!Data.data.share) {
+                w.simpan();
+            }
             window.localStorage.setItem("blocklycode", code);
             window.top.location.href = ('./play.html');
         }
 
         w.share = () => {
-            let simpan = Blockly.serialization.workspaces.save(Index.workspace);
-            let simpans = JSON.stringify(simpan);
-            let b64 = btoa(simpans);
-            console.log(b64);
+            let saveobj = Blockly.serialization.workspaces.save(Index.workspace);
+            let saveStr = JSON.stringify(saveobj);
+            let saveEncoded = encodeURIComponent(saveStr);
+            let url = window.top.location.pathname;
+
+            console.group('share');
+            console.log(saveEncoded);
+            console.log(window.location.href);
+
+            console.log(url + '?share=' + saveEncoded, '_blank');
+            console.groupEnd();
         }
 
         w.home = () => {
-            w.simpan();
+            if (!Data.data.share) {
+                w.simpan();
+            }
             window.top.location.href = "./projek.html";
         }
     }
 
-    static resize() {
-        const onresize = function () {
+    static handleResize() {
+        try {
             // Compute the absolute coordinates and dimensions of blocklyArea.
             let element: HTMLDivElement = Index.blocklyArea as HTMLDivElement;
             let x = 0;
@@ -109,18 +113,27 @@ export class Op {
             Index.blocklyDiv.style.height = Index.blocklyArea.offsetHeight + 'px';
 
             Blockly.svgResize(Index.workspace);
-        };
-
-        window.onresize = () => {
-            setTimeout(() => {
-                onresize();
-            }, 100);
         }
-        setTimeout(() => {
-            onresize();
-        }, 100);
+        catch (e) {
+            console.warn(e);
+        }
+
 
     }
+
+    static setResize() {
+        window.onresize = () => {
+            this.handleResize();
+            setTimeout(() => {
+                this.handleResize();
+            }, 100);
+        }
+        this.handleResize();
+        setTimeout(() => {
+            this.handleResize();
+        }, 100);
+    }
+
 }
 
 // function openFile(id: string): void {

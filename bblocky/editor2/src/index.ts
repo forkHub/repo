@@ -35,17 +35,53 @@ export class Index {
 		Index.workspace = Blockly.inject("blocklyDiv", options);
 		Index.blocklyArea = document.body.querySelector('#blocklyArea') as HTMLDivElement;
 		Index.blocklyDiv = document.body.querySelector('#blocklyDiv') as HTMLDivElement;
+
+		setTimeout(() => {
+			Op.handleResize();
+		}, 0);
 	}
 
-	static getQuery() {
-		//TODO:
+	static getQuery(): boolean {
+		let query = location.search.slice(1);
+		let queryAr = query.split('&');
+		let kvAr: { key: string, value: string }[] = [];
+		let ok = false;
+
+		queryAr.forEach((item) => {
+			let ar = item.split('=');
+			kvAr.push({
+				key: ar[0],
+				value: ar[1]
+			})
+		})
+
+		kvAr.forEach((item) => {
+			if (item.key == 'share') {
+				let value = decodeURIComponent(item.value);
+				let code = JSON.parse(value);
+				code;
+				Blockly.serialization.workspaces.load(code, Index.workspace);
+				ok = true;
+				Data.data.share = true;
+			}
+		})
+
+		console.group('get query');
+		console.log(query);
+		console.log(queryAr);
+		console.log(kvAr);
+		console.groupEnd();
+
+		return ok;
 	}
 
 	static init() {
+		Data.data.share = false;
 		Toolbox.init();
 		Index.initWorkSpace();
-		Op.resize();
+		Op.setResize();
 		Op.op();
+		if (this.getQuery()) return;
 
 		//load
 		try {
