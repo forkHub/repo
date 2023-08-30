@@ -15,7 +15,8 @@ export class Data {
             files: [],
             activeFileId: '',
             fileTemp: null,
-            share: false
+            share: false,
+            editMode: EEditMode.none
         };
     }
 
@@ -111,9 +112,18 @@ export type TFile = {
     diedit: boolean
 }
 
+export enum EEditMode {
+    share = 'share',
+    id = 'id',
+    none = ''
+}
+
 export type TData = {
     files: TFile[]
+    editMode: EEditMode
     activeFileId: string
+
+    //depecrated
     share: boolean
     fileTemp: TFile
 }

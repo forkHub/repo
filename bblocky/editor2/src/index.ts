@@ -1,4 +1,4 @@
-import { Data } from "./Data";
+import { Data, EEditMode } from "./Data";
 import { Op } from "./Op";
 import { Toolbox } from "./toolbox";
 import * as Blockly from 'blockly'
@@ -41,6 +41,44 @@ export class Index {
 		}, 0);
 	}
 
+	static loadFromQueryData(val: string) {
+		let value = decodeURIComponent(val);
+		let code = JSON.parse(value);
+		code;
+		Blockly.serialization.workspaces.load(code, Index.workspace);
+		Data.data.share = true;
+
+	}
+
+	static loadFromId(id: string) {
+
+		console.group('load file, id ' + id);
+		Data.load();
+
+		if (id) {
+			let file = Data.getFileById(id);
+			let code = {};
+
+			if (file.data64) {
+				console.log('base 64 tersedia');
+				let codeStr = atob(file.data64);
+				code = JSON.parse(codeStr);
+			}
+			else if (file.data) {
+				code = JSON.parse(file.data);
+			}
+
+			console.log("file", file);
+			console.log("code", code);
+			Blockly.serialization.workspaces.load(code, Index.workspace);
+
+			Data.data.activeFileId = id;
+		}
+
+		console.groupEnd();
+
+	}
+
 	static getQuery(): boolean {
 		let query = location.search.slice(1);
 		let queryAr = query.split('&');
@@ -57,12 +95,14 @@ export class Index {
 
 		kvAr.forEach((item) => {
 			if (item.key == 'share') {
-				let value = decodeURIComponent(item.value);
-				let code = JSON.parse(value);
-				code;
-				Blockly.serialization.workspaces.load(code, Index.workspace);
-				ok = true;
-				Data.data.share = true;
+				this.loadFromQueryData(item.value);
+			}
+			else if (item.key == EEditMode.id) {
+				this.loadFromId(item.value);
+			}
+			else {
+				console.warn('item uknown');
+				console.log('kvar ', kvAr);
 			}
 		})
 
