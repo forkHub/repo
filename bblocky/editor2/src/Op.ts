@@ -3,7 +3,7 @@ import { Export } from "./export";
 import Blockly from 'blockly'
 import { TWorkSpace } from "./type";
 import { javascriptGenerator } from "blockly/javascript";
-import { Data } from "./Data";
+import { Data, StateData } from "./Data";
 
 export class Op {
 
@@ -20,7 +20,7 @@ export class Op {
                 console.log(simpan);
                 console.log(simpanStr);
 
-                let file = Data.getFileById(Data.data.activeFileId);
+                let file = Data.getFileById(StateData.fileId);
                 file.data = simpanStr;
                 file.data64 = b64;
 
@@ -53,20 +53,22 @@ export class Op {
 
     static run() {
         let code = Export.export(javascriptGenerator.workspaceToCode(Index.workspace));
-        if (!Data.data.share) {
-            this.save();
-        }
-        window.localStorage.setItem("blocklycode", code);
-        window.top.location.href = ('./play.html');
 
+        // if (!Data.data.share) {
+        //     this.save();
+        // }
+
+        window.localStorage.setItem("blocklycode", code);
+        // window.top.location.href = ('./play.html');
+        window.open('./play.html', '_blank');
     }
 
     static home() {
-        if (!Data.data.share) {
-            this.save();
-        }
-        window.top.location.href = "./projek.html";
+        // if (!Data.data.share) {
+        //     this.save();
+        // }
 
+        window.top.location.href = "./projek.html";
     }
 
     static op() {

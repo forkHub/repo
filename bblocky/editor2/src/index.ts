@@ -1,5 +1,6 @@
-import { Data, EEditMode } from "./Data";
+import { Data, EEditMode, StateData } from "./Data";
 import { Op } from "./Op";
+import { Firebase } from "./firebase";
 import { Toolbox } from "./toolbox";
 import * as Blockly from 'blockly'
 
@@ -9,6 +10,15 @@ export class Index {
 	public static workspace: Blockly.WorkspaceSvg;
 	public static blocklyArea: HTMLDivElement;
 	public static blocklyDiv: HTMLDivElement;
+
+	static isDirty(type: string): boolean {
+		if ("drag" == type) return true;
+		if ("move" == type) return true;
+		if ("create" == type) return true;
+		if ("delete" == type) return true;
+
+		return false;
+	}
 
 	static initWorkSpace() {
 		Blockly.Msg["VARIABLES_SET"] = "%1 = %2";
@@ -35,20 +45,30 @@ export class Index {
 		Index.workspace = Blockly.inject("blocklyDiv", options);
 		Index.blocklyArea = document.body.querySelector('#blocklyArea') as HTMLDivElement;
 		Index.blocklyDiv = document.body.querySelector('#blocklyDiv') as HTMLDivElement;
+		Index.workspace.addChangeListener((e) => {
+			console.log(e);
+			if (this.isDirty(e.type)) {
+				// this.dirty = true;
+				StateData.dirty = true;
+			}
+		})
+
+		// console.log('work space');
+		// console.log(Index.workspace.highlightBlock);
 
 		setTimeout(() => {
 			Op.handleResize();
 		}, 0);
 	}
 
-	static loadFromQueryData(val: string) {
-		let value = decodeURIComponent(val);
-		let code = JSON.parse(value);
-		code;
-		Blockly.serialization.workspaces.load(code, Index.workspace);
-		Data.data.share = true;
+	// static loadFromQueryData(val: string) {
+	// 	let value = decodeURIComponent(val);
+	// 	let code = JSON.parse(value);
+	// 	code;
+	// 	Blockly.serialization.workspaces.load(code, Index.workspace);
+	// 	Data.data.share = true;
 
-	}
+	// }
 
 	static loadFromId(id: string) {
 
@@ -72,18 +92,21 @@ export class Index {
 			console.log("code", code);
 			Blockly.serialization.workspaces.load(code, Index.workspace);
 
-			Data.data.activeFileId = id;
+			// Data.data.activeFileId = id;
+			StateData.fileId = id;
+			setTimeout(() => {
+				Op.handleResize();
+			}, 0);
 		}
 
 		console.groupEnd();
 
 	}
 
-	static getQuery(): boolean {
+	static getQuery() {
 		let query = location.search.slice(1);
 		let queryAr = query.split('&');
 		let kvAr: { key: string, value: string }[] = [];
-		let ok = false;
 
 		queryAr.forEach((item) => {
 			let ar = item.split('=');
@@ -94,14 +117,18 @@ export class Index {
 		})
 
 		kvAr.forEach((item) => {
-			if (item.key == 'share') {
-				this.loadFromQueryData(item.value);
-			}
-			else if (item.key == EEditMode.id) {
+			// if (item.key == 'share') {
+			// this.loadFromQueryData(item.value);
+			// Data.data.editMode = EEditMode.share;
+			// }
+			// else 
+			if (item.key == EEditMode.id) {
 				this.loadFromId(item.value);
+				StateData.editMode = EEditMode.id;
+				// Data.data.editMode = EEditMode.id;
 			}
 			else {
-				console.warn('item uknown');
+				console.warn('item key uknown: ' + item.key);
 				console.log('kvar ', kvAr);
 			}
 		})
@@ -111,42 +138,42 @@ export class Index {
 		console.log(queryAr);
 		console.log(kvAr);
 		console.groupEnd();
-
-		return ok;
 	}
 
 	static init() {
-		Data.data.share = false;
+		// Data.data.share = false;
 		Toolbox.init();
 		Index.initWorkSpace();
 		Op.setResize();
 		Op.op();
-		if (this.getQuery()) return;
+		this.getQuery();
+		Firebase.init();
 
 		//load
-		try {
-			console.group('load file, id ' + Data.data.activeFileId);
-			Data.load();
-			if (Data.data.activeFileId) {
-				let file = Data.getFileById(Data.data.activeFileId);
-				// let code = JSON.parse(file.data);
-				let code = {};
+		// try {
+		// 	console.group('load file, id ' + Data.data.activeFileId);
+		// 	Data.load();
+		// 	if (Data.data.activeFileId) {
+		// 		let file = Data.getFileById(Data.data.activeFileId);
+		// 		// let code = JSON.parse(file.data);
+		// 		let code = {};
 
-				if (file.data64) {
-					console.log('base 64 tersedia');
-					let codeStr = atob(file.data64);
-					code = JSON.parse(codeStr);
-				}
+		// 		if (file.data64) {
+		// 			console.log('base 64 tersedia');
+		// 			let codeStr = atob(file.data64);
+		// 			code = JSON.parse(codeStr);
+		// 		}
 
-				console.log("file", file);
-				console.log("code", code);
-				Blockly.serialization.workspaces.load(code, Index.workspace);
-			}
-			console.groupEnd();
-		}
-		catch (e) {
-			console.error(e);
-		}
+		// 		console.log("file", file);
+		// 		console.log("code", code);
+		// 		Blockly.serialization.workspaces.load(code, Index.workspace);
+		// 	}
+		// 	console.groupEnd();
+		// }
+		// catch (e) {
+		// 	console.error(e);
+		// }
+
 	}
 
 	/**

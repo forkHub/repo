@@ -13,10 +13,11 @@ export class Data {
     static default(): TData {
         return {
             files: [],
-            activeFileId: '',
-            fileTemp: null,
-            share: false,
-            editMode: EEditMode.none
+            // activeFileId: '',
+            // fileTemp: null,
+            // share: false,
+            // shareId: 0,
+            // editMode: EEditMode.none
         };
     }
 
@@ -31,8 +32,8 @@ export class Data {
             if (obj) {
                 Data._data = obj;
                 Data.loaded = true;
-                console.log("load:", str);
-                console.log("obj ", obj);
+                // console.log("load:", str);
+                // console.log("obj ", obj);
             }
             else {
                 Data._data = this.default();
@@ -104,6 +105,32 @@ export class Data {
 
 }
 
+export class StateData {
+    private static _fileId: string = '';
+    private static _editMode: EEditMode;
+    private static _dirty: boolean = false;
+
+    public static get dirty(): boolean {
+        return StateData._dirty;
+    }
+    public static set dirty(value: boolean) {
+        StateData._dirty = value;
+    }
+    public static get fileId(): string {
+        return StateData._fileId;
+    }
+    public static set fileId(value: string) {
+        StateData._fileId = value;
+    }
+    public static get editMode(): EEditMode {
+        return StateData._editMode;
+    }
+    public static set editMode(value: EEditMode) {
+        StateData._editMode = value;
+    }
+
+}
+
 export type TFile = {
     id: string
     nama: string
@@ -113,17 +140,20 @@ export type TFile = {
 }
 
 export enum EEditMode {
-    share = 'share',
+    // share = 'share',
     id = 'id',
+    demo = 'demo',
     none = ''
 }
 
 export type TData = {
     files: TFile[]
-    editMode: EEditMode
-    activeFileId: string
+    // editMode: EEditMode
+    // activeFileId: string
+    // shareId: number
 
     //depecrated
-    share: boolean
-    fileTemp: TFile
+    // share: boolean
+    // fileTemp: TFile
 }
+

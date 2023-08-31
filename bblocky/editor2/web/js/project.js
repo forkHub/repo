@@ -17,9 +17,11 @@ class Data {
     static default() {
         return {
             files: [],
-            activeFileId: '',
-            fileTemp: null,
-            share: false
+            // activeFileId: '',
+            // fileTemp: null,
+            // share: false,
+            // shareId: 0,
+            // editMode: EEditMode.none
         };
     }
     static load() {
@@ -32,8 +34,8 @@ class Data {
             if (obj) {
                 Data._data = obj;
                 Data.loaded = true;
-                console.log("load:", str);
-                console.log("obj ", obj);
+                // console.log("load:", str);
+                // console.log("obj ", obj);
             }
             else {
                 Data._data = this.default();
@@ -92,6 +94,36 @@ class Data {
         return hsl;
     }
 }
+class StateData {
+    static _fileId = (/* unused pure expression or super */ null && (''));
+    static _editMode;
+    static _dirty = (/* unused pure expression or super */ null && (false));
+    static get dirty() {
+        return StateData._dirty;
+    }
+    static set dirty(value) {
+        StateData._dirty = value;
+    }
+    static get fileId() {
+        return StateData._fileId;
+    }
+    static set fileId(value) {
+        StateData._fileId = value;
+    }
+    static get editMode() {
+        return StateData._editMode;
+    }
+    static set editMode(value) {
+        StateData._editMode = value;
+    }
+}
+var EEditMode;
+(function (EEditMode) {
+    // share = 'share',
+    EEditMode["id"] = "id";
+    EEditMode["demo"] = "demo";
+    EEditMode["none"] = "";
+})(EEditMode || (EEditMode = {}));
 
 ;// CONCATENATED MODULE: ./out/Id.js
 class Id {
@@ -110,7 +142,7 @@ class HalProject {
     static list(cont) {
         //get data;
         let hasil = '';
-        console.log(Data.semuaFile());
+        // console.log(Data.semuaFile());
         Data.semuaFile().forEach((item) => {
             hasil += (`<div>
                         <span>${item.nama}</span>
@@ -124,6 +156,19 @@ class HalProject {
         });
         cont.innerHTML = hasil;
         return hasil;
+    }
+    static openFile(id) {
+        console.group('load file, id ' + id);
+        // Data.data.activeFileId = id;
+        Data.simpan();
+        window.location.href = './edit.html?id=' + id;
+        console.groupEnd();
+    }
+    static renameFile(id, name) {
+        let nama2 = window.prompt("name", name);
+        Data.getFileById(id).nama = nama2;
+        Data.simpan();
+        window.location.reload();
     }
     static winFunc() {
         document.body.querySelector('button.baru').onclick = () => {
@@ -143,21 +188,14 @@ class HalProject {
         //window function
         let w = window;
         w.openFile = (id) => {
-            console.group('load file, id ' + id);
-            Data.data.activeFileId = id;
-            Data.simpan();
-            window.location.href = './edit.html';
-            console.groupEnd();
+            this.openFile(id);
         };
         w.deleteFile = (id) => {
             id;
             //TODO:
         };
         w.renameFile = (id, name) => {
-            let nama2 = window.prompt("name", name);
-            Data.getFileById(id).nama = nama2;
-            Data.simpan();
-            window.location.reload();
+            this.renameFile(id, name);
         };
     }
     static init() {

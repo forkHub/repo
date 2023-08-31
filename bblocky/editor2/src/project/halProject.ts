@@ -7,7 +7,7 @@ export class HalProject {
     static list(cont: HTMLDivElement): string {
         //get data;
         let hasil = '';
-        console.log(Data.semuaFile());
+        // console.log(Data.semuaFile());
 
         Data.semuaFile().forEach((item) => {
             hasil += (
@@ -25,6 +25,23 @@ export class HalProject {
 
         cont.innerHTML = hasil;
         return hasil;
+    }
+
+    static openFile(id: string) {
+        console.group('load file, id ' + id);
+        // Data.data.activeFileId = id;
+        Data.simpan();
+        window.location.href = './edit.html?id=' + id;
+        console.groupEnd();
+
+    }
+
+    static renameFile(id: string, name: string) {
+        let nama2 = window.prompt("name", name);
+        Data.getFileById(id).nama = nama2;
+        Data.simpan();
+        window.location.reload();
+
     }
 
     static winFunc() {
@@ -48,11 +65,7 @@ export class HalProject {
         //window function
         let w: any = window;
         w.openFile = (id: string) => {
-            console.group('load file, id ' + id);
-            Data.data.activeFileId = id;
-            Data.simpan();
-            window.location.href = './edit.html';
-            console.groupEnd();
+            this.openFile(id);
         };
 
         w.deleteFile = (id: string) => {
@@ -61,10 +74,7 @@ export class HalProject {
         }
 
         w.renameFile = (id: string, name: string) => {
-            let nama2 = window.prompt("name", name);
-            Data.getFileById(id).nama = nama2;
-            Data.simpan();
-            window.location.reload();
+            this.renameFile(id, name);
         }
 
     }

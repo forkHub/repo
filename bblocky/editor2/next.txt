@@ -1,7 +1,27 @@
-Op command dibuat static function agar bisa direferensiin dengan mudah
-resize perlu dibetulkan
-load pakai parameter daripada pakai local storage
+status dirty
+firebase simpan
 
+kondisi
+window on exit
+    dirty
+        load dari id
+            simpan ok
+                simpan data
+            simpan cancel
+                exit
+        load dari demo
+            exit
+    not dirty
+        exit
 
-phase 2:
-perlu setup firebase
+window on exit
+    load dari demo 
+        exit
+    load dari id
+        dirty
+            simpan ok
+                simpan and exit
+            simpan cancel
+                exit
+        not dirty
+            exit

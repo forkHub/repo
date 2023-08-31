@@ -7,8 +7,8 @@ import { TToolBoxBlockDef, TArgDef, EOutput, EArgType } from "./toolboxType";
 
 export class BDef {
     static defValue(t: TToolBoxBlockDef): void {
-        console.group("defValue");
-        console.log(t);
+        // console.group("defValue");
+        // console.log(t);
 
         if (t.output) {
 
@@ -26,8 +26,8 @@ export class BDef {
         t.tooltip = t.tooltip || "";
         t.helpUrl = t.helpUrl || "";
 
-        console.log(t)
-        console.groupEnd();
+        // console.log(t)
+        // console.groupEnd();
     }
 
     static createShadow(t: TArgDef): any {

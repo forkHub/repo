@@ -81,13 +81,13 @@ export class Toolbox {
     static js(blockData: TToolBoxBlockDef[]) {
         for (let i = 0; i < blockData.length; i++) {
             let itemBlockData = blockData[i];
-            console.log('type: ' + itemBlockData.type);
-            console.log("Blockly.Javascript ", javascriptGenerator);
+            // console.log('type: ' + itemBlockData.type);
+            // console.log("Blockly.Javascript ", javascriptGenerator);
 
             javascriptGenerator.forBlock[itemBlockData.type] = (block: any, generator: any): any => {
                 let code = '';
 
-                console.group("");
+                // console.group("");
 
                 code = itemBlockData.type.split('_')[0] + '(';
 
@@ -105,7 +105,7 @@ export class Toolbox {
                     }
                     else {
                         let value = generator.valueToCode(block, item.name, Order.ATOMIC);
-                        console.log('value to code >>', "item name:", item.name, "value", value);
+                        // console.log('value to code >>', "item name:", item.name, "value", value);
 
                         code += value;
 
@@ -116,8 +116,8 @@ export class Toolbox {
                 });
                 code += ')';
 
-                console.log("code", code);
-                console.groupEnd();
+                // console.log("code", code);
+                // console.groupEnd();
 
                 if (itemBlockData.output != null) {
                     return [code, Order.NONE]
