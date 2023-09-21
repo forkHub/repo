@@ -1,0 +1,13 @@
+///<reference path="../ha/Be.ts"/>
+///<reference path="../ha/Image.ts"/>
+///<reference path="../ha/Sprite.ts"/>
+///<reference path="../ha/Input.ts"/>
+///<reference path="../ha/Point.ts"/>
+///<reference path="../ha/Rect.ts"/>
+///<reference path="../ha/Segment.ts"/>
+///<reference path="../ha/Transform.ts"/>
+///<reference path="../ha/Teks.ts"/>
+///<reference path="../ha/Route.ts"/>
+///<reference path="../ha/Sprite2.ts"/>
+///<reference path="../ha/Cache.ts"/>
+///<reference path="../ha/Mat.ts"/>
