@@ -22,6 +22,12 @@ namespace ha.fb {
     class Bentuk {
         readonly list: BentukObj[] = [];
 
+        geser(b: BentukObj, x: number, y: number) {
+            b.bola.forEach((item) => {
+                item.x += x;
+                item.y += y;
+            })
+        }
 
         buat(str: string[] = [], id = 0): BentukObj {
             let h: BentukObj = new BentukObj();

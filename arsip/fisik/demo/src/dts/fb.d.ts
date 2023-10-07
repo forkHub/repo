@@ -1,12 +1,16 @@
 declare namespace ha.fb {
     class BentukObj {
-        private _id;
         readonly bola: BolaObj[];
+        private _id;
+        private _static;
+        get static(): boolean;
+        set static(value: boolean);
         get id(): number;
         set id(value: number);
     }
     class Bentuk {
         readonly list: BentukObj[];
+        geser(b: BentukObj, x: number, y: number): void;
         buat(str?: string[], id?: number): BentukObj;
         private dekat;
         bola(bentuk: BentukObj, strAr: string[], id: number): void;
@@ -44,7 +48,6 @@ declare namespace ha.fb {
         set r(value: number);
     }
     class Bola {
-        readonly bolaAr: BolaObj[];
         constructor();
         /**
          * check apakah dua bola bersinggungan
