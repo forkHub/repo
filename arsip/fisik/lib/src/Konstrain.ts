@@ -87,37 +87,25 @@ namespace ha.fb {
 			let gap: number;
 			let sdt: number;
 
-			// console.group('geser');
-
 			jrk2Bola = ha.geom.Transform.jarak(b1.x, b1.y, b2.x, b2.y);
 			gap = jrk2Bola - obj.jrk;
-
-			// console.log('jrk bola: ', jrk2Bola, 'gap: ', gap, 'jrk k', obj.jrk);
-
-			// if (Math.abs(gap) < JARAK_MIN) {
-			// 	// console.groupEnd();
-			// 	return;
-			// }
 
 			gap /= 2;
 			sdt = ha.geom.Transform.sudut(b2.x - b1.x, b2.y - b1.y);
 			ha.geom.Transform.posPolar(obj.jrk + (gap), sdt);
 
-			// console.log(
-			// 	'pos polar, x:', ha.geom.Transform.lastX,
-			// 	'y:', ha.geom.Transform.lastY);
-
 			let b2x: number = b2.x;
 			let b2y: number = b2.y;
 
-			b2.x = b1.x + ha.geom.Transform.lastX;
-			b2.y = b1.y + ha.geom.Transform.lastY;
+			if (!b2.statik) {
+				b2.x = b1.x + ha.geom.Transform.lastX;
+				b2.y = b1.y + ha.geom.Transform.lastY;
+			}
 
-			b1.x = b2x - ha.geom.Transform.lastX;
-			b1.y = b2y - ha.geom.Transform.lastY;
-
-			// console.log('x ' + b2.x, 'y ' + b2.y);
-			// console.groupEnd();
+			if (!b1.statik) {
+				b1.x = b2x - ha.geom.Transform.lastX;
+				b1.y = b2y - ha.geom.Transform.lastY;
+			}
 		}
 
 		/**

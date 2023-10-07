@@ -19,6 +19,14 @@ namespace ha.fb {
 		private _y: number = 0;
 		private _groupId: number = 0;
 		private _label = '';
+		private _statik: boolean = false;
+
+		public get statik(): boolean {
+			return this._statik;
+		}
+		public set statik(value: boolean) {
+			this._statik = value;
+		}
 
 		public get label() {
 			return this._label;
@@ -117,6 +125,8 @@ namespace ha.fb {
 			let jrkMin: number = b1.r + b2.r + 1;
 			let jrk: number = ha.geom.Transform.jarak(b1.x, b1.y, b2.x, b2.y);
 			let ratio: number;
+			let hor2: number;
+			let ver2: number;
 
 			if (jrk > jrkMin) {
 				ratio = jrk / jrkMin;
@@ -125,31 +135,29 @@ namespace ha.fb {
 				ratio = (jrkMin / jrk);
 
 				//geser b2
-				let hor2: number;
-				let ver2: number;
+				if (!b2.statik) {
 
-				hor2 = b2.x - tengahX;
-				ver2 = b2.y - tengahY;
-				hor2 *= ratio;
-				ver2 *= ratio;
+					hor2 = b2.x - tengahX;
+					ver2 = b2.y - tengahY;
+					hor2 *= ratio;
+					ver2 *= ratio;
 
-				b2.x = tengahX + hor2;
-				b2.y = tengahY + ver2;
-				// console.log('b2 pos: ', b2.x, b2.y);
+					b2.x = tengahX + hor2;
+					b2.y = tengahY + ver2;
+				}
 
 				//geser b1
-				hor2 = b1.x - tengahX;
-				ver2 = b1.y - tengahY;
-				hor2 *= ratio;
-				ver2 *= ratio;
+				if (!b1.statik) {
+					hor2 = b1.x - tengahX;
+					ver2 = b1.y - tengahY;
+					hor2 *= ratio;
+					ver2 *= ratio;
 
-				b1.x = tengahX + hor2;
-				b1.y = tengahY + ver2;
-				// console.log('b1 pos: ', b1.x, b1.y);
-				// console.groupEnd();
+					b1.x = tengahX + hor2;
+					b1.y = tengahY + ver2;
+				}
 			}
 
-			// console.log('jrk min: ', jrkMin, '/jrk : ', jrk, '/ratio: ', ratio);
 		}
 
 		buatBola(): BolaObj {

@@ -2,8 +2,6 @@ declare namespace ha.fb {
     class BentukObj {
         readonly bola: BolaObj[];
         private _id;
-        private _static;
-        get static(): boolean;
         set static(value: boolean);
         get id(): number;
         set id(value: number);
@@ -36,6 +34,9 @@ declare namespace ha.fb {
         private _y;
         private _groupId;
         private _label;
+        private _statik;
+        get statik(): boolean;
+        set statik(value: boolean);
         get label(): string;
         set label(value: string);
         get groupId(): number;

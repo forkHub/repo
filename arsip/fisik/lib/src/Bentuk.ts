@@ -2,13 +2,11 @@ namespace ha.fb {
     class BentukObj {
         readonly bola: BolaObj[] = [];
         private _id: number = 0;
-        private _static: boolean = false;
 
-        public get static(): boolean {
-            return this._static;
-        }
-        public set static(value: boolean) {
-            this._static = value;
+        public set statik(value: boolean) {
+            this.bola.forEach((item) => {
+                item.statik = value;
+            })
         }
 
         public get id(): number {
@@ -113,6 +111,12 @@ namespace ha.fb {
                 ctx.beginPath();
                 ctx.arc(b.x + offx, b.y + offy, b.r, 0, 2 * Math.PI);
                 ctx.stroke();
+
+                if (b.statik) {
+                    ctx.beginPath();
+                    ctx.arc(b.x + offx, b.y + offy, b.r / 3, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
             })
         }
 

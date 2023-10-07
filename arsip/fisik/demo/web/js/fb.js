@@ -5,12 +5,10 @@ var ha;
         class BentukObj {
             bola = [];
             _id = 0;
-            _static = false;
-            get static() {
-                return this._static;
-            }
             set static(value) {
-                this._static = value;
+                this.bola.forEach((item) => {
+                    item.statik = value;
+                });
             }
             get id() {
                 return this._id;
@@ -98,6 +96,11 @@ var ha;
                     ctx.beginPath();
                     ctx.arc(b.x + offx, b.y + offy, b.r, 0, 2 * Math.PI);
                     ctx.stroke();
+                    if (b.statik) {
+                        ctx.beginPath();
+                        ctx.arc(b.x + offx, b.y + offy, b.r / 3, 0, 2 * Math.PI);
+                        ctx.stroke();
+                    }
                 });
             }
             update() {
@@ -127,6 +130,13 @@ var ha;
             _y = 0;
             _groupId = 0;
             _label = '';
+            _statik = false;
+            get statik() {
+                return this._statik;
+            }
+            set statik(value) {
+                this._statik = value;
+            }
             get label() {
                 return this._label;
             }
@@ -210,32 +220,32 @@ var ha;
                 let jrkMin = b1.r + b2.r + 1;
                 let jrk = ha.geom.Transform.jarak(b1.x, b1.y, b2.x, b2.y);
                 let ratio;
+                let hor2;
+                let ver2;
                 if (jrk > jrkMin) {
                     ratio = jrk / jrkMin;
                 }
                 else {
                     ratio = (jrkMin / jrk);
                     //geser b2
-                    let hor2;
-                    let ver2;
-                    hor2 = b2.x - tengahX;
-                    ver2 = b2.y - tengahY;
-                    hor2 *= ratio;
-                    ver2 *= ratio;
-                    b2.x = tengahX + hor2;
-                    b2.y = tengahY + ver2;
-                    // console.log('b2 pos: ', b2.x, b2.y);
+                    if (!b2.statik) {
+                        hor2 = b2.x - tengahX;
+                        ver2 = b2.y - tengahY;
+                        hor2 *= ratio;
+                        ver2 *= ratio;
+                        b2.x = tengahX + hor2;
+                        b2.y = tengahY + ver2;
+                    }
                     //geser b1
-                    hor2 = b1.x - tengahX;
-                    ver2 = b1.y - tengahY;
-                    hor2 *= ratio;
-                    ver2 *= ratio;
-                    b1.x = tengahX + hor2;
-                    b1.y = tengahY + ver2;
-                    // console.log('b1 pos: ', b1.x, b1.y);
-                    // console.groupEnd();
+                    if (!b1.statik) {
+                        hor2 = b1.x - tengahX;
+                        ver2 = b1.y - tengahY;
+                        hor2 *= ratio;
+                        ver2 *= ratio;
+                        b1.x = tengahX + hor2;
+                        b1.y = tengahY + ver2;
+                    }
                 }
-                // console.log('jrk min: ', jrkMin, '/jrk : ', jrk, '/ratio: ', ratio);
             }
             buatBola() {
                 let hsl = new BolaObj();
@@ -341,28 +351,21 @@ var ha;
                 let jrk2Bola;
                 let gap;
                 let sdt;
-                // console.group('geser');
                 jrk2Bola = ha.geom.Transform.jarak(b1.x, b1.y, b2.x, b2.y);
                 gap = jrk2Bola - obj.jrk;
-                // console.log('jrk bola: ', jrk2Bola, 'gap: ', gap, 'jrk k', obj.jrk);
-                // if (Math.abs(gap) < JARAK_MIN) {
-                // 	// console.groupEnd();
-                // 	return;
-                // }
                 gap /= 2;
                 sdt = ha.geom.Transform.sudut(b2.x - b1.x, b2.y - b1.y);
                 ha.geom.Transform.posPolar(obj.jrk + (gap), sdt);
-                // console.log(
-                // 	'pos polar, x:', ha.geom.Transform.lastX,
-                // 	'y:', ha.geom.Transform.lastY);
                 let b2x = b2.x;
                 let b2y = b2.y;
-                b2.x = b1.x + ha.geom.Transform.lastX;
-                b2.y = b1.y + ha.geom.Transform.lastY;
-                b1.x = b2x - ha.geom.Transform.lastX;
-                b1.y = b2y - ha.geom.Transform.lastY;
-                // console.log('x ' + b2.x, 'y ' + b2.y);
-                // console.groupEnd();
+                if (!b2.statik) {
+                    b2.x = b1.x + ha.geom.Transform.lastX;
+                    b2.y = b1.y + ha.geom.Transform.lastY;
+                }
+                if (!b1.statik) {
+                    b1.x = b2x - ha.geom.Transform.lastX;
+                    b1.y = b2y - ha.geom.Transform.lastY;
+                }
             }
             /**
              * update konstrain
