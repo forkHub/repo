@@ -3,8 +3,15 @@ var ha;
     var fb;
     (function (fb) {
         class BentukObj {
+            bola = [];
             _id = 0;
-            bola = []; //redundant list
+            _static = false;
+            get static() {
+                return this._static;
+            }
+            set static(value) {
+                this._static = value;
+            }
             get id() {
                 return this._id;
             }
@@ -14,6 +21,12 @@ var ha;
         }
         class Bentuk {
             list = [];
+            geser(b, x, y) {
+                b.bola.forEach((item) => {
+                    item.x += x;
+                    item.y += y;
+                });
+            }
             buat(str = [], id = 0) {
                 let h = new BentukObj();
                 this.bola(h, str, id);
@@ -147,7 +160,7 @@ var ha;
         }
         fb.BolaObj = BolaObj;
         class Bola {
-            bolaAr = [];
+            // readonly bolaAr: BolaObj[] = [];
             constructor() {
             }
             // private update(): void {
@@ -226,7 +239,7 @@ var ha;
             }
             buatBola() {
                 let hsl = new BolaObj();
-                this.bolaAr.push(hsl);
+                // this.bolaAr.push(hsl);
                 return hsl;
             }
         }

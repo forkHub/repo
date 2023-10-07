@@ -28,10 +28,10 @@ window.onload = () => {
     function gambarBola() {
         let ctx = Kontek();
         ctx.beginPath();
-        fb.bolaAr.forEach((b) => {
-            ctx.moveTo(b.x, b.y);
-            ctx.arc(b.x, b.y, b.r, 0, 2 * Math.PI);
-        });
+        // fb.bolaAr.forEach((b) => {
+        // 	ctx.moveTo(b.x, b.y);
+        // 	ctx.arc(b.x, b.y, b.r, 0, 2 * Math.PI);
+        // })
         ctx.moveTo(100, 100);
         ctx.arc(100, 100, b.r, 0, 2 * Math.PI);
         ctx.stroke();
