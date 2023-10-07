@@ -14,10 +14,18 @@ namespace ha.fb {
 	 * 
 	 */
 	export class BolaObj {
-		private _r: number = 10;
+		private _r: number = 4;
 		private _x: number = 0;
 		private _y: number = 0;
 		private _groupId: number = 0;
+		private _label = '';
+
+		public get label() {
+			return this._label;
+		}
+		public set label(value) {
+			this._label = value;
+		}
 
 		public get groupId(): number {
 			return this._groupId;
@@ -49,21 +57,21 @@ namespace ha.fb {
 	}
 
 	class Bola {
-		readonly bolaAr: BolaObj[] = [];
+		// readonly bolaAr: BolaObj[] = [];
 
 		constructor() {
 
 		}
 
-		update(): void {
-			for (let i: number = 0; i < this.bolaAr.length; i++) {
-				for (let j: number = i + 1; j < this.bolaAr.length; j++) {
-					let b1 = this.bolaAr[i];
-					let b2 = this.bolaAr[j];
-					this.geser(b1, b2);
-				}
-			}
-		}
+		// private update(): void {
+		// 	for (let i: number = 0; i < this.bolaAr.length; i++) {
+		// 		for (let j: number = i + 1; j < this.bolaAr.length; j++) {
+		// 			let b1 = this.bolaAr[i];
+		// 			let b2 = this.bolaAr[j];
+		// 			this.geser(b1, b2);
+		// 		}
+		// 	}
+		// }
 
 		/**
 		 * check apakah dua bola bersinggungan
@@ -72,7 +80,6 @@ namespace ha.fb {
 		 * @returns boolean 
 		 */
 		singgung(b1: BolaObj, b2: BolaObj): boolean {
-
 			let jrk: number = ha.geom.Transform.jarak(b1.x, b1.y, b2.x, b2.y);
 			let jrkMin: number = b1.r + b2.r;
 			// let jrkAbs: number = Math.abs(jrk - jrkMin);
@@ -91,7 +98,7 @@ namespace ha.fb {
 		 * @returns 
 		 */
 		geser(b1: BolaObj, b2: BolaObj): void {
-			if (b1.groupId == b2.groupId) return;
+			// if (b1.groupId == b2.groupId) return;
 			if (!this.singgung(b1, b2)) return;
 
 			// console.group('geser');
@@ -148,7 +155,7 @@ namespace ha.fb {
 		buatBola(): BolaObj {
 			let hsl: BolaObj = new BolaObj();
 
-			this.bolaAr.push(hsl);
+			// this.bolaAr.push(hsl);
 
 			return hsl;
 		}

@@ -3,7 +3,7 @@ window.onload = () => {
 	const Point = ha.geom.Point;
 	const bola = ha.fb.bola
 
-	let garis: ha.geom.IGaris = Garis.create(Point.create(0, 0), Point.create(100, 100));
+	let garis: ha.geom.IGaris = Garis.create(Point.buat(0, 0), Point.buat(100, 100));
 	let b1: ha.fb.BolaObj = bola.buatBola();
 	let b2: ha.fb.BolaObj = bola.buatBola();
 

@@ -7,9 +7,12 @@ declare namespace ha.fb {
     }
     class Bentuk {
         readonly list: BentukObj[];
-        buat(str?: string[]): BentukObj;
+        buat(str?: string[], id?: number): BentukObj;
+        private dekat;
         bola(bentuk: BentukObj, strAr: string[], id: number): void;
-        debug(bl: BentukObj, ctx: CanvasRenderingContext2D): void;
+        konst2(bentuk: BentukObj): void;
+        konst(bentuk: BentukObj): void;
+        debug(bl: BentukObj, ctx: CanvasRenderingContext2D, offx?: number, offy?: number): void;
         update(): void;
     }
     export const bentuk: Bentuk;
@@ -28,6 +31,9 @@ declare namespace ha.fb {
         private _x;
         private _y;
         private _groupId;
+        private _label;
+        get label(): string;
+        set label(value: string);
         get groupId(): number;
         set groupId(value: number);
         get y(): number;
@@ -40,7 +46,6 @@ declare namespace ha.fb {
     class Bola {
         readonly bolaAr: BolaObj[];
         constructor();
-        update(): void;
         /**
          * check apakah dua bola bersinggungan
          * @param b1
@@ -62,6 +67,13 @@ declare namespace ha.fb {
     export {};
 }
 declare namespace ha.fb {
+    class Fisik {
+        update(): void;
+    }
+    const fisik: Fisik;
+}
+declare namespace ha.fb {
+    export const JARAK_MIN = 0.001;
     class KonstrainObj {
         constructor(b1: BolaObj, b2: BolaObj);
         private _id;
@@ -88,6 +100,7 @@ declare namespace ha.fb {
          * @returns
          */
         getByBola(b: BolaObj): KonstrainObj;
+        checkAda(b1: BolaObj, b2: BolaObj): boolean;
         /**
          * menghitung ulang jarak konstrain
          */
@@ -104,7 +117,7 @@ declare namespace ha.fb {
          */
         updateObj(obj: KonstrainObj): void;
         update(): void;
-        debug(ctx: CanvasRenderingContext2D): void;
+        debug(ctx: CanvasRenderingContext2D, offx?: number, offy?: number): void;
         buat(b1: BolaObj, b2: BolaObj): KonstrainObj;
     }
     export const kt: Konstrain;

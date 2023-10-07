@@ -3,7 +3,10 @@ var ha;
     var geom;
     (function (geom) {
         class Point {
-            static create(x = 0, y = 0) {
+            static jarak(x, y) {
+                return Math.sqrt(x * x + y * y);
+            }
+            static buat(x = 0, y = 0) {
                 return {
                     x: x,
                     y: y
@@ -29,7 +32,7 @@ var ha;
                 pt.y = ps.y;
             }
             static clone(p) {
-                let h = Point.create(p.x, p.y);
+                let h = Point.buat(p.x, p.y);
                 return h;
             }
             static sama(p1, p2) {
@@ -43,7 +46,7 @@ var ha;
                 let p1;
                 p1 = p;
                 if (klon)
-                    p1 = Point.create(p.x, p.y);
+                    p1 = Point.buat(p.x, p.y);
                 geom.Transform.rotateRel(p1.x, p1.y, xc, yc, deg);
                 p1.x = geom.Transform.lastX;
                 p1.y = geom.Transform.lastY;
@@ -55,7 +58,7 @@ var ha;
                 let i;
                 let j;
                 let rasio;
-                let hasil = Point.create();
+                let hasil = Point.buat();
                 //jarak sekarang
                 jrkA = geom.Transform.jarak(p.x, p.y, xt, yt);
                 i = xt - p.x;
@@ -70,7 +73,7 @@ var ha;
             }
             //menghasilkan posisi pada sudut dan jarak tertentu
             static posPolar(jarak, sudut, xt, yt) {
-                let hasil = Point.create();
+                let hasil = Point.buat();
                 geom.Transform.posPolar(jarak, sudut);
                 hasil.x = geom.Transform.lastX + xt;
                 hasil.y = geom.Transform.lastY + yt;
@@ -115,10 +118,10 @@ var ha;
             static create(x1 = 0, y1 = 0, x2 = 0, y2 = 0) {
                 let r = {};
                 r.vs = [];
-                r.vs.push(geom.Point.create(x1, y1));
-                r.vs.push(geom.Point.create(x2, y1));
-                r.vs.push(geom.Point.create(x2, y2));
-                r.vs.push(geom.Point.create(x1, y2));
+                r.vs.push(geom.Point.buat(x1, y1));
+                r.vs.push(geom.Point.buat(x2, y1));
+                r.vs.push(geom.Point.buat(x2, y2));
+                r.vs.push(geom.Point.buat(x1, y2));
                 r.segs = [];
                 r.segs.push(geom.Garis.create(r.vs[0], r.vs[1]));
                 r.segs.push(geom.Garis.create(r.vs[1], r.vs[2]));
@@ -199,7 +202,7 @@ var ha;
             }
             static collideDot(r, x, y) {
                 let r2 = Rect.copy(r);
-                let p = geom.Point.create(x, y);
+                let p = geom.Point.buat(x, y);
                 let d = geom.Garis.sudut(r2.segs[0]);
                 let pRot = r2.vs[0];
                 if (!Rect.collideDotBound(r, p)) {
@@ -306,7 +309,7 @@ var ha;
              */
             kananPos(g, xt, yt) {
                 let gc = Garis.klon(g);
-                let p = geom.Point.create(xt, yt);
+                let p = geom.Point.buat(xt, yt);
                 let sdt = 0;
                 let hasil = false;
                 //garis putar ke atas
@@ -320,6 +323,22 @@ var ha;
                     hasil = true;
                 Garis.destroy(gc);
                 return hasil;
+            }
+            //jarak garis ke point
+            jarak(g, xt, yt) {
+                let gc = Garis.keAtas(g, true);
+                let pt = ha.geom.Point.buat(xt, yt);
+                //sudut horizontal
+                let sdtGaris = Garis.sudut(gc);
+                gc = Garis.putar(gc, -sdtGaris, gc.v1.x, gc.v1.y, true);
+                pt = geom.Point.putarPoros(pt, gc.v1.x, gc.v1.y, -sdtGaris, true);
+                if (pt.x < gc.v1.x) {
+                    return geom.Point.jarak(pt.x - gc.v1.x, pt.y - gc.v1.y);
+                }
+                else if (pt.x > gc.v2.x) {
+                    return geom.Point.jarak(pt.x - gc.v2.x, pt.y - gc.v2.y);
+                }
+                return Math.abs(pt.y - gc.v1.y);
             }
         }
         class Garis {
@@ -346,6 +365,8 @@ var ha;
             }
             /**
              * check apakah garis menghadap ke atas
+             * y2 > y1
+             * x2 > x1
              * @param g
              * @returns
              */
@@ -353,7 +374,7 @@ var ha;
                 return g.v2.y > g.v1.y;
             }
             static posIdx(g, idx = 1) {
-                let p = geom.Point.create();
+                let p = geom.Point.buat();
                 p.x = geom.G.vecI(g) * idx + g.v1.x;
                 p.y = geom.G.vecJ(g) * idx + g.v1.y;
                 return p;
@@ -372,6 +393,12 @@ var ha;
                 geom.Point.tukarPosisi(g1.v1, g1.v2);
                 return g1;
             }
+            /**
+             * memutar garis agar menghadap ke atas
+             * @param garis
+             * @param klon
+             * @returns
+             */
             static keAtas(garis, klon) {
                 if (this.hadapAtas(garis)) {
                     if (klon) {
@@ -404,8 +431,8 @@ var ha;
              * @param idx posisi (0-1)
              * @returns
              */
-            static getYAtIdx(seg, idx) {
-                return seg.v1.y + (idx * Garis.vecJ(seg));
+            static getYAtIdx(g, idx) {
+                return g.v1.y + (idx * Garis.vecJ(g));
             }
             /**
              * memutar garis
@@ -507,10 +534,12 @@ var ha;
             static vecJ(garis) {
                 return garis.v2.y - garis.v1.y;
             }
-            /** putar garis
+            /**
+             * putar garis jamak
+             * menggunakan garis 1 sebagai pusat
              *
              */
-            static putarGaris(gs, sdt, klon) {
+            static putarGarisJmk(gs, sdt, klon) {
                 let g = gs[0];
                 gs.forEach((item) => {
                     Garis.putar(item, sdt, g.v1.x, g.v1.y, klon);

@@ -1,6 +1,7 @@
 declare namespace ha.geom {
     class Point {
-        static create(x?: number, y?: number): IPoint2D;
+        static jarak(x: number, y: number): number;
+        static buat(x?: number, y?: number): IPoint2D;
         /**
          * menukar posisi antara dua point
          * @param p1
@@ -58,8 +59,19 @@ declare namespace ha.geom {
     export {};
 }
 declare namespace ha.geom {
-    class Garis {
-        private static readonly gp;
+    class GP {
+        /**
+         * apakah sebuah garis berada di sebelah kanan titik
+         * @param g
+         * @param xt
+         * @param yt
+         * @returns
+         */
+        kananPos(g: IGaris, xt: number, yt: number): boolean;
+        jarak(g: IGaris, xt: number, yt: number): number;
+    }
+    export class Garis {
+        static readonly gp: GP;
         /**
          * buat garis object
          * @param v1
@@ -74,6 +86,8 @@ declare namespace ha.geom {
         static destroy(g: IGaris): void;
         /**
          * check apakah garis menghadap ke atas
+         * y2 > y1
+         * x2 > x1
          * @param g
          * @returns
          */
@@ -86,6 +100,12 @@ declare namespace ha.geom {
          * @returns
          */
         static tukarPosisi(g: IGaris, klon: boolean): IGaris;
+        /**
+         * memutar garis agar menghadap ke atas
+         * @param garis
+         * @param klon
+         * @returns
+         */
         static keAtas(garis: IGaris, klon: boolean): IGaris;
         /**
          * menghasilkan posisi x dari vecI(), pada idx tertentu
@@ -102,7 +122,7 @@ declare namespace ha.geom {
          * @param idx posisi (0-1)
          * @returns
          */
-        static getYAtIdx(seg: IGaris, idx: number): number;
+        static getYAtIdx(g: IGaris, idx: number): number;
         /**
          * memutar garis
          * @param g garis
@@ -149,10 +169,12 @@ declare namespace ha.geom {
          */
         static vecI(garis: IGaris): number;
         static vecJ(garis: IGaris): number;
-        /** putar garis
+        /**
+         * putar garis jamak
+         * menggunakan garis 1 sebagai pusat
          *
          */
-        static putarGaris(gs: IGaris[], sdt: number, klon: boolean): void;
+        static putarGarisJmk(gs: IGaris[], sdt: number, klon: boolean): void;
         /** GARIS - POINT
          * ==============
         */
@@ -168,13 +190,14 @@ declare namespace ha.geom {
          * ==============
         */
         static boundCollide(g1: IGaris, g2: IGaris): boolean;
-        static _tabrakan(g1: IGaris, g2: IGaris): boolean;
+        private static _tabrakan;
         static tabrakan(g1: IGaris, g2: IGaris): boolean;
         static collide2(g: IGaris, seg2: IGaris): boolean;
         static melewatiGarisX(g: IGaris, y?: number): boolean;
         static melewatiGarisY(g: IGaris): boolean;
     }
-    const G: typeof Garis;
+    export const G: typeof Garis;
+    export {};
 }
 declare namespace ha.geom {
     /**

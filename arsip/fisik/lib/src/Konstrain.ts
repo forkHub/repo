@@ -1,4 +1,5 @@
 namespace ha.fb {
+	export const JARAK_MIN = .001;
 
 	class KonstrainObj {
 		constructor(b1: BolaObj, b2: BolaObj) {
@@ -56,6 +57,18 @@ namespace ha.fb {
 			})
 		}
 
+		checkAda(b1: BolaObj, b2: BolaObj): boolean {
+			let kt = this.getByBola(b1);
+			if (!kt) return false;
+
+			let kt2 = this.getByBola(b2);
+			if (!kt) return false;
+
+			if (kt != kt2) return false;
+
+			return true;
+		}
+
 		/**
 		 * menghitung ulang jarak konstrain
 		 */
@@ -81,10 +94,10 @@ namespace ha.fb {
 
 			// console.log('jrk bola: ', jrk2Bola, 'gap: ', gap, 'jrk k', obj.jrk);
 
-			if (Math.abs(gap) < .2) {
-				// console.groupEnd();
-				return;
-			}
+			// if (Math.abs(gap) < JARAK_MIN) {
+			// 	// console.groupEnd();
+			// 	return;
+			// }
 
 			gap /= 2;
 			sdt = ha.geom.Transform.sudut(b2.x - b1.x, b2.y - b1.y);
@@ -121,18 +134,19 @@ namespace ha.fb {
 			})
 		}
 
-		debug(ctx: CanvasRenderingContext2D): void {
+		debug(ctx: CanvasRenderingContext2D, offx = 0, offy = 0): void {
 			ctx.beginPath();
 
 			this.list.forEach((item) => {
-				ctx.moveTo(item.b1.x, item.b1.y);
-				ctx.lineTo(item.b2.x, item.b2.y);
+				ctx.moveTo(item.b1.x + offx, item.b1.y + offx);
+				ctx.lineTo(item.b2.x + offy, item.b2.y + offy);
 				let jrk: number = ha.geom.Transform.jarak(item.b1.x, item.b1.y, item.b2.x, item.b2.y);
 				jrk = Math.floor(jrk);
 
-				ctx.fillText(jrk + "",
-					item.b1.x + (item.b2.x - item.b1.x) / 2,
-					item.b1.y + (item.b2.y - item.b1.y) / 2);
+				// ctx.fillText(jrk + "",
+				// 	(item.b1.x + (item.b2.x - item.b1.x) / 2) + offx,
+				// 	(item.b1.y + (item.b2.y - item.b1.y) / 2) + offy
+				// );
 
 			});
 
