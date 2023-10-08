@@ -20,6 +20,7 @@ declare namespace ha.be {
         private static warnaBackup;
         /**
          * Handle saat window di resize
+         * @private
          */
         private static windowResize;
         /**
@@ -41,13 +42,6 @@ declare namespace ha.be {
          * @param transparan
          */
         static Bersih(merah?: number, hijau?: number, biru?: number, transparan?: number): void;
-        /**
-         * Mengeset warna untuk dipakai pada perintah menggambar setelahnya
-         * @param r (number) merah
-         * @param g (number) hijau
-         * @param b (number) biru
-         * @param a (number) alpha (0-100)
-         */
         static Warna(r?: number, g?: number, b?: number, a?: number): void;
         private static updateStyleWarna;
         /**
@@ -55,10 +49,6 @@ declare namespace ha.be {
          * @returns (number) warna merah
          */
         static Hijau(): number;
-        /**
-         * Mengembalikan warna merah dari perintah AmbilPixel terakhir
-         * @returns (number) warna merah
-         */
         static Merah(): number;
         /**
          * Mengembalikan warna biru dari perintah AmbilPixel terakhir
@@ -75,14 +65,6 @@ declare namespace ha.be {
          * @returns
          */
         static Kanvas(): HTMLCanvasElement;
-        /**
-         * Setup Blitz Edu
-         * @param panjang (angka) panjang dari kanvas
-         * @param lebar (angka) lebar dari kanvs
-         * @param canvas (HTMLCanvasElement) referensi ke kanvas
-         * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
-         * @returns
-         */
         static Grafis(panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, fullScreen?: boolean, input?: boolean): void;
         static Grafis2(p: number, l: number, ubahStyle: boolean): void;
         /**
@@ -555,7 +537,7 @@ declare namespace ha.be {
         static xHorIdx(seg: ISegment): number;
     }
 }
-declare namespace ha {
+declare namespace ha.be {
     class Transform {
         static readonly RAD2DEG: number;
         static readonly DEG2RAD: number;
@@ -633,10 +615,6 @@ declare namespace ha.be {
     }
 }
 /**
- * Global
- *
- */
-/**
  * Membersihkan layar dengan warna tertentu, default hitam
  * @param merah {angka} opsional, merah, default = 0
  * @param hijau {angka} opsional, hijau,, default = 0
@@ -644,9 +622,28 @@ declare namespace ha.be {
  * @param transparan {angka} opsional, transparan (0-100)
  */
 declare const Bersih: (merah?: number, hijau?: number, biru?: number, transparan?: number) => void;
-declare const Grafis: typeof ha.be.Be.Grafis;
-declare const Warna: typeof ha.be.Be.Warna;
-declare const Merah: typeof ha.be.Be.Merah;
+/**
+ * Setup Blitz Edu
+ * @param panjang (angka) panjang dari kanvas
+ * @param lebar (angka) lebar dari kanvs
+ * @param canvas (HTMLCanvasElement) referensi ke kanvas
+ * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
+ * @returns
+ */
+declare const Grafis: (panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, fullScreen?: boolean, input?: boolean) => void;
+/**
+ * Mengeset warna untuk dipakai pada perintah menggambar berikutnya
+ * @param r (number) merah
+ * @param g (number) hijau
+ * @param b (number) biru
+ * @param a (number) alpha (0-100)
+ */
+declare const Warna: (r?: number, g?: number, b?: number, a?: number) => void;
+/**
+ * Mengembalikan warna merah dari perintah AmbilPixel terakhir
+ * @returns (number) warna merah
+ */
+declare const Merah: () => number;
 declare const Hijau: typeof ha.be.Be.Hijau;
 declare const Biru: typeof ha.be.Be.Biru;
 declare const Transparan: typeof ha.be.Be.Transparan;

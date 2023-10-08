@@ -5,7 +5,7 @@ var ha;
         class BentukObj {
             bola = [];
             _id = 0;
-            set static(value) {
+            set statik(value) {
                 this.bola.forEach((item) => {
                     item.statik = value;
                 });
@@ -17,6 +17,7 @@ var ha;
                 this._id = value;
             }
         }
+        fb.BentukObj = BentukObj;
         class Bentuk {
             list = [];
             geser(b, x, y) {
@@ -68,6 +69,11 @@ var ha;
                     }
                 }
             }
+            /**
+             * membuat konstrain dari semua bola dalam sebuah bentuk
+             * dipanggil sekali
+             * @param bentuk
+             */
             konst2(bentuk) {
                 for (let i = 0; i < bentuk.bola.length; i++) {
                     for (let j = i + 1; j < bentuk.bola.length; j++) {
@@ -75,6 +81,10 @@ var ha;
                     }
                 }
             }
+            /**
+             * DEPECREATED
+             * @param bentuk
+             */
             konst(bentuk) {
                 bentuk.bola.forEach((item) => {
                     for (let j = 0; j < 3; j++) {

@@ -1,8 +1,8 @@
 declare namespace ha.fb {
-    class BentukObj {
+    export class BentukObj {
         readonly bola: BolaObj[];
         private _id;
-        set static(value: boolean);
+        set statik(value: boolean);
         get id(): number;
         set id(value: number);
     }
@@ -12,7 +12,16 @@ declare namespace ha.fb {
         buat(str?: string[], id?: number): BentukObj;
         private dekat;
         bola(bentuk: BentukObj, strAr: string[], id: number): void;
+        /**
+         * membuat konstrain dari semua bola dalam sebuah bentuk
+         * dipanggil sekali
+         * @param bentuk
+         */
         konst2(bentuk: BentukObj): void;
+        /**
+         * DEPECREATED
+         * @param bentuk
+         */
         konst(bentuk: BentukObj): void;
         debug(bl: BentukObj, ctx: CanvasRenderingContext2D, offx?: number, offy?: number): void;
         update(): void;

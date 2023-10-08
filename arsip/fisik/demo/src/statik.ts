@@ -21,7 +21,7 @@ window.onload = () => {
         "xxxxxxxx",
     ])
     bt.geser(b2, 100, 10);
-    b2.static = true;
+    b2.statik = true;
     b2.bola.forEach((item) => {
         console.log(item.statik);
     })

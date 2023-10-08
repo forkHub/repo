@@ -1,5 +1,5 @@
 namespace ha.fb {
-    class BentukObj {
+    export class BentukObj {
         readonly bola: BolaObj[] = [];
         private _id: number = 0;
 
@@ -79,6 +79,11 @@ namespace ha.fb {
             }
         }
 
+        /**
+         * membuat konstrain dari semua bola dalam sebuah bentuk
+         * dipanggil sekali
+         * @param bentuk 
+         */
         konst2(bentuk: BentukObj): void {
             for (let i = 0; i < bentuk.bola.length; i++) {
                 for (let j = i + 1; j < bentuk.bola.length; j++) {
@@ -87,6 +92,10 @@ namespace ha.fb {
             }
         }
 
+        /**
+         * DEPECREATED
+         * @param bentuk 
+         */
         konst(bentuk: BentukObj): void {
             bentuk.bola.forEach((item) => {
                 for (let j = 0; j < 3; j++) {

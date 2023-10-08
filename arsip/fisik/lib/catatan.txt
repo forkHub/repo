@@ -1,5 +1,4 @@
-collision statik
-gear
+gear (custome bentuk)
 konstrain dua benda
 callback saat singgung dan geser pada bola
 gear + chain

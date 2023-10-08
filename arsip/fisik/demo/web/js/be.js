@@ -28,6 +28,7 @@ var ha;
             };
             /**
              * Handle saat window di resize
+             * @private
              */
             static windowResize() {
                 // console.debug('window on resize');
@@ -122,13 +123,6 @@ var ha;
                 ctx.fillRect(0, 0, Be.canvasAktif.panjang, Be.canvasAktif.lebar);
                 Be.restoreWarna();
             }
-            /**
-             * Mengeset warna untuk dipakai pada perintah menggambar setelahnya
-             * @param r (number) merah
-             * @param g (number) hijau
-             * @param b (number) biru
-             * @param a (number) alpha (0-100)
-             */
             static Warna(r = 0, g = 0, b = 0, a = 100) {
                 let h = Be;
                 h.merah = r;
@@ -148,10 +142,6 @@ var ha;
             static Hijau() {
                 return Be.hijau;
             }
-            /**
-             * Mengembalikan warna merah dari perintah AmbilPixel terakhir
-             * @returns (number) warna merah
-             */
             static Merah() {
                 return Be.merah;
             }
@@ -176,14 +166,6 @@ var ha;
             static Kanvas() {
                 return Be.canvasAktif.canvas;
             }
-            /**
-             * Setup Blitz Edu
-             * @param panjang (angka) panjang dari kanvas
-             * @param lebar (angka) lebar dari kanvs
-             * @param canvas (HTMLCanvasElement) referensi ke kanvas
-             * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
-             * @returns
-             */
             static Grafis(panjang = 320, lebar = 240, canvas = null, fullScreen = true, input = true) {
                 //coba cari canvas
                 if (!canvas) {
@@ -1758,16 +1740,16 @@ var ha;
                 return h;
             }
             static sama(p1, p2) {
-                if (false == ha.Transform.equal(p1.x, p2.x))
+                if (false == be.Transform.equal(p1.x, p2.x))
                     return false;
-                if (false == ha.Transform.equal(p1.y, p2.y))
+                if (false == be.Transform.equal(p1.y, p2.y))
                     return false;
                 return true;
             }
             static putarPoros(p, xc = 0, yc = 0, deg = 0) {
-                ha.Transform.rotateRel(p.x, p.y, xc, yc, deg);
-                p.x = ha.Transform.lastX;
-                p.y = ha.Transform.lastY;
+                be.Transform.rotateRel(p.x, p.y, xc, yc, deg);
+                p.x = be.Transform.lastX;
+                p.y = be.Transform.lastY;
             }
             static posDist(p, xt, yt, jrk) {
                 let jrkA;
@@ -1776,7 +1758,7 @@ var ha;
                 let rasio;
                 let hasil = Point.create();
                 //jarak sekarang
-                jrkA = ha.Transform.jarak(p.x, p.y, xt, yt);
+                jrkA = be.Transform.jarak(p.x, p.y, xt, yt);
                 i = xt - p.x;
                 j = yt - p.y;
                 rasio = jrkA / jrk;
@@ -1788,8 +1770,8 @@ var ha;
             }
             static posPolar(jarak, sudut, xt, yt) {
                 let hasil = Point.create();
-                hasil.x = jarak * Math.cos(sudut * ha.Transform.DEG2RAD);
-                hasil.y = jarak * Math.sin(sudut * ha.Transform.DEG2RAD);
+                hasil.x = jarak * Math.cos(sudut * be.Transform.DEG2RAD);
+                hasil.y = jarak * Math.sin(sudut * be.Transform.DEG2RAD);
                 hasil.x += xt;
                 hasil.y += yt;
                 return hasil;
@@ -2083,138 +2065,141 @@ var ha;
 })(ha || (ha = {}));
 var ha;
 (function (ha) {
-    class Transform {
-        static RAD2DEG = 180.0 / Math.PI;
-        static DEG2RAD = Math.PI / 180.0;
-        static _lastX = 0;
-        static _lastY = 0;
-        static get lastX() {
-            return ha.Transform._lastX;
-        }
-        static get lastY() {
-            return ha.Transform._lastY;
-        }
-        static equal(n1, n2, toleransi = 1) {
-            if (Math.abs(n1 - n2) <= toleransi)
-                return true;
-            return false;
-        }
-        static quadDeg2(x, y, deg) {
-            if (x == 0) {
-                if (y == 0) {
-                    return deg;
-                }
-                else if (y > 0) {
-                    return deg;
-                }
-                else if (y < 0) {
-                    return 360 - Math.abs(deg);
-                }
+    var be;
+    (function (be) {
+        class Transform {
+            static RAD2DEG = 180.0 / Math.PI;
+            static DEG2RAD = Math.PI / 180.0;
+            static _lastX = 0;
+            static _lastY = 0;
+            static get lastX() {
+                return Transform._lastX;
             }
-            else if (x > 0) {
-                if (y == 0) {
-                    return deg;
+            static get lastY() {
+                return Transform._lastY;
+            }
+            static equal(n1, n2, toleransi = 1) {
+                if (Math.abs(n1 - n2) <= toleransi)
+                    return true;
+                return false;
+            }
+            static quadDeg2(x, y, deg) {
+                if (x == 0) {
+                    if (y == 0) {
+                        return deg;
+                    }
+                    else if (y > 0) {
+                        return deg;
+                    }
+                    else if (y < 0) {
+                        return 360 - Math.abs(deg);
+                    }
                 }
-                else if (y > 0) {
-                    return deg;
+                else if (x > 0) {
+                    if (y == 0) {
+                        return deg;
+                    }
+                    else if (y > 0) {
+                        return deg;
+                    }
+                    else if (y < 0) {
+                        return 360 - Math.abs(deg);
+                    }
                 }
-                else if (y < 0) {
-                    return 360 - Math.abs(deg);
+                else if (x < 0) {
+                    if (y == 0) {
+                        return 180;
+                    }
+                    else if (y > 0) {
+                        return 180 - Math.abs(deg);
+                    }
+                    else if (y < 0) {
+                        return 180 + Math.abs(deg);
+                    }
                 }
+                throw Error();
             }
-            else if (x < 0) {
-                if (y == 0) {
-                    return 180;
+            /**
+             * Menghitung sudut dari posisi relative ke posisi 0,0
+             * @param x posisi x
+             * @param y posisi y
+             * @returns sudut relative ke posisi 0,0
+             */
+            static sudut(x, y) {
+                let l;
+                let sin;
+                l = Math.sqrt(x * x + y * y);
+                if (l == 0) {
+                    l = .00001;
                 }
-                else if (y > 0) {
-                    return 180 - Math.abs(deg);
+                sin = y / l;
+                sin = Math.asin(sin);
+                sin *= Transform.RAD2DEG;
+                sin = Transform.quadDeg2(x, y, sin);
+                sin = Transform.normalizeDeg(sin);
+                return sin;
+            }
+            static normalizeDeg(deg) {
+                while (deg >= 360) {
+                    deg -= 360;
                 }
-                else if (y < 0) {
-                    return 180 + Math.abs(deg);
+                while (deg <= -360) {
+                    deg += 360;
                 }
+                if (deg < 0)
+                    deg = 360 + deg;
+                return deg;
             }
-            throw Error();
-        }
-        /**
-         * Menghitung sudut dari posisi relative ke posisi 0,0
-         * @param x posisi x
-         * @param y posisi y
-         * @returns sudut relative ke posisi 0,0
-         */
-        static sudut(x, y) {
-            let l;
-            let sin;
-            l = Math.sqrt(x * x + y * y);
-            if (l == 0) {
-                l = .00001;
-            }
-            sin = y / l;
-            sin = Math.asin(sin);
-            sin *= ha.Transform.RAD2DEG;
-            sin = ha.Transform.quadDeg2(x, y, sin);
-            sin = ha.Transform.normalizeDeg(sin);
-            return sin;
-        }
-        static normalizeDeg(deg) {
-            while (deg >= 360) {
-                deg -= 360;
-            }
-            while (deg <= -360) {
-                deg += 360;
-            }
-            if (deg < 0)
-                deg = 360 + deg;
-            return deg;
-        }
-        static degDistMax(angleS = 0, angleT) {
-            angleS = ha.Transform.normalizeDeg(angleS);
-            angleT = ha.Transform.normalizeDeg(angleT);
-            let deg = ha.Transform.degDistMin(angleS, angleT);
-            if (deg >= 0) {
-                return -(360 - deg);
-            }
-            else {
-                return (360 - Math.abs(deg));
-            }
-        }
-        static degDistMin(angleS = 0, angleT) {
-            angleS = ha.Transform.normalizeDeg(angleS);
-            angleT = ha.Transform.normalizeDeg(angleT);
-            if (angleT >= angleS) {
-                if (angleT - angleS > 180) {
-                    return -(angleS + 360 - angleT);
+            static degDistMax(angleS = 0, angleT) {
+                angleS = Transform.normalizeDeg(angleS);
+                angleT = Transform.normalizeDeg(angleT);
+                let deg = Transform.degDistMin(angleS, angleT);
+                if (deg >= 0) {
+                    return -(360 - deg);
                 }
                 else {
-                    return angleT - angleS;
+                    return (360 - Math.abs(deg));
                 }
             }
-            else {
-                if (angleS - angleT >= 180) {
-                    return 360 + angleT - angleS;
+            static degDistMin(angleS = 0, angleT) {
+                angleS = Transform.normalizeDeg(angleS);
+                angleT = Transform.normalizeDeg(angleT);
+                if (angleT >= angleS) {
+                    if (angleT - angleS > 180) {
+                        return -(angleS + 360 - angleT);
+                    }
+                    else {
+                        return angleT - angleS;
+                    }
                 }
                 else {
-                    return angleT - angleS;
+                    if (angleS - angleT >= 180) {
+                        return 360 + angleT - angleS;
+                    }
+                    else {
+                        return angleT - angleS;
+                    }
                 }
             }
+            static jarak(x, y, xt, yt) {
+                let pjx = xt - x;
+                let pjy = yt - y;
+                return Math.sqrt(pjx * pjx + pjy * pjy);
+            }
+            static rotateRel(x = 0, y = 0, xt = 0, yt = 0, deg = 10) {
+                let xr = x - xt;
+                let yr = y - yt;
+                let x1;
+                let y1;
+                deg *= Transform.DEG2RAD;
+                x1 = xr * Math.cos(deg) - yr * Math.sin(deg);
+                y1 = xr * Math.sin(deg) + yr * Math.cos(deg);
+                Transform._lastX = x1 + xt;
+                Transform._lastY = y1 + yt;
+            }
         }
-        static jarak(x, y, xt, yt) {
-            let pjx = xt - x;
-            let pjy = yt - y;
-            return Math.sqrt(pjx * pjx + pjy * pjy);
-        }
-        static rotateRel(x = 0, y = 0, xt = 0, yt = 0, deg = 10) {
-            let xr = x - xt;
-            let yr = y - yt;
-            let x1;
-            let y1;
-            deg *= ha.Transform.DEG2RAD;
-            x1 = xr * Math.cos(deg) - yr * Math.sin(deg);
-            y1 = xr * Math.sin(deg) + yr * Math.cos(deg);
-            ha.Transform._lastX = x1 + xt;
-            ha.Transform._lastY = y1 + yt;
-        }
-    }
-    ha.Transform = Transform;
+        be.Transform = Transform;
+    })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
 var ha;
 (function (ha) {
@@ -2393,10 +2378,6 @@ var ha;
 ///<reference path="../ha/Mat.ts"/>
 ///<reference path="./Route.ts"/>
 /**
- * Global
- *
- */
-/**
  * Membersihkan layar dengan warna tertentu, default hitam
  * @param merah {angka} opsional, merah, default = 0
  * @param hijau {angka} opsional, hijau,, default = 0
@@ -2406,9 +2387,34 @@ var ha;
 const Bersih = (merah, hijau, biru, transparan) => {
     ha.be.Be.Bersih(merah, hijau, biru, transparan);
 };
-const Grafis = ha.be.Be.Grafis;
-const Warna = ha.be.Be.Warna;
-const Merah = ha.be.Be.Merah;
+/**
+ * Setup Blitz Edu
+ * @param panjang (angka) panjang dari kanvas
+ * @param lebar (angka) lebar dari kanvs
+ * @param canvas (HTMLCanvasElement) referensi ke kanvas
+ * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
+ * @returns
+ */
+const Grafis = (panjang = 240, lebar = 320, canvas = null, fullScreen = true, input = true) => {
+    ha.be.Be.Grafis(panjang, lebar, canvas, fullScreen, input);
+};
+/**
+ * Mengeset warna untuk dipakai pada perintah menggambar berikutnya
+ * @param r (number) merah
+ * @param g (number) hijau
+ * @param b (number) biru
+ * @param a (number) alpha (0-100)
+ */
+const Warna = (r = 0, g = 0, b = 0, a = 100) => {
+    ha.be.Be.Warna(r, g, b, a);
+};
+/**
+ * Mengembalikan warna merah dari perintah AmbilPixel terakhir
+ * @returns (number) warna merah
+ */
+const Merah = () => {
+    return ha.be.Be.Merah();
+};
 const Hijau = ha.be.Be.Hijau;
 const Biru = ha.be.Be.Biru;
 const Transparan = ha.be.Be.Transparan;
