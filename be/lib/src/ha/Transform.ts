@@ -1,4 +1,4 @@
-namespace ha {
+namespace ha.be {
 
 	export class Transform {
 		static readonly RAD2DEG: number = 180.0 / Math.PI;
@@ -8,10 +8,10 @@ namespace ha {
 		private static _lastY: number = 0;
 
 		public static get lastX(): number {
-			return ha.Transform._lastX;
+			return Transform._lastX;
 		}
 		public static get lastY(): number {
-			return ha.Transform._lastY;
+			return Transform._lastY;
 		}
 
 		static equal(n1: number, n2: number, toleransi: number = 1): boolean {
@@ -74,9 +74,9 @@ namespace ha {
 
 			sin = y / l;
 			sin = Math.asin(sin);
-			sin *= ha.Transform.RAD2DEG;
-			sin = ha.Transform.quadDeg2(x, y, sin);
-			sin = ha.Transform.normalizeDeg(sin);
+			sin *= Transform.RAD2DEG;
+			sin = Transform.quadDeg2(x, y, sin);
+			sin = Transform.normalizeDeg(sin);
 
 			return sin;
 		}
@@ -97,10 +97,10 @@ namespace ha {
 		}
 
 		static degDistMax(angleS: number = 0, angleT: number): number {
-			angleS = ha.Transform.normalizeDeg(angleS);
-			angleT = ha.Transform.normalizeDeg(angleT);
+			angleS = Transform.normalizeDeg(angleS);
+			angleT = Transform.normalizeDeg(angleT);
 
-			let deg: number = ha.Transform.degDistMin(angleS, angleT);
+			let deg: number = Transform.degDistMin(angleS, angleT);
 			if (deg >= 0) {
 				return -(360 - deg);
 			}
@@ -110,8 +110,8 @@ namespace ha {
 		}
 
 		static degDistMin(angleS: number = 0, angleT: number): number {
-			angleS = ha.Transform.normalizeDeg(angleS);
-			angleT = ha.Transform.normalizeDeg(angleT);
+			angleS = Transform.normalizeDeg(angleS);
+			angleT = Transform.normalizeDeg(angleT);
 
 			if (angleT >= angleS) {
 				if (angleT - angleS > 180) {
@@ -143,13 +143,13 @@ namespace ha {
 			let x1: number;
 			let y1: number;
 
-			deg *= ha.Transform.DEG2RAD;
+			deg *= Transform.DEG2RAD;
 
 			x1 = xr * Math.cos(deg) - yr * Math.sin(deg);
 			y1 = xr * Math.sin(deg) + yr * Math.cos(deg);
 
-			ha.Transform._lastX = x1 + xt;
-			ha.Transform._lastY = y1 + yt;
+			Transform._lastX = x1 + xt;
+			Transform._lastY = y1 + yt;
 		}
 	}
 }

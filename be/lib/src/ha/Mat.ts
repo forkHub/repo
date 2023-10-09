@@ -9,7 +9,7 @@ namespace ha.be {
          * @returns sudut relative ke posisi 0,0
          */
         static Sudut(x: number, y: number): number {
-            return ha.Transform.sudut(x, y);
+            return Transform.sudut(x, y);
         }
 
     }

@@ -76,7 +76,7 @@ namespace ha.be {
 			let j: number = line.v2.y - line.v1.y;
 			let i: number = line.v2.x - line.v1.x;
 
-			return ha.Transform.sudut(i, j);
+			return Transform.sudut(i, j);
 		}
 
 		static getXAtIdx(seg: ISegment, idx: number): number {

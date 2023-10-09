@@ -29,7 +29,7 @@ namespace ha.be {
 				lastSprite.dragStartY = pos.y - lastSprite.y;
 				lastSprite.inputId = id;
 
-				lastSprite.sudutTekanAwal = ha.Transform.sudut(pos.x - lastSprite.x, pos.y - lastSprite.y);
+				lastSprite.sudutTekanAwal = Transform.sudut(pos.x - lastSprite.x, pos.y - lastSprite.y);
 				lastSprite.sudutAwal = lastSprite.buffer.rotasi;
 
 				return;
@@ -49,7 +49,7 @@ namespace ha.be {
 					}
 					else if (item.tipeDrag == TypeDrag.rotasi) {
 						//TODO: peruban sudut
-						let sudut2: number = ha.Transform.sudut(pos.x - item.x, pos.y - item.y);
+						let sudut2: number = Transform.sudut(pos.x - item.x, pos.y - item.y);
 						let perbedaan: number = sudut2 - item.sudutTekanAwal;
 						item.buffer.rotasi = item.sudutAwal + perbedaan;
 
