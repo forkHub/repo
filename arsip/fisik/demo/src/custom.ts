@@ -33,6 +33,8 @@ window.onload = () => {
 
         for (let i = 0; i < 10; i++) {
             kt.update();
+
+            //TODO: masukin ke lib
             b1.bola.forEach((item) => {
                 b2.bola.forEach((item2) => {
                     ha.fb.bola.geser(item, item2);
@@ -48,6 +50,7 @@ window.onload = () => {
     }
     update();
 
+    //TODO: masukin ke lib
     function buatGear(rad: number = 32, jmlBola: number = 8): ha.fb.BentukObj {
         let b1 = bt.buat([]);
         let b = bl.buatBola();
@@ -66,6 +69,7 @@ window.onload = () => {
         return b1;
     }
 
+    //TODO: masukin ke lib
     function putar(b: ha.fb.BentukObj, sudut: number = 0, px: number = 0, py: number = 0) {
         b.bola.forEach((item) => {
             let sudutBola = ha.geom.Transform.sudut(item.x - px, item.y - py);
