@@ -1,8 +1,8 @@
 window.onload = () => {
     const Garis = ha.geom.Garis;
     const Point = ha.geom.Point;
-    let garis = Garis.create(Point.create(0, 0), Point.create(100, 100));
-    let garis2 = Garis.create(Point.create(0, 0), Point.create(100, 100));
+    let garis = Garis.create(Point.buat(0, 0), Point.buat(100, 100));
+    let garis2 = Garis.create(Point.buat(0, 0), Point.buat(100, 100));
     Grafis(300, 300);
     let p1 = MuatAnimasi("https://forkhub.github.io/gbr/bola.png", 16, 16, true);
     Posisi(p1, 10, 10);

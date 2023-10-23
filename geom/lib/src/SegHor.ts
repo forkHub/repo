@@ -1,14 +1,24 @@
 namespace ha.geom {
 	/**
-	 * menghitung garis relatif terhadap garis horizontal / aksis x
+	 * segment vs garis x
 	 */
 	class SegHor {
+
+		checkTabrakanBound(g: IGaris) {
+			// b = Garis.boundCollide();
+			g; //TODO:
+		}
+
+		checkTabrakan(g: IGaris) {
+			g; //TODO:
+		}
 
 	}
 	export const segH: SegHor = new SegHor();
 
 	/**
-	 * menghitung garis relatif terhadap titik 0,0
+	 * menghitung garis relatif terhadap titik (0,0)
+	 * segement vs titik (0,0)
 	 */
 	class Seg0 {
 

@@ -1,2 +1,2 @@
-tambahin fungsi utilitinya
-import pakai url buat demonya
+support polygon segitiga
+support polygon => banyak segitiga/grouping 

@@ -9,6 +9,9 @@ namespace ha.geom {
 		}
 	}
 
+	/**
+	 * Point to Polygon
+	 */
 	class PlP {
 
 	}

@@ -1,11 +1,14 @@
+/**
+ * Garis interaktif
+ */
 class Garis2 {
 	garis: ha.geom.IGaris;
 	p1: ISprite;
 	p2: ISprite;
-	fr: number = 0;
+	fr: number = 0; //frame gambar
 
 	constructor(fr: number = 0) {
-		this.garis = ha.geom.Garis.create(ha.geom.Point.create(0, 0), ha.geom.Point.create(100, 100));
+		this.garis = ha.geom.Garis.create(ha.geom.Point.buat(0, 0), ha.geom.Point.buat(100, 100));
 		this.fr = fr;
 
 		this.p1 = MuatAnimasi("https://forkhub.github.io/gbr/bola.png", 16, 16, true);
@@ -17,6 +20,9 @@ class Garis2 {
 		Handle(this.p2, 8, 8);
 	}
 
+	/**
+	 * update posisi garis dari posisi sprite
+	 */
 	g2p(): void {
 		this.garis.v1.x = PosisiX(this.p1);
 		this.garis.v1.y = PosisiY(this.p1);
@@ -25,6 +31,9 @@ class Garis2 {
 		this.garis.v2.y = PosisiY(this.p2);
 	}
 
+	/**
+	 * update posisi sprite dari posisi garis
+	 */
 	p2g(): void {
 		Posisi(this.p1, this.garis.v1.x, this.garis.v1.y);
 		Posisi(this.p2, this.garis.v2.x, this.garis.v2.y);

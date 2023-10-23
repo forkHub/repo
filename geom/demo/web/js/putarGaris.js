@@ -16,7 +16,7 @@ window.onload = () => {
     window.onkeyup = (e) => {
         console.log(e.key);
         if (e.key == 'p') {
-            Garis.putarGaris([g.garis, g2.garis], -Garis.sudut(g.garis), false);
+            Garis.putarGarisJmk([g.garis, g2.garis], -Garis.sudut(g.garis), false);
             g.p2g();
             g2.p2g();
         }

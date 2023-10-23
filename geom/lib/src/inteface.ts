@@ -8,6 +8,11 @@ namespace ha.geom {
 		y: number
 	}
 
+	export interface IBound {
+		v1: IPoint2D;
+		v2: IPoint2D;
+	}
+
 	export interface IRect {
 		vs?: IV2D[],
 		segs?: IGaris[]
@@ -15,7 +20,8 @@ namespace ha.geom {
 
 	export interface IGaris {
 		v1: IV2D,
-		v2: IV2D
+		v2: IV2D,
+		b: BoundObj
 	}
 
 	export interface IGambar {

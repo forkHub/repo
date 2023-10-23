@@ -1,5 +1,6 @@
 namespace ha.geom {
 	class GP {
+
 		/**
 		 * apakah sebuah garis berada di sebelah kanan titik
 		 * @param g 
@@ -9,7 +10,7 @@ namespace ha.geom {
 		 */
 		kananPos(g: IGaris, xt: number, yt: number): boolean {
 			let gc: IGaris = Garis.klon(g);
-			let p: IPoint2D = Point.create(xt, yt);
+			let p: IPoint2D = Point.buat(xt, yt);
 			let sdt: number = 0;
 			let hasil: boolean = false;
 
@@ -29,12 +30,32 @@ namespace ha.geom {
 			return hasil;
 		}
 
-		//jarak ke point
+		//jarak garis ke point
+		jarak(g: IGaris, xt: number, yt: number): number {
+
+			let gc = Garis.keAtas(g, true);
+			let pt = ha.geom.Point.buat(xt, yt);
+
+			//sudut horizontal
+			let sdtGaris = Garis.sudut(gc);
+			gc = Garis.putar(gc, -sdtGaris, gc.v1.x, gc.v1.y, true);
+			pt = Point.putarPoros(pt, gc.v1.x, gc.v1.y, -sdtGaris, true);
+
+
+			if (pt.x < gc.v1.x) {
+				return Point.jarak(pt.x - gc.v1.x, pt.y - gc.v1.y);
+			}
+			else if (pt.x > gc.v2.x) {
+				return Point.jarak(pt.x - gc.v2.x, pt.y - gc.v2.y);
+			}
+
+			return Math.abs(pt.y - gc.v1.y);
+		}
 
 	}
 
 	export class Garis {
-		private static readonly gp: GP = new GP();
+		static readonly gp: GP = new GP();
 
 		/**
 		 * buat garis object
@@ -45,7 +66,8 @@ namespace ha.geom {
 		static create(v1: IPoint2D = { x: 0, y: 0 }, v2: IPoint2D = { x: 0, y: 0 }): IGaris {
 			return {
 				v1: v1,
-				v2: v2
+				v2: v2,
+				b: new BoundObj()
 			}
 		}
 
@@ -60,6 +82,8 @@ namespace ha.geom {
 
 		/**
 		 * check apakah garis menghadap ke atas
+		 * y2 > y1
+		 * x2 > x1
 		 * @param g 
 		 * @returns 
 		 */
@@ -68,7 +92,7 @@ namespace ha.geom {
 		}
 
 		static posIdx(g: IGaris, idx: number = 1): IPoint2D {
-			let p: IPoint2D = Point.create();
+			let p: IPoint2D = Point.buat();
 			p.x = G.vecI(g) * idx + g.v1.x;
 			p.y = G.vecJ(g) * idx + g.v1.y;
 
@@ -91,6 +115,12 @@ namespace ha.geom {
 			return g1;
 		}
 
+		/**
+		 * memutar garis agar menghadap ke atas
+		 * @param garis 
+		 * @param klon 
+		 * @returns 
+		 */
 		static keAtas(garis: IGaris, klon: boolean): IGaris {
 			if (this.hadapAtas(garis)) {
 				if (klon) {
@@ -125,8 +155,8 @@ namespace ha.geom {
 		 * @param idx posisi (0-1)
 		 * @returns 
 		 */
-		static getYAtIdx(seg: IGaris, idx: number): number {
-			return seg.v1.y + (idx * Garis.vecJ(seg));
+		static getYAtIdx(g: IGaris, idx: number): number {
+			return g.v1.y + (idx * Garis.vecJ(g));
 		}
 
 		/**
@@ -219,7 +249,8 @@ namespace ha.geom {
 		static klon(garis: IGaris): IGaris {
 			return {
 				v1: Point.clone(garis.v1),
-				v2: Point.clone(garis.v2)
+				v2: Point.clone(garis.v2),
+				b: Bound.clone(garis.b)
 			}
 		}
 
@@ -248,10 +279,12 @@ namespace ha.geom {
 			return garis.v2.y - garis.v1.y;
 		}
 
-		/** putar garis
+		/** 
+		 * putar garis jamak
+		 * menggunakan garis 1 sebagai pusat
 		 * 
 		 */
-		static putarGaris(gs: IGaris[], sdt: number, klon: boolean): void {
+		static putarGarisJmk(gs: IGaris[], sdt: number, klon: boolean): void {
 			let g: IGaris = gs[0];
 
 			gs.forEach((item: IGaris) => {
@@ -287,7 +320,19 @@ namespace ha.geom {
 			return true;
 		}
 
-		static _tabrakan(g1: IGaris, g2: IGaris): boolean {
+		/**
+		 * update bound
+		 * @param g 
+		 * @returns 
+		 */
+		static updateBound(g: IGaris): void {
+			g.b.v1.x = Math.min(g.v1.x, g.v2.x);
+			g.b.v1.y = Math.min(g.v1.y, g.v2.y);
+			g.b.v2.x = Math.max(g.v1.x, g.v2.x);
+			g.b.v2.y = Math.max(g.v1.y, g.v2.y);
+		}
+
+		private static _tabrakan(g1: IGaris, g2: IGaris): boolean {
 			let g1c: IGaris;
 			let g2c: IGaris;
 			let sudut: number;

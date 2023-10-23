@@ -4,10 +4,10 @@ namespace ha.geom {
 		static create(x1: number = 0, y1: number = 0, x2: number = 0, y2: number = 0): IRect {
 			let r: IRect = {}
 			r.vs = [];
-			r.vs.push(Point.create(x1, y1));
-			r.vs.push(Point.create(x2, y1));
-			r.vs.push(Point.create(x2, y2));
-			r.vs.push(Point.create(x1, y2));
+			r.vs.push(Point.buat(x1, y1));
+			r.vs.push(Point.buat(x2, y1));
+			r.vs.push(Point.buat(x2, y2));
+			r.vs.push(Point.buat(x1, y2));
 
 			r.segs = [];
 			r.segs.push(Garis.create(r.vs[0], r.vs[1]));
@@ -110,7 +110,7 @@ namespace ha.geom {
 
 		static collideDot(r: IRect, x: number, y: number): boolean {
 			let r2: IRect = Rect.copy(r);
-			let p: IPoint2D = Point.create(x, y);
+			let p: IPoint2D = Point.buat(x, y);
 			let d: number = Garis.sudut(r2.segs[0]);
 			let pRot: IPoint2D = r2.vs[0];
 

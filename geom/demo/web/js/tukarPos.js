@@ -3,7 +3,7 @@ window.onload = () => {
     const Point = ha.geom.Point;
     let kanvas = document.querySelector('canvas');
     let canvasCont = document.querySelector('.canvas-wrap');
-    let garis = Garis.create(Point.create(0, 0), Point.create(100, 100));
+    let garis = Garis.create(Point.buat(0, 0), Point.buat(100, 100));
     document.querySelector('button').onclick = () => {
         // console.log('atas ' + Garis.hadapAtas(garis));
         // console.log(garis);

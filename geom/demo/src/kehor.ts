@@ -5,7 +5,7 @@ window.onload = () => {
 	let kanvas: HTMLCanvasElement = document.querySelector('canvas');
 	let canvasCont: HTMLDivElement = document.querySelector('.canvas-wrap');
 
-	let garis: ha.geom.IGaris = Garis.create(Point.create(0, 0), Point.create(100, 100));
+	let garis: ha.geom.IGaris = Garis.create(Point.buat(0, 0), Point.buat(100, 100));
 
 	document.querySelector('button').onclick = () => {
 		garis = Garis.putarKeHor(garis, false);

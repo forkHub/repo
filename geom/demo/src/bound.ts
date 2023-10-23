@@ -1,8 +1,11 @@
+/**
+ * gambar bound dari garis manual
+ */
 window.onload = () => {
 	const Garis = ha.geom.Garis;
 	const Point = ha.geom.Point;
 
-	let garis: ha.geom.IGaris = Garis.create(Point.create(0, 0), Point.create(100, 100));
+	let garis: ha.geom.IGaris = Garis.create(Point.buat(0, 0), Point.buat(100, 100));
 
 	Grafis(300, 300);
 	let p1: ISprite = MuatAnimasi("https://forkhub.github.io/gbr/bola.png", 16, 16, true);

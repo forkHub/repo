@@ -1,7 +1,11 @@
 namespace ha.geom {
 	export class Point {
 
-		static create(x: number = 0, y: number = 0): IPoint2D {
+		static jarak(x: number, y: number): number {
+			return Math.sqrt(x * x + y * y);
+		}
+
+		static buat(x: number = 0, y: number = 0): IPoint2D {
 			return {
 				x: x,
 				y: y
@@ -11,7 +15,7 @@ namespace ha.geom {
 		/**
 		 * menukar posisi antara dua point
 		 * @param p1 
-		 * @param p2 
+		 * @param p2  
 		 */
 		static tukarPosisi(p1: IPoint2D, p2: IPoint2D) {
 			let t: IPoint2D = Point.clone(p1);
@@ -33,7 +37,7 @@ namespace ha.geom {
 		}
 
 		static clone(p: IPoint2D): IPoint2D {
-			let h: IPoint2D = Point.create(p.x, p.y);
+			let h: IPoint2D = Point.buat(p.x, p.y);
 			return h;
 		}
 
@@ -47,7 +51,7 @@ namespace ha.geom {
 			let p1: IPoint2D;
 
 			p1 = p;
-			if (klon) p1 = Point.create(p.x, p.y);
+			if (klon) p1 = Point.buat(p.x, p.y);
 
 			Transform.rotateRel(p1.x, p1.y, xc, yc, deg);
 
@@ -63,7 +67,7 @@ namespace ha.geom {
 			let i: number;
 			let j: number;
 			let rasio: number;
-			let hasil: IPoint2D = Point.create();
+			let hasil: IPoint2D = Point.buat();
 
 			//jarak sekarang
 			jrkA = Transform.jarak(p.x, p.y, xt, yt);
@@ -84,7 +88,7 @@ namespace ha.geom {
 
 		//menghasilkan posisi pada sudut dan jarak tertentu
 		static posPolar(jarak: number, sudut: number, xt: number, yt: number): IPoint2D {
-			let hasil: IPoint2D = Point.create();
+			let hasil: IPoint2D = Point.buat();
 
 			Transform.posPolar(jarak, sudut);
 

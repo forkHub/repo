@@ -3,7 +3,10 @@ var ha;
     var geom;
     (function (geom) {
         class Point {
-            static create(x = 0, y = 0) {
+            static jarak(x, y) {
+                return Math.sqrt(x * x + y * y);
+            }
+            static buat(x = 0, y = 0) {
                 return {
                     x: x,
                     y: y
@@ -29,13 +32,13 @@ var ha;
                 pt.y = ps.y;
             }
             static clone(p) {
-                let h = Point.create(p.x, p.y);
+                let h = Point.buat(p.x, p.y);
                 return h;
             }
             static sama(p1, p2) {
-                if (false == geom.Transform.equal(p1.x, p2.x))
+                if (false == geom.Transform.sama(p1.x, p2.x))
                     return false;
-                if (false == geom.Transform.equal(p1.y, p2.y))
+                if (false == geom.Transform.sama(p1.y, p2.y))
                     return false;
                 return true;
             }
@@ -43,7 +46,7 @@ var ha;
                 let p1;
                 p1 = p;
                 if (klon)
-                    p1 = Point.create(p.x, p.y);
+                    p1 = Point.buat(p.x, p.y);
                 geom.Transform.rotateRel(p1.x, p1.y, xc, yc, deg);
                 p1.x = geom.Transform.lastX;
                 p1.y = geom.Transform.lastY;
@@ -55,7 +58,7 @@ var ha;
                 let i;
                 let j;
                 let rasio;
-                let hasil = Point.create();
+                let hasil = Point.buat();
                 //jarak sekarang
                 jrkA = geom.Transform.jarak(p.x, p.y, xt, yt);
                 i = xt - p.x;
@@ -63,17 +66,17 @@ var ha;
                 rasio = jrkA / jrk;
                 hasil.x = i * rasio;
                 hasil.y = j * rasio;
+                //hasi global
                 hasil.x = xt - hasil.x;
                 hasil.y = yt - hasil.y;
                 return hasil;
             }
             //menghasilkan posisi pada sudut dan jarak tertentu
             static posPolar(jarak, sudut, xt, yt) {
-                let hasil = Point.create();
-                hasil.x = jarak * Math.cos(sudut * geom.Transform.DEG2RAD);
-                hasil.y = jarak * Math.sin(sudut * geom.Transform.DEG2RAD);
-                hasil.x += xt;
-                hasil.y += yt;
+                let hasil = Point.buat();
+                geom.Transform.posPolar(jarak, sudut);
+                hasil.x = geom.Transform.lastX + xt;
+                hasil.y = geom.Transform.lastY + yt;
                 return hasil;
             }
         }
@@ -84,14 +87,44 @@ var ha;
 (function (ha) {
     var geom;
     (function (geom) {
+        class PolyObj {
+            vs = [];
+            constructor(vs) {
+                vs.forEach((item) => {
+                    this.vs.push(item);
+                });
+            }
+        }
+        geom.PolyObj = PolyObj;
+        /**
+         * Point to Polygon
+         */
+        class PlP {
+        }
+        class Poly {
+            static pp = new PlP();
+            static buat(p) {
+                this.pp;
+                return new PolyObj(p);
+            }
+        }
+        geom.Poly = Poly;
+        const Pl = Poly;
+        Pl;
+    })(geom = ha.geom || (ha.geom = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var geom;
+    (function (geom) {
         class Rect {
             static create(x1 = 0, y1 = 0, x2 = 0, y2 = 0) {
                 let r = {};
                 r.vs = [];
-                r.vs.push(geom.Point.create(x1, y1));
-                r.vs.push(geom.Point.create(x2, y1));
-                r.vs.push(geom.Point.create(x2, y2));
-                r.vs.push(geom.Point.create(x1, y2));
+                r.vs.push(geom.Point.buat(x1, y1));
+                r.vs.push(geom.Point.buat(x2, y1));
+                r.vs.push(geom.Point.buat(x2, y2));
+                r.vs.push(geom.Point.buat(x1, y2));
                 r.segs = [];
                 r.segs.push(geom.Garis.create(r.vs[0], r.vs[1]));
                 r.segs.push(geom.Garis.create(r.vs[1], r.vs[2]));
@@ -172,7 +205,7 @@ var ha;
             }
             static collideDot(r, x, y) {
                 let r2 = Rect.copy(r);
-                let p = geom.Point.create(x, y);
+                let p = geom.Point.buat(x, y);
                 let d = geom.Garis.sudut(r2.segs[0]);
                 let pRot = r2.vs[0];
                 if (!Rect.collideDotBound(r, p)) {
@@ -251,25 +284,112 @@ var ha;
 (function (ha) {
     var geom;
     (function (geom) {
+        /**
+         * segment vs garis x
+         */
+        class SegHor {
+            checkTabrakanBound(g) {
+                // b = Garis.boundCollide();
+                g; //TODO:
+            }
+            checkTabrakan(g) {
+                g; //TODO:
+            }
+        }
+        geom.segH = new SegHor();
+        /**
+         * menghitung garis relatif terhadap titik (0,0)
+         * segement vs titik (0,0)
+         */
+        class Seg0 {
+        }
+        geom.seg0 = new Seg0();
+    })(geom = ha.geom || (ha.geom = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var geom;
+    (function (geom) {
+        class GP {
+            /**
+             * apakah sebuah garis berada di sebelah kanan titik
+             * @param g
+             * @param xt
+             * @param yt
+             * @returns
+             */
+            kananPos(g, xt, yt) {
+                let gc = Garis.klon(g);
+                let p = geom.Point.buat(xt, yt);
+                let sdt = 0;
+                let hasil = false;
+                //garis putar ke atas
+                gc = Garis.keAtas(gc, false);
+                //sudut untuk mutar ke hor
+                sdt = Garis.sudut(gc);
+                //putar ke hor
+                gc = Garis.putar(gc, -sdt, gc.v1.x, gc.v1.y, false);
+                geom.Point.putarPoros(p, gc.v1.x, gc.v1.y, 0, false);
+                if (p.y > gc.v1.y)
+                    hasil = true;
+                Garis.destroy(gc);
+                return hasil;
+            }
+            //jarak garis ke point
+            jarak(g, xt, yt) {
+                let gc = Garis.keAtas(g, true);
+                let pt = ha.geom.Point.buat(xt, yt);
+                //sudut horizontal
+                let sdtGaris = Garis.sudut(gc);
+                gc = Garis.putar(gc, -sdtGaris, gc.v1.x, gc.v1.y, true);
+                pt = geom.Point.putarPoros(pt, gc.v1.x, gc.v1.y, -sdtGaris, true);
+                if (pt.x < gc.v1.x) {
+                    return geom.Point.jarak(pt.x - gc.v1.x, pt.y - gc.v1.y);
+                }
+                else if (pt.x > gc.v2.x) {
+                    return geom.Point.jarak(pt.x - gc.v2.x, pt.y - gc.v2.y);
+                }
+                return Math.abs(pt.y - gc.v1.y);
+            }
+        }
         class Garis {
+            static gp = new GP();
+            /**
+             * buat garis object
+             * @param v1
+             * @param v2
+             * @returns
+             */
             static create(v1 = { x: 0, y: 0 }, v2 = { x: 0, y: 0 }) {
                 return {
                     v1: v1,
-                    v2: v2
+                    v2: v2,
+                    b: new geom.BoundObj()
                 };
             }
-            static destroy(g1) {
-                g1.v1 = null;
-                g1.v2 = null;
+            /**
+             * hapus garis dari memory
+             * @param g
+             */
+            static destroy(g) {
+                g.v1 = null;
+                g.v2 = null;
             }
+            /**
+             * check apakah garis menghadap ke atas
+             * y2 > y1
+             * x2 > x1
+             * @param g
+             * @returns
+             */
             static hadapAtas(g) {
                 return g.v2.y > g.v1.y;
-                // if (Garis.maxY(garis) > Garis.minY(garis)) {
-                // 	return true;
-                // 	// debugger;
-                // }
-                // // debugger;
-                // return false;
+            }
+            static posIdx(g, idx = 1) {
+                let p = geom.Point.buat();
+                p.x = geom.G.vecI(g) * idx + g.v1.x;
+                p.y = geom.G.vecJ(g) * idx + g.v1.y;
+                return p;
             }
             /**
              * tukar posisi point
@@ -285,17 +405,12 @@ var ha;
                 geom.Point.tukarPosisi(g1.v1, g1.v2);
                 return g1;
             }
-            static kananPos(g, xt, yt) {
-                let gc = Garis.klon(g);
-                let p = geom.Point.create(xt, yt);
-                let sdt = 0;
-                gc = Garis.keAtas(gc, false);
-                sdt = Garis.sudut(gc);
-                gc = Garis.putar(gc, -sdt, gc.v1.x, gc.v1.y, false);
-                geom.Point.putarPoros(p, gc.v1.x, gc.v1.y, 0, false);
-                p;
-                return false;
-            }
+            /**
+             * memutar garis agar menghadap ke atas
+             * @param garis
+             * @param klon
+             * @returns
+             */
             static keAtas(garis, klon) {
                 if (this.hadapAtas(garis)) {
                     if (klon) {
@@ -310,126 +425,6 @@ var ha;
                 if (klon)
                     gc = Garis.klon(garis);
                 return Garis.tukarPosisi(gc, klon);
-            }
-            // static putarKeX(garis: IGaris, klon: boolean): IGaris {
-            // 	let gc: IGaris;
-            // 	let sudut: number;
-            // 	gc = garis;
-            // 	if (klon) gc = Garis.klon(gc);
-            // 	gc = Garis.keAtas(gc, false);
-            // 	sudut = Garis.sudut(gc);
-            // 	Garis.putar(gc, -sudut, gc.v1.x, gc.v1.y, false);
-            // 	return gc;
-            // }
-            static boundCollide(seg1, seg2) {
-                if (Garis.maxX(seg1) < Garis.minX(seg2))
-                    return false;
-                if (Garis.minX(seg1) > Garis.maxX(seg2))
-                    return false;
-                if (Garis.maxY(seg1) < Garis.minY(seg2))
-                    return false;
-                if (Garis.minY(seg1) > Garis.maxY(seg2))
-                    return false;
-                return true;
-            }
-            static _tabrakan(g1, g2) {
-                let g1c;
-                let g2c;
-                let sudut;
-                let x;
-                let y;
-                g1c = Garis.klon(g1);
-                g2c = Garis.klon(g2);
-                Garis.keAtas(g1c, false);
-                sudut = Garis.sudut(g1c);
-                x = g1c.v1.x;
-                y = g1c.v1.y;
-                Garis.putar(g2c, -sudut, x, y, false);
-                Garis.putar(g1c, -sudut, x, y, false);
-                if (!Garis.boundCollide(g1c, g2c))
-                    return false;
-                return true;
-            }
-            static tabrakan(g1, g2) {
-                if (Garis.boundCollide(g1, g2) == false) {
-                    return false;
-                }
-                if (!Garis._tabrakan(g1, g2))
-                    return false;
-                if (!Garis._tabrakan(g2, g1))
-                    return false;
-                return true;
-            }
-            static collide2(seg1, seg2) {
-                let bound = Garis.boundCollide(seg1, seg2);
-                if (!bound)
-                    return false;
-                // let deg: number = ha.Segment.deg(seg2);
-                let seg2Copy = Garis.klon(seg2);
-                let seg1Copy = Garis.klon(seg1);
-                let deg = Garis.sudut(seg2);
-                Garis.putar(seg2Copy, -deg, seg2.v1.x, seg2.v1.y, false);
-                Garis.putar(seg1Copy, -deg, seg2.v1.x, seg2.v1.y, false);
-                if (!Garis.boundCollide(seg1Copy, seg2Copy))
-                    return false;
-                Garis.pindah(seg1Copy, -seg2.v1.x, -seg2.v1.y);
-                Garis.pindah(seg2Copy, -seg2.v1.x, -seg2.v1.y);
-                if (!Garis.melewatiGarisX(seg1Copy)) {
-                    return false;
-                }
-                let idx = Garis.xHorIdx(seg1Copy);
-                let x = Garis.getXAtIdx(seg1Copy, idx);
-                if (x > Garis.maxX(seg2Copy))
-                    return false;
-                if (x < Garis.minX(seg2Copy))
-                    return false;
-                return true;
-            }
-            /**
-             * mengkopy dari garis sumber ke garis target
-             * @param gs garis sumber
-             * @param gt garis target
-             */
-            static copy(gs, gt) {
-                geom.Point.copyPosisi(gs.v1, gt.v2);
-                geom.Point.copyPosisi(gs.v2, gt.v2);
-            }
-            /**
-             * klone garis
-             * @param garis
-             * @returns
-             */
-            static klon(garis) {
-                return {
-                    v1: geom.Point.clone(garis.v1),
-                    v2: geom.Point.clone(garis.v2)
-                };
-            }
-            static melewatiGarisX(seg) {
-                if (Garis.maxY(seg) > 0) {
-                    if (Garis.minY(seg) < 0) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            static melewatiGarisY(seg) {
-                if (Garis.minX(seg) < 0) {
-                    if (Garis.maxX(seg) > 0) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            /**
-             * menghitung sudut dari garis
-             * @param garis - garis
-             * @returns sudut
-             */
-            static sudut(garis) {
-                let j = garis.v2.y - garis.v1.y;
-                let i = garis.v2.x - garis.v1.x;
-                return geom.Transform.deg(i, j);
             }
             /**
              * menghasilkan posisi x dari vecI(), pada idx tertentu
@@ -448,28 +443,8 @@ var ha;
              * @param idx posisi (0-1)
              * @returns
              */
-            static getYAtIdx(seg, idx) {
-                return seg.v1.y + (idx * Garis.vecJ(seg));
-            }
-            /**
-             * menghasilkan panjang pada sumbu x
-             * @param garis garis
-             * @returns
-             */
-            static vecI(garis) {
-                return garis.v2.x - garis.v1.x;
-            }
-            static vecJ(garis) {
-                return garis.v2.y - garis.v1.y;
-            }
-            /** putar garis
-             *
-             */
-            static putarGaris(gs, sdt, klon) {
-                let g = gs[0];
-                gs.forEach((item) => {
-                    Garis.putar(item, sdt, g.v1.x, g.v1.y, klon);
-                });
+            static getYAtIdx(g, idx) {
+                return g.v1.y + (idx * Garis.vecJ(g));
             }
             /**
              * memutar garis
@@ -530,24 +505,192 @@ var ha;
                 idx = (0 - garis.v1.y) / (garis.v2.y - garis.v1.y);
                 return idx;
             }
+            /**
+             * mengkopy dari garis sumber ke garis target
+             * @param gs garis sumber
+             * @param gt garis target
+             */
+            static copy(gs, gt) {
+                geom.Point.copyPosisi(gs.v1, gt.v2);
+                geom.Point.copyPosisi(gs.v2, gt.v2);
+            }
+            /**
+             * klone garis
+             * @param garis
+             * @returns
+             */
+            static klon(garis) {
+                return {
+                    v1: geom.Point.clone(garis.v1),
+                    v2: geom.Point.clone(garis.v2),
+                    b: geom.Bound.clone(garis.b)
+                };
+            }
+            /**
+             * menghitung sudut dari garis
+             * @param garis - garis
+             * @returns sudut
+             */
+            static sudut(garis) {
+                let j = garis.v2.y - garis.v1.y;
+                let i = garis.v2.x - garis.v1.x;
+                return geom.Transform.sudut(i, j);
+            }
+            /**
+             * menghasilkan panjang pada sumbu x
+             * @param garis garis
+             * @returns
+             */
+            static vecI(garis) {
+                return garis.v2.x - garis.v1.x;
+            }
+            static vecJ(garis) {
+                return garis.v2.y - garis.v1.y;
+            }
+            /**
+             * putar garis jamak
+             * menggunakan garis 1 sebagai pusat
+             *
+             */
+            static putarGarisJmk(gs, sdt, klon) {
+                let g = gs[0];
+                gs.forEach((item) => {
+                    Garis.putar(item, sdt, g.v1.x, g.v1.y, klon);
+                });
+            }
+            /** GARIS - POINT
+             * ==============
+            */
+            /**
+             * apakah sebuah garis berada di sebelah kanan titik
+             * @param g
+             * @param xt
+             * @param yt
+             * @returns
+             */
+            static kananPos(g, xt, yt) {
+                return this.gp.kananPos(g, xt, yt);
+            }
+            /** GARIS - GARIS
+             * ==============
+            */
+            static boundCollide(g1, g2) {
+                if (Garis.maxX(g1) < Garis.minX(g2))
+                    return false;
+                if (Garis.minX(g1) > Garis.maxX(g2))
+                    return false;
+                if (Garis.maxY(g1) < Garis.minY(g2))
+                    return false;
+                if (Garis.minY(g1) > Garis.maxY(g2))
+                    return false;
+                return true;
+            }
+            /**
+             * update bound
+             * @param g
+             * @returns
+             */
+            static updateBound(g) {
+                g.b.v1.x = Math.min(g.v1.x, g.v2.x);
+                g.b.v1.y = Math.min(g.v1.y, g.v2.y);
+                g.b.v2.x = Math.max(g.v1.x, g.v2.x);
+                g.b.v2.y = Math.max(g.v1.y, g.v2.y);
+            }
+            static _tabrakan(g1, g2) {
+                let g1c;
+                let g2c;
+                let sudut;
+                let x;
+                let y;
+                g1c = Garis.klon(g1);
+                g2c = Garis.klon(g2);
+                Garis.keAtas(g1c, false);
+                sudut = Garis.sudut(g1c);
+                x = g1c.v1.x;
+                y = g1c.v1.y;
+                Garis.putar(g2c, -sudut, x, y, false);
+                Garis.putar(g1c, -sudut, x, y, false);
+                if (!Garis.boundCollide(g1c, g2c))
+                    return false;
+                return true;
+            }
+            static tabrakan(g1, g2) {
+                if (Garis.boundCollide(g1, g2) == false) {
+                    return false;
+                }
+                if (!Garis._tabrakan(g1, g2))
+                    return false;
+                if (!Garis._tabrakan(g2, g1))
+                    return false;
+                return true;
+            }
+            //TODO: dep
+            static collide2(g, seg2) {
+                let bound = Garis.boundCollide(g, seg2);
+                if (!bound)
+                    return false;
+                // let deg: number = ha.Segment.deg(seg2);
+                let seg2Copy = Garis.klon(seg2);
+                let seg1Copy = Garis.klon(g);
+                let deg = Garis.sudut(seg2);
+                Garis.putar(seg2Copy, -deg, seg2.v1.x, seg2.v1.y, false);
+                Garis.putar(seg1Copy, -deg, seg2.v1.x, seg2.v1.y, false);
+                if (!Garis.boundCollide(seg1Copy, seg2Copy))
+                    return false;
+                Garis.pindah(seg1Copy, -seg2.v1.x, -seg2.v1.y);
+                Garis.pindah(seg2Copy, -seg2.v1.x, -seg2.v1.y);
+                if (!Garis.melewatiGarisX(seg1Copy)) {
+                    return false;
+                }
+                let idx = Garis.xHorIdx(seg1Copy);
+                let x = Garis.getXAtIdx(seg1Copy, idx);
+                if (x > Garis.maxX(seg2Copy))
+                    return false;
+                if (x < Garis.minX(seg2Copy))
+                    return false;
+                return true;
+            }
+            static melewatiGarisX(g, y = 0) {
+                if (Garis.maxY(g) > y) {
+                    if (Garis.minY(g) < y) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            static melewatiGarisY(g) {
+                if (Garis.minX(g) < 0) {
+                    if (Garis.maxX(g) > 0) {
+                        return true;
+                    }
+                }
+                return false;
+            }
         }
         geom.Garis = Garis;
         //alias
-        // export const Garis: typeof Segment = Segment;
+        geom.G = Garis;
     })(geom = ha.geom || (ha.geom = {}));
 })(ha || (ha = {}));
 var ha;
 (function (ha) {
     var geom;
     (function (geom) {
+        /**
+         * menghitung geometri relative terhadap titik 0
+         */
         class Transform {
+            static RAD2DEG = 180.0 / Math.PI;
+            static DEG2RAD = Math.PI / 180.0;
+            static _lastX = 0;
+            static _lastY = 0;
             static get lastX() {
                 return Transform._lastX;
             }
             static get lastY() {
                 return Transform._lastY;
             }
-            static equal(n1, n2, toleransi = 1) {
+            static sama(n1, n2, toleransi = 1) {
                 if (Math.abs(n1 - n2) <= toleransi)
                     return true;
                 return false;
@@ -588,7 +731,7 @@ var ha;
                 }
                 throw Error();
             }
-            static deg(x, y) {
+            static sudut(x, y) {
                 let l;
                 let sin;
                 l = Math.sqrt(x * x + y * y);
@@ -613,6 +756,7 @@ var ha;
                     deg = 360 + deg;
                 return deg;
             }
+            //TODO: refaktor
             static degDistMax(angleS = 0, angleT) {
                 angleS = Transform.normalizeDeg(angleS);
                 angleT = Transform.normalizeDeg(angleT);
@@ -624,6 +768,7 @@ var ha;
                     return (360 - Math.abs(deg));
                 }
             }
+            //TODO: refaktor
             static degDistMin(angleS = 0, angleT) {
                 angleS = Transform.normalizeDeg(angleS);
                 angleT = Transform.normalizeDeg(angleT);
@@ -644,11 +789,13 @@ var ha;
                     }
                 }
             }
+            //TODO: refaktor
             static jarak(x, y, xt, yt) {
                 let pjx = xt - x;
                 let pjy = yt - y;
                 return Math.sqrt(pjx * pjx + pjy * pjy);
             }
+            //TODO: refaktor
             static rotateRel(x = 0, y = 0, xt = 0, yt = 0, deg = 10) {
                 let xr = x - xt;
                 let yr = y - yt;
@@ -660,11 +807,58 @@ var ha;
                 Transform._lastX = x1 + xt;
                 Transform._lastY = y1 + yt;
             }
+            static posPolar(jrk, sdt) {
+                let sdtrad = sdt * Transform.DEG2RAD;
+                Transform._lastX = Math.cos(sdtrad) * jrk;
+                Transform._lastY = Math.sin(sdtrad) * jrk;
+            }
         }
-        Transform.RAD2DEG = 180.0 / Math.PI;
-        Transform.DEG2RAD = Math.PI / 180.0;
-        Transform._lastX = 0;
-        Transform._lastY = 0;
         geom.Transform = Transform;
+    })(geom = ha.geom || (ha.geom = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var geom;
+    (function (geom) {
+        class BoundObj {
+            _v1 = geom.Point.buat();
+            _v2 = geom.Point.buat();
+            get v1() {
+                return this._v1;
+            }
+            set v1(value) {
+                this._v1 = value;
+            }
+            get v2() {
+                return this._v2;
+            }
+            set v2(value) {
+                this._v2 = value;
+            }
+        }
+        geom.BoundObj = BoundObj;
+        class Bound {
+            static create() {
+            }
+            static render(ctx, b) {
+                ctx.beginPath();
+                ctx.moveTo(b.v1.x, b.v1.y);
+                ctx.rect(b.v1.x, b.v1.y, b.v2.x - b.v1.x, b.v2.y - b.v1.y);
+                ctx.stroke();
+            }
+            static copy(b, b2) {
+                b2.v1.x = b.v1.x;
+                b2.v1.y = b.v2.y;
+                b2.v2.x = b.v2.x;
+                b2.v2.y = b.v2.y;
+            }
+            static clone(b) {
+                let h = new BoundObj();
+                h.v1 = geom.Point.clone(b.v1);
+                h.v2 = geom.Point.clone(b.v2);
+                return h;
+            }
+        }
+        geom.Bound = Bound;
     })(geom = ha.geom || (ha.geom = {}));
 })(ha || (ha = {}));
