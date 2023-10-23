@@ -3,29 +3,57 @@ import { Export } from "./export";
 import Blockly from 'blockly'
 import { TWorkSpace } from "./type";
 import { javascriptGenerator } from "blockly/javascript";
-import { Data, StateData } from "./Data";
+import { Data, EEditMode, StateData } from "./Data";
+// import { string } from "blockly/core/utils";
 
 export class Op {
+
+    static checkDirty() {
+
+    }
+
+    static getB64(): string {
+        let simpan = Blockly.serialization.workspaces.save(Index.workspace);
+        let simpanStr = JSON.stringify(simpan);
+        let b64 = btoa(simpanStr);
+
+        return b64;
+    }
+
+    static shouldSave(): boolean {
+        if (StateData.editMode == EEditMode.id) {
+            if (StateData.dataAwal != this.getB64()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    static confirmSave() {
+        if (!this.shouldSave()) return;
+        if (!window.confirm("save changes?")) return
+
+        this.save();
+    }
 
     static save() {
         try {
             console.group("save data:");
 
-            if (window.confirm('save changes?')) {
-                let simpan = Blockly.serialization.workspaces.save(Index.workspace);
-                let simpanStr = JSON.stringify(simpan);
-                let b64 = btoa(simpanStr);
+            // if (window.confirm('save changes?')) {
+            let b64 = this.getB64();
 
-                console.log(b64);
-                console.log(simpan);
-                console.log(simpanStr);
+            console.log(b64);
+            // console.log(simpan);
+            // console.log(simpanStr);
 
-                let file = Data.getFileById(StateData.fileId);
-                file.data = simpanStr;
-                file.data64 = b64;
+            let file = Data.getFileById(StateData.fileId);
+            // file.data = simpanStr;
+            file.data64 = b64;
 
-                Data.simpan();
-            }
+            Data.simpan();
+            // }
 
         }
         catch (e) {
@@ -68,6 +96,7 @@ export class Op {
         //     this.save();
         // }
 
+        this.confirmSave();
         window.top.location.href = "./projek.html";
     }
 

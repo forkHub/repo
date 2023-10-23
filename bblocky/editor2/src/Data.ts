@@ -108,14 +108,29 @@ export class Data {
 export class StateData {
     private static _fileId: string = '';
     private static _editMode: EEditMode;
-    private static _dirty: boolean = false;
+    // private static _dirty: boolean = false;
+    private static _dataAwal: string = '';
+    private static _dataAkhir: string = '';
 
-    public static get dirty(): boolean {
-        return StateData._dirty;
+    public static get dataAwal(): string {
+        return StateData._dataAwal;
     }
-    public static set dirty(value: boolean) {
-        StateData._dirty = value;
+    public static set dataAwal(value: string) {
+        StateData._dataAwal = value;
     }
+    public static get dataAkhir(): string {
+        return StateData._dataAkhir;
+    }
+    public static set dataAkhir(value: string) {
+        StateData._dataAkhir = value;
+    }
+
+    // public static get dirty(): boolean {
+    //     return StateData._dirty;
+    // }
+    // public static set dirty(value: boolean) {
+    //     StateData._dirty = value;
+    // }
     public static get fileId(): string {
         return StateData._fileId;
     }

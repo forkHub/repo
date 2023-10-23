@@ -1,3 +1,4 @@
+import { State } from "blockly/core/utils/aria";
 import { Data, EEditMode, StateData } from "./Data";
 import { Op } from "./Op";
 import { Firebase } from "./firebase";
@@ -11,14 +12,14 @@ export class Index {
 	public static blocklyArea: HTMLDivElement;
 	public static blocklyDiv: HTMLDivElement;
 
-	static isDirty(type: string): boolean {
-		if ("drag" == type) return true;
-		if ("move" == type) return true;
-		if ("create" == type) return true;
-		if ("delete" == type) return true;
+	// static isDirty(type: string): boolean {
+	// 	if ("drag" == type) return true;
+	// 	if ("move" == type) return true;
+	// 	if ("create" == type) return true;
+	// 	if ("delete" == type) return true;
 
-		return false;
-	}
+	// 	return false;
+	// }
 
 	static initWorkSpace() {
 		Blockly.Msg["VARIABLES_SET"] = "%1 = %2";
@@ -46,11 +47,12 @@ export class Index {
 		Index.blocklyArea = document.body.querySelector('#blocklyArea') as HTMLDivElement;
 		Index.blocklyDiv = document.body.querySelector('#blocklyDiv') as HTMLDivElement;
 		Index.workspace.addChangeListener((e) => {
-			console.log(e);
-			if (this.isDirty(e.type)) {
-				// this.dirty = true;
-				StateData.dirty = true;
-			}
+			e;
+			// console.log(e);
+			// if (this.isDirty(e.type)) {
+			// this.dirty = true;
+			// StateData.dirty = true;
+			// }
 		})
 
 		// console.log('work space');
@@ -116,6 +118,12 @@ export class Index {
 			})
 		})
 
+		//reset
+		StateData.fileId = '';
+		StateData.dataAwal = '';
+		StateData.dataAkhir = '';
+		StateData.editMode = EEditMode.none;
+
 		kvAr.forEach((item) => {
 			// if (item.key == 'share') {
 			// this.loadFromQueryData(item.value);
@@ -125,7 +133,11 @@ export class Index {
 			if (item.key == EEditMode.id) {
 				this.loadFromId(item.value);
 				StateData.editMode = EEditMode.id;
+				StateData.dataAwal = Op.getB64();
 				// Data.data.editMode = EEditMode.id;
+			}
+			else if (item.key == EEditMode.demo) {
+				//TODO:
 			}
 			else {
 				console.warn('item key uknown: ' + item.key);
