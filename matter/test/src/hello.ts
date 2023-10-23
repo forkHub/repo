@@ -1,4 +1,4 @@
-declare var Matter: any;
+declare var Matter: IMatter;
 
 window.onload = () => {
     // module aliases
