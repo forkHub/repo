@@ -1,8 +1,18 @@
+/**
+ *  @namespace ha
+ */
+/**
+ *  @namespace be
+ *  @memberof ha
+ */
 var ha;
 (function (ha) {
     var be;
     (function (be) {
-        class Main {
+        /**
+         * @memberof ha.be
+         */
+        class Be {
             static _canvasAr = [];
             static _canvasAktif;
             static _skalaOtomatis = true;
@@ -18,19 +28,20 @@ var ha;
             };
             /**
              * Handle saat window di resize
+             * @private
              */
             static windowResize() {
                 // console.debug('window on resize');
-                let canvas = Main.canvasAktif.canvas;
-                let cp = Main.canvasAktif.canvas.width;
-                let cl = Main.canvasAktif.canvas.height;
+                let canvas = Be.canvasAktif.canvas;
+                let cp = Be.canvasAktif.canvas.width;
+                let cl = Be.canvasAktif.canvas.height;
                 let wp = window.innerWidth;
                 let wl = window.innerHeight;
                 let ratio = Math.min((wp / cp), (wl / cl));
                 let cp2 = Math.floor(cp * ratio);
                 let cl2 = Math.floor(cl * ratio);
-                Main.canvasAktif.ratioX = ratio;
-                Main.canvasAktif.ratioY = ratio;
+                Be.canvasAktif.ratioX = ratio;
+                Be.canvasAktif.ratioY = ratio;
                 canvas.style.position = 'fixed';
                 canvas.style.zIndex = '1';
                 canvas.style.width = cp2 + 'px';
@@ -47,9 +58,9 @@ var ha;
              */
             static Kontek(ctx) {
                 if (ctx) {
-                    Main.canvasAktif.ctx = ctx;
+                    Be.canvasAktif.ctx = ctx;
                 }
-                return Main.canvasAktif.ctx;
+                return Be.canvasAktif.ctx;
             }
             static buatCanvas(canvasEl) {
                 let canvas = {
@@ -78,49 +89,42 @@ var ha;
                 return canvas;
             }
             static init(canvasBelakang, canvasDepan) {
-                let canvas = Main.buatCanvas(canvasBelakang);
-                Main._canvasAr.push(canvas);
-                canvas = Main.buatCanvas(canvasDepan);
-                Main._canvasAr.push(canvas);
-                Main.canvasAktif = canvas;
+                let canvas = Be.buatCanvas(canvasBelakang);
+                Be._canvasAr.push(canvas);
+                canvas = Be.buatCanvas(canvasDepan);
+                Be._canvasAr.push(canvas);
+                Be.canvasAktif = canvas;
             }
             static backupWarna() {
-                Main.warnaBackup.b = Main.biru;
-                Main.warnaBackup.h = Main.hijau;
-                Main.warnaBackup.m = Main.merah;
-                Main.warnaBackup.t = Main.transparan;
+                Be.warnaBackup.b = Be.biru;
+                Be.warnaBackup.h = Be.hijau;
+                Be.warnaBackup.m = Be.merah;
+                Be.warnaBackup.t = Be.transparan;
             }
             static restoreWarna() {
-                Main.biru = Main.warnaBackup.b;
-                Main.hijau = Main.warnaBackup.h;
-                Main.merah = Main.warnaBackup.m;
-                Main.transparan = Main.warnaBackup.t;
-                Main.updateStyleWarna();
+                Be.biru = Be.warnaBackup.b;
+                Be.hijau = Be.warnaBackup.h;
+                Be.merah = Be.warnaBackup.m;
+                Be.transparan = Be.warnaBackup.t;
+                Be.updateStyleWarna();
             }
             /**
-             * Membersihkan layar dengan warna tertentu, default hitam
-             * @param m (number) merah
-             * @param h (number) hijau
-             * @param b (b) biru
-             * @param t (t) transparan (0-100)
+             *
+             * @param merah {angka} warna merah, optional default = 0
+             * @param hijau
+             * @param biru
+             * @param transparan
              */
-            static Bersih(m = 0, h = 0, b = 0, t = 100) {
-                let ctx = Main.canvasAktif.ctx;
-                Main.backupWarna();
-                ctx.clearRect(0, 0, Main.canvasAktif.panjang, Main.canvasAktif.lebar);
-                ctx.fillStyle = `rgba(${m}, ${h}, ${b}, ${t / 100})`;
-                ctx.fillRect(0, 0, Main.canvasAktif.panjang, Main.canvasAktif.lebar);
-                Main.restoreWarna();
+            static Bersih(merah = 0, hijau = 0, biru = 0, transparan = 100) {
+                let ctx = Be.canvasAktif.ctx;
+                Be.backupWarna();
+                ctx.clearRect(0, 0, Be.canvasAktif.panjang, Be.canvasAktif.lebar);
+                ctx.fillStyle = `rgba(${merah}, ${hijau}, ${biru}, ${transparan / 100})`;
+                ctx.fillRect(0, 0, Be.canvasAktif.panjang, Be.canvasAktif.lebar);
+                Be.restoreWarna();
             }
-            /**
-             * Mengeset warna untuk dipakai pada perintah menggambar setelahnya
-             * @param r (number) merah
-             * @param g (number) hijau
-             * @param b (number) biru
-             * @param a (number) alpha (0-100)
-             */
             static Warna(r = 0, g = 0, b = 0, a = 100) {
-                let h = Main;
+                let h = Be;
                 h.merah = r;
                 h.biru = b;
                 h.hijau = g;
@@ -128,52 +132,40 @@ var ha;
                 h.updateStyleWarna();
             }
             static updateStyleWarna() {
-                let ctx = Main.canvasAktif.ctx;
-                ctx.fillStyle = `rgba(${Main.merah}, ${Main.hijau}, ${Main.biru}, ${Main.transparan})`;
+                let ctx = Be.canvasAktif.ctx;
+                ctx.fillStyle = `rgba(${Be.merah}, ${Be.hijau}, ${Be.biru}, ${Be.transparan})`;
             }
             /**
              * Mengembalikan warna merah dari perintah AmbilPixel terakhir
              * @returns (number) warna merah
              */
             static Hijau() {
-                return Main.hijau;
+                return Be.hijau;
             }
-            /**
-             * Mengembalikan warna merah dari perintah AmbilPixel terakhir
-             * @returns (number) warna merah
-             */
             static Merah() {
-                return Main.merah;
+                return Be.merah;
             }
             /**
              * Mengembalikan warna biru dari perintah AmbilPixel terakhir
              * @returns (number) warna biru
              */
             static Biru() {
-                return Main.biru;
+                return Be.biru;
             }
             /**
              *
              * @returns
              */
             static Transparan() {
-                return Math.floor(Main.transparan * 100);
+                return Math.floor(Be.transparan * 100);
             }
             /**
              *
              * @returns
              */
             static Kanvas() {
-                return Main.canvasAktif.canvas;
+                return Be.canvasAktif.canvas;
             }
-            /**
-             * Setup Blitz Edu
-             * @param panjang (angka) panjang dari kanvas
-             * @param lebar (angka) lebar dari kanvs
-             * @param canvas (HTMLCanvasElement) referensi ke kanvas
-             * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
-             * @returns
-             */
             static Grafis(panjang = 320, lebar = 240, canvas = null, fullScreen = true, input = true) {
                 //coba cari canvas
                 if (!canvas) {
@@ -182,33 +174,33 @@ var ha;
                 if (!canvas) {
                     document.body.appendChild(document.createElement('canvas'));
                 }
-                Main.skalaOtomatis = fullScreen;
+                Be.skalaOtomatis = fullScreen;
                 // ha.be.Blijs._inputStatus = input
                 //sudah diinisialisasi atau belum
-                if (Main.canvasAktif) {
+                if (Be.canvasAktif) {
                     console.warn('init lebih dari sekali');
-                    Main.Grafis2(panjang, lebar, Main.skalaOtomatis);
+                    Be.Grafis2(panjang, lebar, Be.skalaOtomatis);
                 }
                 else {
                     console.log('inisialisasi');
-                    Main.init(canvas, canvas);
-                    Main.Grafis2(panjang, lebar, Main.skalaOtomatis);
+                    Be.init(canvas, canvas);
+                    Be.Grafis2(panjang, lebar, Be.skalaOtomatis);
                     if (input) {
-                        be.Input.init(Main.canvasAktif);
+                        be.Input.init(Be.canvasAktif);
                     }
-                    if (Main.skalaOtomatis) {
+                    if (Be.skalaOtomatis) {
                         window.onresize = () => {
-                            if (Main.skalaOtomatis) {
-                                Main.windowResize();
+                            if (Be.skalaOtomatis) {
+                                Be.windowResize();
                             }
                         };
                     }
-                    if (Main.skalaOtomatis) {
-                        Main.windowResize();
+                    if (Be.skalaOtomatis) {
+                        Be.windowResize();
                     }
                     setTimeout(() => {
-                        if (Main.skalaOtomatis) {
-                            Main.windowResize();
+                        if (Be.skalaOtomatis) {
+                            Be.windowResize();
                         }
                     }, 100);
                     // setTimeout(() => {
@@ -217,12 +209,12 @@ var ha;
                     //font default
                     ha.be.Teks.Font("12px sans-serif");
                     ha.be.Teks.Rata("center");
-                    Main.Warna(255, 255, 255, 100);
-                    Main.canvasAktif.ctx.strokeStyle = "#ffffff";
+                    Be.Warna(255, 255, 255, 100);
+                    Be.canvasAktif.ctx.strokeStyle = "#ffffff";
                 }
             }
             static Grafis2(p = 320, l = 240, ubahStyle) {
-                let canvas = Main.canvasAktif;
+                let canvas = Be.canvasAktif;
                 canvas.canvas.width = p;
                 canvas.canvas.height = l;
                 if (ubahStyle) {
@@ -234,8 +226,8 @@ var ha;
                 canvas.panjang = p;
                 canvas.lebar = l;
                 setTimeout(() => {
-                    if (Main.skalaOtomatis) {
-                        Main.windowResize();
+                    if (Be.skalaOtomatis) {
+                        Be.windowResize();
                     }
                     else {
                     }
@@ -259,7 +251,7 @@ var ha;
              * @param y2
              */
             static Garis(x1, y1, x2, y2) {
-                let ctx = Main.canvasAktif.ctx;
+                let ctx = Be.canvasAktif.ctx;
                 x1 = Math.floor(x1);
                 y1 = Math.floor(y1);
                 x2 = Math.floor(x2);
@@ -280,7 +272,7 @@ var ha;
              * @param rotasi
              */
             static Kotak(x1, y1, x2, y2, isi = false, garis = true, rotasi = 0) {
-                let ctx = Main.canvasAktif.ctx;
+                let ctx = Be.canvasAktif.ctx;
                 //TODO: rotasi
                 rotasi;
                 if (isi) {
@@ -300,7 +292,7 @@ var ha;
              * @param rotasi
              */
             static Oval(x = 0, y = 0, radius, skalaX = 1, skalaY = .5, rotasi = 0) {
-                let ctx = Main.canvasAktif.ctx;
+                let ctx = Be.canvasAktif.ctx;
                 // save state
                 ctx.save();
                 // translate context
@@ -331,16 +323,16 @@ var ha;
             // 	Main.canvasAktif = buffer
             // }
             static get canvasAktif() {
-                return Main._canvasAktif;
+                return Be._canvasAktif;
             }
             static set canvasAktif(value) {
-                Main._canvasAktif = value;
+                Be._canvasAktif = value;
             }
             static get canvasAr() {
-                return Main._canvasAr;
+                return Be._canvasAr;
             }
             static set canvasAr(value) {
-                Main._canvasAr = value;
+                Be._canvasAr = value;
             }
             // public static get origin(): IV2D {
             // 	return Main._origin;
@@ -355,37 +347,37 @@ var ha;
             // 	Main._fps = value;
             // }
             static get skalaOtomatis() {
-                return Main._skalaOtomatis;
+                return Be._skalaOtomatis;
             }
             static set skalaOtomatis(value) {
-                Main._skalaOtomatis = value;
+                Be._skalaOtomatis = value;
             }
             static get merah() {
-                return Main._merah;
+                return Be._merah;
             }
             static set merah(value) {
-                Main._merah = value;
+                Be._merah = value;
             }
             static get hijau() {
-                return Main._hijau;
+                return Be._hijau;
             }
             static set hijau(value) {
-                Main._hijau = value;
+                Be._hijau = value;
             }
             static get biru() {
-                return Main._biru;
+                return Be._biru;
             }
             static set biru(value) {
-                Main._biru = value;
+                Be._biru = value;
             }
             static get transparan() {
-                return Main._transparan;
+                return Be._transparan;
             }
             static set transparan(value) {
-                Main._transparan = value;
+                Be._transparan = value;
             }
         }
-        be.Main = Main;
+        be.Be = Be;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
 var ha;
@@ -427,11 +419,6 @@ var ha;
                 this._rotasi = value;
             }
         }
-        /**
-         * Menghandle Image object
-         * Tidak untuk dipakai langsung
-         * Image object akan di wrap oleh Sprite
-         */
         class Image {
             // private static buatObj(
             // 	img: HTMLImageElement,
@@ -496,7 +483,7 @@ var ha;
             static gambarRect(spr) {
                 Image.resetRect(spr.buffer);
                 Image.rectToImageTransform(spr.buffer, spr.x, spr.y);
-                let ctx = be.Main.canvasAktif.ctx;
+                let ctx = be.Be.canvasAktif.ctx;
                 let rect = spr.buffer.rect;
                 ctx.beginPath();
                 ctx.strokeStyle = "#ffffff";
@@ -730,8 +717,8 @@ var ha;
                 x -= w2;
                 y -= h2;
                 frame = Math.floor(frame);
-                jmlH = Math.ceil((be.Main.canvasAktif.panjang + Math.abs(x)) / w2);
-                jmlV = Math.ceil((be.Main.canvasAktif.lebar + Math.abs(y)) / h2);
+                jmlH = Math.ceil((be.Be.canvasAktif.panjang + Math.abs(x)) / w2);
+                jmlV = Math.ceil((be.Be.canvasAktif.lebar + Math.abs(y)) / h2);
                 for (let i = 0; i < jmlH; i++) {
                     for (let j = 0; j < jmlV; j++) {
                         Image.gambar(gbr, x + (i * w2), y + (j * h2), frame);
@@ -749,17 +736,17 @@ var ha;
              */
             static AmbilPiksel(x = 0, y = 0) {
                 try {
-                    let data = be.Main.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
+                    let data = be.Be.canvasAktif.ctx.getImageData(x, y, 1, 1).data;
                     let hasil = [];
                     hasil.push(data[0]);
                     hasil.push(data[1]);
                     hasil.push(data[2]);
                     hasil.push(data[3]);
-                    be.Main.merah = data[0];
-                    be.Main.hijau = data[1];
-                    be.Main.biru = data[2];
-                    be.Main.transparan = data[3];
-                    be.Main.Warna(be.Main.merah, be.Main.hijau, be.Main.biru, be.Main.transparan);
+                    be.Be.merah = data[0];
+                    be.Be.hijau = data[1];
+                    be.Be.biru = data[2];
+                    be.Be.transparan = data[3];
+                    be.Be.Warna(be.Be.merah, be.Be.hijau, be.Be.biru, be.Be.transparan);
                     return hasil;
                 }
                 catch (e) {
@@ -773,17 +760,17 @@ var ha;
              * @param y
              */
             static SetPiksel(x = 0, y = 0) {
-                be.Main.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
+                be.Be.canvasAktif.ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
             }
             static handle(gbr, x = 0, y = 0) {
                 gbr.handleX = x;
                 gbr.handleY = y;
             }
             static grabGambar(gbr, x = 0, y = 0) {
-                gbr.ctx.drawImage(be.Main.canvasAktif.canvas, x, y, gbr.panjang, gbr.lebar, 0, 0, gbr.panjang, gbr.lebar);
+                gbr.ctx.drawImage(be.Be.canvasAktif.canvas, x, y, gbr.panjang, gbr.lebar, 0, 0, gbr.panjang, gbr.lebar);
             }
             static gambar(gbr, x = 0, y = 0, frame = 0) {
-                let ctx = be.Main.canvasAktif.ctx;
+                let ctx = be.Be.canvasAktif.ctx;
                 let jmlH = 0;
                 let jmlV = 0;
                 let frameX = 0;
@@ -884,10 +871,6 @@ var ha;
 (function (ha) {
     var be;
     (function (be) {
-        /**
-         * Sprite
-         * Wrapper dari image agar bisa interaksi
-        */
         class Sprite {
             static daftar = [];
             static _ctrDraw = 0;
@@ -1384,9 +1367,6 @@ var ha;
                 return '';
             }
         }
-        /**
-         * Input
-         */
         class Input {
             static _inputs = []; //any input,
             static _debug = false;
@@ -1743,10 +1723,7 @@ var ha;
 (function (ha) {
     var be;
     (function (be) {
-        /** internal class untuk menghandle geometri
-         * Point
-         *
-         */
+        // internal class untuk menghandle geometri 
         class Point {
             static create(x = 0, y = 0) {
                 return {
@@ -1763,16 +1740,16 @@ var ha;
                 return h;
             }
             static sama(p1, p2) {
-                if (false == ha.Transform.equal(p1.x, p2.x))
+                if (false == be.Transform.equal(p1.x, p2.x))
                     return false;
-                if (false == ha.Transform.equal(p1.y, p2.y))
+                if (false == be.Transform.equal(p1.y, p2.y))
                     return false;
                 return true;
             }
             static putarPoros(p, xc = 0, yc = 0, deg = 0) {
-                ha.Transform.rotateRel(p.x, p.y, xc, yc, deg);
-                p.x = ha.Transform.lastX;
-                p.y = ha.Transform.lastY;
+                be.Transform.rotateRel(p.x, p.y, xc, yc, deg);
+                p.x = be.Transform.lastX;
+                p.y = be.Transform.lastY;
             }
             static posDist(p, xt, yt, jrk) {
                 let jrkA;
@@ -1781,7 +1758,7 @@ var ha;
                 let rasio;
                 let hasil = Point.create();
                 //jarak sekarang
-                jrkA = ha.Transform.jarak(p.x, p.y, xt, yt);
+                jrkA = be.Transform.jarak(p.x, p.y, xt, yt);
                 i = xt - p.x;
                 j = yt - p.y;
                 rasio = jrkA / jrk;
@@ -1793,8 +1770,8 @@ var ha;
             }
             static posPolar(jarak, sudut, xt, yt) {
                 let hasil = Point.create();
-                hasil.x = jarak * Math.cos(sudut * ha.Transform.DEG2RAD);
-                hasil.y = jarak * Math.sin(sudut * ha.Transform.DEG2RAD);
+                hasil.x = jarak * Math.cos(sudut * be.Transform.DEG2RAD);
+                hasil.y = jarak * Math.sin(sudut * be.Transform.DEG2RAD);
                 hasil.x += xt;
                 hasil.y += yt;
                 return hasil;
@@ -1807,10 +1784,8 @@ var ha;
 (function (ha) {
     var be;
     (function (be) {
-        /** internal class untuk menghandle geometri
-         * Kotak
-         *
-         */
+        // internal class untuk menghandle geometri 
+        // Kotak
         class Kotak {
             static buat(x1 = 0, y1 = 0, x2 = 0, y2 = 0) {
                 let r = {};
@@ -1975,10 +1950,7 @@ var ha;
 (function (ha) {
     var be;
     (function (be) {
-        /**
-         * internal class untuk menghandle geometri:
-         * garis
-         */
+        //internal
         class Segment {
             static create(v1 = { x: 0, y: 0 }, v2 = { x: 0, y: 0 }) {
                 return {
@@ -2043,7 +2015,7 @@ var ha;
             static deg(line) {
                 let j = line.v2.y - line.v1.y;
                 let i = line.v2.x - line.v1.x;
-                return ha.Transform.sudut(i, j);
+                return be.Transform.sudut(i, j);
             }
             static getXAtIdx(seg, idx) {
                 return seg.v1.x + (idx * Segment.vecI(seg));
@@ -2091,266 +2063,143 @@ var ha;
         be.Segment = Segment;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
-// namespace ha.be {
-// 	/**
-// 	 * Depecreated dan akan digabung ke Main
-// 	 * */
-// 	export class Blijs {
-// 		// private static _inputStatus: boolean = true;
-// 		// public static get inputStatus(): boolean {
-// 		// 	return Blijs._inputStatus;
-// 		// }
-// 		// public static set inputStatus(value: boolean) {
-// 		// 	Blijs._inputStatus = value;
-// 		// }
-// 		/**
-// 		 * Setup Blitz Edu
-// 		 * @param panjang (angka) panjang dari kanvas
-// 		 * @param lebar (angka) lebar dari kanvs
-// 		 * @param canvas (HTMLCanvasElement) referensi ke kanvas
-// 		 * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
-// 		 * @returns
-// 		 */
-// 		// static Grafis(panjang: number = 320, lebar: number = 240, canvas: HTMLCanvasElement = null, fullScreen: boolean = true, input: boolean = true) {
-// 		// 	//coba cari canvas
-// 		// 	if (!canvas) {
-// 		// 		canvas = document.body.querySelector('canvas') as HTMLCanvasElement;
-// 		// 	}
-// 		// 	if (!canvas) {
-// 		// 		document.body.appendChild(document.createElement('canvas'));
-// 		// 	}
-// 		// 	ha.be.Blijs.skalaOtomatis = fullScreen;
-// 		// 	// ha.be.Blijs._inputStatus = input
-// 		// 	//sudah diinisialisasi atau belum
-// 		// 	if (ha.be.Main.canvasAktif) {
-// 		// 		console.warn('init lebih dari sekali');
-// 		// 		ha.be.Main.Grafis2(panjang, lebar, ha.be.Blijs.skalaOtomatis);
-// 		// 	}
-// 		// 	else {
-// 		// 		console.log('inisialisasi');
-// 		// 		ha.be.Main.init(canvas, canvas);
-// 		// 		ha.be.Main.Grafis2(panjang, lebar, ha.be.Blijs.skalaOtomatis);
-// 		// 		if (input) {
-// 		// 			ha.be.input.init(ha.be.Main.canvasAktif);
-// 		// 		}
-// 		// 		if (ha.be.Blijs.skalaOtomatis) {
-// 		// 			window.onresize = (): void => {
-// 		// 				if (ha.be.Blijs.skalaOtomatis) {
-// 		// 					ha.be.Blijs.windowResize();
-// 		// 				}
-// 		// 			}
-// 		// 		}
-// 		// 		if (ha.be.Blijs.skalaOtomatis) {
-// 		// 			ha.be.Blijs.windowResize();
-// 		// 		}
-// 		// 		setTimeout(() => {
-// 		// 			if (ha.be.Blijs.skalaOtomatis) {
-// 		// 				ha.be.Blijs.windowResize();
-// 		// 			}
-// 		// 		}, 100);
-// 		// 		// setTimeout(() => {
-// 		// 		// 	ha.be.Blijs.repeat();
-// 		// 		// }, 0);
-// 		// 		//font default
-// 		// 		ha.be.Teks.font("12px sans-serif");
-// 		// 		ha.be.Teks.rata("center");
-// 		// 		ha.be.Main.Warna(255, 255, 255, 100);
-// 		// 		ha.be.Main.canvasAktif.ctx.strokeStyle = "#ffffff";
-// 		// 	}
-// 		// }
-// 		/** depecreated */
-// 		// static loop(): void {
-// 		// 	let _window: any = window;
-// 		// 	if (typeof (_window.Loop) == 'function') {
-// 		// 		//TODO: pre loop
-// 		// 		_window.Loop();
-// 		// 		//TODO: post loop
-// 		// 	}
-// 		// 	else if (typeof (_window.Update) == 'function') {
-// 		// 		//TODO: pre loop
-// 		// 		_window.Update();
-// 		// 		//TODO: post loop
-// 		// 	}
-// 		// }
-// 		/** depecreated */
-// 		// static repeat() {
-// 		// 	//check semua image sudah diload
-// 		// 	ha.be.Blijs.loop();
-// 		// 	setTimeout(() => {
-// 		// 		// requestAnimationFrame(() => {
-// 		// 		// 	ha.be.Blijs.repeat();
-// 		// 		// });
-// 		// 		requestAnimationFrame(ha.be.Blijs.repeat);
-// 		// 	}, ha.be.Main.fps);
-// 		// }
-// 		/**
-// 		 * Handle saat window di resize
-// 		 */
-// 		static windowResize(): void {
-// 			// console.debug('window on resize');
-// 			let canvas: HTMLCanvasElement = ha.be.Main.canvasAktif.canvas;
-// 			let cp = ha.be.Main.canvasAktif.canvas.width;
-// 			let cl = ha.be.Main.canvasAktif.canvas.height;
-// 			let wp = window.innerWidth;
-// 			let wl = window.innerHeight;
-// 			let ratio = Math.min((wp / cp), (wl / cl));
-// 			let cp2 = Math.floor(cp * ratio);
-// 			let cl2 = Math.floor(cl * ratio);
-// 			ha.be.Main.canvasAktif.ratioX = ratio;
-// 			ha.be.Main.canvasAktif.ratioY = ratio;
-// 			canvas.style.position = 'fixed';
-// 			canvas.style.zIndex = '9999';
-// 			canvas.style.width = cp2 + 'px';
-// 			canvas.style.height = cl2 + 'px';
-// 			canvas.style.top = ((wl - cl2) / 2) + 'px';
-// 			canvas.style.left = ((wp - cp2) / 2) + 'px';
-// 			// console.debug('canvas w: ' + canvas.style.width + '/ratio: ' + ratio);
-// 		}
-// 		// public static get skalaOtomatis(): boolean {
-// 		// return Blijs._skalaOtomatis;
-// 		// }
-// 		// public static set skalaOtomatis(value: boolean) {
-// 		// Blijs._skalaOtomatis = value;
-// 		// }
-// 	}
-// }
-// // setTimeout(() => {
-// // 	ha.be.Blijs.init()
-// // }, 0);
 var ha;
 (function (ha) {
-    class Transform {
-        static RAD2DEG = 180.0 / Math.PI;
-        static DEG2RAD = Math.PI / 180.0;
-        static _lastX = 0;
-        static _lastY = 0;
-        static get lastX() {
-            return ha.Transform._lastX;
-        }
-        static get lastY() {
-            return ha.Transform._lastY;
-        }
-        static equal(n1, n2, toleransi = 1) {
-            if (Math.abs(n1 - n2) <= toleransi)
-                return true;
-            return false;
-        }
-        static quadDeg2(x, y, deg) {
-            if (x == 0) {
-                if (y == 0) {
-                    return deg;
-                }
-                else if (y > 0) {
-                    return deg;
-                }
-                else if (y < 0) {
-                    return 360 - Math.abs(deg);
-                }
+    var be;
+    (function (be) {
+        class Transform {
+            static RAD2DEG = 180.0 / Math.PI;
+            static DEG2RAD = Math.PI / 180.0;
+            static _lastX = 0;
+            static _lastY = 0;
+            static get lastX() {
+                return Transform._lastX;
             }
-            else if (x > 0) {
-                if (y == 0) {
-                    return deg;
+            static get lastY() {
+                return Transform._lastY;
+            }
+            static equal(n1, n2, toleransi = 1) {
+                if (Math.abs(n1 - n2) <= toleransi)
+                    return true;
+                return false;
+            }
+            static quadDeg2(x, y, deg) {
+                if (x == 0) {
+                    if (y == 0) {
+                        return deg;
+                    }
+                    else if (y > 0) {
+                        return deg;
+                    }
+                    else if (y < 0) {
+                        return 360 - Math.abs(deg);
+                    }
                 }
-                else if (y > 0) {
-                    return deg;
+                else if (x > 0) {
+                    if (y == 0) {
+                        return deg;
+                    }
+                    else if (y > 0) {
+                        return deg;
+                    }
+                    else if (y < 0) {
+                        return 360 - Math.abs(deg);
+                    }
                 }
-                else if (y < 0) {
-                    return 360 - Math.abs(deg);
+                else if (x < 0) {
+                    if (y == 0) {
+                        return 180;
+                    }
+                    else if (y > 0) {
+                        return 180 - Math.abs(deg);
+                    }
+                    else if (y < 0) {
+                        return 180 + Math.abs(deg);
+                    }
                 }
+                throw Error();
             }
-            else if (x < 0) {
-                if (y == 0) {
-                    return 180;
+            /**
+             * Menghitung sudut dari posisi relative ke posisi 0,0
+             * @param x posisi x
+             * @param y posisi y
+             * @returns sudut relative ke posisi 0,0
+             */
+            static sudut(x, y) {
+                let l;
+                let sin;
+                l = Math.sqrt(x * x + y * y);
+                if (l == 0) {
+                    l = .00001;
                 }
-                else if (y > 0) {
-                    return 180 - Math.abs(deg);
+                sin = y / l;
+                sin = Math.asin(sin);
+                sin *= Transform.RAD2DEG;
+                sin = Transform.quadDeg2(x, y, sin);
+                sin = Transform.normalizeDeg(sin);
+                return sin;
+            }
+            static normalizeDeg(deg) {
+                while (deg >= 360) {
+                    deg -= 360;
                 }
-                else if (y < 0) {
-                    return 180 + Math.abs(deg);
+                while (deg <= -360) {
+                    deg += 360;
                 }
+                if (deg < 0)
+                    deg = 360 + deg;
+                return deg;
             }
-            throw Error();
-        }
-        /**
-         * Menghitung sudut dari posisi relative ke posisi 0,0
-         * @param x posisi x
-         * @param y posisi y
-         * @returns sudut relative ke posisi 0,0
-         */
-        static sudut(x, y) {
-            let l;
-            let sin;
-            l = Math.sqrt(x * x + y * y);
-            if (l == 0) {
-                l = .00001;
-            }
-            sin = y / l;
-            sin = Math.asin(sin);
-            sin *= ha.Transform.RAD2DEG;
-            sin = ha.Transform.quadDeg2(x, y, sin);
-            sin = ha.Transform.normalizeDeg(sin);
-            return sin;
-        }
-        static normalizeDeg(deg) {
-            while (deg >= 360) {
-                deg -= 360;
-            }
-            while (deg <= -360) {
-                deg += 360;
-            }
-            if (deg < 0)
-                deg = 360 + deg;
-            return deg;
-        }
-        static degDistMax(angleS = 0, angleT) {
-            angleS = ha.Transform.normalizeDeg(angleS);
-            angleT = ha.Transform.normalizeDeg(angleT);
-            let deg = ha.Transform.degDistMin(angleS, angleT);
-            if (deg >= 0) {
-                return -(360 - deg);
-            }
-            else {
-                return (360 - Math.abs(deg));
-            }
-        }
-        static degDistMin(angleS = 0, angleT) {
-            angleS = ha.Transform.normalizeDeg(angleS);
-            angleT = ha.Transform.normalizeDeg(angleT);
-            if (angleT >= angleS) {
-                if (angleT - angleS > 180) {
-                    return -(angleS + 360 - angleT);
+            static degDistMax(angleS = 0, angleT) {
+                angleS = Transform.normalizeDeg(angleS);
+                angleT = Transform.normalizeDeg(angleT);
+                let deg = Transform.degDistMin(angleS, angleT);
+                if (deg >= 0) {
+                    return -(360 - deg);
                 }
                 else {
-                    return angleT - angleS;
+                    return (360 - Math.abs(deg));
                 }
             }
-            else {
-                if (angleS - angleT >= 180) {
-                    return 360 + angleT - angleS;
+            static degDistMin(angleS = 0, angleT) {
+                angleS = Transform.normalizeDeg(angleS);
+                angleT = Transform.normalizeDeg(angleT);
+                if (angleT >= angleS) {
+                    if (angleT - angleS > 180) {
+                        return -(angleS + 360 - angleT);
+                    }
+                    else {
+                        return angleT - angleS;
+                    }
                 }
                 else {
-                    return angleT - angleS;
+                    if (angleS - angleT >= 180) {
+                        return 360 + angleT - angleS;
+                    }
+                    else {
+                        return angleT - angleS;
+                    }
                 }
             }
+            static jarak(x, y, xt, yt) {
+                let pjx = xt - x;
+                let pjy = yt - y;
+                return Math.sqrt(pjx * pjx + pjy * pjy);
+            }
+            static rotateRel(x = 0, y = 0, xt = 0, yt = 0, deg = 10) {
+                let xr = x - xt;
+                let yr = y - yt;
+                let x1;
+                let y1;
+                deg *= Transform.DEG2RAD;
+                x1 = xr * Math.cos(deg) - yr * Math.sin(deg);
+                y1 = xr * Math.sin(deg) + yr * Math.cos(deg);
+                Transform._lastX = x1 + xt;
+                Transform._lastY = y1 + yt;
+            }
         }
-        static jarak(x, y, xt, yt) {
-            let pjx = xt - x;
-            let pjy = yt - y;
-            return Math.sqrt(pjx * pjx + pjy * pjy);
-        }
-        static rotateRel(x = 0, y = 0, xt = 0, yt = 0, deg = 10) {
-            let xr = x - xt;
-            let yr = y - yt;
-            let x1;
-            let y1;
-            deg *= ha.Transform.DEG2RAD;
-            x1 = xr * Math.cos(deg) - yr * Math.sin(deg);
-            y1 = xr * Math.sin(deg) + yr * Math.cos(deg);
-            ha.Transform._lastX = x1 + xt;
-            ha.Transform._lastY = y1 + yt;
-        }
-    }
-    ha.Transform = Transform;
+        be.Transform = Transform;
+    })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
 var ha;
 (function (ha) {
@@ -2358,7 +2207,7 @@ var ha;
     (function (be) {
         class Teks {
             static get ctx() {
-                return be.Main.canvasAktif.ctx;
+                return be.Be.canvasAktif.ctx;
             }
             /**
              *
@@ -2394,18 +2243,6 @@ var ha;
         be.Teks = Teks;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
-// namespace ha.be {
-// 	export class Route {
-// 		static ukuran(obj: ISprite | "teks", w: number = 32, h: number = 32): void {
-// 			if ("teks" == obj) {
-// 				//TODO: ukuran teks
-// 			}
-// 			else {
-// 				ha.Sprite.ukuran(obj as ISprite, w, h);
-// 			}
-// 		}
-// 	}
-// }
 var ha;
 (function (ha) {
     var be;
@@ -2415,9 +2252,6 @@ var ha;
             TypeDrag[TypeDrag["drag"] = 1] = "drag";
             TypeDrag[TypeDrag["rotasi"] = 2] = "rotasi";
         })(TypeDrag || (TypeDrag = {}));
-        /**
-         * handle untuk interaksi sprite
-         */
         class SpriteInteraksi {
             inputDown(pos, id) {
                 //sprite down
@@ -2438,7 +2272,7 @@ var ha;
                     lastSprite.dragStartX = pos.x - lastSprite.x;
                     lastSprite.dragStartY = pos.y - lastSprite.y;
                     lastSprite.inputId = id;
-                    lastSprite.sudutTekanAwal = ha.Transform.sudut(pos.x - lastSprite.x, pos.y - lastSprite.y);
+                    lastSprite.sudutTekanAwal = be.Transform.sudut(pos.x - lastSprite.x, pos.y - lastSprite.y);
                     lastSprite.sudutAwal = lastSprite.buffer.rotasi;
                     return;
                 }
@@ -2453,7 +2287,7 @@ var ha;
                         }
                         else if (item.tipeDrag == TypeDrag.rotasi) {
                             //TODO: peruban sudut
-                            let sudut2 = ha.Transform.sudut(pos.x - item.x, pos.y - item.y);
+                            let sudut2 = be.Transform.sudut(pos.x - item.x, pos.y - item.y);
                             let perbedaan = sudut2 - item.sudutTekanAwal;
                             item.buffer.rotasi = item.sudutAwal + perbedaan;
                             // console.debug('item drag move');
@@ -2484,9 +2318,6 @@ var ha;
 (function (ha) {
     var be;
     (function (be) {
-        /**
-         * Cache image yang diload
-         */
         class Cache {
             files = [];
             getGbr(url) {
@@ -2514,24 +2345,87 @@ var ha;
         be.cache = new Cache();
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
-///<reference path="../ha/Main.ts"/>
+var ha;
+(function (ha) {
+    var be;
+    (function (be) {
+        class Mat {
+            /**
+             * Menghitung sudut dari posisi relative ke posisi 0,0
+             * @param x posisi x
+             * @param y posisi y
+             * @returns sudut relative ke posisi 0,0
+             */
+            static Sudut(x, y) {
+                return be.Transform.sudut(x, y);
+            }
+        }
+        be.Mat = Mat;
+    })(be = ha.be || (ha.be = {}));
+})(ha || (ha = {}));
+///<reference path="../ha/Be.ts"/>
 ///<reference path="../ha/Image.ts"/>
 ///<reference path="../ha/Sprite.ts"/>
 ///<reference path="../ha/Input.ts"/>
 ///<reference path="../ha/Point.ts"/>
 ///<reference path="../ha/Rect.ts"/>
 ///<reference path="../ha/Segment.ts"/>
-///<reference path="../ha/Blijs.ts"/>
 ///<reference path="../ha/Transform.ts"/>
 ///<reference path="../ha/Teks.ts"/>
 ///<reference path="../ha/Route.ts"/>
 ///<reference path="../ha/Sprite2.ts"/>
 ///<reference path="../ha/Cache.ts"/>
+///<reference path="../ha/Mat.ts"/>
 ///<reference path="./Route.ts"/>
 /**
- * shortcut buat perintah input
- * BLITZ-INPUT.TS
+ * Membersihkan layar dengan warna tertentu, default hitam
+ * @param merah {angka} opsional, merah, default = 0
+ * @param hijau {angka} opsional, hijau,, default = 0
+ * @param biru {angka} opsional, biru, default = 0
+ * @param transparan {angka} opsional, transparan (0-100)
  */
+const Bersih = (merah, hijau, biru, transparan) => {
+    ha.be.Be.Bersih(merah, hijau, biru, transparan);
+};
+/**
+ * Setup Blitz Edu
+ * @param panjang (angka) panjang dari kanvas
+ * @param lebar (angka) lebar dari kanvs
+ * @param canvas (HTMLCanvasElement) referensi ke kanvas
+ * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
+ * @returns
+ */
+const Grafis = (panjang = 240, lebar = 320, canvas = null, fullScreen = true, input = true) => {
+    ha.be.Be.Grafis(panjang, lebar, canvas, fullScreen, input);
+};
+/**
+ * Mengeset warna untuk dipakai pada perintah menggambar berikutnya
+ * @param r (number) merah
+ * @param g (number) hijau
+ * @param b (number) biru
+ * @param a (number) alpha (0-100)
+ */
+const Warna = (r = 0, g = 0, b = 0, a = 100) => {
+    ha.be.Be.Warna(r, g, b, a);
+};
+/**
+ * Mengembalikan warna merah dari perintah AmbilPixel terakhir
+ * @returns (number) warna merah
+ */
+const Merah = () => {
+    return ha.be.Be.Merah();
+};
+const Hijau = ha.be.Be.Hijau;
+const Biru = ha.be.Be.Biru;
+const Transparan = ha.be.Be.Transparan;
+const AmbilPiksel = ha.be.Image.AmbilPiksel;
+const SetPiksel = ha.be.Image.SetPiksel;
+const Kontek = ha.be.Be.Kontek;
+const Kanvas = ha.be.Be.Kanvas;
+const Garis = ha.be.Be.Garis;
+const Kotak = ha.be.Be.Kotak;
+const Oval = ha.be.Be.Oval;
+///<reference path="./Route.ts"/>
 const InputHit = ha.be.Input.InputHit;
 const InputX = ha.be.Input.InputX;
 const InputY = ha.be.Input.InputY;
@@ -2581,88 +2475,10 @@ const JmlDragSelesai = ha.be.Input.JmlDragSelesai;
 // 		return n;
 // 	}
 // }
-// /**
-//  * INTERFACE
-// */
-// interface ILine {
-// 	y: number,
-// 	m: number,
-// 	b: number
-// }
-// interface IRect {
-// 	vs?: IV2D[],
-// 	segs?: ISegment[]
-// }
-// interface ISegment {
-// 	v1: IV2D,
-// 	v2: IV2D
-// }
-// interface ITimer {
-// 	endTime: number;
-// 	startTime: number;
-// 	time: number;
-// 	aktif: boolean;
-// }
-// // interface IInput {
-// // 	xStart: number;
-// // 	yStart: number;
-// // 	xDrag: number;
-// // 	yDrag: number;
-// // 	x: number;
-// // 	y: number;
-// // 	isDrag: boolean;
-// // 	isDown: boolean;
-// // 	isTap: boolean;
-// // 	// isHit: boolean;
-// // 	hit: number;
-// // 	key: string;
-// // 	type: string;
-// // 	timerStart: number;
-// // 	timerEnd: number;
-// // 	id: number;	//TODO: mungkin bisa dihapus
-// // }
-// interface IInputData {
-// 	type?: string;	//keyboard, touch, mouse
-// 	key?: string;	//kode keyb, tombol mouse
-// }
-// //geom
-// interface IV2D {
-// 	x: number,
-// 	y: number
-// }
-// interface ITransform {
-// 	pos: IV2D,
-// 	scale: IV2D,
-// 	rotation: number
-// }
-///<reference path="./Route.ts"/>
-/**
- * 	Shortcut untuk perintah-perintah utama
- */
-const Bersih = ha.be.Main.Bersih;
-const Grafis = ha.be.Main.Grafis;
-const Warna = ha.be.Main.Warna;
-const Merah = ha.be.Main.Merah;
-const Hijau = ha.be.Main.Hijau;
-const Biru = ha.be.Main.Biru;
-const Transparan = ha.be.Main.Transparan;
-const AmbilPiksel = ha.be.Image.AmbilPiksel;
-const SetPiksel = ha.be.Image.SetPiksel;
-const Kontek = ha.be.Main.Kontek;
-const Kanvas = ha.be.Main.Kanvas;
-const Garis = ha.be.Main.Garis;
-const Kotak = ha.be.Main.Kotak;
-const Oval = ha.be.Main.Oval;
-///<reference path="../ha/Main.ts"/>
+///<reference path="../ha/Be.ts"/>
 ///<reference path="../ha/Image.ts"/>
-/*
- *	Shortcut untuk perintah matematika
- */
-const Sudut = ha.Transform.sudut;
+const Sudut = ha.be.Mat.Sudut;
 ///<reference path="./Route.ts"/>
-/**
- * Shortcut untuk perintah-perintah Sprite
- * */
 const Muat = ha.be.Sprite.Muat;
 const MuatAsync = ha.be.Sprite.MuatAsync;
 const Dimuat = ha.be.Sprite.Dimuat;
@@ -2686,20 +2502,8 @@ const Lebar = ha.be.Sprite.Lebar;
 const Copy = ha.be.Sprite.Copy;
 const Ubin = ha.be.Sprite.Ubin;
 const Bound = ha.be.Sprite.Bound;
-//TODO:
-/**
- * Index(spr)
- * Index(spr, n)
- *
- */
-///<reference path="../ha/Main.ts"/>
-///<reference path="../ha/Image.ts"/>
-///<reference path="./Route.ts"/>
-// const FPS = ha.be.Main.Fps;
 ///<reference path="../ha/Route.ts"/>
-/**
- * Shortcut buat perintah-perintah font
- */
+// Shortcut buat perintah-perintah font
 var Font = ha.be.Teks.Font;
 var Tulis = ha.be.Teks.Tulis;
 var Rata = ha.be.Teks.Rata;

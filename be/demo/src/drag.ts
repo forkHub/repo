@@ -1,5 +1,5 @@
 window.onload = () => {
-	ha.be.Main.Grafis(300, 300);
+	Grafis(300, 300);
 	let spr: ISprite = ha.be.Sprite.Muat("./gbr/box.png", true);
 	ha.be.Sprite.Posisi(spr, 150, 100);
 

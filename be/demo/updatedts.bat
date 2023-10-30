@@ -1,3 +1,3 @@
 copy c:\tsmodule\*.d.ts .\src
-copy c:\tsmodule\*.js .\web\js
+copy c:\tsmodule\be.js .\web\js
 pause
