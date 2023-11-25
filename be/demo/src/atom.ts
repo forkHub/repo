@@ -21,7 +21,8 @@ window.onload = () => {
 		Gambar(el, 0)
 
 		for (let i = 0; i < sudut.length; i++) {
-			// let ctx = Kontek();
+			let ctx = Kontek();
+			ctx.strokeStyle = "#ffffff33";
 			Oval(120, 160, 100, 1, .3, i * 30);
 		}
 

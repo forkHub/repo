@@ -341,13 +341,13 @@ namespace ha.be {
 		}
 
 		/**
-		 * 
-		 * @param x 
-		 * @param y 
-		 * @param radius 
-		 * @param skalaX 
-		 * @param skalaY 
-		 * @param rotasi 
+		 * Menggambar Oval
+		 * @param x posisi x
+		 * @param y posisi y
+		 * @param radius radius
+		 * @param skalaX skala horizontal
+		 * @param skalaY skala vertikal
+		 * @param rotasi sudut oval
 		 */
 		static Oval(x: number = 0, y: number = 0, radius: number, skalaX: number = 1, skalaY = .5, rotasi: number = 0) {
 			let ctx: CanvasRenderingContext2D = Be.canvasAktif.ctx;
@@ -369,28 +369,8 @@ namespace ha.be {
 
 			// restore to original state
 			ctx.restore();
-
-			// apply styling
-			// ctx.fillStyle = '#8ED6FF';
-			// ctx.fill();
-			// ctx.lineWidth = 5;
-			// ctx.strokeStyle = 'black';
-
 			ctx.stroke();
-
-			// ctx.beginPath();
-			// ctx.moveTo(x - w / 2, y);
-			// ctx.quadraticCurveTo(x - w / 2, y + h / 2, x, y + h / 2);
-			// ctx.quadraticCurveTo(x + w / 2, y + h / 2, x + w / 2, y);
-			// ctx.quadraticCurveTo(x + w / 2, y - h / 2, x, y - h / 2);
-			// ctx.quadraticCurveTo(x - w / 2, y - h / 2, x - w / 2, y);
-			// ctx.stroke();
-
 		}
-
-		// static SetBuffer(buffer: IGambar) {
-		// 	Main.canvasAktif = buffer
-		// }
 
 		public static get canvasAktif(): IGambar {
 			return Be._canvasAktif;
