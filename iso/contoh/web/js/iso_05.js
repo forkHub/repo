@@ -4,7 +4,6 @@
  * =========
  *
  * drag area, untuk memilih lebih dari satu ubin
- * viewport tidak bergerak mengikuti pointer
  *
  */
 window.onload = () => {

@@ -1,5 +1,15 @@
+/**
+ *  @namespace ha
+ */
+/**
+ *  @namespace be
+ *  @memberof ha
+ */
 declare namespace ha.be {
-    class Main {
+    /**
+     * @memberof ha.be
+     */
+    class Be {
         private static _canvasAr;
         private static _canvasAktif;
         private static _skalaOtomatis;
@@ -10,6 +20,7 @@ declare namespace ha.be {
         private static warnaBackup;
         /**
          * Handle saat window di resize
+         * @private
          */
         private static windowResize;
         /**
@@ -24,20 +35,13 @@ declare namespace ha.be {
         static backupWarna(): void;
         static restoreWarna(): void;
         /**
-         * Membersihkan layar dengan warna tertentu, default hitam
-         * @param m (number) merah
-         * @param h (number) hijau
-         * @param b (b) biru
-         * @param t (t) transparan (0-100)
+         *
+         * @param merah {angka} warna merah, optional default = 0
+         * @param hijau
+         * @param biru
+         * @param transparan
          */
-        static Bersih(m?: number, h?: number, b?: number, t?: number): void;
-        /**
-         * Mengeset warna untuk dipakai pada perintah menggambar setelahnya
-         * @param r (number) merah
-         * @param g (number) hijau
-         * @param b (number) biru
-         * @param a (number) alpha (0-100)
-         */
+        static Bersih(merah?: number, hijau?: number, biru?: number, transparan?: number): void;
         static Warna(r?: number, g?: number, b?: number, a?: number): void;
         private static updateStyleWarna;
         /**
@@ -45,30 +49,52 @@ declare namespace ha.be {
          * @returns (number) warna merah
          */
         static Hijau(): number;
-        /**
-         * Mengembalikan warna merah dari perintah AmbilPixel terakhir
-         * @returns (number) warna merah
-         */
         static Merah(): number;
         /**
          * Mengembalikan warna biru dari perintah AmbilPixel terakhir
          * @returns (number) warna biru
          */
         static Biru(): number;
-        static Transparan(): number;
-        static Kanvas(): HTMLCanvasElement;
         /**
-         * Setup Blitz Edu
-         * @param panjang (angka) panjang dari kanvas
-         * @param lebar (angka) lebar dari kanvs
-         * @param canvas (HTMLCanvasElement) referensi ke kanvas
-         * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
+         *
          * @returns
          */
+        static Transparan(): number;
+        /**
+         *
+         * @returns
+         */
+        static Kanvas(): HTMLCanvasElement;
         static Grafis(panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, fullScreen?: boolean, input?: boolean): void;
         static Grafis2(p: number, l: number, ubahStyle: boolean): void;
+        /**
+         *
+         * @param x1
+         * @param y1
+         * @param x2
+         * @param y2
+         */
         static Garis(x1: number, y1: number, x2: number, y2: number): void;
+        /**
+         *
+         * @param x1
+         * @param y1
+         * @param x2
+         * @param y2
+         * @param isi
+         * @param garis
+         * @param rotasi
+         */
         static Kotak(x1: number, y1: number, x2: number, y2: number, isi?: boolean, garis?: boolean, rotasi?: number): void;
+        /**
+         *
+         * @param x
+         * @param y
+         * @param radius
+         * @param skalaX
+         * @param skalaY
+         * @param rotasi
+         */
         static Oval(x: number, y: number, radius: number, skalaX?: number, skalaY?: number, rotasi?: number): void;
         static get canvasAktif(): IGambar;
         static set canvasAktif(value: IGambar);
@@ -87,11 +113,6 @@ declare namespace ha.be {
     }
 }
 declare namespace ha.be {
-    /**
-     * Menghandle Image object
-     * Tidak untuk dipakai langsung
-     * Image object akan di wrap oleh Sprite
-     */
     class Image {
         static buatBagiCanvas(canvas: HTMLCanvasElement, w?: number, h?: number, frameW?: number, frameH?: number): IGambar;
         static gambarRect(spr: ISprite): void;
@@ -115,6 +136,11 @@ declare namespace ha.be {
          * @returns (Uint8ClampedArray)
          */
         static AmbilPiksel(x?: number, y?: number): number[];
+        /**
+         *
+         * @param x
+         * @param y
+         */
         static SetPiksel(x?: number, y?: number): void;
         static handle(gbr: IGambar, x?: number, y?: number): void;
         static grabGambar(gbr: IGambar, x?: number, y?: number): void;
@@ -127,16 +153,15 @@ declare namespace ha.be {
          */
         static ukuran(gbr: IGambar, w?: number, h?: number): void;
         static resetRect(img: IGambar): void;
-        private static rectToImageTransform;
+        static rectToImageTransform(image: IGambar, x: number, y: number): void;
     }
 }
-declare namespace ha {
-    /**
-     * Sprite
-     * Wrapper dari image agar bisa interaksi
-    */
+declare namespace ha.be {
     class Sprite implements ISprite {
         static readonly daftar: ISprite[];
+        private static _ctrDraw;
+        static get ctrDraw(): number;
+        static set ctrDraw(value: number);
         private _buff;
         private _x;
         private _y;
@@ -154,6 +179,11 @@ declare namespace ha {
         get inputId(): number;
         set inputId(value: number);
         constructor(buffer: IGambar, dragable?: boolean);
+        /**
+         *
+         * @param spr
+         * @returns
+         */
         static kontek(spr: ISprite): CanvasRenderingContext2D;
         /**
          *
@@ -162,28 +192,160 @@ declare namespace ha {
          * @returns
          */
         static Copy(sprS: ISprite, onload?: () => void): ISprite;
+        /**
+         *
+         * @param spr
+         * @returns
+         */
         static Dimuat(spr: ISprite): boolean;
-        static statusDrag(spr: ISprite): boolean;
-        static panjang(spr: ISprite, pj?: number): number;
-        static lebar(spr: ISprite, lb?: number): number;
-        static alpha(spr: ISprite, alpha?: number): number;
-        static rotasi(spr: ISprite, sudut?: number): number;
-        static posisi(spr: ISprite, x?: number, y?: number): void;
-        static posisiX(spr: ISprite, x?: number | null | undefined): number;
-        static posisiY(spr: ISprite, y?: number | null | undefined): number;
-        static handle(spr: ISprite, x?: number, y?: number): void;
-        static gambarSemua(): void;
-        static tabrakan(spr: ISprite, spr2: ISprite): boolean;
+        /**
+         *
+         * @param spr
+         * @returns
+         */
+        static StatusDrag(spr: ISprite): boolean;
+        /**
+         *
+         * @param spr
+         * @param pj
+         * @returns
+         */
+        static Panjang(spr: ISprite, pj?: number): number;
+        /**
+         *
+         * @param spr
+         * @param lb
+         * @returns
+         */
+        static Lebar(spr: ISprite, lb?: number): number;
+        /**
+         *
+         * @param spr
+         * @param alpha
+         * @returns
+         */
+        static Alpha(spr: ISprite, alpha?: number): number;
+        /**
+         *
+         * @param spr
+         * @param sudut
+         * @returns
+         */
+        static Rotasi(spr: ISprite, sudut?: number): number;
+        /**
+         *
+         * @param spr
+         * @param x
+         * @param y
+         */
+        static Posisi(spr: ISprite, x?: number, y?: number): void;
+        /**
+         *
+         * @param spr
+         * @param x
+         * @returns
+         */
+        static PosisiX(spr: ISprite, x?: number | null | undefined): number;
+        /**
+         *
+         * @param spr
+         * @param y
+         * @returns
+         */
+        static PosisiY(spr: ISprite, y?: number | null | undefined): number;
+        /**
+         *
+         * @param spr
+         * @returns
+         */
+        static Bound(spr: ISprite): IKotak;
+        /**
+         *
+         * @param spr
+         * @param x
+         * @param y
+         * @returns
+         */
+        static Handle(spr: ISprite, x?: number, y?: number): void;
+        /**
+         *
+         */
+        static GambarSemua(): void;
+        /**
+         *
+         * @param spr
+         * @param spr2
+         * @returns
+         */
+        static Tabrakan(spr: ISprite, spr2: ISprite): boolean;
         private static muatAnimasiAsyncKanvas;
-        static muatAnimasiAsync(url: string, pf: number, lf: number, bisaDiDrag?: boolean, tipeDrag?: number): ISprite;
+        /**
+         *
+         * @param url
+         * @param pf
+         * @param lf
+         * @param bisaDiDrag
+         * @param tipeDrag
+         * @returns
+         */
+        static MuatAnimasi(url: string, pf: number, lf: number, bisaDiDrag?: boolean, tipeDrag?: number): ISprite;
         private static muatAsyncBerbagiKanvas;
+        /**
+         *
+         * @param url
+         * @param bisaDiDrag
+         * @param tipeDrag
+         * @returns
+         */
+        static MuatAsync(url: string, bisaDiDrag?: boolean, tipeDrag?: number): Promise<ISprite>;
+        /**
+         *
+         * @param url (string) url gambar
+         * @param bisaDiDrag
+         * @param tipeDrag
+         * @param onload
+         * @returns
+         */
         static Muat(url: string, bisaDiDrag?: boolean, tipeDrag?: number, onload?: () => void): ISprite;
-        static ukuran(gbr: ISprite, w: number, h: number): void;
+        /**
+         *
+         * @param gbr
+         * @param w
+         * @param h
+         */
+        static Ukuran(gbr: ISprite, w: number, h: number): void;
         private static buatPrivate;
-        static gambar(sprite: ISprite, frame?: number): void;
+        /**
+         *
+         * @param sprite
+         * @param frame
+         */
+        static Gambar(sprite: ISprite, frame?: number): void;
+        /**
+         *
+         * @param sprite
+         * @param sudut
+         * @param jarak
+         * @param x2
+         * @param y2
+         * @param skalaX
+         * @param skalaY
+         */
         static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number, skalaX?: number, skalaY?: number): void;
-        static ubin(spr: ISprite, x?: number, y?: number, frame?: number): void;
-        static statusMuat(spr?: ISprite): boolean;
+        /**
+         *
+         * @param spr
+         * @param x
+         * @param y
+         * @param frame
+         */
+        static Ubin(spr: ISprite, x?: number, y?: number, frame?: number): void;
+        /**
+         *
+         * @param spr
+         * @returns
+         */
+        static StatusMuat(spr?: ISprite): boolean;
         get dragStartX(): number;
         set dragStartX(value: number);
         get dragStartY(): number;
@@ -225,9 +387,6 @@ declare namespace ha.be {
         up(input: IInput): void;
         private checkTap;
     }
-    /**
-     * Input
-     */
     export class Input {
         private static _inputs;
         private static _debug;
@@ -329,10 +488,6 @@ declare namespace ha.be {
     export {};
 }
 declare namespace ha.be {
-    /** internal class untuk menghandle geometri
-     * Point
-     *
-     */
     class Point {
         static create(x?: number, y?: number): IPoint2D;
         static copy(p1: IPoint2D, p2: IPoint2D): void;
@@ -344,31 +499,23 @@ declare namespace ha.be {
     }
 }
 declare namespace ha.be {
-    /** internal class untuk menghandle geometri
-     * Kotak
-     *
-     */
-    class Rect {
-        static create(x1?: number, y1?: number, x2?: number, y2?: number): IRect;
+    class Kotak {
+        static buat(x1?: number, y1?: number, x2?: number, y2?: number): IKotak;
         private static copy;
         private static copyInfo;
         private static collideBound;
-        static collide(r1: IRect, r2: IRect): boolean;
+        static collide(r1: IKotak, r2: IKotak): boolean;
         private static collideDotBound;
-        static collideDot(r: IRect, x: number, y: number): boolean;
-        private static minX;
-        private static maxX;
-        private static minY;
-        private static maxY;
-        static translate(rect: IRect, x: number, y: number): void;
-        static rotate(r: IRect, deg: number, xc: number, yc: number, copy?: boolean): IRect;
+        static collideDot(r: IKotak, x: number, y: number): boolean;
+        static minX(r: IKotak): number;
+        static maxX(r: IKotak): number;
+        static minY(r: IKotak): number;
+        static maxY(r: IKotak): number;
+        static translate(rect: IKotak, x: number, y: number): void;
+        static rotate(r: IKotak, deg: number, xc: number, yc: number, copy?: boolean): IKotak;
     }
 }
 declare namespace ha.be {
-    /**
-     * internal class untuk menghandle geometri:
-     * garis
-     */
     class Segment {
         static create(v1?: IPoint2D, v2?: IPoint2D): ISegment;
         static boundCollide(seg1: ISegment, seg2: ISegment): boolean;
@@ -390,7 +537,7 @@ declare namespace ha.be {
         static xHorIdx(seg: ISegment): number;
     }
 }
-declare namespace ha {
+declare namespace ha.be {
     class Transform {
         static readonly RAD2DEG: number;
         static readonly DEG2RAD: number;
@@ -417,8 +564,16 @@ declare namespace ha {
 declare namespace ha.be {
     class Teks {
         private static get ctx();
-        static font(font?: string): void;
-        static rata(rata?: CanvasTextAlign): void;
+        /**
+         *
+         * @param font
+         */
+        static Font(font?: string): void;
+        /**
+         *
+         * @param rata
+         */
+        static Rata(rata?: CanvasTextAlign): void;
         /**
          * menulis teks di kanvas
          * @param teks (string)
@@ -427,13 +582,10 @@ declare namespace ha.be {
          * @param warna (boolean=true) apakah akan mengisi teks dengan warna
          * @param garis (boolean=false) apakah akan menggunakan outline
          */
-        static tulis(teks: string, x: number, y: number, warna?: boolean, garis?: boolean): void;
+        static Tulis(teks: string, x: number, y: number, warna?: boolean, garis?: boolean): void;
     }
 }
-declare namespace ha {
-    /**
-     * handle untuk interaksi sprite
-     */
+declare namespace ha.be {
     class SpriteInteraksi {
         inputDown(pos: any, id: number): void;
         inputMove(pos: any, pointerId: number): void;
@@ -443,9 +595,6 @@ declare namespace ha {
     export {};
 }
 declare namespace ha.be {
-    /**
-     * Cache image yang diload
-     */
     class Cache {
         private files;
         getGbr(url: string): HTMLImageElement;
@@ -454,10 +603,57 @@ declare namespace ha.be {
     export const cache: Cache;
     export {};
 }
+declare namespace ha.be {
+    class Mat {
+        /**
+         * Menghitung sudut dari posisi relative ke posisi 0,0
+         * @param x posisi x
+         * @param y posisi y
+         * @returns sudut relative ke posisi 0,0
+         */
+        static Sudut(x: number, y: number): number;
+    }
+}
 /**
- * shortcut buat perintah input
- * BLITZ-INPUT.TS
+ * Membersihkan layar dengan warna tertentu, default hitam
+ * @param merah {angka} opsional, merah, default = 0
+ * @param hijau {angka} opsional, hijau,, default = 0
+ * @param biru {angka} opsional, biru, default = 0
+ * @param transparan {angka} opsional, transparan (0-100)
  */
+declare const Bersih: (merah?: number, hijau?: number, biru?: number, transparan?: number) => void;
+/**
+ * Setup Blitz Edu
+ * @param panjang (angka) panjang dari kanvas
+ * @param lebar (angka) lebar dari kanvs
+ * @param canvas (HTMLCanvasElement) referensi ke kanvas
+ * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
+ * @returns
+ */
+declare const Grafis: (panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, fullScreen?: boolean, input?: boolean) => void;
+/**
+ * Mengeset warna untuk dipakai pada perintah menggambar berikutnya
+ * @param r (number) merah
+ * @param g (number) hijau
+ * @param b (number) biru
+ * @param a (number) alpha (0-100)
+ */
+declare const Warna: (r?: number, g?: number, b?: number, a?: number) => void;
+/**
+ * Mengembalikan warna merah dari perintah AmbilPixel terakhir
+ * @returns (number) warna merah
+ */
+declare const Merah: () => number;
+declare const Hijau: typeof ha.be.Be.Hijau;
+declare const Biru: typeof ha.be.Be.Biru;
+declare const Transparan: typeof ha.be.Be.Transparan;
+declare const AmbilPiksel: typeof ha.be.Image.AmbilPiksel;
+declare const SetPiksel: typeof ha.be.Image.SetPiksel;
+declare const Kontek: typeof ha.be.Be.Kontek;
+declare const Kanvas: typeof ha.be.Be.Kanvas;
+declare const Garis: typeof ha.be.Be.Garis;
+declare const Kotak: typeof ha.be.Be.Kotak;
+declare const Oval: typeof ha.be.Be.Oval;
 declare const InputHit: typeof ha.be.Input.InputHit;
 declare const InputX: typeof ha.be.Input.InputX;
 declare const InputY: typeof ha.be.Input.InputY;
@@ -472,58 +668,37 @@ declare const InputType: typeof ha.be.Input.InputType;
 declare const JmlTap: typeof ha.be.Input.JmlTap;
 declare const JmlDragMulai: typeof ha.be.Input.JmlDragMulai;
 declare const JmlDragSelesai: typeof ha.be.Input.JmlDragSelesai;
-/**
- * 	Shortcut untuk perintah-perintah utama
- */
-declare const Bersih: typeof ha.be.Main.Bersih;
-declare const Grafis: typeof ha.be.Main.Grafis;
-declare const Warna: typeof ha.be.Main.Warna;
-declare const Merah: typeof ha.be.Main.Merah;
-declare const Hijau: typeof ha.be.Main.Hijau;
-declare const Biru: typeof ha.be.Main.Biru;
-declare const Transparan: typeof ha.be.Main.Transparan;
-declare const AmbilPiksel: typeof ha.be.Image.AmbilPiksel;
-declare const SetPiksel: typeof ha.be.Image.SetPiksel;
-declare const Kontek: typeof ha.be.Main.Kontek;
-declare const Kanvas: typeof ha.be.Main.Kanvas;
-declare const Garis: typeof ha.be.Main.Garis;
-declare const Kotak: typeof ha.be.Main.Kotak;
-declare const Oval: typeof ha.be.Main.Oval;
-declare const Sudut: typeof ha.Transform.sudut;
-/**
- * Shortcut untuk perintah-perintah Sprite
- * */
-declare const Muat: typeof ha.Sprite.Muat;
-declare const Dimuat: typeof ha.Sprite.Dimuat;
-declare const MuatAnimasi: typeof ha.Sprite.muatAnimasiAsync;
-declare const StatusMuat: typeof ha.Sprite.statusMuat;
-declare const Posisi: typeof ha.Sprite.posisi;
-declare const Ukuran: typeof ha.Sprite.ukuran;
-declare const PosisiPolar: typeof ha.Sprite.posisiPolar;
-declare const Gambar: typeof ha.Sprite.gambar;
-declare const GambarSemua: typeof ha.Sprite.gambarSemua;
-declare const PosisiX: typeof ha.Sprite.posisiX;
-declare const PosisiY: typeof ha.Sprite.posisiY;
-declare const Handle: typeof ha.Sprite.handle;
-declare const Rotasi: typeof ha.Sprite.rotasi;
-declare const Alpha: typeof ha.Sprite.alpha;
-declare const Tabrakan: typeof ha.Sprite.tabrakan;
-declare const StatusDrag: typeof ha.Sprite.statusDrag;
-declare const SpriteKontek: typeof ha.Sprite.kontek;
-declare const Panjang: typeof ha.Sprite.panjang;
-declare const Lebar: typeof ha.Sprite.lebar;
-declare const Copy: typeof ha.Sprite.Copy;
-declare const Ubin: typeof ha.Sprite.ubin;
-/**
- * Shortcut buat perintah-perintah font
- */
-declare var Font: typeof ha.be.Teks.font;
-declare var Tulis: typeof ha.be.Teks.tulis;
-declare var Rata: typeof ha.be.Teks.rata;
+declare const Sudut: typeof ha.be.Mat.Sudut;
+declare const Muat: typeof ha.be.Sprite.Muat;
+declare const MuatAsync: typeof ha.be.Sprite.MuatAsync;
+declare const Dimuat: typeof ha.be.Sprite.Dimuat;
+declare const MuatAnimasi: typeof ha.be.Sprite.MuatAnimasi;
+declare const StatusMuat: typeof ha.be.Sprite.StatusMuat;
+declare const Posisi: typeof ha.be.Sprite.Posisi;
+declare const Ukuran: typeof ha.be.Sprite.Ukuran;
+declare const PosisiPolar: typeof ha.be.Sprite.posisiPolar;
+declare const Gambar: typeof ha.be.Sprite.Gambar;
+declare const GambarSemua: typeof ha.be.Sprite.GambarSemua;
+declare const PosisiX: typeof ha.be.Sprite.PosisiX;
+declare const PosisiY: typeof ha.be.Sprite.PosisiY;
+declare const Handle: typeof ha.be.Sprite.Handle;
+declare const Rotasi: typeof ha.be.Sprite.Rotasi;
+declare const Alpha: typeof ha.be.Sprite.Alpha;
+declare const Tabrakan: typeof ha.be.Sprite.Tabrakan;
+declare const StatusDrag: typeof ha.be.Sprite.StatusDrag;
+declare const SpriteKontek: typeof ha.be.Sprite.kontek;
+declare const Panjang: typeof ha.be.Sprite.Panjang;
+declare const Lebar: typeof ha.be.Sprite.Lebar;
+declare const Copy: typeof ha.be.Sprite.Copy;
+declare const Ubin: typeof ha.be.Sprite.Ubin;
+declare const Bound: typeof ha.be.Sprite.Bound;
+declare var Font: typeof ha.be.Teks.Font;
+declare var Tulis: typeof ha.be.Teks.Tulis;
+declare var Rata: typeof ha.be.Teks.Rata;
 /**
  * INTERFACE
 */
-interface IRect {
+interface IKotak {
     vs?: IV2D[];
     segs?: ISegment[];
 }
@@ -561,8 +736,9 @@ interface IGambar {
     rotasi: number;
     alpha: number;
     isAnim: boolean;
-    rect: IRect;
+    rect: IKotak;
     load: boolean;
+    ctrIdx: number;
     panjang: number;
     lebar: number;
     panjangDiSet: boolean;
