@@ -22,6 +22,7 @@ window.onload = () => {
     window.requestAnimationFrame(update);
 
     function update(): void {
+        //update garis
         garis.v1.x = PosisiX(p1);
         garis.v1.y = PosisiY(p1);
 
