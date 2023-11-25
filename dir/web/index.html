@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+
+    <title>Blitz</title>
+</head>
+
+<body>
+
+    <div class="daftar-folder">
+
+    </div>
+    <div class="daftar-tombol">
+        <button class="tambah" onclick="pesan('tambah_klik')">tambah</button>&nbsp;
+        <button class="hapus" onclick="pesan('hapus_klik')">hapus</button>
+    </div>
+
+    <script>
+        function pesan(msg) {
+            window.postMessage(msg);
+        }
+    </script>
+
+    <script type="module" src="./js/folder.js"></script>
+</body>
+
+</html>
