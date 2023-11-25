@@ -1,5 +1,6 @@
 window.onload = () => {
     Grafis(600, 800);
+    let panahAktif: PanahObj;
 
     const p = Panah.buat();
     p.spr = Muat('./gbr/kotak.png', true);
@@ -9,11 +10,21 @@ window.onload = () => {
     Handle(p.spr2, 16, 16);
 
     function update() {
-        Bersih();
+        Panah.updateFromSpr(p);
+        if (InputHit()) {
 
+            panahAktif = null;
+            let jrk = ha.geom.Garis.gp.jarak(p.garis, InputX(), InputY());
+            if (jrk < 5) {
+                panahAktif = p;
+
+            }
+
+        }
+
+        Bersih();
         gambarPanah();
-        Gambar(p.spr2);
-        Gambar(p.spr);
+
         window.requestAnimationFrame(update);
     }
 
@@ -23,6 +34,13 @@ window.onload = () => {
         ctx.moveTo(PosisiX(p.spr), PosisiY(p.spr));
         ctx.lineTo(PosisiX(p.spr2), PosisiY(p.spr2));
         ctx.stroke();
+
+        Gambar(p.spr2);
+        Gambar(p.spr);
+
+        if (panahAktif) {
+
+        }
     }
 
     window.requestAnimationFrame(update);

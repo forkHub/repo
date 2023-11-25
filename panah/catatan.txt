@@ -1,0 +1,2 @@
+pilih garis 
+garis yang dipilih diberi bounding
