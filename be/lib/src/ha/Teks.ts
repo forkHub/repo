@@ -17,10 +17,11 @@ namespace ha.be {
 
 		/**
 		 * 
-		 * @param rata 
+		 * @param rata (string) "center" | "end" | "left" | "right" | "start"
 		 */
 		static Rata(rata: CanvasTextAlign = "left"): void {
 			Teks.ctx.textAlign = rata;
+
 		}
 
 		/**

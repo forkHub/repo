@@ -79,8 +79,7 @@ namespace ha.cacah {
 
     /**
      * pengurangan
-     * bila hasilnya minus, yang dikembalikan adalah bilangan terkecil
-     * yang manggil fungsi harus mengecek manual
+     * bila hasilnya minus, yang dikembalikan adalah 0
      * @param n1 
      * @param n2 
      * @returns 
@@ -93,7 +92,7 @@ namespace ha.cacah {
         n2 = padding(n2, n1.length);
 
         if (kurangDari(n1, n2)) {
-            return n1;
+            return '0';
         }
 
         for (let i = n1.length - 1; i >= 0; i--) {
@@ -111,7 +110,6 @@ namespace ha.cacah {
                 pinjam = 1;
             }
             c3 = c1 - c2;
-            // console.log(c1, c2, c3);
 
             hasil = c3 + hasil;
         }
@@ -124,6 +122,7 @@ namespace ha.cacah {
         return hasil;
     }
 
+    //TODO: tidak skalable
     export async function kali(n1: string, n2: string): Promise<string> {
         let c2 = parseInt(n2);
         let hasil = '0';

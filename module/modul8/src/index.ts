@@ -3,13 +3,13 @@ function tambah() {
     let str = window.prompt("nama:", "");
 
     if (str) {
-        let obj = Modul.tambah(str);
+        let obj = ModulService.tambah(str, Modul.dipilih);
         if (Modul.dipilih <= 0) {
             Modul.dipilih = obj.id;
             pilih(obj.id);
         }
         ModulView.tambah(obj);
-        Modul.simpan();
+        ModulService.simpan();
     }
     else {
         Dialog.open('nama invalid');
@@ -25,9 +25,12 @@ function edit() {
     let str = window.prompt('nama:');
 
     if (str) {
-        let m = Modul.baca(Modul.dipilih);
-        m.nama = str;
-        ModulView.update(m);
+        ModulService.baca(Modul.dipilih).then((m) => {
+            m.nama = str;
+            ModulView.update(m);
+        }).catch((e) => {
+            Dialog.open(e.message);
+        });
     }
 }
 
@@ -44,10 +47,10 @@ function hapus() {
     let c = window.confirm('Hapus?');
     if (c) {
 
-        Modul.hapus(Modul.dipilih);
+        ModulService.hapus(Modul.dipilih);
         ModulView.hapus(Modul.dipilih);
         Modul.dipilih = -1;
-        Modul.simpan();
+        ModulService.simpan();
     }
 }
 
@@ -68,13 +71,13 @@ function buka() {
     window.location.href = `./index.html?id=${Modul.dipilih}`;
 }
 
-Modul.init();
+ModulService.init();
 ModulView.init();
 
 let id = getQuery("id") || "";
 if (getQuery("id") != "") {
-
+    ModulView.refresh(ModulService.getByIndukId(0));
 }
 else {
-    ModulView.refresh();
+    ModulView.refresh(ModulService.getByIndukId(parseInt(id)));
 }

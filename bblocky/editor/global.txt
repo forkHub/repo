@@ -8,6 +8,6 @@ bila variable di workspace yang lain sudah ada => tidak jadi dibikin
 hapus variable di satu workplace => variable di workspace yang lain mungkin masih ada
 
 fungsi dibikin global:
-fungsi dibikin simple
+fungsi dibikin simple:
 fungsi di satu workplace => direferensikan sebagai method di tempat yang lain
-saat fungsi dihapus => 
+saat fungsi dihapus =>
