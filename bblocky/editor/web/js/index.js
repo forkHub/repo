@@ -132,17 +132,28 @@ var ha;
                     Blockly.serialization.workspaces.load(simpan, blockly.Index.workspace);
                 };
                 w.run = () => {
-                    let code = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(blockly.Index.workspace));
+                    let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(blockly.Index.workspace));
                     w.simpan();
-                    window.localStorage.setItem("blocklycode", code);
-                    window.top.location.href = ('./play.html');
+                    window.localStorage.setItem("blocklycode", codeHtml);
+                    window.open('./play.html', "_blank");
+                    // window.location.href = "./play.html";
                 };
                 w.share = () => {
                     let simpan = Blockly.serialization.workspaces.save(blockly.Index.workspace);
                     let simpans = JSON.stringify(simpan);
                     let b64 = btoa(simpans);
+                    console.groupCollapsed('share');
                     console.log(b64);
+                    console.groupEnd();
                 };
+                w.publish = () => {
+                    Op.publish();
+                };
+            }
+            static publish() {
+                let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(blockly.Index.workspace));
+                window.localStorage.setItem("blocklycode", codeHtml);
+                window.open('./export.html', "_blank");
             }
             static resize() {
                 const onresize = function () {
@@ -181,6 +192,7 @@ function openFile(id) {
 function deleteFile(id) {
     console.group('delete by id: ' + id);
     ha.blockly.Data.hapus(id);
+    window.location.reload();
 }
 var ha;
 (function (ha) {
@@ -211,6 +223,9 @@ var ToolBoxKind;
     ToolBoxKind["block"] = "block";
 })(ToolBoxKind || (ToolBoxKind = {}));
 ///<reference path="./toolboxType.ts"/>
+/**
+ * blitz toolbox definition
+ */
 var ha;
 (function (ha) {
     var blockly;
@@ -297,6 +312,11 @@ var ha;
                     }
                 }
             }
+            /**
+             * add default input
+             * @param t
+             * @returns
+             */
             function addInput(t) {
                 if (t.inputs)
                     return;
@@ -315,6 +335,9 @@ var ha;
                 addArg(t);
                 addInput(t);
             }
+            /**
+             * normalize all block
+             */
             function normalizeAllBlock() {
                 blockly.BlitzData.list.forEach((item) => { normal(item); });
                 blockly.ImageBlockData.list.forEach((item) => { normal(item); });
@@ -369,11 +392,12 @@ var ha;
                         requestAnimationFrame(__updater);
                     };
                 </script>
-            </body>
-
             </html>
         `;
             static export(code) {
+                console.group("export:");
+                console.log(code);
+                console.groupEnd();
                 // console.log('code', code);
                 // let win = window.open('about:blank', '_blank');
                 let data2 = this.data.replace('/** script here **/', code);
@@ -405,8 +429,23 @@ var ha;
 (function (ha) {
     var blockly;
     (function (blockly) {
+        class HalExport {
+            static init() {
+                let simpan = window.localStorage.getItem("blocklycode");
+                let textArea = document.querySelector('textarea');
+                textArea.value = simpan;
+            }
+        }
+        blockly.HalExport = HalExport;
+    })(blockly = ha.blockly || (ha.blockly = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var blockly;
+    (function (blockly) {
         class Iframe {
             static init() {
+                console.log("init");
                 let simpan = window.localStorage.getItem("blocklycode");
                 let iframe = document.querySelector('iframe');
                 let doc = iframe.contentWindow.document;
@@ -841,6 +880,9 @@ var ha;
                 Index.workspace = Blockly.inject("blocklyDiv", options);
                 Index.blocklyArea = document.body.querySelector('#blocklyArea');
                 Index.blocklyDiv = document.body.querySelector('#blocklyDiv');
+            }
+            static getQuery() {
+                //TODO:
             }
             static init() {
                 ha.blockly.toolbox.init();

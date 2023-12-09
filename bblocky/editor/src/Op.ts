@@ -38,18 +38,32 @@ namespace ha.blockly {
             }
 
             w.run = () => {
-                let code = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
+                let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
                 w.simpan();
-                window.localStorage.setItem("blocklycode", code);
-                window.top.location.href = ('./play.html');
+                window.localStorage.setItem("blocklycode", codeHtml);
+                window.open('./play.html', "_blank");
+                // window.location.href = "./play.html";
             }
 
             w.share = () => {
                 let simpan = Blockly.serialization.workspaces.save(Index.workspace);
                 let simpans = JSON.stringify(simpan);
                 let b64 = btoa(simpans);
+
+                console.groupCollapsed('share');
                 console.log(b64);
+                console.groupEnd();
             }
+
+            w.publish = () => {
+                Op.publish();
+            }
+        }
+
+        static publish() {
+            let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
+            window.localStorage.setItem("blocklycode", codeHtml);
+            window.open('./export.html', "_blank");
         }
 
         static resize() {

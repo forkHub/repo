@@ -1,5 +1,8 @@
 ///<reference path="./toolboxType.ts"/>
 
+/**
+ * blitz toolbox definition
+ */
 namespace ha.blockly.BDef {
 
     function defValue(t: TToolBoxBlockDef): void {
@@ -88,6 +91,11 @@ namespace ha.blockly.BDef {
         }
     }
 
+    /**
+     * add default input
+     * @param t 
+     * @returns 
+     */
     function addInput(t: TToolBoxBlockDef) {
         if (t.inputs) return;
 
@@ -110,6 +118,9 @@ namespace ha.blockly.BDef {
         addInput(t);
     }
 
+    /**
+     * normalize all block
+     */
     export function normalizeAllBlock() {
         BlitzData.list.forEach((item) => { normal(item); });
         ImageBlockData.list.forEach((item) => { normal(item) });
