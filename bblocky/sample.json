@@ -1,0 +1,120 @@
+{
+    "blocks": {
+        "languageVersion": 0,
+        "blocks": [
+            {
+                "type": "Grafis",
+                "id": "V[.kX)tniw/:Y@1C)bYM",
+                "x": 66,
+                "y": 39,
+                "inputs": {
+                    "width": {
+                        "shadow": {
+                            "type": "math_number",
+                            "id": "+n:q-OHFHU}A0t+izC5!",
+                            "fields": {
+                                "NUM": 320
+                            }
+                        }
+                    },
+                    "height": {
+                        "shadow": {
+                            "type": "math_number",
+                            "id": "N0Z%W/n;mV~kby[lG1`T",
+                            "fields": {
+                                "NUM": 240
+                            }
+                        }
+                    }
+                },
+                "next": {
+                    "block": {
+                        "type": "variables_set",
+                        "id": "#=|LyR,~+.LtY{pEs|AG",
+                        "fields": {
+                            "VAR": {
+                                "id": "FlMCIdWT,Jr]oIiut6Ob"
+                            }
+                        },
+                        "inputs": {
+                            "VALUE": {
+                                "block": {
+                                    "type": "ha.bbjs.Sprite.LoadSprite",
+                                    "id": "T;2F3R5?nM21S?C_N?vZ",
+                                    "inputs": {
+                                        "url": {
+                                            "shadow": {
+                                                "type": "text",
+                                                "id": "Nub5gc19QwL9nWq!+s,g",
+                                                "fields": {
+                                                    "TEXT": "./imgs/box.png"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "type": "procedures_defnoreturn",
+                "id": "C,f-KXEJBHCn:2rJW!c1",
+                "x": 57,
+                "y": 261,
+                "icons": {
+                    "comment": {
+                        "text": "Describe this function...",
+                        "pinned": false,
+                        "height": 80,
+                        "width": 160
+                    }
+                },
+                "fields": {
+                    "NAME": "update"
+                },
+                "inputs": {
+                    "STACK": {
+                        "block": {
+                            "type": "ha.be.Main.Bersih",
+                            "id": "ix$8]6mVJSUXw@F;Px5t",
+                            "next": {
+                                "block": {
+                                    "type": "ha.bbjs.Sprite.DrawSprite",
+                                    "id": "CK?4y.FRzmQ}(7i]rJo8",
+                                    "inputs": {
+                                        "sprite": {
+                                            "shadow": {
+                                                "type": "math_number",
+                                                "id": "w|l(e(bO+rU9XO3zd%j=",
+                                                "fields": {
+                                                    "NUM": 0
+                                                }
+                                            },
+                                            "block": {
+                                                "type": "variables_get",
+                                                "id": "*#K-0umJ=Z${HDH1dVZQ",
+                                                "fields": {
+                                                    "VAR": {
+                                                        "id": "FlMCIdWT,Jr]oIiut6Ob"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "variables": [
+        {
+            "name": "img",
+            "id": "FlMCIdWT,Jr]oIiut6Ob"
+        }
+    ]
+}
