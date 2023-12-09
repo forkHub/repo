@@ -1,0 +1,12 @@
+fase 1:
+=======
+single project
+export manual
+demo
+documentation
+
+BACKLOG:
+========
+multiple project
+perlu perubahan data saat simpan ke local storage
+Event
