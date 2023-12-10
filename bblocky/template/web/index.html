@@ -12,7 +12,6 @@
     <canvas></canvas>
     <!-- script ref  -->
     <script src="./js/be.js" defer></script>
-    <script src="./js/bbjs.js" defer></script>
 
     <!-- main  -->
     <script>
@@ -20,14 +19,14 @@
         window.onload = () => {
             console.log('start');
             /** script here **/
-            let __w1 = window;
-            let __update;
-            for (let i in __w1) {
-                if ("update" == i.toLowerCase()) {
-                    __update = __w1[i];
-                    console.log('found update function');
-                }
-            }
+            let __update; // = update || Update || UPDATE as any;
+            if (typeof update === "function")
+                __update = update;
+            if (typeof Update === "function")
+                __update = Update;
+            if (typeof UPDATE === "function")
+                __update = UPDATE;
+            console.log(__update);
             let __updater = () => {
                 if (__update) {
                     __update();

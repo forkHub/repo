@@ -5,6 +5,7 @@ namespace ha.be {
 	export class Sprite implements ISprite {
 		static readonly daftar: ISprite[] = [];
 		private static _ctrDraw: number = 0;
+
 		public static get ctrDraw(): number {
 			return Sprite._ctrDraw;
 		}
@@ -26,6 +27,7 @@ namespace ha.be {
 		private _sudutTekanAwal: number;
 		private _sudutAwal: number;
 		private _inputId: number;
+
 
 		public get inputId(): number {
 			return this._inputId;
@@ -195,6 +197,8 @@ namespace ha.be {
 			return spr.buffer.rect;
 		}
 
+		//TODO:boundx, boundy, boundX2, boundY2
+
 		/**
 		 * 
 		 * @param spr 
@@ -334,7 +338,7 @@ namespace ha.be {
 		}
 
 		/**
-		 * 
+		 * Menggambar sprite ke layar
 		 * @param sprite 
 		 * @param frame 
 		 */
@@ -344,6 +348,18 @@ namespace ha.be {
 				return;
 			}
 			Image.gambar(sprite.buffer, sprite.x, sprite.y, frame);
+		}
+
+		/**
+		 * 
+		 * @param sprite 
+		 * @param x 
+		 * @param y 
+		 * @param frame 
+		 * @returns 
+		 */
+		static GambarXY(sprite: ISprite, x: number, y: number, frame?: number): void {
+			Image.gambar(sprite.buffer, x, y, frame);
 		}
 
 		/**

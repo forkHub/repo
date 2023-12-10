@@ -1,0 +1,173 @@
+body{
+	font: 12px verdana;
+	background: url("/web/20160314032951im_/http://www.blitzbasic.com/skins/default/background.png");
+}
+img{
+	border: 0px;
+}
+a{
+	font: 12px verdana;
+	color: #000088;
+	text-decoration: none;
+}
+a.tab{
+}
+a.menuitem{
+}
+a:hover{
+	text-decoration: underline;
+}
+a.tab:hover
+	color: #ccffff;
+}
+a.menuitem:hover{
+}
+h1{
+	font: bolder 14px verdana;
+}
+h3{
+	font: bolder 12px verdana;
+}
+font.tiny{
+	font: 10px verdana;
+}
+td{
+	font: 12px verdana;
+}
+td.tab{
+	height: 17px;
+	background: url("/web/20160314032951im_/http://www.blitzbasic.com/skins/default/tab.png");
+	text-align: center;
+}
+td.tableft{
+	width: 8px;
+	background: url("/web/20160314032951im_/http://www.blitzbasic.com/skins/default/tableft.png");
+}
+td.tabright{
+	width: 8px;
+	background: url("/web/20160314032951im_/http://www.blitzbasic.com/skins/default/tabright.png");
+}
+td.seltab{
+	height: 17px;
+	background: url("/web/20160314032951im_/http://www.blitzbasic.com/skins/default/seltab.png");
+	text-align: center;
+}
+td.seltableft{
+	width: 8px;
+	background: url("/web/20160314032951im_/http://www.blitzbasic.com/skins/default/seltableft.png");
+}
+td.seltabright{
+	width: 8px;
+	background: url("/web/20160314032951im_/http://www.blitzbasic.com/skins/default/seltabright.png");
+}
+td.menubar{
+	height: 17px;
+	background: #eeeeee;
+	border-top: solid 1px #888888;
+}
+td.menubarleft{
+	width: 1px;
+	background: url("/web/20160314032951im_/http://www.blitzbasic.com/skins/default/vbar.png");
+}
+td.menubarright{
+	width: 1px;
+	background: url("/web/20160314032951im_/http://www.blitzbasic.com/skins/default/vbar.png");
+}
+td.menuitem{
+}
+td.menuitemleft{
+	width: 8px;
+}
+td.menuitemright{
+}
+td.head{
+	height: 18px;
+	text-indent: 4px;
+	background: url(/web/20160314032951im_/http://www.blitzbasic.com/skins/default/head.png);
+}
+td.headleft{
+	width: 1px;
+	background: url("/web/20160314032951im_/http://www.blitzbasic.com/skins/default/headleft.png");
+}
+td.headright{
+	width: 1px;
+	background: url("/web/20160314032951im_/http://www.blitzbasic.com/skins/default/headright.png");
+}
+td.cell{
+	padding: 4px;
+	background: #eeeeee;
+	border: solid 1px #ffffff;
+}
+div.main{
+	padding: 16px;
+	background: #ffffff;
+	border: solid 1px #888888;
+}
+td.posthead{
+	padding-top: 8px;
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-bottom: 4px;
+}
+td.posttext{
+	padding: 4px;
+	background: #eeeeee;
+	border: solid 1px #888888;
+}
+pre.code{
+	padding: 8px;
+	font: 12px courier;
+	color: #0000ff;
+	background: #eeeeee;
+	border: solid 1px #888888;
+}
+div.quote{
+	font-style: italic;
+	padding: 8px;
+	background: #cccccc;
+	border: solid 1px #888888;
+}
+div.intro{
+	padding: 8px;
+	border-top: solid 1px #888888;
+	border-bottom: solid 1px #888888;
+}
+input{
+	font: 12px verdana;
+}
+select{
+	font: 12px verdana;
+}
+submit{
+	font: 12px verdana;
+}
+textarea{
+	font: 12px verdana;
+}
+textarea.codebox{
+	overflow:auto;
+	font: 12px courier;
+	color: #0000ff;
+	background: #eeeeee;
+}
+
+/*
+     FILE ARCHIVED ON 03:29:51 Mar 14, 2016 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 10:47:29 Dec 06, 2023.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  captures_list: 78.387
+  exclusion.robots: 0.068
+  exclusion.robots.policy: 0.058
+  cdx.remote: 0.057
+  esindex: 0.009
+  LoadShardBlock: 48.677 (3)
+  PetaboxLoader3.datanode: 88.45 (5)
+  load_resource: 190.618 (2)
+  PetaboxLoader3.resolve: 113.828 (2)
+*/
