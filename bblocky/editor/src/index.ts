@@ -18,7 +18,7 @@ namespace ha.blockly {
 				disable: true,
 				maxBlocks: Infinity,
 				trashcan: true,
-				horizontalLayout: true,
+				// horizontalLayout: true,
 				toolboxPosition: 'start',
 				css: true,
 				media: 'https://blockly-demo.appspot.com/static/media/',

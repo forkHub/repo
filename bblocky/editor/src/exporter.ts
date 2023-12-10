@@ -15,7 +15,6 @@ namespace ha.blockly {
                 <canvas></canvas>
                 <!-- script ref  -->
                 <script src="./js/be.js" defer></script>
-                <script src="./js/bbjs.js" defer></script>
 
                 <!-- main  -->
                 <script>
@@ -40,6 +39,8 @@ namespace ha.blockly {
                         requestAnimationFrame(__updater);
                     };
                 </script>
+            </body>
+
             </html>
         `;
 

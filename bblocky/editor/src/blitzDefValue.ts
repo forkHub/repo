@@ -5,9 +5,13 @@
  */
 namespace ha.blockly.BDef {
 
+    /**
+     * add default value
+     * @param t 
+     */
     function defValue(t: TToolBoxBlockDef): void {
-        console.group("defValue");
-        console.log(t);
+        // console.group("defValue");
+        // console.log(t);
 
         if (t.output) {
 
@@ -25,11 +29,20 @@ namespace ha.blockly.BDef {
         t.tooltip = t.tooltip || "";
         t.helpUrl = t.helpUrl || "";
 
-        console.log(t)
-        console.groupEnd();
+        // console.log(t)
+        // console.groupEnd();
     }
 
+    /**
+     * create shadow based on input
+     * @param t 
+     * @returns 
+     */
     function createShadow(t: TArgDef): any {
+        console.group('create shadow');
+        console.log(t.check);
+        console.groupEnd();
+
         if (EOutput.String == t.check) {
             return {
                 shadow: {
@@ -48,7 +61,7 @@ namespace ha.blockly.BDef {
                     }
                 }
             }
-        } else if (EOutput.Boolean) {
+        } else if (EOutput.Boolean == t.check) {
             return {
                 shadow: {
                     "type": "logic_boolean",
@@ -58,19 +71,26 @@ namespace ha.blockly.BDef {
                 }
             }
         }
-        else if (EOutput.Dummy) {
-
+        else if (EOutput.Dummy == t.check) {
+            return null
+        }
+        else if (t.check == undefined) {
+            return null
         }
 
         throw Error('not supported: ' + t.check);
     }
 
     function addArg(t: TToolBoxBlockDef) {
+        console.group('add arg ');
+        console.log(t);
 
         function getCheck(n: any): EOutput {
             if (typeof n == "number") return EOutput.Number;
             if (typeof n == "string") return EOutput.String;
             if (typeof n == "boolean") return EOutput.Boolean;
+            if (typeof n == "object") return EOutput.Any;
+            //TODO: null
             throw Error(n);
         }
 
@@ -80,15 +100,35 @@ namespace ha.blockly.BDef {
                 t.args0.push({
                     type: EArgType.inputDummy
                 })
-            } else {
-                t.args0.push({
-                    check: getCheck(t.args[i]),
-                    type: EArgType.inputValue,
-                    default: t.args[i] + '',
-                    name: i + ''
-                })
+            }
+            else if ("any" == i.toLocaleLowerCase()) {
+                //TODO:
+            }
+            else {
+                let check = getCheck(t.args[i]);
+                console.log("check:", check);
+
+                if (EOutput.Any == check) {
+                    console.log("any");
+                    t.args0.push({
+                        type: EArgType.inputValue,
+                        name: i + ''
+                    })
+                }
+                else {
+                    console.log("skalar");
+
+                    t.args0.push({
+                        check: check,
+                        type: EArgType.inputValue,
+                        default: t.args[i] + '',
+                        name: i + ''
+                    })
+                }
             }
         }
+
+        console.groupEnd();
     }
 
     /**
@@ -105,7 +145,10 @@ namespace ha.blockly.BDef {
 
             }
             else {
-                inputs[item.name] = createShadow(item);
+                let shadow = createShadow(item);
+                if (shadow != null) {
+                    inputs[item.name] = shadow;
+                }
             }
         })
 

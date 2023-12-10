@@ -3,7 +3,8 @@ enum EOutput {
     Number = "Number",
     String = "String",
     Array = "Array",
-    Dummy = "dummy"
+    Dummy = "dummy",
+    Any = ""
 }
 
 enum EArgType {

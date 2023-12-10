@@ -1,3 +1,3 @@
-copy \tsmodule\*.d.ts .\src\dts\
-copy \tsmodule\*.js .\web\js\
+copy \tsmodule\be.d.ts .\src\dts\
+copy \tsmodule\be.js .\web\js\
 pause

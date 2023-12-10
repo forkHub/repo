@@ -1,9 +1,6 @@
-fase 1:
-=======
-single project
-export manual
-demo
-documentation
+url absolut buat image => w3school
+migrasi ke be
+hapus bbjs
 
 BACKLOG:
 ========

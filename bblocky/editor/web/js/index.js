@@ -210,6 +210,7 @@ var EOutput;
     EOutput["String"] = "String";
     EOutput["Array"] = "Array";
     EOutput["Dummy"] = "dummy";
+    EOutput["Any"] = "";
 })(EOutput || (EOutput = {}));
 var EArgType;
 (function (EArgType) {
@@ -232,9 +233,13 @@ var ha;
     (function (blockly) {
         var BDef;
         (function (BDef) {
+            /**
+             * add default value
+             * @param t
+             */
             function defValue(t) {
-                console.group("defValue");
-                console.log(t);
+                // console.group("defValue");
+                // console.log(t);
                 if (t.output) {
                 }
                 else {
@@ -247,10 +252,18 @@ var ha;
                 t.colour = 230;
                 t.tooltip = t.tooltip || "";
                 t.helpUrl = t.helpUrl || "";
-                console.log(t);
-                console.groupEnd();
+                // console.log(t)
+                // console.groupEnd();
             }
+            /**
+             * create shadow based on input
+             * @param t
+             * @returns
+             */
             function createShadow(t) {
+                console.group('create shadow');
+                console.log(t.check);
+                console.groupEnd();
                 if (EOutput.String == t.check) {
                     return {
                         shadow: {
@@ -271,7 +284,7 @@ var ha;
                         }
                     };
                 }
-                else if (EOutput.Boolean) {
+                else if (EOutput.Boolean == t.check) {
                     return {
                         shadow: {
                             "type": "logic_boolean",
@@ -281,11 +294,17 @@ var ha;
                         }
                     };
                 }
-                else if (EOutput.Dummy) {
+                else if (EOutput.Dummy == t.check) {
+                    return null;
+                }
+                else if (t.check == undefined) {
+                    return null;
                 }
                 throw Error('not supported: ' + t.check);
             }
             function addArg(t) {
+                console.group('add arg ');
+                console.log(t);
                 function getCheck(n) {
                     if (typeof n == "number")
                         return EOutput.Number;
@@ -293,6 +312,9 @@ var ha;
                         return EOutput.String;
                     if (typeof n == "boolean")
                         return EOutput.Boolean;
+                    if (typeof n == "object")
+                        return EOutput.Any;
+                    //TODO: null
                     throw Error(n);
                 }
                 t.args0 = [];
@@ -302,15 +324,31 @@ var ha;
                             type: EArgType.inputDummy
                         });
                     }
+                    else if ("any" == i.toLocaleLowerCase()) {
+                        //TODO:
+                    }
                     else {
-                        t.args0.push({
-                            check: getCheck(t.args[i]),
-                            type: EArgType.inputValue,
-                            default: t.args[i] + '',
-                            name: i + ''
-                        });
+                        let check = getCheck(t.args[i]);
+                        console.log("check:", check);
+                        if (EOutput.Any == check) {
+                            console.log("any");
+                            t.args0.push({
+                                type: EArgType.inputValue,
+                                name: i + ''
+                            });
+                        }
+                        else {
+                            console.log("skalar");
+                            t.args0.push({
+                                check: check,
+                                type: EArgType.inputValue,
+                                default: t.args[i] + '',
+                                name: i + ''
+                            });
+                        }
                     }
                 }
+                console.groupEnd();
             }
             /**
              * add default input
@@ -325,7 +363,10 @@ var ha;
                     if (item.type == EArgType.inputDummy) {
                     }
                     else {
-                        inputs[item.name] = createShadow(item);
+                        let shadow = createShadow(item);
+                        if (shadow != null) {
+                            inputs[item.name] = shadow;
+                        }
                     }
                 });
                 t.inputs = inputs;
@@ -367,7 +408,6 @@ var ha;
                 <canvas></canvas>
                 <!-- script ref  -->
                 <script src="./js/be.js" defer></script>
-                <script src="./js/bbjs.js" defer></script>
 
                 <!-- main  -->
                 <script>
@@ -392,6 +432,8 @@ var ha;
                         requestAnimationFrame(__updater);
                     };
                 </script>
+            </body>
+
             </html>
         `;
             static export(code) {
@@ -868,7 +910,7 @@ var ha;
                     disable: true,
                     maxBlocks: Infinity,
                     trashcan: true,
-                    horizontalLayout: true,
+                    // horizontalLayout: true,
                     toolboxPosition: 'start',
                     css: true,
                     media: 'https://blockly-demo.appspot.com/static/media/',
@@ -901,8 +943,10 @@ var ha;
     (function (blockly) {
         var BlitzData;
         (function (BlitzData) {
+            BlitzData.list = [];
+            // ha.be.Be.Grafis
             BlitzData.Grafis = {
-                type: "Grafis",
+                type: "ha.be.Be.Grafis",
                 message0: "Graphics %1 width: %2 height: %3",
                 // inputsInline: false,
                 args: {
@@ -911,30 +955,15 @@ var ha;
                     height: 240
                 }
             };
-            BlitzData.list = [];
             BlitzData.list.push(BlitzData.Grafis);
-            // ha.bbjs.General.Graphics full
+            // ha.be.Be.Bersih
             BlitzData.list.push({
-                type: "Grafis_full",
-                message0: "Graphics %1 width: %2 height: %3 canvas id: %4 fullScreen: %5 handleInput: %6",
-                inputsInline: false,
-                args: {
-                    dummy: '',
-                    width: 320,
-                    height: 240,
-                    canvasId: "canvas_id",
-                    fullScreen: true,
-                    handleInput: true
-                }
-            });
-            BlitzData.list.push({
-                type: "ha.be.Main.Bersih",
+                type: "ha.be.Be.Bersih",
                 message0: 'Cls',
             });
         })(BlitzData = blockly.BlitzData || (blockly.BlitzData = {}));
     })(blockly = ha.blockly || (ha.blockly = {}));
 })(ha || (ha = {}));
-//TODO: next butuh alias type, buat backward compatibility
 var ha;
 (function (ha) {
     var blockly;
@@ -943,13 +972,6 @@ var ha;
         (function (debugData) {
             debugData.list = [];
             debugData.group = "Debug3";
-            debugData.list.push({
-                type: 'ha.bbjs.Debug.Obj',
-                message0: "Debug %1 ",
-                args: {
-                    obj: 0
-                },
-            });
         })(debugData = blockly.debugData || (blockly.debugData = {}));
     })(blockly = ha.blockly || (ha.blockly = {}));
 })(ha || (ha = {}));
@@ -960,40 +982,111 @@ var ha;
         var ImageBlockData;
         (function (ImageBlockData) {
             ImageBlockData.list = [];
+            // ha.be.Sprite.Muat
             ImageBlockData.blitz_Muat = {
-                type: "ha.bbjs.Sprite.LoadSprite",
+                type: "ha.be.Sprite.Muat",
                 message0: 'Load Image %1 url: %2',
                 args: {
                     dummy: '',
                     url: "./imgs/box.png"
                 },
-                output: EOutput.Number
+                output: EOutput.Any
             };
             ImageBlockData.list.push(ImageBlockData.blitz_Muat);
-            //ha.bbjs.Sprite.LoadSprite full
+            // LoadAnimImage
+            // ha.be.Sprite.MuatAnimasi
             ImageBlockData.list.push({
-                type: 'ha.bbjs.Sprite.LoadSprite_full',
-                message0: "Load Image %1 url: %2 drag mode: %3",
+                type: "ha.be.Sprite.MuatAnimasi",
+                message0: "LoadAnimImage %1 image: %2 frame width: %3 frame height: %4",
                 args: {
                     dummy: '',
-                    url: './imgs/box.png',
-                    dragMode: 1
+                    sprite: {},
+                    fw: 32,
+                    fh: 32
                 },
-                output: EOutput.Number
+                output: EOutput.Any
             });
-            // ha.bbjs.Sprite.DrawSprite 
-            //depecrated
+            // DrawImage
+            // ha.be.Sprite.Gambar
             ImageBlockData.list.push({
-                type: "ha.bbjs.Sprite.DrawSprite",
-                message0: "Draw %1 image: %2",
+                type: "ha.be.Sprite.Gambar",
+                message0: "DrawImage: %4 image %1 x: %2 y: %3",
                 args: {
-                    dummy: '',
-                    sprite: 0
+                    sprite: {},
+                    x: 0,
+                    y: 0,
+                    dummy: ""
                 }
             });
+            // DrawImage
+            // ha.be.Sprite.Gambar animasi
+            ImageBlockData.list.push({
+                type: "ha.be.Sprite.Gambar_animasi",
+                message0: "DrawImage: %5 image %1 x: %2 y: %3 frame: %4",
+                args: {
+                    sprite: {},
+                    x: 0,
+                    y: 0,
+                    frame: 0,
+                    dummy: ''
+                }
+            });
+            // TileImage
+            //ha.be.Sprite.Ubin;
+            ImageBlockData.list.push({
+                type: "ha.be.Sprite.Ubin",
+                message0: "TileImage: %5 image %1 x: %2 y: %3 frame: %4",
+                args: {
+                    sprite: {},
+                    x: 0,
+                    y: 0,
+                    frame: 0,
+                    dummy: ''
+                }
+            });
+            // HandleImage
+            // ha.be.Sprite.Handle
+            ImageBlockData.list.push({
+                type: "ha.be.Sprite.Handle",
+                message0: "HandleImage: %1 image %2 x: %3 y: %4",
+                args: {
+                    dummy: '',
+                    sprite: {},
+                    x: 0,
+                    y: 0,
+                }
+            });
+            // ResizeImage
+            // ha.be.Sprite.Ukuran;
+            // RotateImage
+            // ImageWidth
+            // ImageHeight
+            // ImageXHandle
+            // ImageYHandle
+            // ImagesCollide
         })(ImageBlockData = blockly.ImageBlockData || (blockly.ImageBlockData = {}));
     })(blockly = ha.blockly || (ha.blockly = {}));
 })(ha || (ha = {}));
+// CopyImage
+// CreateImage
+// FreeImage
+// SaveImage
+// GrabImage
+// ImageBuffer
+// DrawImageRect
+// DrawBlockRect
+// DrawBlock
+// TileBlock
+// MaskImage
+// MidHandle => todo
+// AutoMidHandle => todo
+// ScaleImage
+// TFormImage
+// TFormFilter
+// ImagesOverlap
+// RectsOverlap
+// ImageRectOverlap
+// ImageRectCollide
 var ha;
 (function (ha) {
     var blockly;

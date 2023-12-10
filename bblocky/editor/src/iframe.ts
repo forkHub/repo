@@ -8,7 +8,6 @@ namespace ha.blockly {
             doc.open();
             doc.write(simpan);
             doc.close();
-
         }
     }
 }
