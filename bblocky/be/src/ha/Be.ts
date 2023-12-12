@@ -13,8 +13,8 @@ namespace ha.be {
 	 * @memberof ha.be
 	 */
 	export class Be {
-		private static _canvasAr: IGambar[] = [];
-		private static _canvasAktif: IGambar;
+		private static _canvasAr: IGbr[] = [];
+		private static _canvasAktif: IGbr;
 		private static _skalaOtomatis: boolean = true;
 
 		private static _merah: number = 0;
@@ -76,8 +76,8 @@ namespace ha.be {
 			return Be.canvasAktif.ctx;
 		}
 
-		static buatCanvas(canvasEl: HTMLCanvasElement): IGambar {
-			let canvas: IGambar = {
+		static buatCanvas(canvasEl: HTMLCanvasElement): IGbr {
+			let canvas: IGbr = {
 				canvas: canvasEl,
 				ctx: canvasEl.getContext('2d'),
 				lebar: canvasEl.height,
@@ -105,7 +105,7 @@ namespace ha.be {
 		}
 
 		static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void {
-			let canvas: IGambar = Be.buatCanvas(canvasBelakang);
+			let canvas: IGbr = Be.buatCanvas(canvasBelakang);
 			Be._canvasAr.push(canvas);
 
 			canvas = Be.buatCanvas(canvasDepan);
@@ -260,7 +260,7 @@ namespace ha.be {
 		 * helper method
 		 * */
 		private static Grafis2(p: number = 320, l: number = 240, ubahStyle: boolean): void {
-			let canvas: IGambar = Be.canvasAktif;
+			let canvas: IGbr = Be.canvasAktif;
 
 			canvas.canvas.width = p;
 			canvas.canvas.height = l;
@@ -376,18 +376,18 @@ namespace ha.be {
 			ctx.stroke();
 		}
 
-		public static get canvasAktif(): IGambar {
+		public static get canvasAktif(): IGbr {
 			return Be._canvasAktif;
 		}
 
-		public static set canvasAktif(value: IGambar) {
+		public static set canvasAktif(value: IGbr) {
 			Be._canvasAktif = value;
 		}
 
-		public static get canvasAr(): IGambar[] {
+		public static get canvasAr(): IGbr[] {
 			return Be._canvasAr;
 		}
-		public static set canvasAr(value: IGambar[]) {
+		public static set canvasAr(value: IGbr[]) {
 			Be._canvasAr = value;
 		}
 

@@ -12,16 +12,16 @@ namespace ha.be {
 		inputDown(pos: any, id: number): void {
 			//sprite down
 			let lastIdx: number = -1;
-			let lastSprite: ISprite = null;
+			let lastSprite: ISpr = null;
 
-			for (let i: number = Sprite.daftar.length - 1; i >= 0; i--) {
-				let item: ISprite;
+			for (let i: number = Spr.daftar.length - 1; i >= 0; i--) {
+				let item: ISpr;
 
-				item = Sprite.daftar[i];
+				item = Spr.daftar[i];
 
-				if (Image.dotDidalamGambar(item.buffer, item.x, item.y, pos.x, pos.y)) {
-					if (item.buffer.ctrIdx > lastIdx) {
-						lastIdx = item.buffer.ctrIdx;
+				if (Img.dotDidalamGambar(item.buff, item.x, item.y, pos.x, pos.y)) {
+					if (item.buff.ctrIdx > lastIdx) {
+						lastIdx = item.buff.ctrIdx;
 						lastSprite = item;
 					}
 				}
@@ -34,7 +34,7 @@ namespace ha.be {
 				lastSprite.inputId = id;
 
 				lastSprite.sudutTekanAwal = Transform.sudut(pos.x - lastSprite.x, pos.y - lastSprite.y);
-				lastSprite.sudutAwal = lastSprite.buffer.rotasi;
+				lastSprite.sudutAwal = lastSprite.buff.rotasi;
 
 				return;
 			}
@@ -42,7 +42,7 @@ namespace ha.be {
 		}
 
 		inputMove(pos: any, pointerId: number): void {
-			Sprite.daftar.forEach((item: ISprite) => {
+			Spr.daftar.forEach((item: ISpr) => {
 
 				if (item.down && item.dragable && (item.inputId == pointerId)) {
 					item.dragged = true;
@@ -55,7 +55,7 @@ namespace ha.be {
 						//TODO: peruban sudut
 						let sudut2: number = Transform.sudut(pos.x - item.x, pos.y - item.y);
 						let perbedaan: number = sudut2 - item.sudutTekanAwal;
-						item.buffer.rotasi = item.sudutAwal + perbedaan;
+						item.buff.rotasi = item.sudutAwal + perbedaan;
 
 						// console.debug('item drag move');
 						// console.debug('sudut ptr: ' + sudut2);
@@ -68,13 +68,13 @@ namespace ha.be {
 		}
 
 		inputUp(): void {
-			Sprite.daftar.forEach((item: ISprite) => {
+			Spr.daftar.forEach((item: ISpr) => {
 				if (item.down) {
 					item.hit++;
 				}
 
 				if (item.dragged) {
-					console.log('input up: item rotasi ' + item.buffer.rotasi)
+					console.log('input up: item rotasi ' + item.buff.rotasi)
 				}
 
 				item.down = false;

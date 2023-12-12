@@ -17,17 +17,26 @@
             </div>
         </div>
         <div style="display: table-row;">
-            <div style="display: table-cell;">
-                <button onclick="simpan()">simpan</button>&nbsp;
+            <div style="display: table-cell; padding: 8px;">
+                <button onclick="simpan()">save</button>&nbsp;
                 <button onclick="load()">load</button>&nbsp;
-                <button onclick="code()">kode</button>&nbsp;
-                <button onclick="share()">share</button>&nbsp;
+                <button onclick="exportJSON()">export</button>&nbsp;
+                <button onclick="importJSON()">import</button>&nbsp;
                 <button onclick="run()">run</button>
                 <button onclick="publish()">publish</button>
             </div>
         </div>
     </div>
     <div id="blocklyDiv" style="position: absolute;"></div>
+
+    <dialog>
+        <div class="cont" style="display: flex; flex-direction: column;">
+            <p></p>
+            <textarea rows="10" cols="80"></textarea>
+            <br />
+            <button onclick=" ha.blockly.Dialog.klik()">OK</button>
+        </div>
+    </dialog>
 
     <script src="lib/blockly_compressed.js" defer></script>
     <script src="lib/blocks_compressed.js" defer></script>

@@ -2,18 +2,18 @@
 
 namespace ha.be {
 
-	export class Sprite implements ISprite {
-		static readonly daftar: ISprite[] = [];
+	export class Spr implements ISpr {
+		static readonly daftar: ISpr[] = [];
 		private static _ctrDraw: number = 0;
 
 		public static get ctrDraw(): number {
-			return Sprite._ctrDraw;
+			return Spr._ctrDraw;
 		}
 		public static set ctrDraw(value: number) {
-			Sprite._ctrDraw = value;
+			Spr._ctrDraw = value;
 		}
 
-		private _buff: IGambar;
+		private _buff: IGbr;
 		private _x: number = 0;
 		private _y: number = 0;
 		private _dragged: boolean = false;
@@ -36,8 +36,8 @@ namespace ha.be {
 			this._inputId = value;
 		}
 
-		constructor(buffer: IGambar, dragable: boolean = false) {
-			this.buffer = buffer;
+		constructor(buffer: IGbr, dragable: boolean = false) {
+			this.buff = buffer;
 			this.dragable = dragable;
 		}
 
@@ -46,28 +46,28 @@ namespace ha.be {
 		 * @param spr 
 		 * @returns 
 		 */
-		static kontek(spr: ISprite): CanvasRenderingContext2D {
-			return spr.buffer.ctx;
+		static kontek(spr: ISpr): CanvasRenderingContext2D {
+			return spr.buff.ctx;
 		}
 
 		/**
 		 * 
-		 * @param sprS {ISprite} sprite 
+		 * @param sprS {ISpr} sprite 
 		 * @param onload {() => void} optional, fungsi yang dipanggil sprite selesai dimuat
 		 * @returns 
 		 */
-		static Copy(sprS: ISprite, onload?: () => void): ISprite {
+		static Copy(sprS: ISpr, onload?: () => void): ISpr {
 			if (!onload) {
 				onload = () => { };
 			}
 
-			if (sprS.buffer.isAnim) {
+			if (sprS.buff.isAnim) {
 				console.debug('copy sprite anim');
 				console.debug(sprS);
-				return Sprite.muatAnimasiAsyncKanvas(sprS.url, sprS.buffer.frameW, sprS.buffer.frameH, sprS.dragable, sprS.buffer.canvas, sprS.tipeDrag);
+				return Spr.muatAnimasiAsyncKanvas(sprS.url, sprS.buff.frameW, sprS.buff.frameH, sprS.dragable, sprS.buff.canvas, sprS.tipeDrag);
 			}
 			else {
-				return Sprite.muatAsyncBerbagiKanvas(sprS.url, sprS.dragable, sprS.buffer.canvas, sprS.tipeDrag, onload)
+				return Spr.muatAsyncBerbagiKanvas(sprS.url, sprS.dragable, sprS.buff.canvas, sprS.tipeDrag, onload)
 			}
 		}
 
@@ -76,8 +76,8 @@ namespace ha.be {
 		 * @param spr 
 		 * @returns 
 		 */
-		static Dimuat(spr: ISprite): boolean {
-			return spr.buffer.load;
+		static Dimuat(spr: ISpr): boolean {
+			return spr.buff.load;
 		}
 
 		/**
@@ -85,10 +85,10 @@ namespace ha.be {
 		 * @param spr 
 		 * @returns 
 		 */
-		static StatusDrag(spr: ISprite): boolean {
+		static StatusDrag(spr: ISpr): boolean {
 			let hasil: boolean = false;
 
-			this.daftar.forEach((item: ISprite) => {
+			this.daftar.forEach((item: ISpr) => {
 				if (spr == item) {
 					hasil = spr.dragged;
 					return;
@@ -104,8 +104,8 @@ namespace ha.be {
 		 * @param pj 
 		 * @returns 
 		 */
-		static Panjang(spr: ISprite, pj?: number): number {
-			return Image.panjang(spr.buffer, pj);
+		static Panjang(spr: ISpr, pj?: number): number {
+			return Img.panjang(spr.buff, pj);
 		}
 
 		/**
@@ -114,8 +114,8 @@ namespace ha.be {
 		 * @param lb 
 		 * @returns 
 		 */
-		static Lebar(spr: ISprite, lb?: number): number {
-			return Image.lebar(spr.buffer, lb);
+		static Lebar(spr: ISpr, lb?: number): number {
+			return Img.lebar(spr.buff, lb);
 		}
 
 		/**
@@ -124,12 +124,12 @@ namespace ha.be {
 		 * @param alpha 
 		 * @returns 
 		 */
-		static Alpha(spr: ISprite, alpha?: number): number {
+		static Alpha(spr: ISpr, alpha?: number): number {
 			if (typeof (alpha) == 'number') {
-				spr.buffer.alpha = alpha / 100;
+				spr.buff.alpha = alpha / 100;
 			}
 
-			return spr.buffer.alpha;
+			return spr.buff.alpha;
 		}
 
 		/**
@@ -138,12 +138,12 @@ namespace ha.be {
 		 * @param sudut 
 		 * @returns 
 		 */
-		static Rotasi(spr: ISprite, sudut?: number): number {
+		static Rotasi(spr: ISpr, sudut?: number): number {
 			if (spr && (typeof (sudut) == 'number')) {
-				spr.buffer.rotasi = sudut;
+				spr.buff.rotasi = sudut;
 			}
 
-			return spr.buffer.rotasi;
+			return spr.buff.rotasi;
 		}
 
 		/**
@@ -152,7 +152,7 @@ namespace ha.be {
 		 * @param x 
 		 * @param y 
 		 */
-		static Posisi(spr: ISprite, x: number = 0, y: number = 0) {
+		static Posisi(spr: ISpr, x: number = 0, y: number = 0) {
 			spr.x = x;
 			spr.y = y;
 		}
@@ -163,7 +163,7 @@ namespace ha.be {
 		 * @param x 
 		 * @returns 
 		 */
-		static PosisiX(spr: ISprite, x: number | null | undefined = null): number {
+		static PosisiX(spr: ISpr, x: number | null | undefined = null): number {
 			if (typeof (x) == 'number') {
 				spr.x = x;
 			}
@@ -173,55 +173,56 @@ namespace ha.be {
 
 		/**
 		 * 
-		 * @param spr 
+		 * @param s 
 		 * @param y 
 		 * @returns 
 		 */
-		static PosisiY(spr: ISprite, y: number | null | undefined = null): number {
+		static PosisiY(s: ISpr, y: number | null | undefined = null): number {
 			if (typeof (y) == 'number') {
 				// debugger;
-				spr.y = y;
+				s.y = y;
 			}
 
-			return spr.y;
+			return s.y;
 		}
 
 		/**
 		 * 
-		 * @param spr 
+		 * @param s 
 		 * @returns 
 		 */
-		static Bound(spr: ISprite): IKotak {
-			Image.resetRect(spr.buffer);
-			Image.rectToImageTransform(spr.buffer, spr.x, spr.y);
-			return spr.buffer.rect;
+		static Bound(s: ISpr): IKotak {
+			Img.resetRect(s.buff);
+			Img.rectToImageTransform(s.buff, s.x, s.y);
+			return s.buff.rect;
 		}
 
 		//TODO:boundx, boundy, boundX2, boundY2
 
 		/**
 		 * 
-		 * @param spr 
+		 * @param s 
 		 * @param x 
 		 * @param y 
 		 * @returns 
 		 */
-		static Handle(spr: ISprite, x: number = 0, y: number = 0): void {
-			if (spr) {
-				spr.buffer.handleX = x;
-				spr.buffer.handleY = y;
+		static Handle(s: ISpr, x: number = 0, y: number = 0): void {
+			if (s) {
+				s.buff.handleX = x;
+				s.buff.handleY = y;
 			}
-
-			return
 		}
+
+		static HandleX(s: ISpr): number { return s.buff.handleX; }
+		static HandleY(s: ISpr): number { return s.buff.handleY; }
 
 		/**
 		 * 
 		 */
 		static GambarSemua() {
-			for (let i: number = 0; i < Sprite.daftar.length; i++) {
-				let item: ISprite = Sprite.daftar[i];
-				Sprite.Gambar(item);
+			for (let i: number = 0; i < Spr.daftar.length; i++) {
+				let item: ISpr = Spr.daftar[i];
+				Spr.Gambar(item);
 			}
 		}
 
@@ -231,8 +232,12 @@ namespace ha.be {
 		 * @param spr2 
 		 * @returns 
 		 */
-		static Tabrakan(spr: ISprite, spr2: ISprite): boolean {
-			return Image.tabrakan(spr.buffer, Sprite.PosisiX(spr), Sprite.PosisiY(spr), spr2.buffer, Sprite.PosisiX(spr2), Sprite.PosisiY(spr2))
+		static Tabrakan(spr: ISpr, spr2: ISpr): boolean {
+			return Img.tabrakan(spr.buff, Spr.PosisiX(spr), Spr.PosisiY(spr), spr2.buff, Spr.PosisiX(spr2), Spr.PosisiY(spr2))
+		}
+
+		static TabrakanXY(spr: ISpr, x1: number, y1: number, spr2: ISpr, x2: number, y2: number): boolean {
+			return Img.tabrakan(spr.buff, x1, y1, spr2.buff, x2, y2)
 		}
 
 		private static muatAnimasiAsyncKanvas(
@@ -241,10 +246,10 @@ namespace ha.be {
 			lf: number,
 			bisaDiDrag: boolean,
 			canvas: HTMLCanvasElement,
-			tipeDrag: number): ISprite {
+			tipeDrag: number): ISpr {
 
-			let img: IGambar = Image.muatAnimAsyncCanvas(url, pf, lf, canvas);
-			return Sprite.buatPrivate(img, bisaDiDrag, url, tipeDrag);
+			let img: IGbr = Img.muatAnimAsyncCanvas(url, pf, lf, canvas);
+			return Spr.buatPrivate(img, bisaDiDrag, url, tipeDrag);
 		}
 
 		/**
@@ -256,9 +261,9 @@ namespace ha.be {
 		 * @param tipeDrag 
 		 * @returns 
 		 */
-		static MuatAnimasi(url: string, pf: number, lf: number, bisaDiDrag: boolean = false, tipeDrag: number = 0): ISprite {
-			let img: IGambar = Image.muatAnimAsync(url, pf, lf);
-			return Sprite.buatPrivate(img, bisaDiDrag, url, tipeDrag);
+		static MuatAnimasi(url: string, pf: number, lf: number, bisaDiDrag: boolean = false, tipeDrag: number = 0): ISpr {
+			let img: IGbr = Img.muatAnimAsync(url, pf, lf);
+			return Spr.buatPrivate(img, bisaDiDrag, url, tipeDrag);
 		}
 
 		private static muatAsyncBerbagiKanvas(
@@ -266,10 +271,10 @@ namespace ha.be {
 			dragable = false,
 			canvas: HTMLCanvasElement,
 			tipeDrag: number,
-			onload: () => void): ISprite {
+			onload: () => void): ISpr {
 
-			let img: IGambar = Image.muatAsyncKanvas(url, canvas, onload);
-			return Sprite.buatPrivate(img, dragable, url, tipeDrag);
+			let img: IGbr = Img.muatAsyncKanvas(url, canvas, onload);
+			return Spr.buatPrivate(img, dragable, url, tipeDrag);
 		}
 
 		/**
@@ -279,9 +284,9 @@ namespace ha.be {
 		 * @param tipeDrag 
 		 * @returns 
 		 */
-		static async MuatAsync(url: string, bisaDiDrag = false, tipeDrag: number = 0): Promise<ISprite> {
+		static async MuatAsync(url: string, bisaDiDrag = false, tipeDrag: number = 0): Promise<ISpr> {
 			return new Promise((resolve, _reject) => {
-				let hasil: ISprite = Sprite.Muat(url, bisaDiDrag, tipeDrag, () => {
+				let hasil: ISpr = Spr.Muat(url, bisaDiDrag, tipeDrag, () => {
 					resolve(hasil);
 				});
 			});
@@ -295,10 +300,10 @@ namespace ha.be {
 		 * @param onload 
 		 * @returns 
 		 */
-		static Muat(url: string, bisaDiDrag: boolean = false, tipeDrag: number = 0, onload?: () => void): ISprite {
+		static Muat(url: string, bisaDiDrag: boolean = false, tipeDrag: number = 0, onload?: () => void): ISpr {
 			if (!onload) onload = () => { };
-			let img: IGambar = Image.muatAsync(url, onload);
-			let spr: ISprite = Sprite.buatPrivate(img, bisaDiDrag, url, tipeDrag);
+			let img: IGbr = Img.muatAsync(url, onload);
+			let spr: ISpr = Spr.buatPrivate(img, bisaDiDrag, url, tipeDrag);
 			return spr;
 		}
 
@@ -308,19 +313,19 @@ namespace ha.be {
 		 * @param w 
 		 * @param h 
 		 */
-		static Ukuran(gbr: ISprite, w: number, h: number): void {
-			Image.ukuran(gbr.buffer, w, h);
+		static Ukuran(gbr: ISpr, w: number, h: number): void {
+			Img.ukuran(gbr.buff, w, h);
 		}
 
 		private static buatPrivate(
-			image: IGambar,
+			image: IGbr,
 			dragable: boolean = false,
 			url: string,
-			tipeDrag: number): ISprite {
+			tipeDrag: number): ISpr {
 
-			let hasil: ISprite;
+			let hasil: ISpr;
 
-			hasil = new Sprite(image, dragable);
+			hasil = new Spr(image, dragable);
 			hasil.tipeDrag = tipeDrag;
 			hasil.url = url;
 			if (hasil.dragable) {
@@ -342,12 +347,12 @@ namespace ha.be {
 		 * @param sprite 
 		 * @param frame 
 		 */
-		static Gambar(sprite: ISprite, frame?: number): void {
+		static Gambar(sprite: ISpr, frame?: number): void {
 			if (sprite == null) {
 				this.GambarSemua();
 				return;
 			}
-			Image.gambar(sprite.buffer, sprite.x, sprite.y, frame);
+			Img.gambar(sprite.buff, sprite.x, sprite.y, frame);
 		}
 
 		/**
@@ -358,8 +363,8 @@ namespace ha.be {
 		 * @param frame 
 		 * @returns 
 		 */
-		static GambarXY(sprite: ISprite, x: number, y: number, frame?: number): void {
-			Image.gambar(sprite.buffer, x, y, frame);
+		static GambarXY(sprite: ISpr, x: number, y: number, frame?: number): void {
+			Img.gambar(sprite.buff, x, y, frame);
 		}
 
 		/**
@@ -372,7 +377,7 @@ namespace ha.be {
 		 * @param skalaX 
 		 * @param skalaY 
 		 */
-		static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number, skalaX: number = 1, skalaY: number = 1): void {
+		static posisiPolar(sprite: ISpr, sudut: number, jarak: number, x2: number, y2: number, skalaX: number = 1, skalaY: number = 1): void {
 			let p: IPoint2D = Point.posPolar(jarak, sudut, x2, y2);
 
 			p.y -= y2;
@@ -394,8 +399,8 @@ namespace ha.be {
 		 * @param y 
 		 * @param frame 
 		 */
-		static Ubin(spr: ISprite, x: number = 0, y: number = 0, frame: number = 0) {
-			Image.gambarUbin(spr.buffer, x, y, frame);
+		static Ubin(spr: ISpr, x: number = 0, y: number = 0, frame: number = 0) {
+			Img.gambarUbin(spr.buff, x, y, frame);
 		}
 
 		/**
@@ -403,15 +408,15 @@ namespace ha.be {
 		 * @param spr 
 		 * @returns 
 		 */
-		static StatusMuat(spr?: ISprite): boolean {
+		static StatusMuat(spr?: ISpr): boolean {
 			let hasil: boolean = true;
 
-			if (spr && spr.buffer) {
-				return spr.buffer.load;
+			if (spr && spr.buff) {
+				return spr.buff.load;
 			}
 
-			Sprite.daftar.forEach((item: ISprite) => {
-				if (!item.buffer.load) {
+			Spr.daftar.forEach((item: ISpr) => {
+				if (!item.buff.load) {
 					hasil = false;
 				}
 			})
@@ -438,10 +443,10 @@ namespace ha.be {
 		public set dragged(value: boolean) {
 			this._dragged = value;
 		}
-		public get buffer(): IGambar {
+		public get buff(): IGbr {
 			return this._buff;
 		}
-		public set buffer(value: IGambar) {
+		public set buff(value: IGbr) {
 			this._buff = value;
 		}
 		public get x(): number {

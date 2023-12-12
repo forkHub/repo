@@ -1,6 +1,6 @@
 namespace ha.be {
 
-	class Gambar implements IGambar {
+	class Gbr implements IGbr {
 		img: HTMLImageElement;
 		canvas: HTMLCanvasElement;
 		ctx: CanvasRenderingContext2D;
@@ -38,7 +38,7 @@ namespace ha.be {
 		}
 	}
 
-	export class Image {
+	export class Img {
 		// private static buatObj(
 		// 	img: HTMLImageElement,
 		// 	w: number,
@@ -70,15 +70,15 @@ namespace ha.be {
 		// 	return gbr;
 		// }
 
-		static buatBagiCanvas(canvas: HTMLCanvasElement, w: number = 32, h: number = 32, frameW: number = 32, frameH: number = 32): IGambar {
-			let img: IGambar;
+		static buatBagiCanvas(canvas: HTMLCanvasElement, w: number = 32, h: number = 32, frameW: number = 32, frameH: number = 32): IGbr {
+			let img: IGbr;
 
 			canvas.width = w;
 			canvas.height = h;
 
 			let rect: IKotak = ha.be.Kotak.buat(0, 0, frameW, frameH);
 
-			img = new Gambar();
+			img = new Gbr();
 			img.load = true;
 			img.panjang = w;
 			img.lebar = h;
@@ -163,7 +163,7 @@ namespace ha.be {
 		// 	// return img;
 		// }
 
-		static panjang(gbr: IGambar, pj?: number): number {
+		static panjang(gbr: IGbr, pj?: number): number {
 			if (typeof pj == 'number') {
 				gbr.panjang = pj;
 				gbr.panjangDiSet = true;
@@ -172,7 +172,7 @@ namespace ha.be {
 			return gbr.panjang;
 		};
 
-		static lebar(gbr: IGambar, lb?: number): number {
+		static lebar(gbr: IGbr, lb?: number): number {
 			if (typeof lb == 'number') {
 				gbr.lebar = lb;
 				gbr.lebarDiSet = true;
@@ -185,37 +185,37 @@ namespace ha.be {
 
 		//static handleY(gbr: IGambar): number { return gbr.handleY; };
 
-		static tabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean {
-			Image.resetRect(gbr1);
-			Image.rectToImageTransform(gbr1, x1, y1);
+		static tabrakan(gbr1: IGbr, x1: number, y1: number, gbr2: IGbr, x2: number, y2: number): boolean {
+			Img.resetRect(gbr1);
+			Img.rectToImageTransform(gbr1, x1, y1);
 
-			Image.resetRect(gbr2);
-			Image.rectToImageTransform(gbr2, x2, y2);
+			Img.resetRect(gbr2);
+			Img.rectToImageTransform(gbr2, x2, y2);
 
 			return ha.be.Kotak.collide(gbr1.rect, gbr2.rect);
 		};
 
-		static dotDidalamGambar(gbr1: IGambar, x1: number, y1: number, x2: number, y2: number): boolean {
-			Image.resetRect(gbr1);
-			Image.rectToImageTransform(gbr1, x1, y1);
+		static dotDidalamGambar(gbr1: IGbr, x1: number, y1: number, x2: number, y2: number): boolean {
+			Img.resetRect(gbr1);
+			Img.rectToImageTransform(gbr1, x1, y1);
 
 			return ha.be.Kotak.collideDot(gbr1.rect, x2, y2);
 		};
 
-		static muatAnimAsync(url: string, fw: number, fh: number): IGambar {
+		static muatAnimAsync(url: string, fw: number, fh: number): IGbr {
 			let canvas: HTMLCanvasElement = document.createElement('canvas');
 
-			return Image.muatAnimAsyncCanvas(url, fw, fh, canvas);
+			return Img.muatAnimAsyncCanvas(url, fw, fh, canvas);
 		}
 
-		static muatAnimAsyncCanvas(url: string, fw: number, fh: number, canvas: HTMLCanvasElement): IGambar {
+		static muatAnimAsyncCanvas(url: string, fw: number, fh: number, canvas: HTMLCanvasElement): IGbr {
 			let img: HTMLImageElement = document.createElement('img'); //;
 			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
 			let rect: IKotak;
 
 			rect = ha.be.Kotak.buat(0, 0, fw, fh);
 
-			let gbr: IGambar = new Gambar();
+			let gbr: IGbr = new Gbr();
 			gbr.isAnim = true;
 			gbr.img = img;
 			gbr.panjang = img.naturalWidth;
@@ -293,20 +293,20 @@ namespace ha.be {
 			return gbr;
 		}
 
-		static muatAsync(url: string, onload: () => void): IGambar {
+		static muatAsync(url: string, onload: () => void): IGbr {
 			let kanvas: HTMLCanvasElement = document.createElement('canvas');
 
-			return Image.muatAsyncKanvas(url, kanvas, onload);
+			return Img.muatAsyncKanvas(url, kanvas, onload);
 		}
 
-		static muatAsyncKanvas(url: string, canvas: HTMLCanvasElement, onload: () => void): IGambar {
+		static muatAsyncKanvas(url: string, canvas: HTMLCanvasElement, onload: () => void): IGbr {
 			let img: HTMLImageElement = document.createElement('img');
 			let ctx: CanvasRenderingContext2D = canvas.getContext('2d');
 			let rect: IKotak;
 
 			rect = ha.be.Kotak.buat(0, 0, img.naturalWidth, img.naturalHeight);
 
-			let gbr: IGambar = {
+			let gbr: IGbr = {
 				img: img,
 				panjang: img.naturalWidth,
 				lebar: img.naturalHeight,
@@ -374,7 +374,7 @@ namespace ha.be {
 			return gbr;
 		}
 
-		static gambarUbin(gbr: IGambar, x: number = 0, y: number = 0, frame: number = 0) {
+		static gambarUbin(gbr: IGbr, x: number = 0, y: number = 0, frame: number = 0) {
 			let jmlH: number = 0;
 			let jmlV: number = 0;
 
@@ -401,7 +401,7 @@ namespace ha.be {
 
 			for (let i: number = 0; i < jmlH; i++) {
 				for (let j: number = 0; j < jmlV; j++) {
-					Image.gambar(gbr, x + (i * w2), y + (j * h2), frame);
+					Img.gambar(gbr, x + (i * w2), y + (j * h2), frame);
 				}
 			}
 		}
@@ -460,7 +460,7 @@ namespace ha.be {
 		// 	gbr.ctx.drawImage(Be.canvasAktif.canvas, x, y, gbr.panjang, gbr.lebar, 0, 0, gbr.panjang, gbr.lebar);
 		// }
 
-		static gambar(gbr: IGambar, x: number = 0, y: number = 0, frame: number = 0) {
+		static gambar(gbr: IGbr, x: number = 0, y: number = 0, frame: number = 0) {
 			let ctx: CanvasRenderingContext2D = Be.canvasAktif.ctx;
 			let jmlH: number = 0;
 			let jmlV: number = 0;
@@ -471,7 +471,7 @@ namespace ha.be {
 
 			if (gbr.load == false) return;
 
-			gbr.ctrIdx = ha.be.Sprite.ctrDraw++;
+			gbr.ctrIdx = ha.be.Spr.ctrDraw++;
 
 			jmlH = Math.floor(gbr.img.naturalWidth / gbr.frameW);
 			jmlV = Math.floor(gbr.img.naturalHeight / gbr.frameH);
@@ -522,14 +522,14 @@ namespace ha.be {
 		 * @param w 
 		 * @param h 
 		 */
-		static ukuran(gbr: IGambar, w: number = 32, h: number = 32): void {
+		static ukuran(gbr: IGbr, w: number = 32, h: number = 32): void {
 			gbr.panjang = w;
 			gbr.lebar = h;
 			gbr.panjangDiSet = true;
 			gbr.lebarDiSet = true;
 		}
 
-		public static resetRect(img: IGambar): void {
+		public static resetRect(img: IGbr): void {
 			let rect: IKotak = img.rect;
 			let p: IV2D;
 
@@ -551,7 +551,7 @@ namespace ha.be {
 
 		}
 
-		static rectToImageTransform(image: IGambar, x: number, y: number): void {
+		static rectToImageTransform(image: IGbr, x: number, y: number): void {
 			let rect: IKotak = image.rect;
 			let p: IV2D;
 			let x2: number = image.panjang

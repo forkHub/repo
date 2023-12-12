@@ -9,7 +9,7 @@ enum EInput {
 namespace ha.be {
 	class EventHandler {
 
-		move(input: IInput, buffer: IGambar, e: PointerEvent): void {
+		move(input: IInput, buffer: IGbr, e: PointerEvent): void {
 			let pos: any = Input.pos(e.clientX, e.clientY, buffer);
 			input.x = pos.x;
 			input.y = pos.y;
@@ -260,7 +260,7 @@ namespace ha.be {
 			throw Error('');
 		}
 
-		static init(buffer: IGambar): void {
+		static init(buffer: IGbr): void {
 			console.log('input init');
 
 			Input._inputGlobal = this.buatInputDefault();
@@ -335,7 +335,7 @@ namespace ha.be {
 
 				//sprite up
 				//sprite hit
-				Sprite.daftar.forEach((item: ISprite) => {
+				Spr.daftar.forEach((item: ISpr) => {
 					if (e.pointerId == item.inputId) {
 						if (item.down) {
 							item.hit++;
@@ -465,7 +465,7 @@ namespace ha.be {
 			return input;
 		}
 
-		static pos = (cx: number, cy: number, buffer: IGambar) => {
+		static pos = (cx: number, cy: number, buffer: IGbr) => {
 			let rect: DOMRect = buffer.canvas.getBoundingClientRect();
 
 			let canvasScaleX = parseInt(window.getComputedStyle(buffer.canvas).width) / buffer.canvas.width;

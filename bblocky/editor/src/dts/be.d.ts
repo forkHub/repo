@@ -30,7 +30,7 @@ declare namespace ha.be {
          * @returns CanvasRenderingContext2D
          */
         static Kontek(ctx?: CanvasRenderingContext2D): CanvasRenderingContext2D;
-        static buatCanvas(canvasEl: HTMLCanvasElement): IGambar;
+        static buatCanvas(canvasEl: HTMLCanvasElement): IGbr;
         static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void;
         static backupWarna(): void;
         static restoreWarna(): void;
@@ -100,10 +100,10 @@ declare namespace ha.be {
          * @param rotasi sudut oval
          */
         static Oval(x: number, y: number, radius: number, skalaX?: number, skalaY?: number, rotasi?: number): void;
-        static get canvasAktif(): IGambar;
-        static set canvasAktif(value: IGambar);
-        static get canvasAr(): IGambar[];
-        static set canvasAr(value: IGambar[]);
+        static get canvasAktif(): IGbr;
+        static set canvasAktif(value: IGbr);
+        static get canvasAr(): IGbr[];
+        static set canvasAr(value: IGbr[]);
         static get skalaOtomatis(): boolean;
         static set skalaOtomatis(value: boolean);
         static get merah(): number;
@@ -117,17 +117,17 @@ declare namespace ha.be {
     }
 }
 declare namespace ha.be {
-    class Image {
-        static buatBagiCanvas(canvas: HTMLCanvasElement, w?: number, h?: number, frameW?: number, frameH?: number): IGambar;
-        static panjang(gbr: IGambar, pj?: number): number;
-        static lebar(gbr: IGambar, lb?: number): number;
-        static tabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean;
-        static dotDidalamGambar(gbr1: IGambar, x1: number, y1: number, x2: number, y2: number): boolean;
-        static muatAnimAsync(url: string, fw: number, fh: number): IGambar;
-        static muatAnimAsyncCanvas(url: string, fw: number, fh: number, canvas: HTMLCanvasElement): IGambar;
-        static muatAsync(url: string, onload: () => void): IGambar;
-        static muatAsyncKanvas(url: string, canvas: HTMLCanvasElement, onload: () => void): IGambar;
-        static gambarUbin(gbr: IGambar, x?: number, y?: number, frame?: number): void;
+    class Img {
+        static buatBagiCanvas(canvas: HTMLCanvasElement, w?: number, h?: number, frameW?: number, frameH?: number): IGbr;
+        static panjang(gbr: IGbr, pj?: number): number;
+        static lebar(gbr: IGbr, lb?: number): number;
+        static tabrakan(gbr1: IGbr, x1: number, y1: number, gbr2: IGbr, x2: number, y2: number): boolean;
+        static dotDidalamGambar(gbr1: IGbr, x1: number, y1: number, x2: number, y2: number): boolean;
+        static muatAnimAsync(url: string, fw: number, fh: number): IGbr;
+        static muatAnimAsyncCanvas(url: string, fw: number, fh: number, canvas: HTMLCanvasElement): IGbr;
+        static muatAsync(url: string, onload: () => void): IGbr;
+        static muatAsyncKanvas(url: string, canvas: HTMLCanvasElement, onload: () => void): IGbr;
+        static gambarUbin(gbr: IGbr, x?: number, y?: number, frame?: number): void;
         /**
          * mengambil pixel di layar
          * @param x posisi x
@@ -141,21 +141,21 @@ declare namespace ha.be {
          * @param y
          */
         static SetPiksel(x?: number, y?: number): void;
-        static gambar(gbr: IGambar, x?: number, y?: number, frame?: number): void;
+        static gambar(gbr: IGbr, x?: number, y?: number, frame?: number): void;
         /**
          * Ubah Ukuran Gambar
          * @param gbr
          * @param w
          * @param h
          */
-        static ukuran(gbr: IGambar, w?: number, h?: number): void;
-        static resetRect(img: IGambar): void;
-        static rectToImageTransform(image: IGambar, x: number, y: number): void;
+        static ukuran(gbr: IGbr, w?: number, h?: number): void;
+        static resetRect(img: IGbr): void;
+        static rectToImageTransform(image: IGbr, x: number, y: number): void;
     }
 }
 declare namespace ha.be {
-    class Sprite implements ISprite {
-        static readonly daftar: ISprite[];
+    class Spr implements ISpr {
+        static readonly daftar: ISpr[];
         private static _ctrDraw;
         static get ctrDraw(): number;
         static set ctrDraw(value: number);
@@ -175,95 +175,97 @@ declare namespace ha.be {
         private _inputId;
         get inputId(): number;
         set inputId(value: number);
-        constructor(buffer: IGambar, dragable?: boolean);
+        constructor(buffer: IGbr, dragable?: boolean);
         /**
          *
          * @param spr
          * @returns
          */
-        static kontek(spr: ISprite): CanvasRenderingContext2D;
+        static kontek(spr: ISpr): CanvasRenderingContext2D;
         /**
          *
-         * @param sprS {ISprite} sprite
+         * @param sprS {ISpr} sprite
          * @param onload {() => void} optional, fungsi yang dipanggil sprite selesai dimuat
          * @returns
          */
-        static Copy(sprS: ISprite, onload?: () => void): ISprite;
+        static Copy(sprS: ISpr, onload?: () => void): ISpr;
         /**
          *
          * @param spr
          * @returns
          */
-        static Dimuat(spr: ISprite): boolean;
+        static Dimuat(spr: ISpr): boolean;
         /**
          *
          * @param spr
          * @returns
          */
-        static StatusDrag(spr: ISprite): boolean;
+        static StatusDrag(spr: ISpr): boolean;
         /**
          *
          * @param spr
          * @param pj
          * @returns
          */
-        static Panjang(spr: ISprite, pj?: number): number;
+        static Panjang(spr: ISpr, pj?: number): number;
         /**
          *
          * @param spr
          * @param lb
          * @returns
          */
-        static Lebar(spr: ISprite, lb?: number): number;
+        static Lebar(spr: ISpr, lb?: number): number;
         /**
          *
          * @param spr
          * @param alpha
          * @returns
          */
-        static Alpha(spr: ISprite, alpha?: number): number;
+        static Alpha(spr: ISpr, alpha?: number): number;
         /**
          *
          * @param spr
          * @param sudut
          * @returns
          */
-        static Rotasi(spr: ISprite, sudut?: number): number;
+        static Rotasi(spr: ISpr, sudut?: number): number;
         /**
          *
          * @param spr
          * @param x
          * @param y
          */
-        static Posisi(spr: ISprite, x?: number, y?: number): void;
+        static Posisi(spr: ISpr, x?: number, y?: number): void;
         /**
          *
          * @param spr
          * @param x
          * @returns
          */
-        static PosisiX(spr: ISprite, x?: number | null | undefined): number;
+        static PosisiX(spr: ISpr, x?: number | null | undefined): number;
         /**
          *
-         * @param spr
+         * @param s
          * @param y
          * @returns
          */
-        static PosisiY(spr: ISprite, y?: number | null | undefined): number;
+        static PosisiY(s: ISpr, y?: number | null | undefined): number;
         /**
          *
-         * @param spr
+         * @param s
          * @returns
          */
-        static Bound(spr: ISprite): IKotak;
+        static Bound(s: ISpr): IKotak;
         /**
          *
-         * @param spr
+         * @param s
          * @param x
          * @param y
          * @returns
          */
-        static Handle(spr: ISprite, x?: number, y?: number): void;
+        static Handle(s: ISpr, x?: number, y?: number): void;
+        static HandleX(s: ISpr): number;
+        static HandleY(s: ISpr): number;
         /**
          *
          */
@@ -274,7 +276,8 @@ declare namespace ha.be {
          * @param spr2
          * @returns
          */
-        static Tabrakan(spr: ISprite, spr2: ISprite): boolean;
+        static Tabrakan(spr: ISpr, spr2: ISpr): boolean;
+        static TabrakanXY(spr: ISpr, x1: number, y1: number, spr2: ISpr, x2: number, y2: number): boolean;
         private static muatAnimasiAsyncKanvas;
         /**
          *
@@ -285,7 +288,7 @@ declare namespace ha.be {
          * @param tipeDrag
          * @returns
          */
-        static MuatAnimasi(url: string, pf: number, lf: number, bisaDiDrag?: boolean, tipeDrag?: number): ISprite;
+        static MuatAnimasi(url: string, pf: number, lf: number, bisaDiDrag?: boolean, tipeDrag?: number): ISpr;
         private static muatAsyncBerbagiKanvas;
         /**
          *
@@ -294,7 +297,7 @@ declare namespace ha.be {
          * @param tipeDrag
          * @returns
          */
-        static MuatAsync(url: string, bisaDiDrag?: boolean, tipeDrag?: number): Promise<ISprite>;
+        static MuatAsync(url: string, bisaDiDrag?: boolean, tipeDrag?: number): Promise<ISpr>;
         /**
          *
          * @param url (string) url gambar
@@ -303,21 +306,21 @@ declare namespace ha.be {
          * @param onload
          * @returns
          */
-        static Muat(url: string, bisaDiDrag?: boolean, tipeDrag?: number, onload?: () => void): ISprite;
+        static Muat(url: string, bisaDiDrag?: boolean, tipeDrag?: number, onload?: () => void): ISpr;
         /**
          *
          * @param gbr
          * @param w
          * @param h
          */
-        static Ukuran(gbr: ISprite, w: number, h: number): void;
+        static Ukuran(gbr: ISpr, w: number, h: number): void;
         private static buatPrivate;
         /**
          * Menggambar sprite ke layar
          * @param sprite
          * @param frame
          */
-        static Gambar(sprite: ISprite, frame?: number): void;
+        static Gambar(sprite: ISpr, frame?: number): void;
         /**
          *
          * @param sprite
@@ -326,7 +329,7 @@ declare namespace ha.be {
          * @param frame
          * @returns
          */
-        static GambarXY(sprite: ISprite, x: number, y: number, frame?: number): void;
+        static GambarXY(sprite: ISpr, x: number, y: number, frame?: number): void;
         /**
          *
          * @param sprite
@@ -337,7 +340,7 @@ declare namespace ha.be {
          * @param skalaX
          * @param skalaY
          */
-        static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number, skalaX?: number, skalaY?: number): void;
+        static posisiPolar(sprite: ISpr, sudut: number, jarak: number, x2: number, y2: number, skalaX?: number, skalaY?: number): void;
         /**
          *
          * @param spr
@@ -345,21 +348,21 @@ declare namespace ha.be {
          * @param y
          * @param frame
          */
-        static Ubin(spr: ISprite, x?: number, y?: number, frame?: number): void;
+        static Ubin(spr: ISpr, x?: number, y?: number, frame?: number): void;
         /**
          *
          * @param spr
          * @returns
          */
-        static StatusMuat(spr?: ISprite): boolean;
+        static StatusMuat(spr?: ISpr): boolean;
         get dragStartX(): number;
         set dragStartX(value: number);
         get dragStartY(): number;
         set dragStartY(value: number);
         get dragged(): boolean;
         set dragged(value: boolean);
-        get buffer(): IGambar;
-        set buffer(value: IGambar);
+        get buff(): IGbr;
+        set buff(value: IGbr);
         get x(): number;
         set x(value: number);
         get y(): number;
@@ -388,7 +391,7 @@ declare enum EInput {
 }
 declare namespace ha.be {
     class EventHandler {
-        move(input: IInput, buffer: IGambar, e: PointerEvent): void;
+        move(input: IInput, buffer: IGbr, e: PointerEvent): void;
         down(input: IInput, key: string, type: EInput, pos: IV2D): void;
         up(input: IInput): void;
         private checkTap;
@@ -477,13 +480,13 @@ declare namespace ha.be {
          */
         static Geser(): boolean;
         private static getMouseKeyId;
-        static init(buffer: IGambar): void;
+        static init(buffer: IGbr): void;
         private static buatInputDefault;
         private static flush;
         private static flushByInput;
         private static getInput;
         private static baru;
-        static pos: (cx: number, cy: number, buffer: IGambar) => {
+        static pos: (cx: number, cy: number, buffer: IGbr) => {
             x: number;
             y: number;
         };
@@ -655,7 +658,7 @@ interface IInput {
     tapJml: number;
     upJml: number;
 }
-interface IGambar {
+interface IGbr {
     img: HTMLImageElement;
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
@@ -684,8 +687,8 @@ interface IPoint2D {
     x: number;
     y: number;
 }
-interface ISprite {
-    buffer: IGambar;
+interface ISpr {
+    buff: IGbr;
     x: number;
     y: number;
     dragable: boolean;

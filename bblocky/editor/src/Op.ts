@@ -45,25 +45,55 @@ namespace ha.blockly {
                 // window.location.href = "./play.html";
             }
 
-            w.share = () => {
-                let simpan = Blockly.serialization.workspaces.save(Index.workspace);
-                let simpans = JSON.stringify(simpan);
-                let b64 = btoa(simpans);
-
-                console.groupCollapsed('share');
-                console.log(b64);
-                console.groupEnd();
-            }
-
             w.publish = () => {
                 Op.publish();
+            }
+
+            w.exportJSON = () => {
+                Op.export();
+            }
+
+            w.importJSON = () => {
+                Op.import();
             }
         }
 
         static publish() {
             let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
             window.localStorage.setItem("blocklycode", codeHtml);
-            window.open('./export.html', "_blank");
+            window.open('./publish.html', "_blank");
+        }
+
+        static export() {
+            let simpan = Blockly.serialization.workspaces.save(Index.workspace);
+            Dialog.open(`
+                    <h1>Export to JSON</h1>
+                    <p>
+                        Copy content of textarea below. You can save to file or import later.
+                    </p>
+            `, JSON.stringify(simpan));
+            // window.localStorage.setItem("blocklyExport", JSON.stringify(simpan));
+            // window.open('./export.html', "_blank");
+        }
+
+        static import() {
+            Dialog.onClick = () => {
+                try {
+                    let value = document.querySelector('textarea').value;
+                    let code = JSON.parse(value);
+                    Blockly.serialization.workspaces.load(code, Index.workspace);
+                }
+                catch (e) {
+                    console.error(e);
+                }
+            }
+
+            Dialog.open(`
+                    <h1>Import from JSON</h1>
+                    <p>
+                        Fill the text area below with content you have exported before.
+                    </p>
+            `, "");
         }
 
         static resize() {

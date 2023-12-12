@@ -1,9 +1,9 @@
 namespace ha.blockly.ImageBlockData {
     export const list: TToolBoxBlockDef[] = [];
 
-    // ha.be.Sprite.Muat
+    // ha.be.Spr.Muat
     export const blitz_Muat: TToolBoxBlockDef = {
-        type: "ha.be.Sprite.Muat",
+        type: "ha.be.Spr.Muat",
         message0: 'Load Image %1 url: %2',
         args: {
             dummy: '',
@@ -14,9 +14,9 @@ namespace ha.blockly.ImageBlockData {
     list.push(blitz_Muat);
 
     // LoadAnimImage
-    // ha.be.Sprite.MuatAnimasi
+    // ha.be.Spr.MuatAnimasi
     list.push({
-        type: "ha.be.Sprite.MuatAnimasi",
+        type: "ha.be.Spr.MuatAnimasi",
         message0: "LoadAnimImage %1 image: %2 frame width: %3 frame height: %4",
         args: {
             dummy: '',
@@ -29,9 +29,9 @@ namespace ha.blockly.ImageBlockData {
 
 
     // DrawImage
-    // ha.be.Sprite.Gambar
+    // ha.be.Spr.Gambar
     list.push({
-        type: "ha.be.Sprite.Gambar",
+        type: "ha.be.Spr.Gambar",
         message0: "DrawImage: %4 image %1 x: %2 y: %3",
         args: {
             sprite: {},
@@ -42,10 +42,10 @@ namespace ha.blockly.ImageBlockData {
     })
 
     // DrawImage
-    // ha.be.Sprite.Gambar animasi
+    // ha.be.Spr.Gambar animasi
     list.push({
-        type: "ha.be.Sprite.Gambar_animasi",
-        message0: "DrawImage: %5 image %1 x: %2 y: %3 frame: %4",
+        type: "ha.be.Spr.Gambar_animasi",
+        message0: "DrawImageAnim: %5 image %1 x: %2 y: %3 frame: %4",
         args: {
             sprite: {},
             x: 0,
@@ -56,9 +56,9 @@ namespace ha.blockly.ImageBlockData {
     })
 
     // TileImage
-    //ha.be.Sprite.Ubin;
+    //ha.be.Spr.Ubin;
     list.push({
-        type: "ha.be.Sprite.Ubin",
+        type: "ha.be.Spr.Ubin",
         message0: "TileImage: %5 image %1 x: %2 y: %3 frame: %4",
         args: {
             sprite: {},
@@ -70,9 +70,9 @@ namespace ha.blockly.ImageBlockData {
     })
 
     // HandleImage
-    // ha.be.Sprite.Handle
+    // ha.be.Spr.Handle
     list.push({
-        type: "ha.be.Sprite.Handle",
+        type: "ha.be.Spr.Handle",
         message0: "HandleImage: %1 image %2 x: %3 y: %4",
         args: {
             dummy: '',
@@ -83,19 +83,108 @@ namespace ha.blockly.ImageBlockData {
     })
 
     // ResizeImage
-    // ha.be.Sprite.Ukuran;
+    // ha.be.Spr.Ukuran;
+    list.push({
+        type: "ha.be.Spr.Ukuran",
+        message0: "ResizeImage: %1 image %2 width: %3 height: %4",
+        args: {
+            dummy: '',
+            sprite: {},
+            width: 0,
+            height: 0,
+        }
+    })
 
     // RotateImage
-    // ImageWidth
-    // ImageHeight
-    // ImageXHandle
-    // ImageYHandle
-    // ImagesCollide
+    // ha.be.Spr.Rotasi;
+    list.push({
+        type: "ha.be.Spr.Rotasi",
+        message0: "RotateImage: %1 image %2 value (0-360): %3",
+        args: {
+            dummy: '',
+            sprite: {},
+            angle: 0
+        }
+    })
 
+    // CopyImage
+
+
+    /**
+     * INFO
+     * ==== 
+     */
+
+    // ImageWidth
+    // ha.be.Spr.Panjang;
+    list.push({
+        type: "ha.be.Spr.Panjang",
+        message0: "ImageWidth: %1 image %2",
+        args: {
+            dummy: '',
+            sprite: {},
+        },
+        output: EOutput.Number
+    })
+
+    // ImageHeight
+    // ha.be.Spr.Lebar;
+    list.push({
+        type: "ha.be.Spr.Lebar",
+        message0: "ImageHeight: %1 image %2",
+        args: {
+            dummy: '',
+            sprite: {},
+        },
+        output: EOutput.Number
+    })
+
+    // ImageXHandle
+    // ha.be.Spr.HandleX
+    list.push({
+        type: "ha.be.Spr.HandleX",
+        message0: "ImageXHandle: %1 image %2",
+        args: {
+            dummy: '',
+            sprite: {},
+        },
+        tooltip: "return the image-handle X coordinate",
+        output: EOutput.Number
+    })
+
+    // ImageYHandle
+    // ha.be.Spr.HandleY
+    list.push({
+        type: "ha.be.Spr.HandleY",
+        message0: "ImageYHandle: %1 image %2",
+        args: {
+            dummy: '',
+            sprite: {},
+        },
+        tooltip: "return the image-handle Y coordinate",
+        output: EOutput.Number
+    })
+
+    // ImagesCollide
+    // ha.be.Spr.TabrakanXY;
+    list.push({
+        type: "ha.be.Spr.TabrakanXY",
+        message0: "ImagesCollide: %1 image1: %2 x1: %3 y1: %4 image2: %5 x2: %6 y2: %7",
+        args: {
+            dummy: '',
+            sprite: {},
+            x1: 0,
+            y1: 0,
+            sprite2: {},
+            x2: 0,
+            y2: 0
+        },
+        tooltip: "return true if two images are collided at position",
+        output: EOutput.Boolean
+    })
 }
 
 
-// CopyImage
 // CreateImage
 // FreeImage
 // SaveImage

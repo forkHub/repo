@@ -1,9 +1,20 @@
-url absolut buat image => w3school
-migrasi ke be
-hapus bbjs
+url absolut buat image => forkhub
+Export
+Import
+lengkapi perintah2
+    Math
+    String
+    Text
+    Input
+    System
+
+    Image-interaksi
+    Input-drag
+Sample App
 
 BACKLOG:
 ========
 multiple project
-perlu perubahan data saat simpan ke local storage
-Event
+    perlu perubahan data saat simpan ke local storage
+Routine
+Upload - firebase

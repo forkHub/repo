@@ -63,6 +63,46 @@ var ha;
 (function (ha) {
     var blockly;
     (function (blockly) {
+        class Dialog {
+            static dlg = document.querySelector('dialog');
+            static onClick = () => { };
+            static open(p, cont) {
+                this.dlg.querySelector('p').innerHTML = p;
+                this.dlg.querySelector('textarea').value = cont;
+                this.dlg.showModal();
+            }
+            static klik() {
+                this.dlg.close();
+                this.onClick();
+            }
+        }
+        blockly.Dialog = Dialog;
+    })(blockly = ha.blockly || (ha.blockly = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var blockly;
+    (function (blockly) {
+        class HalImport {
+            static import() {
+                try {
+                    let value = document.querySelector('textarea').value;
+                    let code = JSON.parse(value);
+                    console.log(code);
+                    Blockly.serialization.workspaces.load(code, blockly.Index.workspace);
+                }
+                catch (e) {
+                    console.error(e);
+                }
+            }
+        }
+        blockly.HalImport = HalImport;
+    })(blockly = ha.blockly || (ha.blockly = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var blockly;
+    (function (blockly) {
         class Id {
             static _id = Date.now();
             static get id() {
@@ -138,22 +178,49 @@ var ha;
                     window.open('./play.html', "_blank");
                     // window.location.href = "./play.html";
                 };
-                w.share = () => {
-                    let simpan = Blockly.serialization.workspaces.save(blockly.Index.workspace);
-                    let simpans = JSON.stringify(simpan);
-                    let b64 = btoa(simpans);
-                    console.groupCollapsed('share');
-                    console.log(b64);
-                    console.groupEnd();
-                };
                 w.publish = () => {
                     Op.publish();
+                };
+                w.exportJSON = () => {
+                    Op.export();
+                };
+                w.importJSON = () => {
+                    Op.import();
                 };
             }
             static publish() {
                 let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(blockly.Index.workspace));
                 window.localStorage.setItem("blocklycode", codeHtml);
-                window.open('./export.html', "_blank");
+                window.open('./publish.html', "_blank");
+            }
+            static export() {
+                let simpan = Blockly.serialization.workspaces.save(blockly.Index.workspace);
+                blockly.Dialog.open(`
+                    <h1>Export to JSON</h1>
+                    <p>
+                        Copy content of textarea below. You can save to file or import later.
+                    </p>
+            `, JSON.stringify(simpan));
+                // window.localStorage.setItem("blocklyExport", JSON.stringify(simpan));
+                // window.open('./export.html', "_blank");
+            }
+            static import() {
+                blockly.Dialog.onClick = () => {
+                    try {
+                        let value = document.querySelector('textarea').value;
+                        let code = JSON.parse(value);
+                        Blockly.serialization.workspaces.load(code, blockly.Index.workspace);
+                    }
+                    catch (e) {
+                        console.error(e);
+                    }
+                };
+                blockly.Dialog.open(`
+                    <h1>Import from JSON</h1>
+                    <p>
+                        Fill the text area below with content you have exported before.
+                    </p>
+            `, "");
             }
             static resize() {
                 const onresize = function () {
@@ -240,7 +307,7 @@ var ha;
             function defValue(t) {
                 // console.group("defValue");
                 // console.log(t);
-                if (t.output) {
+                if (t.output != undefined) {
                 }
                 else {
                     t.previousStatement = null;
@@ -473,12 +540,31 @@ var ha;
     (function (blockly) {
         class HalExport {
             static init() {
-                let simpan = window.localStorage.getItem("blocklycode");
+                let simpan = window.localStorage.getItem("blocklyExport");
+                let textArea = document.querySelector('textarea');
+                textArea.value = simpan;
+            }
+            static modal() {
+                let simpan = window.localStorage.getItem("blocklyExport");
                 let textArea = document.querySelector('textarea');
                 textArea.value = simpan;
             }
         }
         blockly.HalExport = HalExport;
+    })(blockly = ha.blockly || (ha.blockly = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var blockly;
+    (function (blockly) {
+        class HalPublish {
+            static init() {
+                let simpan = window.localStorage.getItem("blocklycode");
+                let textArea = document.querySelector('textarea');
+                textArea.value = simpan;
+            }
+        }
+        blockly.HalPublish = HalPublish;
     })(blockly = ha.blockly || (ha.blockly = {}));
 })(ha || (ha = {}));
 var ha;
@@ -982,9 +1068,9 @@ var ha;
         var ImageBlockData;
         (function (ImageBlockData) {
             ImageBlockData.list = [];
-            // ha.be.Sprite.Muat
+            // ha.be.Spr.Muat
             ImageBlockData.blitz_Muat = {
-                type: "ha.be.Sprite.Muat",
+                type: "ha.be.Spr.Muat",
                 message0: 'Load Image %1 url: %2',
                 args: {
                     dummy: '',
@@ -994,9 +1080,9 @@ var ha;
             };
             ImageBlockData.list.push(ImageBlockData.blitz_Muat);
             // LoadAnimImage
-            // ha.be.Sprite.MuatAnimasi
+            // ha.be.Spr.MuatAnimasi
             ImageBlockData.list.push({
-                type: "ha.be.Sprite.MuatAnimasi",
+                type: "ha.be.Spr.MuatAnimasi",
                 message0: "LoadAnimImage %1 image: %2 frame width: %3 frame height: %4",
                 args: {
                     dummy: '',
@@ -1007,9 +1093,9 @@ var ha;
                 output: EOutput.Any
             });
             // DrawImage
-            // ha.be.Sprite.Gambar
+            // ha.be.Spr.Gambar
             ImageBlockData.list.push({
-                type: "ha.be.Sprite.Gambar",
+                type: "ha.be.Spr.Gambar",
                 message0: "DrawImage: %4 image %1 x: %2 y: %3",
                 args: {
                     sprite: {},
@@ -1019,10 +1105,10 @@ var ha;
                 }
             });
             // DrawImage
-            // ha.be.Sprite.Gambar animasi
+            // ha.be.Spr.Gambar animasi
             ImageBlockData.list.push({
-                type: "ha.be.Sprite.Gambar_animasi",
-                message0: "DrawImage: %5 image %1 x: %2 y: %3 frame: %4",
+                type: "ha.be.Spr.Gambar_animasi",
+                message0: "DrawImageAnim: %5 image %1 x: %2 y: %3 frame: %4",
                 args: {
                     sprite: {},
                     x: 0,
@@ -1032,9 +1118,9 @@ var ha;
                 }
             });
             // TileImage
-            //ha.be.Sprite.Ubin;
+            //ha.be.Spr.Ubin;
             ImageBlockData.list.push({
-                type: "ha.be.Sprite.Ubin",
+                type: "ha.be.Spr.Ubin",
                 message0: "TileImage: %5 image %1 x: %2 y: %3 frame: %4",
                 args: {
                     sprite: {},
@@ -1045,9 +1131,9 @@ var ha;
                 }
             });
             // HandleImage
-            // ha.be.Sprite.Handle
+            // ha.be.Spr.Handle
             ImageBlockData.list.push({
-                type: "ha.be.Sprite.Handle",
+                type: "ha.be.Spr.Handle",
                 message0: "HandleImage: %1 image %2 x: %3 y: %4",
                 args: {
                     dummy: '',
@@ -1057,17 +1143,99 @@ var ha;
                 }
             });
             // ResizeImage
-            // ha.be.Sprite.Ukuran;
+            // ha.be.Spr.Ukuran;
+            ImageBlockData.list.push({
+                type: "ha.be.Spr.Ukuran",
+                message0: "ResizeImage: %1 image %2 width: %3 height: %4",
+                args: {
+                    dummy: '',
+                    sprite: {},
+                    width: 0,
+                    height: 0,
+                }
+            });
             // RotateImage
+            // ha.be.Spr.Rotasi;
+            ImageBlockData.list.push({
+                type: "ha.be.Spr.Rotasi",
+                message0: "RotateImage: %1 image %2 value (0-360): %3",
+                args: {
+                    dummy: '',
+                    sprite: {},
+                    angle: 0
+                }
+            });
+            // CopyImage
+            /**
+             * INFO
+             * ====
+             */
             // ImageWidth
+            // ha.be.Spr.Panjang;
+            ImageBlockData.list.push({
+                type: "ha.be.Spr.Panjang",
+                message0: "ImageWidth: %1 image %2",
+                args: {
+                    dummy: '',
+                    sprite: {},
+                },
+                output: EOutput.Number
+            });
             // ImageHeight
+            // ha.be.Spr.Lebar;
+            ImageBlockData.list.push({
+                type: "ha.be.Spr.Lebar",
+                message0: "ImageHeight: %1 image %2",
+                args: {
+                    dummy: '',
+                    sprite: {},
+                },
+                output: EOutput.Number
+            });
             // ImageXHandle
+            // ha.be.Spr.HandleX
+            ImageBlockData.list.push({
+                type: "ha.be.Spr.HandleX",
+                message0: "ImageXHandle: %1 image %2",
+                args: {
+                    dummy: '',
+                    sprite: {},
+                },
+                tooltip: "return the image-handle X coordinate",
+                output: EOutput.Number
+            });
             // ImageYHandle
+            // ha.be.Spr.HandleY
+            ImageBlockData.list.push({
+                type: "ha.be.Spr.HandleY",
+                message0: "ImageYHandle: %1 image %2",
+                args: {
+                    dummy: '',
+                    sprite: {},
+                },
+                tooltip: "return the image-handle Y coordinate",
+                output: EOutput.Number
+            });
             // ImagesCollide
+            // ha.be.Spr.TabrakanXY;
+            ImageBlockData.list.push({
+                type: "ha.be.Spr.TabrakanXY",
+                message0: "ImagesCollide: %1 image1: %2 x1: %3 y1: %4 image2: %5 x2: %6 y2: %7",
+                args: {
+                    dummy: '',
+                    sprite: {},
+                    x1: 0,
+                    y1: 0,
+                    sprite2: {},
+                    x2: 0,
+                    y2: 0
+                },
+                tooltip: "return true if two images are collided at position",
+                output: EOutput.Boolean
+            });
         })(ImageBlockData = blockly.ImageBlockData || (blockly.ImageBlockData = {}));
     })(blockly = ha.blockly || (ha.blockly = {}));
 })(ha || (ha = {}));
-// CopyImage
 // CreateImage
 // FreeImage
 // SaveImage

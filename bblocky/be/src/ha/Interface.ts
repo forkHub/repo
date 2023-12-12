@@ -38,7 +38,7 @@ interface IInput {
 	upJml: number;
 }
 
-interface IGambar {
+interface IGbr {
 	//share-ble
 	img: HTMLImageElement;
 	canvas: HTMLCanvasElement;
@@ -77,8 +77,8 @@ interface IPoint2D {
 	y: number
 }
 
-interface ISprite {
-	buffer: IGambar,
+interface ISpr {
+	buff: IGbr,
 	x: number,
 	y: number,
 	dragable: boolean

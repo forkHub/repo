@@ -13,7 +13,7 @@ namespace ha.blockly.BDef {
         // console.group("defValue");
         // console.log(t);
 
-        if (t.output) {
+        if (t.output != undefined) {
 
         }
         else {
