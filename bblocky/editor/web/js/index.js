@@ -190,8 +190,15 @@ var ha;
             }
             static publish() {
                 let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(blockly.Index.workspace));
-                window.localStorage.setItem("blocklycode", codeHtml);
-                window.open('./publish.html', "_blank");
+                blockly.Dialog.open(`
+                    <h1>Publish</h1>
+                    <p>
+                        Copy content of textarea below, and save it to a file with .html extension.
+                        You can run the file directly without setting up a web-server
+                    </p>
+            `, (codeHtml));
+                // window.localStorage.setItem("blocklycode", codeHtml);
+                // window.open('./publish.html', "_blank");
             }
             static export() {
                 let simpan = Blockly.serialization.workspaces.save(blockly.Index.workspace);
