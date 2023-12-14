@@ -1,19 +1,24 @@
-// ///<reference path="./Route.ts"/>
+///<reference path="./Route.ts"/>
 
-// const InputHit = ha.be.Input.InputHit;
-// const InputX = ha.be.Input.InputX;
-// const InputY = ha.be.Input.InputY;
-// const InputXAwal = ha.be.Input.InputXAwal;
-// const InputYAwal = ha.be.Input.InputYAwal;
-// const GeserX = ha.be.Input.GeserX;
-// const GeserY = ha.be.Input.GeserY;
-// const FlushInput = ha.be.Input.FlushInput;
-// const Pencet = ha.be.Input.Pencet;
-// const Geser = ha.be.Input.Geser;
-// const InputType = ha.be.Input.InputType;
-// const JmlTap = ha.be.Input.JmlTap;
-// const JmlDragMulai = ha.be.Input.JmlDragMulai;
-// const JmlDragSelesai = ha.be.Input.JmlDragSelesai;
+const InputHit = ha.be.Input.InputHit;
+const InputX = ha.be.Input.InputX;
+const InputY = ha.be.Input.InputY;
+const FlushInput = ha.be.Input.FlushInput;
+const Pencet = ha.be.Input.Pencet;
+
+//extended
+const GeserX = ha.be.Input.GeserX;
+const GeserY = ha.be.Input.GeserY;
+const Geser = ha.be.Input.Geser;
+const InputType = ha.be.Input.InputType;
+const JmlTap = ha.be.Input.JmlTap;
+const JmlDragMulai = ha.be.Input.JmlDragMulai;
+const JmlDragSelesai = ha.be.Input.JmlDragSelesai;
+const InputXAwal = ha.be.Input.InputXAwal;
+const InputYAwal = ha.be.Input.InputYAwal;
+
+//TODO: input id
+
 
 // // const FlushKeys = () => {
 // // 	// ha.be.input.flushByInput(ha.be.input.keybGlobal);

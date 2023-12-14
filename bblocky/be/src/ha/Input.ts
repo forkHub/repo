@@ -88,7 +88,7 @@ namespace ha.be {
 	}
 
 	export class Input {
-		private static _inputs: IInput[] = [];	//any input,
+		private static _inputs: IInput[] = [];	//any input, todo: clean up
 		private static _debug: boolean = false;
 		public static get debug(): boolean {
 			return Input._debug;
@@ -510,3 +510,46 @@ namespace ha.be {
 
 	// export const input: Input = new Input();
 }
+
+
+// Input
+//======
+// KeyDown
+// KeyHit
+// GetKey
+// WaitKey
+// FlushKeys
+
+// MoveMouse
+// MouseDown
+// MouseHit
+// GetMouse
+// WaitMouse
+// MouseX
+// MouseY
+// MouseZ
+// MouseXSpeed
+// MouseYSpeed
+// MouseZSpeed
+// FlushMouse
+
+// JoyType
+// JoyDown
+// JoyHit
+// GetJoy
+// WaitJoy
+// JoyX
+// JoyY
+// JoyZ
+// JoyU
+// JoyV
+// JoyXDir
+// JoyYDir
+// JoyZDir
+// JoyUDir
+// JoyVDir
+// JoyYaw
+// JoyPitch
+// JoyRoll
+// JoyHat
+// FlushJoy
