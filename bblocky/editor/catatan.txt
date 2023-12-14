@@ -1,15 +1,16 @@
 url absolut buat image => forkhub
-Export
-Import
 lengkapi perintah2
-    Math
-    String
-    Text
+    x - Math
+    x - String
+    x - Text
+    x - System
     Input
-    System
 
+perintah extended
+    label
     Image-interaksi
     Input-drag
+    
 Sample App
 
 BACKLOG:
@@ -18,3 +19,5 @@ multiple project
     perlu perubahan data saat simpan ke local storage
 Routine
 Upload - firebase
+gambar64
+gambar95

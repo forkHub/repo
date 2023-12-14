@@ -9,6 +9,10 @@ namespace ha.blockly {
             (this.dlg as any).showModal();
         }
 
+        static batal() {
+            (this.dlg as any).close();
+        }
+
         static klik() {
             (this.dlg as any).close();
             this.onClick();

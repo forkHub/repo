@@ -28,6 +28,7 @@ type TToolBoxBlockDef = {
     message0: string
     args?: any;         //=> di convert ke arg0, //TODO: support dummy input
     output?: EOutput;
+    perintah: string;
 
     //auto fill
     args0?: TArgDef[]

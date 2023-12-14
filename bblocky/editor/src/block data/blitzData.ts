@@ -7,6 +7,7 @@ namespace ha.blockly.BlitzData {
     // ha.be.Be.Grafis
     export const Grafis: TToolBoxBlockDef = {
         type: "ha.be.Be.Grafis",
+        perintah: "ha.be.Be.Grafis",
         message0: "Graphics %1 width: %2 height: %3",
         // inputsInline: false,
         args: {
@@ -20,6 +21,7 @@ namespace ha.blockly.BlitzData {
     // ha.be.Be.Bersih
     list.push({
         type: "ha.be.Be.Bersih",
+        perintah: "ha.be.Be.Bersih",
         message0: 'Cls',
     });
 
