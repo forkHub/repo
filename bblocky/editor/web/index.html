@@ -20,8 +20,8 @@
             <div style="display: table-cell; padding: 8px;">
                 <button onclick="simpan()">save</button>&nbsp;
                 <button onclick="load()">load</button>&nbsp;
-                <button onclick="exportJSON()">export</button>&nbsp;
-                <button onclick="importJSON()">import</button>&nbsp;
+                <!-- <button onclick="exportJSON()">export</button>&nbsp;
+                <button onclick="importJSON()">import</button>&nbsp; -->
                 <button onclick="run()">run</button>
                 <button onclick="publish()">publish</button>
             </div>
@@ -37,6 +37,11 @@
             <button onclick=" ha.blockly.Dialog.klik()">OK</button>
             <button onclick=" ha.blockly.Dialog.batal()">OK</button>
         </div>
+    </dialog>
+
+    <dialog class="alert">
+        <p></p>
+        <button onclick="ha.be.blockly.Dialog.klik()">Ok</button>
     </dialog>
 
     <script src="lib/blockly_compressed.js" defer></script>
