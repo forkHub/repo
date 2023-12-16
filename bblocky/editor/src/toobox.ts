@@ -40,8 +40,10 @@ namespace ha.blockly.toolbox {
 
         toolbox.contents.push(getCategory("Blitz", BlitzData.list)); //registerBlitz());
         toolbox.contents.push(getCategory("Image", ImageBlockData.list));
+        toolbox.contents.push(getCategory("Image 2", ImageBlockData2.list));
         toolbox.contents.push(getCategory(debugData.group, debugData.list));
         toolbox.contents.push(getCategory(InputBlockData.group, InputBlockData.list));
+        toolbox.contents.push(getCategory(TextData.group, TextData.list));
 
         js(allToolBoxDef);
     }
@@ -139,10 +141,16 @@ namespace ha.blockly.toolbox {
         ImageBlockData.list.forEach((item) => {
             blockData.push(item);
         })
+        ImageBlockData2.list.forEach((item) => {
+            blockData.push(item);
+        })
         debugData.list.forEach((item) => {
             blockData.push(item);
         })
         InputBlockData.list.forEach((item) => {
+            blockData.push(item);
+        })
+        TextData.list.forEach((item) => {
             blockData.push(item);
         })
 

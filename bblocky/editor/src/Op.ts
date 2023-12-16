@@ -89,7 +89,7 @@ namespace ha.blockly {
 
         static publish() {
             let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
-            Dialog.open(`
+            DialogPublish.open(`
                     <h1>Publish</h1>
                     <p>
                         Copy content of textarea below, and save it to a file with .html extension.
@@ -102,7 +102,7 @@ namespace ha.blockly {
 
         static export() {
             let simpan = Blockly.serialization.workspaces.save(Index.workspace);
-            Dialog.open(`
+            DialogPublish.open(`
                     <h1>Export to JSON</h1>
                     <p>
                         Copy content of textarea below. You can save to file or import later.
@@ -113,7 +113,7 @@ namespace ha.blockly {
         }
 
         static import() {
-            Dialog.onClick = () => {
+            DialogPublish.onClick = () => {
                 try {
                     let value = document.querySelector('textarea').value;
                     let code = JSON.parse(value);
@@ -124,7 +124,7 @@ namespace ha.blockly {
                 }
             }
 
-            Dialog.open(`
+            DialogPublish.open(`
                     <h1>Import from JSON</h1>
                     <p>
                         Fill the text area below with content you have exported before.
@@ -205,12 +205,12 @@ namespace ha.blockly {
     }
 }
 
-function openFile(id: string): void {
-    id;
-}
+// function openFile(id: string): void {
+//     id;
+// }
 
-function deleteFile(id: string): void {
-    console.group('delete by id: ' + id);
-    ha.blockly.Data.hapus(id);
-    window.location.reload();
-}
+// function deleteFile(id: string): void {
+//     console.group('delete by id: ' + id);
+//     ha.blockly.Data.hapus(id);
+//     window.location.reload();
+// }

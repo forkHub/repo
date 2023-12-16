@@ -44,7 +44,7 @@ namespace ha.blockly.ImageBlockData {
         }
     })
 
-    // DrawImage
+    // DrawImageAnim
     // ha.be.Spr.Gambar animasi
     list.push({
         type: "ha.be.Spr.Gambar_animasi",
@@ -116,6 +116,7 @@ namespace ha.blockly.ImageBlockData {
     })
 
     // CopyImage
+    //TODO
 
 
     /**
@@ -177,7 +178,7 @@ namespace ha.blockly.ImageBlockData {
         output: EOutput.Number
     })
 
-    // ImagesCollide
+    // ImagesCollideXY
     // ha.be.Spr.TabrakanXY;
     list.push({
         type: "ha.be.Spr.TabrakanXY",
@@ -197,6 +198,21 @@ namespace ha.blockly.ImageBlockData {
     })
 }
 
+//next
+// const Loaded = ha.be.Spr.Dimuat;
+// const StatusMuat = ha.be.Spr.StatusMuat;
+// const Posisi = ha.be.Spr.Posisi;
+// const PosisiPolar = ha.be.Spr.posisiPolar;
+// const GambarSemua = ha.be.Spr.GambarSemua;
+// const PosisiX = ha.be.Spr.PosisiX;
+// const PosisiY = ha.be.Spr.PosisiY;
+// const Alpha = ha.be.Spr.Alpha;
+// const StatusDrag = ha.be.Spr.StatusDrag;
+// const Copy = ha.be.Spr.Copy;
+// const Bound = ha.be.Spr.Bound;
+
+//next 2
+// const SpriteKontek = ha.be.Spr.kontek;
 
 //not supported
 // CreateImage

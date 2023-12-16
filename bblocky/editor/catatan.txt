@@ -1,10 +1,8 @@
 url absolut buat image => forkhub
 test
-load ada daftar filenya
-save ada nama filenya
+text
 
 perintah extended
-    label
     Image-interaksi
     
 Sample App (extended)

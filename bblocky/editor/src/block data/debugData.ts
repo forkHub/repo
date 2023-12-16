@@ -20,6 +20,16 @@ namespace ha.blockly.debugData {
         kurung: false
     });
 
+    list.push({
+        type: "note",
+        perintah: "//",
+        kurung: false,
+        message0: "📝 %1",
+        args: {
+            comment: ""
+        },
+        tooltip: "Note",
+    });
 
 
 }

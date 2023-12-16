@@ -138,3 +138,18 @@ namespace ha.blockly {
         }
     }
 }
+
+interface IEntity {
+    id: string,
+    type: string,
+    parentId: string
+}
+
+interface IProject extends IEntity {
+    nama: string
+}
+
+interface IFile extends IEntity {
+    nama: string,
+    wspace: string
+}

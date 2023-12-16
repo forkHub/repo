@@ -171,8 +171,10 @@ namespace ha.blockly.BDef {
     export function normalizeAllBlock() {
         BlitzData.list.forEach((item) => { normal(item); });
         ImageBlockData.list.forEach((item) => { normal(item) });
+        ImageBlockData2.list.forEach((item) => { normal(item) });
         debugData.list.forEach((item) => { normal(item) });
         InputBlockData.list.forEach((item) => { normal(item) })
+        TextData.list.forEach((item) => { normal(item) })
     }
 }
 
