@@ -25,6 +25,10 @@ namespace ha.blockly.BDef {
             t.inputsInline = false;
         }
 
+        if (t.kurung == undefined) {
+            t.kurung = true;
+        }
+
         t.colour = 230;
         t.tooltip = t.tooltip || "";
         t.helpUrl = t.helpUrl || "";
@@ -168,6 +172,7 @@ namespace ha.blockly.BDef {
         BlitzData.list.forEach((item) => { normal(item); });
         ImageBlockData.list.forEach((item) => { normal(item) });
         debugData.list.forEach((item) => { normal(item) });
+        InputBlockData.list.forEach((item) => { normal(item) })
     }
 }
 

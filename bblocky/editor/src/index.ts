@@ -38,6 +38,8 @@ namespace ha.blockly {
 		}
 
 		static init() {
+			HalListProject.init();
+			ha.blockly.Entity.init();
 			ha.blockly.toolbox.init();
 			Index.initWorkSpace();
 			Op.resize();

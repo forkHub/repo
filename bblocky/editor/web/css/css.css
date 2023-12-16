@@ -12,3 +12,12 @@ html, body {
 button {
     padding: 4px;
 }
+
+div.project.selected {
+    background-color: lightgray;
+}
+
+div.project {
+    cursor: pointer;
+    padding: 8px 4px 8px 4px;
+}

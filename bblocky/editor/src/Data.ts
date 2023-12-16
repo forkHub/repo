@@ -1,7 +1,8 @@
+//TODO: depecrated
 namespace ha.blockly {
     export class Data {
         private static loaded = false;
-        private static readonly db = 'ha.blockly.data';
+        private static readonly dbName = 'ha.blockly.data';
 
         private static readonly data: TData = {
             files: []
@@ -9,8 +10,9 @@ namespace ha.blockly {
 
         private static load() {
             if (Data.loaded) return;
+
             try {
-                let str = window.localStorage.getItem(this.db);
+                let str = window.localStorage.getItem(this.dbName);
                 let obj = JSON.parse(str);
                 Data.data.files = obj;
                 Data.loaded = true;
@@ -40,7 +42,7 @@ namespace ha.blockly {
 
         static simpan() {
             try {
-                window.localStorage.setItem(this.db, JSON.stringify(this.data.files));
+                window.localStorage.setItem(this.dbName, JSON.stringify(this.data.files));
             }
             catch (e) {
                 console.warn(e);
@@ -68,4 +70,19 @@ type TFile = {
 
 type TData = {
     files: TFile[]
+}
+
+interface IEntity {
+    id: string,
+    type: string,
+    parentId: string
+}
+
+interface IProject extends IEntity {
+    nama: string
+}
+
+interface IFile extends IEntity {
+    nama: string,
+    wspace: string
 }

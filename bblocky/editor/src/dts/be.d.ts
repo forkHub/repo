@@ -18,6 +18,7 @@ declare namespace ha.be {
         private static _biru;
         private static _transparan;
         private static warnaBackup;
+        static Pause(): void;
         /**
          * Handle saat window di resize
          * @private
@@ -32,8 +33,8 @@ declare namespace ha.be {
         static Kontek(ctx?: CanvasRenderingContext2D): CanvasRenderingContext2D;
         static buatCanvas(canvasEl: HTMLCanvasElement): IGbr;
         static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void;
-        static backupWarna(): void;
-        static restoreWarna(): void;
+        private static backupWarna;
+        private static restoreWarna;
         /**
          *
          * @param merah {angka} warna merah, optional default = 0
@@ -42,7 +43,15 @@ declare namespace ha.be {
          * @param transparan
          */
         static Bersih(merah?: number, hijau?: number, biru?: number, transparan?: number): void;
+        /**
+         * Update style warna
+         * @param r (0-255)
+         * @param g (0-255)
+         * @param b (0-255)
+         * @param a (0-100)
+         */
         static Warna(r?: number, g?: number, b?: number, a?: number): void;
+        static StrokeColor(r?: number, g?: number, b?: number, a?: number): void;
         private static updateStyleWarna;
         /**
          * Mengembalikan warna merah dari perintah AmbilPixel terakhir
@@ -572,12 +581,15 @@ declare namespace ha.be {
 }
 declare namespace ha.be {
     class Teks {
+        private static nama;
+        private static ukuran;
         private static get ctx();
         /**
          *
-         * @param font
+         * @param nama
          */
-        static Font(font?: string): void;
+        static Font(nama?: string): void;
+        static FontSize(n?: number): void;
         /**
          *
          * @param rata (string) "center" | "end" | "left" | "right" | "start"
@@ -624,8 +636,64 @@ declare namespace ha.be {
          * @returns sudut relative ke posisi 0,0
          */
         static Sudut(x: number, y: number): number;
+        static Pi(): number;
+        static Int(n: string): number;
+        static Float(n: string): number;
+        static Floor(n: number): number;
+        static Ceil(n: number): number;
+        static Sgn(n: number): number;
+        static Abs(n: number): number;
+        static Mod(a: number, b: number): number;
+        static Sqr(n: number): number;
+        static Sin(n: number): number;
+        static Cos(n: number): number;
+        static Tan(n: number): number;
     }
 }
+declare const Cls: typeof ha.be.Be.Bersih;
+declare const Graphics: typeof ha.be.Be.Grafis;
+declare const Color: typeof ha.be.Be.Warna;
+declare const InputHit: typeof ha.be.Input.InputHit;
+declare const InputX: typeof ha.be.Input.InputX;
+declare const InputY: typeof ha.be.Input.InputY;
+declare const InputIsDown: typeof ha.be.Input.Pencet;
+declare const FlushInput: typeof ha.be.Input.FlushInput;
+declare const DragX: typeof ha.be.Input.GeserX;
+declare const DragY: typeof ha.be.Input.GeserY;
+declare const InputIsDragged: typeof ha.be.Input.Geser;
+declare const InputType: typeof ha.be.Input.InputType;
+declare const TapCount: typeof ha.be.Input.JmlTap;
+declare const DragStartCount: typeof ha.be.Input.JmlDragMulai;
+declare const DragEndCount: typeof ha.be.Input.JmlDragSelesai;
+declare const DragStartX: typeof ha.be.Input.InputXAwal;
+declare const DragStartY: typeof ha.be.Input.InputYAwal;
+declare const Muat: typeof ha.be.Spr.Muat;
+declare const MuatAsync: typeof ha.be.Spr.MuatAsync;
+declare const Dimuat: typeof ha.be.Spr.Dimuat;
+declare const MuatAnimasi: typeof ha.be.Spr.MuatAnimasi;
+declare const StatusMuat: typeof ha.be.Spr.StatusMuat;
+declare const Posisi: typeof ha.be.Spr.Posisi;
+declare const Ukuran: typeof ha.be.Spr.Ukuran;
+declare const PosisiPolar: typeof ha.be.Spr.posisiPolar;
+declare const Gambar: typeof ha.be.Spr.Gambar;
+declare const GambarSemua: typeof ha.be.Spr.GambarSemua;
+declare const PosisiX: typeof ha.be.Spr.PosisiX;
+declare const PosisiY: typeof ha.be.Spr.PosisiY;
+declare const Handle: typeof ha.be.Spr.Handle;
+declare const Rotasi: typeof ha.be.Spr.Rotasi;
+declare const Alpha: typeof ha.be.Spr.Alpha;
+declare const Tabrakan: typeof ha.be.Spr.Tabrakan;
+declare const StatusDrag: typeof ha.be.Spr.StatusDrag;
+declare const SpriteKontek: typeof ha.be.Spr.kontek;
+declare const Panjang: typeof ha.be.Spr.Panjang;
+declare const Lebar: typeof ha.be.Spr.Lebar;
+declare const Copy: typeof ha.be.Spr.Copy;
+declare const Ubin: typeof ha.be.Spr.Ubin;
+declare const Bound: typeof ha.be.Spr.Bound;
+declare const FontName: typeof ha.be.Teks.Font;
+declare const FontSize: typeof ha.be.Teks.FontSize;
+declare const Print: typeof ha.be.Teks.Tulis;
+declare const Align: typeof ha.be.Teks.Rata;
 /**
  * INTERFACE
 */

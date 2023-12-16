@@ -41,6 +41,7 @@ namespace ha.blockly.toolbox {
         toolbox.contents.push(getCategory("Blitz", BlitzData.list)); //registerBlitz());
         toolbox.contents.push(getCategory("Image", ImageBlockData.list));
         toolbox.contents.push(getCategory(debugData.group, debugData.list));
+        toolbox.contents.push(getCategory(InputBlockData.group, InputBlockData.list));
 
         js(allToolBoxDef);
     }
@@ -141,6 +142,9 @@ namespace ha.blockly.toolbox {
         debugData.list.forEach((item) => {
             blockData.push(item);
         })
+        InputBlockData.list.forEach((item) => {
+            blockData.push(item);
+        })
 
         return blockData;
     }
@@ -155,7 +159,11 @@ namespace ha.blockly.toolbox {
 
                 console.group("");
 
-                code = itemBlockData.type.split('_')[0] + '(';
+                code += itemBlockData.perintah.split('_')[0];
+
+                if (itemBlockData.kurung) {
+                    code += '(';
+                }
 
                 itemBlockData.args0.forEach((item, idx) => {
                     if (item.type == EArgType.inputDummy) {
@@ -163,7 +171,6 @@ namespace ha.blockly.toolbox {
                     }
                     else {
                         let value = generator.valueToCode(block, item.name, javascript.Order.ATOMIC);
-                        console.log('value to code >>', "item name:", item.name, "value", value);
 
                         code += value;
 
@@ -172,7 +179,10 @@ namespace ha.blockly.toolbox {
                         }
                     }
                 });
-                code += ')';
+
+                if (itemBlockData.kurung) {
+                    code += ')';
+                }
 
                 console.log("code", code);
                 console.groupEnd();

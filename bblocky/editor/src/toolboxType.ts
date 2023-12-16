@@ -39,6 +39,7 @@ type TToolBoxBlockDef = {
     tooltip?: string,
     helpUrl?: string
     inputs?: any
+    kurung?: boolean
 }
 
 enum ToolBoxKind {

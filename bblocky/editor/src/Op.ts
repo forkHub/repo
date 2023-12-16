@@ -1,22 +1,33 @@
 namespace ha.blockly {
     export class Op {
         static op() {
+
+            //TODO: depecrated
             let w = window as any;
             w.simpan = () => {
-                let simpan = Blockly.serialization.workspaces.save(Index.workspace);
-                let code = javascript.javascriptGenerator.workspaceToCode(Index.workspace);
+                Op.simpan();
+                // if (Store.namaProject == "") {
 
-                window.localStorage.setItem("blocklytest", JSON.stringify(simpan));
-                window.localStorage.setItem("blocklycode", code);
+                // }
+                // else {
+                //     let simpan = Blockly.serialization.workspaces.save(Index.workspace);
+                // }
 
-                console.log(simpan);
+                // let simpan = Blockly.serialization.workspaces.save(Index.workspace);
+                // let code = javascript.javascriptGenerator.workspaceToCode(Index.workspace);
+
+                // window.localStorage.setItem("blocklytest", JSON.stringify(simpan));
+                // window.localStorage.setItem("blocklycode", code);
+
+                // console.log(simpan);
             }
 
             w.load = () => {
-                let simpan = window.localStorage.getItem("blocklytest");
-                let code = JSON.parse(simpan);
-                console.log(code);
-                Blockly.serialization.workspaces.load(code, Index.workspace);
+                Op.load();
+                // let simpan = window.localStorage.getItem("blocklytest");
+                // let code = JSON.parse(simpan);
+                // console.log(code);
+                // Blockly.serialization.workspaces.load(code, Index.workspace);
             }
 
             w.code = () => {
@@ -56,6 +67,24 @@ namespace ha.blockly {
             w.importJSON = () => {
                 Op.import();
             }
+        }
+
+        static load() {
+            let list: IEntity[] = Entity.getByType(EEntity.PROJECT);
+            // let p: IProject = list[0] as IProject;
+            // let f: IFile = Entity.getByParentId(p.id) as IFile;
+
+            //develop ui
+            HalListProject.show(list as IProject[])
+
+            // let code = JSON.parse(f.wspace);
+            // console.log(code);
+            // Blockly.serialization.workspaces.load(code, Index.workspace);
+
+            // Store.idFile = f.id;
+            // Store.namaProject = p.nama;
+
+            // console.log(list);
         }
 
         static publish() {
@@ -132,6 +161,45 @@ namespace ha.blockly {
             setTimeout(() => {
                 onresize();
             }, 100);
+
+        }
+
+        static simpan() {
+            let id: string = Id.id;
+
+            if (Store.projectId == "") {
+                let nama = window.prompt("project name", "def1");
+
+                //save new project
+                let p: IProject = {
+                    id: id,
+                    type: EEntity.PROJECT,
+                    nama: nama,
+                    parentId: "-1"
+                }
+                Entity.tambah(p);
+
+                let f: IFile = {
+                    id: Id.id,
+                    type: EEntity.FILE,
+                    nama: Store.idFile,
+                    parentId: p.id,
+                    wspace: JSON.stringify(Blockly.serialization.workspaces.save(Index.workspace))
+                }
+
+                //TODO: save file yang lain
+
+                Store.idFile = f.id;
+                Store.projectId = p.id;
+
+                Entity.tambah(f);
+                Entity.commit();
+            }
+            else {
+                let file = Entity.getById(Store.idFile) as IFile;
+                file.wspace = JSON.stringify(Blockly.serialization.workspaces.save(Index.workspace));
+                Entity.commit();
+            }
 
         }
     }

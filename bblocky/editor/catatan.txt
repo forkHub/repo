@@ -1,20 +1,17 @@
 url absolut buat image => forkhub
-lengkapi perintah2
-    x - Math
-    x - String
-    x - Text
-    x - System
-    Input
+test
+load ada daftar filenya
+save ada nama filenya
 
 perintah extended
     label
     Image-interaksi
-    Input-drag
     
-Sample App
+Sample App (extended)
 
 BACKLOG:
 ========
+sample App normal
 multiple project
     perlu perubahan data saat simpan ke local storage
 Routine

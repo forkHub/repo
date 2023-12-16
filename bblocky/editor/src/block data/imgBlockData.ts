@@ -198,6 +198,7 @@ namespace ha.blockly.ImageBlockData {
 }
 
 
+//not supported
 // CreateImage
 // FreeImage
 // SaveImage
