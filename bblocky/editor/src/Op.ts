@@ -50,7 +50,7 @@ namespace ha.blockly {
 
             w.run = () => {
                 let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
-                w.simpan();
+                // w.simpan();
                 window.localStorage.setItem("blocklycode", codeHtml);
                 window.open('./play.html', "_blank");
                 // window.location.href = "./play.html";
@@ -164,36 +164,44 @@ namespace ha.blockly {
 
         }
 
-        static simpan() {
+        static simpanBaru() {
             let id: string = Id.id;
+            let nama = window.prompt("project name", "def1");
+
+            //TOOD: validasi nama
+
+            //save new project
+            let p: IProject = {
+                id: id,
+                type: EEntity.PROJECT,
+                nama: nama,
+                parentId: "-1"
+            }
+            Entity.tambah(p);
+
+            let f: IFile = {
+                id: Id.id,
+                type: EEntity.FILE,
+                nama: Store.idFile,
+                parentId: p.id,
+                wspace: JSON.stringify(Blockly.serialization.workspaces.save(Index.workspace))
+            }
+
+            //TODO: save file yang lain
+
+            Store.idFile = f.id;
+            Store.projectId = p.id;
+
+            Entity.tambah(f);
+            Entity.commit();
+            Index.updateName();
+        }
+
+        static simpan() {
+            // let id: string = Id.id;
 
             if (Store.projectId == "") {
-                let nama = window.prompt("project name", "def1");
-
-                //save new project
-                let p: IProject = {
-                    id: id,
-                    type: EEntity.PROJECT,
-                    nama: nama,
-                    parentId: "-1"
-                }
-                Entity.tambah(p);
-
-                let f: IFile = {
-                    id: Id.id,
-                    type: EEntity.FILE,
-                    nama: Store.idFile,
-                    parentId: p.id,
-                    wspace: JSON.stringify(Blockly.serialization.workspaces.save(Index.workspace))
-                }
-
-                //TODO: save file yang lain
-
-                Store.idFile = f.id;
-                Store.projectId = p.id;
-
-                Entity.tambah(f);
-                Entity.commit();
+                this.simpanBaru();
             }
             else {
                 let file = Entity.getById(Store.idFile) as IFile;
@@ -201,9 +209,11 @@ namespace ha.blockly {
                 Entity.commit();
             }
 
+            Index.updateName();
         }
     }
 }
+
 
 // function openFile(id: string): void {
 //     id;

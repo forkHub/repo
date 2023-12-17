@@ -84,7 +84,13 @@ interface ISpr {
 	dragable: boolean
 	dragged: boolean
 	down: boolean
-	hit: number
+
+	//TODO:
+	jmlHit?: number,
+	jmlup?: number,
+	jmlStartDrag?: number,
+	jmlEndDrag?: number,
+
 	dragStartX: number
 	dragStartY: number
 	url: string

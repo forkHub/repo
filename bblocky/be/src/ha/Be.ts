@@ -29,6 +29,10 @@ namespace ha.be {
 			t: 1
 		}
 
+		static Pause() {
+			debugger;
+		}
+
 		/**
 		 * Handle saat window di resize
 		 * @private
@@ -114,14 +118,14 @@ namespace ha.be {
 			Be.canvasAktif = canvas;
 		}
 
-		static backupWarna(): void {
+		private static backupWarna(): void {
 			Be.warnaBackup.b = Be.biru;
 			Be.warnaBackup.h = Be.hijau;
 			Be.warnaBackup.m = Be.merah;
 			Be.warnaBackup.t = Be.transparan;
 		}
 
-		static restoreWarna(): void {
+		private static restoreWarna(): void {
 			Be.biru = Be.warnaBackup.b;
 			Be.hijau = Be.warnaBackup.h;
 			Be.merah = Be.warnaBackup.m;
@@ -145,6 +149,13 @@ namespace ha.be {
 			Be.restoreWarna();
 		}
 
+		/**
+		 * Update style warna
+		 * @param r (0-255)
+		 * @param g (0-255)
+		 * @param b (0-255)
+		 * @param a (0-100)
+		 */
 		static Warna(r: number = 0, g: number = 0, b: number = 0, a: number = 100): void {
 			let h = Be;
 
@@ -154,6 +165,12 @@ namespace ha.be {
 			h.transparan = a / 100;
 			h.updateStyleWarna();
 		}
+
+		static StrokeColor(r: number = 0, g: number = 0, b: number = 0, a: number = 100): void {
+			let ctx: CanvasRenderingContext2D = Be.canvasAktif.ctx;
+			ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+		}
+
 
 		private static updateStyleWarna(): void {
 			let ctx: CanvasRenderingContext2D = Be.canvasAktif.ctx;

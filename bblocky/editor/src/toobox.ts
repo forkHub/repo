@@ -39,8 +39,8 @@ namespace ha.blockly.toolbox {
         Blockly.common.defineBlocksWithJsonArray(allToolBoxDef)
 
         toolbox.contents.push(getCategory("Blitz", BlitzData.list)); //registerBlitz());
-        toolbox.contents.push(getCategory("Image", ImageBlockData.list));
-        toolbox.contents.push(getCategory("Image 2", ImageBlockData2.list));
+        toolbox.contents.push(getCategory("Image v1", ImageBlockData.list));
+        toolbox.contents.push(getCategory("Image v2", ImageBlockData2.list));
         toolbox.contents.push(getCategory(debugData.group, debugData.list));
         toolbox.contents.push(getCategory(InputBlockData.group, InputBlockData.list));
         toolbox.contents.push(getCategory(TextData.group, TextData.list));

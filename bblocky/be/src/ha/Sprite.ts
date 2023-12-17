@@ -6,13 +6,6 @@ namespace ha.be {
 		static readonly daftar: ISpr[] = [];
 		private static _ctrDraw: number = 0;
 
-		public static get ctrDraw(): number {
-			return Spr._ctrDraw;
-		}
-		public static set ctrDraw(value: number) {
-			Spr._ctrDraw = value;
-		}
-
 		private _buff: IGbr;
 		private _x: number = 0;
 		private _y: number = 0;
@@ -28,17 +21,16 @@ namespace ha.be {
 		private _sudutAwal: number;
 		private _inputId: number;
 
-
-		public get inputId(): number {
-			return this._inputId;
-		}
-		public set inputId(value: number) {
-			this._inputId = value;
-		}
-
 		constructor(buffer: IGbr, dragable: boolean = false) {
 			this.buff = buffer;
 			this.dragable = dragable;
+		}
+
+		static DragMode(s: ISpr, n: number): void {
+			s.tipeDrag = n;
+			if (n > 0) {
+				s.dragable = true;
+			}
 		}
 
 		/**
@@ -364,6 +356,8 @@ namespace ha.be {
 		 * @returns 
 		 */
 		static GambarXY(sprite: ISpr, x: number, y: number, frame?: number): void {
+			sprite.x = x;
+			sprite.y = y;
 			Img.gambar(sprite.buff, x, y, frame);
 		}
 
@@ -462,10 +456,10 @@ namespace ha.be {
 			this._y = value;
 		}
 
-		public get hit(): number {
+		public get jmlHit(): number {
 			return this._hit;
 		}
-		public set hit(value: number) {
+		public set jmlHit(value: number) {
 			this._hit = value;
 		}
 		public get down(): boolean {
@@ -506,6 +500,19 @@ namespace ha.be {
 		}
 		public set url(value: string) {
 			this._url = value;
+		}
+		public static get ctrDraw(): number {
+			return Spr._ctrDraw;
+		}
+		public static set ctrDraw(value: number) {
+			Spr._ctrDraw = value;
+		}
+
+		public get inputId(): number {
+			return this._inputId;
+		}
+		public set inputId(value: number) {
+			this._inputId = value;
 		}
 
 	}

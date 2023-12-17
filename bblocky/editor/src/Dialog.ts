@@ -1,4 +1,4 @@
-namespace ha.be {
+namespace ha.blockly {
     export class Dialog {
         private static dlg: HTMLDialogElement;
 
@@ -12,4 +12,5 @@ namespace ha.be {
             (this.dlg as any).close();
         }
     }
+
 }

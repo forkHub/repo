@@ -5,13 +5,25 @@ perintah extended
     Image-interaksi
     
 Sample App (extended)
+load and draw image
+handle and rotation
+scale image
+text simple
+text stroke
+writeln
+tile
+load animated image
+
+conteh existing
+drag
+drag-rotate
+position polar
 
 BACKLOG:
 ========
 sample App normal
-multiple project
-    perlu perubahan data saat simpan ke local storage
 Routine
 Upload - firebase
 gambar64
 gambar95
+undo

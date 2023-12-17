@@ -1,6 +1,44 @@
 namespace ha.blockly.ImageBlockData2 {
     export const list: TToolBoxBlockDef[] = [];
 
+    // DrawImage
+    list.push({
+        type: "ha.be.Spr.Gambar_no_frame",
+        perintah: "DrawImage",
+        message0: "Draw Image %1",
+        inputsInline: true,
+        args: {
+            sprite: {},
+        },
+        tooltip: "Draw image to screen"
+    })
+
+    // DrawImage w frame
+    list.push({
+        type: "ha.be.Spr.Gambar_frame",
+        perintah: "DrawImage",
+        message0: "Draw Image %1, frame no: %2",
+        inputsInline: true,
+        args: {
+            sprite: {},
+            frame: 0
+        },
+        tooltip: "Draw image to screen at a specific frame"
+    })
+
+
+    // ha.be.Spr.DragMode();
+    list.push({
+        type: "ha.be.Spr.DragMode",
+        perintah: "ha.be.Spr.DragMode",
+        message0: "Image %1 set drag mode to %2",
+        inputsInline: true,
+        args: {
+            sprite: {},
+            dragMode: 1
+        }
+    })
+
     // const ImageLoaded = ha.be.Spr.Dimuat;
     // ImageLoaded
     list.push({
@@ -117,7 +155,20 @@ namespace ha.blockly.ImageBlockData2 {
         tooltip: 'return true if image is dragged'
     })
 
-
+    // ha.be.Spr.Tabrakan
+    //Collide
+    list.push({
+        type: "ha.be.Spr.Tabrakan",
+        perintah: "Collide",
+        message0: "check Image %1 is collided with Image %2",
+        args: {
+            sprite1: {},
+            sprite2: {},
+        },
+        output: EOutput.Boolean,
+        inputsInline: true,
+        tooltip: 'return true if two images is collided'
+    })
 
 }
 

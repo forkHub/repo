@@ -32,6 +32,7 @@ namespace ha.be {
 				lastSprite.dragStartX = pos.x - lastSprite.x;
 				lastSprite.dragStartY = pos.y - lastSprite.y;
 				lastSprite.inputId = id;
+				lastSprite.jmlHit++;
 
 				lastSprite.sudutTekanAwal = Transform.sudut(pos.x - lastSprite.x, pos.y - lastSprite.y);
 				lastSprite.sudutAwal = lastSprite.buff.rotasi;
@@ -70,7 +71,7 @@ namespace ha.be {
 		inputUp(): void {
 			Spr.daftar.forEach((item: ISpr) => {
 				if (item.down) {
-					item.hit++;
+					// item.hit++;
 				}
 
 				if (item.dragged) {

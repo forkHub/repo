@@ -166,8 +166,6 @@ declare namespace ha.be {
     class Spr implements ISpr {
         static readonly daftar: ISpr[];
         private static _ctrDraw;
-        static get ctrDraw(): number;
-        static set ctrDraw(value: number);
         private _buff;
         private _x;
         private _y;
@@ -182,9 +180,8 @@ declare namespace ha.be {
         private _sudutTekanAwal;
         private _sudutAwal;
         private _inputId;
-        get inputId(): number;
-        set inputId(value: number);
         constructor(buffer: IGbr, dragable?: boolean);
+        static DragMode(s: ISpr, n: number): void;
         /**
          *
          * @param spr
@@ -390,6 +387,10 @@ declare namespace ha.be {
         set tipeDrag(value: number);
         get url(): string;
         set url(value: string);
+        static get ctrDraw(): number;
+        static set ctrDraw(value: number);
+        get inputId(): number;
+        set inputId(value: number);
     }
 }
 declare enum EInput {
@@ -685,7 +686,7 @@ declare const Muat: typeof ha.be.Spr.Muat;
 declare const MuatAsync: typeof ha.be.Spr.MuatAsync;
 declare const MuatAnimasi: typeof ha.be.Spr.MuatAnimasi;
 declare const Ukuran: typeof ha.be.Spr.Ukuran;
-declare const Gambar: typeof ha.be.Spr.Gambar;
+declare const DrawImage: typeof ha.be.Spr.Gambar;
 declare const Handle: typeof ha.be.Spr.Handle;
 declare const Rotasi: typeof ha.be.Spr.Rotasi;
 declare const Collide: typeof ha.be.Spr.Tabrakan;

@@ -338,7 +338,7 @@ namespace ha.be {
 				Spr.daftar.forEach((item: ISpr) => {
 					if (e.pointerId == item.inputId) {
 						if (item.down) {
-							item.hit++;
+							item.jmlHit++;
 						}
 
 						item.down = false;

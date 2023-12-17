@@ -7,6 +7,16 @@ namespace ha.blockly {
 		public static blocklyArea: HTMLDivElement;
 		public static blocklyDiv: HTMLDivElement;
 
+		static updateName() {
+			let spanNama = document.body.querySelector("span.judul_file");
+			if (Store.projectId) {
+				spanNama.innerHTML = (Entity.getById(Store.projectId) as IProject).nama
+			}
+			else {
+				spanNama.innerHTML = "untitled";
+			}
+		}
+
 		static initWorkSpace() {
 			Blockly.Msg["VARIABLES_SET"] = "%1 = %2";
 			Blockly.Msg["MATH_CHANGE_TITLE"] = "%1 += %2";
@@ -44,10 +54,17 @@ namespace ha.blockly {
 			Index.initWorkSpace();
 			Op.resize();
 			Op.op();
+			try {
+				Blockly.serialization.workspaces.load(JSON.parse(Store.defWSpace), Index.workspace);
+			}
+			catch (e) {
+				console.error(e);
+			}
+
+			this.updateName();
 		}
 	}
 }
-
 
 
 

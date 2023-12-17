@@ -31,11 +31,11 @@ namespace ha.blockly.ImageBlockData {
 
 
     // DrawImage
-    // ha.be.Spr.Gambar
+    // ha.be.Spr.GambarXY
     list.push({
         type: "ha.be.Spr.Gambar",
         message0: "DrawImage: %4 image %1 x: %2 y: %3",
-        perintah: "ha.be.Spr.Gambar",
+        perintah: "ha.be.Spr.GambarXY",
         args: {
             sprite: {},
             x: 0,
