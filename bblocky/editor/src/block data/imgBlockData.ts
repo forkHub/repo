@@ -4,12 +4,13 @@ namespace ha.blockly.ImageBlockData {
     // ha.be.Spr.Muat
     export const blitz_Muat: TToolBoxBlockDef = {
         type: "ha.be.Spr.Muat",
-        message0: 'Load Image %1 url: %2',
+        message0: 'LoadImage %1 url: %2',
         perintah: "ha.be.Spr.Muat",
         args: {
             dummy: '',
             url: "./imgs/box.png"
         },
+        inputsInline: true,
         output: EOutput.Any
     }
     list.push(blitz_Muat);
@@ -18,7 +19,7 @@ namespace ha.blockly.ImageBlockData {
     // ha.be.Spr.MuatAnimasi
     list.push({
         type: "ha.be.Spr.MuatAnimasi",
-        message0: "LoadAnimImage %1 image: %2 frame width: %3 frame height: %4",
+        message0: "LoadAnimImage %1 url: %2 frame width: %3 frame height: %4",
         perintah: "ha.be.Spr.MuatAnimasi",
         args: {
             dummy: '',
@@ -26,6 +27,7 @@ namespace ha.blockly.ImageBlockData {
             fw: 32,
             fh: 32
         },
+        inputsInline: true,
         output: EOutput.Any
     })
 
@@ -36,6 +38,7 @@ namespace ha.blockly.ImageBlockData {
         type: "ha.be.Spr.Gambar",
         message0: "DrawImage: %4 image %1 x: %2 y: %3",
         perintah: "ha.be.Spr.GambarXY",
+        inputsInline: true,
         args: {
             sprite: {},
             x: 0,
@@ -48,8 +51,9 @@ namespace ha.blockly.ImageBlockData {
     // ha.be.Spr.Gambar animasi
     list.push({
         type: "ha.be.Spr.Gambar_animasi",
-        message0: "DrawImageAnim: %5 image %1 x: %2 y: %3 frame: %4",
-        perintah: "ha.be.Spr.Gambar_animasi",
+        message0: "DrawImage %5 image %1 x: %2 y: %3 frame: %4",
+        perintah: "ha.be.Spr.Gambar",
+        inputsInline: true,
         args: {
             sprite: {},
             x: 0,
@@ -65,6 +69,7 @@ namespace ha.blockly.ImageBlockData {
         type: "ha.be.Spr.Ubin",
         message0: "TileImage: %5 image %1 x: %2 y: %3 frame: %4",
         perintah: "ha.be.Spr.Ubin",
+        inputsInline: true,
         args: {
             sprite: {},
             x: 0,
@@ -80,6 +85,7 @@ namespace ha.blockly.ImageBlockData {
         type: "ha.be.Spr.Handle",
         message0: "HandleImage: %1 image %2 x: %3 y: %4",
         perintah: "ha.be.Spr.Handle",
+        inputsInline: true,
         args: {
             dummy: '',
             sprite: {},
@@ -94,6 +100,7 @@ namespace ha.blockly.ImageBlockData {
         type: "ha.be.Spr.Ukuran",
         perintah: "ha.be.Spr.Ukuran",
         message0: "ResizeImage: %1 image %2 width: %3 height: %4",
+        inputsInline: true,
         args: {
             dummy: '',
             sprite: {},
@@ -108,6 +115,7 @@ namespace ha.blockly.ImageBlockData {
         type: "ha.be.Spr.Rotasi",
         perintah: "ha.be.Spr.Rotasi",
         message0: "RotateImage: %1 image %2 value (0-360): %3",
+        inputsInline: true,
         args: {
             dummy: '',
             sprite: {},
@@ -130,6 +138,7 @@ namespace ha.blockly.ImageBlockData {
         type: "ha.be.Spr.Panjang",
         perintah: "ha.be.Spr.Panjang",
         message0: "ImageWidth: %1 image %2",
+        inputsInline: true,
         args: {
             dummy: '',
             sprite: {},
@@ -193,6 +202,7 @@ namespace ha.blockly.ImageBlockData {
             x2: 0,
             y2: 0
         },
+        inputsInline: true,
         tooltip: "return true if two images are collided at position",
         output: EOutput.Boolean,
     })

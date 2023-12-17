@@ -1,5 +1,4 @@
-url absolut buat image => forkhub
-test
+demo?
 
 perintah extended
     Image-interaksi

@@ -21,3 +21,13 @@ div.project {
     cursor: pointer;
     padding: 8px 4px 8px 4px;
 }
+
+dialog.project-list {
+    min-height: 80%;
+    height: 80%;
+}
+
+.outline {
+    outline: 2px;
+    outline-style: solid;
+}

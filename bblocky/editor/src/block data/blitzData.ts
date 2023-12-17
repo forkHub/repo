@@ -9,7 +9,7 @@ namespace ha.blockly.BlitzData {
         type: "ha.be.Be.Grafis",
         perintah: "ha.be.Be.Grafis",
         message0: "Graphics %1 width: %2 height: %3",
-        // inputsInline: false,
+        inputsInline: true,
         args: {
             dummy: '',
             width: 320,

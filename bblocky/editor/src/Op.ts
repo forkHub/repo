@@ -23,7 +23,7 @@ namespace ha.blockly {
             }
 
             w.load = () => {
-                Op.load();
+                Op.loadKlik();
                 // let simpan = window.localStorage.getItem("blocklytest");
                 // let code = JSON.parse(simpan);
                 // console.log(code);
@@ -69,13 +69,13 @@ namespace ha.blockly {
             }
         }
 
-        static load() {
-            let list: IEntity[] = Entity.getByType(EEntity.PROJECT);
+        static loadKlik() {
+            // let list: IEntity[] = Entity.getByType(EEntity.PROJECT);
             // let p: IProject = list[0] as IProject;
             // let f: IFile = Entity.getByParentId(p.id) as IFile;
 
             //develop ui
-            HalListProject.show(list as IProject[])
+            HalListProject.show()
 
             // let code = JSON.parse(f.wspace);
             // console.log(code);

@@ -2,18 +2,32 @@ namespace ha.blockly {
     export class HalListProject {
         private static cont: HTMLDialogElement;
         private static listCont: HTMLDivElement;
-        private static selectedId: string = '';
-        // private static project: IProject;
+        // private static selectedId: string = '';
+        private static demoList: HalDemoList;
+        private static projekList: HalProjekList;
+        private static isDemo: boolean = false;
+
+        static DemoButtonKlik() {
+            this.isDemo = true;
+            this.render();
+            this.updateTombol();
+        }
+
+        static ProjectButtonKlik() {
+            this.isDemo = false;
+            this.render();
+            this.updateTombol();
+        }
 
         static openKlik() {
-            if (this.selectedId == '') {
+            if (Store.selectedId == '') {
                 //no selected
                 console.log('no selected');
                 Dialog.show("no item selected");
                 return;
             }
 
-            if (Store.projectId == this.selectedId) {
+            if (Store.projectId == Store.selectedId) {
                 //already opened
                 console.log('already open');
                 Dialog.show("You are currently editing this project");
@@ -21,10 +35,10 @@ namespace ha.blockly {
                 return;
             }
 
-            let f: IFile = Entity.getByParentId(this.selectedId) as IFile;
+            let f: IFile = Entity.getByParentId(Store.selectedId) as IFile;
             let code = JSON.parse(f.wspace);
 
-            let project = Entity.getById(this.selectedId) as IProject;
+            let project = Entity.getById(Store.selectedId) as IProject;
 
             Store.idFile = f.id;
             Store.projectId = project.id;
@@ -37,7 +51,7 @@ namespace ha.blockly {
         static deleteKlik() {
             console.group('delete klik')
 
-            if (this.selectedId == '') {
+            if (Store.selectedId == '') {
                 //TODO: dialog
                 console.log('no item selected');
                 console.groupEnd();
@@ -45,7 +59,12 @@ namespace ha.blockly {
                 return;
             }
 
-            if (this.selectedId == Store.projectId) {
+            if (this.isDemo) {
+                Dialog.show("The project is read only");
+                return;
+            }
+
+            if (Store.selectedId == Store.projectId) {
                 //already opened
                 console.log("already opened");
                 console.groupEnd();
@@ -56,20 +75,20 @@ namespace ha.blockly {
             let confirm = window.confirm("are you sure you ?");
 
             if (confirm) {
-                console.log('delete by id ' + this.selectedId);
-                Entity.delete(this.selectedId);
+                console.log('delete by id ' + Store.selectedId);
+                Entity.delete(Store.selectedId);
                 Entity.commit();
 
                 console.log("get view to delete");
                 this.listCont.querySelectorAll('.project').forEach((item) => {
-                    if (item.getAttribute('data-id') == this.selectedId) {
+                    if (item.getAttribute('data-id') == Store.selectedId) {
                         item.parentElement.removeChild(item);
                         console.log("ok");
                     }
                 })
 
 
-                this.selectedId = '';
+                Store.selectedId = '';
             }
             else {
                 console.log('cancel');
@@ -81,39 +100,64 @@ namespace ha.blockly {
 
         static closeKlik() {
             (this.cont as HTMLDialogElement as any).close();
-            this.selectedId = '';
+            Store.selectedId = '';
             // this.project = null;
         }
 
-        static show(p: IProject[]) {
-            (this.cont as any).showModal();
-            this.render(p)
-        }
-
         static renameKlik() {
-            if (this.selectedId == '') {
+            if (Store.selectedId == '') {
                 Dialog.show("no item selected");
                 return;
             }
 
-            let w = window.prompt("renae", (Entity.getById(this.selectedId) as IProject).nama)
+            if (this.isDemo) {
+                Dialog.show("the project is read only")
+                return;
+            }
+
+            let w = window.prompt("renae", (Entity.getById(Store.selectedId) as IProject).nama)
             if (w) {
-                (Entity.getById(this.selectedId) as IProject).nama = w;
-                this.updateItemView(
-                    this.listCont.querySelector(`div[data-id='${this.selectedId}']`), Entity.getById(this.selectedId) as IProject)
+                (Entity.getById(Store.selectedId) as IProject).nama = w;
                 Entity.commit();
+                this.updateItemView(
+                    this.listCont.querySelector(`div[data-id='${Store.selectedId}']`), Entity.getById(Store.selectedId) as IProject)
             }
             else {
                 Dialog.show("invalid name");
             }
         }
 
+        static show() {
+            this.isDemo = false;
+            (this.cont as any).showModal();
+            this.render()
+        }
+
+        private static updateTombol() {
+            let cont = this.cont.querySelector('.button-cont');
+            cont.querySelectorAll('button').forEach((item) => {
+                item.classList.remove('outline');
+            })
+
+            if (this.isDemo) {
+                cont.querySelector('button.demo').classList.add('outline');
+            }
+            else {
+                cont.querySelector('button.project').classList.add('outline');
+            }
+        }
+
         static init() {
             this.cont = document.createElement('dialog');
+            this.cont.classList.add('project-list');
             this.cont.innerHTML = `
-                <div style="display:flex; flex-direction:column">
+                <div style="display:flex; flex-direction:column; height:100%">
                     <h4>Project List:</h4>
-                    <div class='list-cont' style="flex-grow-1">
+                    <div class='button-cont'> 
+                        <button class="project outline" onclick="ha.blockly.HalListProject.ProjectButtonKlik()">My Project</button>
+                        <button class="demo" onclick="ha.blockly.HalListProject.DemoButtonKlik()">Demo</button>
+                    </div>
+                    <div class='list-cont' style="flex-grow:1; overflow-y:auto">
                     </div>
                     <div>
                         <button onclick="ha.blockly.HalListProject.openKlik()">open</button>
@@ -126,20 +170,38 @@ namespace ha.blockly {
 
             this.listCont = this.cont.querySelector("div.list-cont");
             document.body.append(this.cont);
+
+            this.demoList = new HalDemoList();
+            this.projekList = new HalProjekList();
         }
 
-        private static buatItemViewIsi(item: IProject, cont: HTMLDivElement): void {
+        static updateItemView(el: HTMLDivElement, item: IProject): void {
+            el.innerHTML = '';
+            this.projekList.buatItemViewIsi(item, el);
+        }
+
+        private static render() {
+            Store.selectedId = '';
+            this.listCont.innerHTML = '';
+
+            if (this.isDemo) {
+                this.demoList.render(this.listCont);
+            }
+            else {
+                this.projekList.render(this.listCont);
+            }
+        }
+    }
+
+    class HalProjekList {
+        buatItemViewIsi(item: IProject, cont: HTMLDivElement): void {
             cont.innerHTML = `
                 <span>${item.nama}</span>
             `;
         }
 
-        static updateItemView(el: HTMLDivElement, item: IProject): void {
-            el.innerHTML = '';
-            this.buatItemViewIsi(item, el);
-        }
-
-        private static buatItemView(item: IProject): HTMLDivElement {
+        //TODO: buat shared method
+        private buatItemView(item: IProject, cont: HTMLDivElement): HTMLDivElement {
             let hasil: HTMLDivElement;
 
             hasil = document.createElement('div') as HTMLDivElement;
@@ -147,9 +209,9 @@ namespace ha.blockly {
 
             hasil.setAttribute('data-id', item.id);
             hasil.onclick = () => {
-                this.selectedId = item.id;
+                Store.selectedId = item.id;
 
-                this.listCont.querySelectorAll(".project").forEach((item2) => {
+                cont.querySelectorAll(".project").forEach((item2) => {
                     item2.classList.remove('selected')
                 });
 
@@ -161,20 +223,67 @@ namespace ha.blockly {
             return hasil;
         }
 
-        private static render(list: IProject[]) {
+        render(cont: HTMLDivElement) {
+            let list: IProject[] = Entity.getByType(EEntity.PROJECT) as IProject[];
             list = list.sort((item, item2) => {
                 if (item.nama < item2.nama) return -1;
                 if (item.nama > item2.nama) return 1;
                 return 0;
             })
-            this.listCont.innerHTML = '';
-            this.renderList(list);
+
+            list.forEach((item) => {
+                cont.appendChild(this.buatItemView(item, cont));
+            })
+        }
+    }
+
+    class HalDemoList {
+
+        buatItemViewIsi(item: IProject, cont: HTMLDivElement): void {
+            cont.innerHTML = `
+                <span>${item.nama}</span>
+            `;
         }
 
-        private static renderList(list: IProject[]) {
+        private buatItemView(item: IProject, cont: HTMLDivElement): HTMLDivElement {
+            let hasil: HTMLDivElement;
+
+            hasil = document.createElement('div') as HTMLDivElement;
+            hasil.classList.add('project');
+
+            hasil.setAttribute('data-id', item.id);
+            hasil.onclick = () => {
+                Store.selectedId = item.id;
+
+                cont.querySelectorAll(".project").forEach((item2) => {
+                    item2.classList.remove('selected')
+                });
+
+                hasil.classList.add('selected');
+            }
+
+            this.buatItemViewIsi(item, hasil);
+
+            return hasil;
+        }
+
+        render(cont: HTMLDivElement): void {
+            let list: IProject[] = (Store.demo as IProject[]).filter((item) => {
+                return item.type == "project";
+            });
+
+            list = list.sort((item, item2) => {
+                if (item.nama < item2.nama) return -1;
+                if (item.nama > item2.nama) return 1;
+                return 0;
+            })
+
             list.forEach((item) => {
-                this.listCont.appendChild(this.buatItemView(item));
+                cont.appendChild(this.buatItemView(item, cont));
             })
         }
     }
 }
+
+// ha.blockly.HalListProject.DemoButtonKlik;
+// ha.blockly.HalListProject.ProjectButtonKlik;
