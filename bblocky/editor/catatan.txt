@@ -1,28 +1,9 @@
-demo?
-
-perintah extended
-    Image-interaksi
-    
-Sample App (extended)
-load and draw image
-handle and rotation
-scale image
-text simple
-text stroke
-writeln
-tile
-load animated image
-
-conteh existing
-drag
-drag-rotate
-position polar
+setelah hapus tidak tutup dialog
+rename rerender ulang dan resorting
 
 BACKLOG:
 ========
-sample App normal
 Routine
-Upload - firebase
 gambar64
 gambar95
-undo
+Undo

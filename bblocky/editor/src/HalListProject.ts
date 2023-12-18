@@ -35,10 +35,26 @@ namespace ha.blockly {
                 return;
             }
 
-            let f: IFile = Entity.getByParentId(Store.selectedId) as IFile;
-            let code = JSON.parse(f.wspace);
+            let f: IFile;
+            let project
+            let code;
 
-            let project = Entity.getById(Store.selectedId) as IProject;
+            if (this.isDemo) {
+                f = Store.demo.find((item) => {
+                    return (item as IEntity).parentId == Store.selectedId;
+                });
+                console.log(f);
+
+                code = JSON.parse(f.wspace);
+                project = Store.demo.find((item) => {
+                    return (item as IEntity).id == Store.selectedId;
+                });
+            }
+            else {
+                f = Entity.getByParentId(Store.selectedId) as IFile;
+                code = JSON.parse(f.wspace);
+                project = Entity.getById(Store.selectedId) as IProject;
+            }
 
             Store.idFile = f.id;
             Store.projectId = project.id;
