@@ -3,21 +3,21 @@ namespace ha.blockly {
         private static cont: HTMLDialogElement;
         private static listCont: HTMLDivElement;
         // private static selectedId: string = '';
-        private static demoList: HalDemoList;
+        // private static demoList: ListDemoView;
         private static projekList: HalProjekList;
-        private static isDemo: boolean = false;
+        // private static isDemo: boolean = false;
 
-        static DemoButtonKlik() {
-            this.isDemo = true;
-            this.render();
-            this.updateTombol();
-        }
+        // static DemoButtonKlik() {
+        //     this.isDemo = true;
+        //     this.render();
+        //     this.updateTombol();
+        // }
 
-        static ProjectButtonKlik() {
-            this.isDemo = false;
-            this.render();
-            this.updateTombol();
-        }
+        // static ProjectButtonKlik() {
+        //     this.isDemo = false;
+        //     this.render();
+        //     this.updateTombol();
+        // }
 
         static openKlik() {
             if (Store.selectedId == '') {
@@ -39,22 +39,22 @@ namespace ha.blockly {
             let project
             let code;
 
-            if (this.isDemo) {
-                f = Store.demo.find((item) => {
-                    return (item as IEntity).parentId == Store.selectedId;
-                });
-                console.log(f);
+            // if (this.isDemo) {
+            //     f = Store.demo.find((item) => {
+            //         return (item as IEntity).parentId == Store.selectedId;
+            //     });
+            //     console.log(f);
 
-                code = JSON.parse(f.wspace);
-                project = Store.demo.find((item) => {
-                    return (item as IEntity).id == Store.selectedId;
-                });
-            }
-            else {
-                f = Entity.getByParentId(Store.selectedId) as IFile;
-                code = JSON.parse(f.wspace);
-                project = Entity.getById(Store.selectedId) as IProject;
-            }
+            //     code = JSON.parse(f.wspace);
+            //     project = Store.demo.find((item) => {
+            //         return (item as IEntity).id == Store.selectedId;
+            //     });
+            // }
+            // else {
+            f = Entity.getByParentId(Store.selectedId) as IFile;
+            code = JSON.parse(f.wspace);
+            project = Entity.getById(Store.selectedId) as IProject;
+            // }
 
             Store.idFile = f.id;
             Store.projectId = project.id;
@@ -75,10 +75,10 @@ namespace ha.blockly {
                 return;
             }
 
-            if (this.isDemo) {
-                Dialog.show("The project is read only");
-                return;
-            }
+            // if (this.isDemo) {
+            //     Dialog.show("The project is read only");
+            //     return;
+            // }
 
             if (Store.selectedId == Store.projectId) {
                 //already opened
@@ -111,7 +111,7 @@ namespace ha.blockly {
             }
 
             console.groupEnd();
-            this.closeKlik();
+            // this.closeKlik();
         }
 
         static closeKlik() {
@@ -126,13 +126,16 @@ namespace ha.blockly {
                 return;
             }
 
-            if (this.isDemo) {
-                Dialog.show("the project is read only")
-                return;
-            }
+            // if (this.isDemo) {
+            //     Dialog.show("the project is read only")
+            //     return;
+            // }
 
-            let w = window.prompt("renae", (Entity.getById(Store.selectedId) as IProject).nama)
+            let w = window.prompt("renae", (Entity.getById(Store.selectedId) as IProject).nama);
+            //todo: validate 
+
             if (w) {
+
                 (Entity.getById(Store.selectedId) as IProject).nama = w;
                 Entity.commit();
                 this.updateItemView(
@@ -144,24 +147,24 @@ namespace ha.blockly {
         }
 
         static show() {
-            this.isDemo = false;
+            // this.isDemo = false;
             (this.cont as any).showModal();
             this.render()
         }
 
-        private static updateTombol() {
-            let cont = this.cont.querySelector('.button-cont');
-            cont.querySelectorAll('button').forEach((item) => {
-                item.classList.remove('outline');
-            })
+        // private static updateTombol() {
+        //     let cont = this.cont.querySelector('.button-cont');
+        //     cont.querySelectorAll('button').forEach((item) => {
+        //         item.classList.remove('outline');
+        //     })
 
-            if (this.isDemo) {
-                cont.querySelector('button.demo').classList.add('outline');
-            }
-            else {
-                cont.querySelector('button.project').classList.add('outline');
-            }
-        }
+        //     if (this.isDemo) {
+        //         cont.querySelector('button.demo').classList.add('outline');
+        //     }
+        //     else {
+        //         cont.querySelector('button.project').classList.add('outline');
+        //     }
+        // }
 
         static init() {
             this.cont = document.createElement('dialog');
@@ -169,10 +172,6 @@ namespace ha.blockly {
             this.cont.innerHTML = `
                 <div style="display:flex; flex-direction:column; height:100%">
                     <h4>Project List:</h4>
-                    <div class='button-cont'> 
-                        <button class="project outline" onclick="ha.blockly.HalListProject.ProjectButtonKlik()">My Project</button>
-                        <button class="demo" onclick="ha.blockly.HalListProject.DemoButtonKlik()">Demo</button>
-                    </div>
                     <div class='list-cont' style="flex-grow:1; overflow-y:auto">
                     </div>
                     <div>
@@ -187,7 +186,7 @@ namespace ha.blockly {
             this.listCont = this.cont.querySelector("div.list-cont");
             document.body.append(this.cont);
 
-            this.demoList = new HalDemoList();
+            // this.demoList = new ListDemoView();
             this.projekList = new HalProjekList();
         }
 
@@ -200,12 +199,7 @@ namespace ha.blockly {
             Store.selectedId = '';
             this.listCont.innerHTML = '';
 
-            if (this.isDemo) {
-                this.demoList.render(this.listCont);
-            }
-            else {
-                this.projekList.render(this.listCont);
-            }
+            this.projekList.render(this.listCont);
         }
     }
 
@@ -253,7 +247,8 @@ namespace ha.blockly {
         }
     }
 
-    class HalDemoList {
+    //TODO: depecrated
+    class ListDemoView {
 
         buatItemViewIsi(item: IProject, cont: HTMLDivElement): void {
             cont.innerHTML = `
@@ -299,7 +294,94 @@ namespace ha.blockly {
             })
         }
     }
+
+    export class HalListDemo {
+        private static cont: HTMLDialogElement;
+        private static listCont: HTMLDivElement;
+        private static demoList: ListDemoView;
+
+        static DemoButtonKlik() {
+            this.render();
+        }
+
+        static openKlik() {
+            if (Store.selectedId == '') {
+                //no selected
+                console.log('no selected');
+                Dialog.show("no item selected");
+                return;
+            }
+
+            if (Store.projectId == Store.selectedId) {
+                //already opened
+                console.log('already open');
+                Dialog.show("You are currently editing this project");
+
+                return;
+            }
+
+            let f: IFile;
+            // let project
+            let code;
+
+            f = Store.demo.find((item) => {
+                return (item as IEntity).parentId == Store.selectedId;
+            });
+            console.log(f);
+
+            code = JSON.parse(f.wspace);
+            // project = Store.demo.find((item) => {
+            //     return (item as IEntity).id == Store.selectedId;
+            // });
+
+
+            Store.idFile = f.id;
+            Store.projectId = '';
+
+            Blockly.serialization.workspaces.load(code, Index.workspace);
+            this.closeKlik();
+            Index.updateName();
+        }
+
+        static closeKlik() {
+            (this.cont as HTMLDialogElement as any).close();
+            Store.selectedId = '';
+            // this.project = null;
+        }
+
+        static show() {
+            (this.cont as any).showModal();
+            this.render()
+        }
+
+        static init() {
+            this.cont = document.createElement('dialog');
+            this.cont.classList.add('project-list');
+            this.cont.innerHTML = `
+                <div style="display:flex; flex-direction:column; height:100%">
+                    <h4>Demo::</h4>
+                    <div class='list-cont' style="flex-grow:1; overflow-y:auto">
+                    </div>
+                    <div>
+                        <button onclick="ha.blockly.HalListDemo.openKlik();">open</button>
+                        <button onclick="ha.blockly.HalListDemo.closeKlik();">close</button>
+                    </div>
+                </div>
+            `;
+
+            this.listCont = this.cont.querySelector("div.list-cont");
+            document.body.append(this.cont);
+
+            this.demoList = new ListDemoView();
+        }
+
+        private static render() {
+            Store.selectedId = '';
+            this.listCont.innerHTML = '';
+
+            this.demoList.render(this.listCont);
+        }
+
+    }
 }
 
-// ha.blockly.HalListProject.DemoButtonKlik;
-// ha.blockly.HalListProject.ProjectButtonKlik;

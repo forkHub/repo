@@ -50,10 +50,8 @@ namespace ha.blockly {
 
             w.run = () => {
                 let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
-                // w.simpan();
                 window.localStorage.setItem("blocklycode", codeHtml);
                 window.open('./play.html', "_blank");
-                // window.location.href = "./play.html";
             }
 
             w.publish = () => {
@@ -88,7 +86,7 @@ namespace ha.blockly {
         }
 
         static publish() {
-            let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
+            let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace), true);
             DialogPublish.open(`
                     <h1>Publish</h1>
                     <p>
@@ -96,8 +94,6 @@ namespace ha.blockly {
                         You can run the file directly without setting up a web-server
                     </p>
             `, (codeHtml));
-            // window.localStorage.setItem("blocklycode", codeHtml);
-            // window.open('./publish.html', "_blank");
         }
 
         static export() {

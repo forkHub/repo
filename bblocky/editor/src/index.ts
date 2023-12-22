@@ -49,12 +49,15 @@ namespace ha.blockly {
 
 		static init() {
 			HalListProject.init();
+			HalListDemo.init();
 			ha.blockly.Entity.init();
 			ha.blockly.toolbox.init();
 			Index.initWorkSpace();
 			Op.resize();
 			Op.op();
 			try {
+				let def = JSON.parse(Store.defWSpace);
+				console.log(def);
 				Blockly.serialization.workspaces.load(JSON.parse(Store.defWSpace), Index.workspace);
 			}
 			catch (e) {

@@ -573,7 +573,7 @@ declare namespace ha.be {
          * @returns sudut relative ke posisi 0,0
          */
         static sudut(x: number, y: number): number;
-        private static normalizeDeg;
+        static normalizeDeg(deg: number): number;
         static degDistMax(angleS: number, angleT: number): number;
         static degDistMin(angleS: number, angleT: number): number;
         static jarak(x: number, y: number, xt: number, yt: number): number;
@@ -682,19 +682,20 @@ declare const DragStartCount: typeof ha.be.Input.JmlDragMulai;
 declare const DragEndCount: typeof ha.be.Input.JmlDragSelesai;
 declare const DragStartX: typeof ha.be.Input.InputXAwal;
 declare const DragStartY: typeof ha.be.Input.InputYAwal;
-declare const Muat: typeof ha.be.Spr.Muat;
+declare const LoadImage: typeof ha.be.Spr.Muat;
 declare const MuatAsync: typeof ha.be.Spr.MuatAsync;
-declare const MuatAnimasi: typeof ha.be.Spr.MuatAnimasi;
-declare const Ukuran: typeof ha.be.Spr.Ukuran;
+declare const LoadAnimImage: typeof ha.be.Spr.MuatAnimasi;
+declare const ResizeImage: typeof ha.be.Spr.Ukuran;
 declare const DrawImage: typeof ha.be.Spr.Gambar;
+declare const DrawImageXY: typeof ha.be.Spr.GambarXY;
 declare const Handle: typeof ha.be.Spr.Handle;
-declare const Rotasi: typeof ha.be.Spr.Rotasi;
+declare const Rotation: typeof ha.be.Spr.Rotasi;
 declare const Collide: typeof ha.be.Spr.Tabrakan;
 declare const CollideXY: typeof ha.be.Spr.TabrakanXY;
 declare const SpriteKontek: typeof ha.be.Spr.kontek;
-declare const Panjang: typeof ha.be.Spr.Panjang;
-declare const Lebar: typeof ha.be.Spr.Lebar;
-declare const Ubin: typeof ha.be.Spr.Ubin;
+declare const Width: typeof ha.be.Spr.Panjang;
+declare const Height: typeof ha.be.Spr.Lebar;
+declare const Tile: typeof ha.be.Spr.Ubin;
 declare const ImageLoaded: typeof ha.be.Spr.Dimuat;
 declare const AllImageLoaded: typeof ha.be.Spr.StatusMuat;
 declare const PositionImageXY: typeof ha.be.Spr.Posisi;

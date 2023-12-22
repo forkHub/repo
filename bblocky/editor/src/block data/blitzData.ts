@@ -14,7 +14,13 @@ namespace ha.blockly.BlitzData {
             dummy: '',
             width: 320,
             height: 240
-        }
+        },
+        tooltip: `
+            Initialize graphics.
+            Use this block as the first block in your appp.
+            width: prefered canvas width
+            height: prefered canvas height
+        `
     };
     list.push(Grafis);
 
@@ -23,6 +29,7 @@ namespace ha.blockly.BlitzData {
         type: "ha.be.Be.Bersih",
         perintah: "ha.be.Be.Bersih",
         message0: 'Cls',
+        tooltip: "Clear the screen"
     });
 
 }

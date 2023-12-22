@@ -26,7 +26,7 @@ type TArgDef = {
 type TToolBoxBlockDef = {
     type: string,
     message0: string
-    args?: any;         //=> di convert ke arg0, //TODO: support dummy input
+    args?: any;         //=> di convert ke arg0, TODO: support object for complex input type
     output?: EOutput;
     perintah: string;
 

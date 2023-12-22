@@ -143,6 +143,21 @@ namespace ha.blockly.ImageBlockData2 {
         tooltip: 'set image alpha '
     })
 
+    //rotation get
+    // Rotation
+    // ha.be.Spr.Rotasi
+    list.push({
+        type: "ha.be.Spr.Rotasi_get",
+        perintah: "Rotation",
+        message0: "Image %1 get rotation",
+        args: {
+            sprite: {},
+        },
+        inputsInline: true,
+        output: EOutput.Number,
+        tooltip: 'set image rotation'
+    })
+
     // const ImageIsDragged = ha.be.Spr.StatusDrag;
     list.push({
         type: "ha.be.Spr.StatusDrag",
@@ -152,6 +167,7 @@ namespace ha.blockly.ImageBlockData2 {
             sprite: {},
         },
         inputsInline: true,
+        output: EOutput.Boolean,
         tooltip: 'return true if image is dragged'
     })
 

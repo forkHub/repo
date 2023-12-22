@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <!--  -->
     <div class="hal main" style="position: relative; width: 100%; height: 100%; display: table;">
         <div class="block-cont" style="position: relative; display: table-row;">
             <div id="blocklyArea" class="block-cont" style="position: relative; display: table-cell; height: 100%;">
@@ -26,8 +27,7 @@
                 <button onclick="simpan()">save</button>&nbsp;
                 <button onclick="ha.blockly.Op.simpanBaru()">save as ...</button>&nbsp;
                 <button onclick="load()">load</button>&nbsp;
-                <!-- <button onclick="exportJSON()">export</button>&nbsp;
-                <button onclick="importJSON()">import</button>&nbsp; -->
+                <button onclick="ha.blockly.HalListDemo.show()">demo</button>&nbsp;
                 <button onclick="run()">run</button>
                 <button onclick="publish()">publish</button>
             </div>
@@ -35,16 +35,17 @@
     </div>
     <div id="blocklyDiv" style="position: absolute;"></div>
 
+    <!--  -->
     <dialog class="publish">
         <div class="cont" style="display: flex; flex-direction: column;">
             <p></p>
             <textarea rows="10" cols="80"></textarea>
             <br />
             <button onclick="ha.blockly.DialogPublish.klik()">OK</button>
-            <button onclick="ha.blockly.DialogPublish.batal()">OK</button>
         </div>
     </dialog>
 
+    <!--  -->
     <dialog class="alert">
         <p></p>
         <button onclick="ha.blockly.Dialog.klik()">Ok</button>

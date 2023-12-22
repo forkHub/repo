@@ -1,5 +1,5 @@
 setelah hapus tidak tutup dialog
-rename rerender ulang dan resorting
+cls dihapus dari contoh
 
 BACKLOG:
 ========
@@ -7,3 +7,5 @@ Routine
 gambar64
 gambar95
 Undo
+debug step
+personal

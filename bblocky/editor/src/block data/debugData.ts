@@ -16,7 +16,10 @@ namespace ha.blockly.debugData {
         type: "debugger",
         perintah: "debugger",
         message0: "Pause",
-        tooltip: "pause a program when developer tool is open",
+        tooltip: `
+            Pause a program when developer tool is open.
+            This is the alias for debugger
+        `,
         kurung: false
     });
 
@@ -28,7 +31,7 @@ namespace ha.blockly.debugData {
         args: {
             comment: ""
         },
-        tooltip: "Note",
+        tooltip: "Add note. Will be converted into comment in the real code",
     });
 
 
