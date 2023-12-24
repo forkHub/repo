@@ -38,9 +38,9 @@ namespace ha.blockly.toolbox {
         let allToolBoxDef = populateToolBox();
         Blockly.common.defineBlocksWithJsonArray(allToolBoxDef)
 
-        toolbox.contents.push(getCategory("Blitz", BlitzData.list)); //registerBlitz());
-        toolbox.contents.push(getCategory("Image v1", ImageBlockData.list));
-        toolbox.contents.push(getCategory("Image v2", ImageBlockData2.list));
+        toolbox.contents.push(getCategory("Graphics", BlitzData.list)); //registerBlitz());
+        toolbox.contents.push(getCategory("Image 1", ImageBlockData.list));
+        toolbox.contents.push(getCategory("Image 2", ImageBlockData2.list));
         toolbox.contents.push(getCategory(debugData.group, debugData.list));
         toolbox.contents.push(getCategory(InputBlockData.group, InputBlockData.list));
         toolbox.contents.push(getCategory(TextData.group, TextData.list));
@@ -167,6 +167,9 @@ namespace ha.blockly.toolbox {
 
                 console.group("");
 
+                if (itemBlockData.output == undefined) {
+                    code += `\n/*${itemBlockData.message0}*/\n`;
+                }
                 code += itemBlockData.perintah.split('_')[0];
 
                 if (itemBlockData.kurung) {

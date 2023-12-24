@@ -48,6 +48,7 @@ namespace ha.blockly {
 		}
 
 		static init() {
+			Store.devMode = false;
 			HalListProject.init();
 			HalListDemo.init();
 			ha.blockly.Entity.init();
@@ -59,6 +60,10 @@ namespace ha.blockly {
 				let def = JSON.parse(Store.defWSpace);
 				console.log(def);
 				Blockly.serialization.workspaces.load(JSON.parse(Store.defWSpace), Index.workspace);
+
+				if (Store.devMode) {
+
+				}
 			}
 			catch (e) {
 				console.error(e);

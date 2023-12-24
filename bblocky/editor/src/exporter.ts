@@ -59,7 +59,7 @@ window.onload = () => {
             let data2 = this.dataHtml.replace('<!--be-js-here-->', prod ? this.beUrlProd : this.beUrl);
             data2 = data2.replace('/** template **/', this.dataTemplate);
             data2 = data2.replace('/** script here **/', code);
-            debugger
+            // debugger
 
             return data2;
         }

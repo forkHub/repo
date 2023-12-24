@@ -11,6 +11,13 @@ namespace ha.blockly {
 
         static init() {
             try {
+                if (Store.devMode) {
+                    Store.demo.forEach((item) => {
+                        this.list.push(item);
+                    })
+                    return;
+                }
+
                 let str;
                 let obj: IEntity[];
 
@@ -24,6 +31,8 @@ namespace ha.blockly {
                 obj.forEach((item) => {
                     this.list.push(item);
                 })
+
+
 
             }
             catch (e) {

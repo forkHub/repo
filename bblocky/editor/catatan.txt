@@ -1,11 +1,24 @@
-setelah hapus tidak tutup dialog
-cls dihapus dari contoh
+perintah belum:
+gambar kotak
+set warna
+set stroke
+
+sample yang belum:
+input demo
+sample dari be edu
 
 BACKLOG:
 ========
+drag-drop manual
+input manual
+gambar bezier 4
+gambar bezier 3
 Routine
+Event based 
+Global UI
 gambar64
 gambar95
 Undo
 debug step
-personal
+    async
+firebase repository

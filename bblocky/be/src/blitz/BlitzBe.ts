@@ -4,22 +4,27 @@
 const Cls = ha.be.Be.Bersih
 const Graphics = ha.be.Be.Grafis;
 const Color = ha.be.Be.Warna;
+const Stroke = ha.be.Be.StrokeColor;
 
 // /**
 //  * Mengembalikan warna merah dari perintah AmbilPixel terakhir
 //  * @returns (number) warna merah
 //  */
-// const Merah = (): number => {
-//     return ha.be.Be.Merah()
 // };
 
-// const Hijau = ha.be.Be.Hijau;
-// const Biru = ha.be.Be.Biru;
-// const Transparan = ha.be.Be.Transparan;
-// const AmbilPiksel = ha.be.Image.AmbilPiksel;
-// const SetPiksel = ha.be.Image.SetPiksel;
+const Red = ha.be.Be.Merah;
+const Green = ha.be.Be.Hijau;
+const Blue = ha.be.Be.Biru;
+const Alpha = ha.be.Be.Transparan;
+
+const GetPixel = ha.be.Img.AmbilPiksel;
+const SetPixel = ha.be.Img.SetPiksel;
+
 // const Kontek = ha.be.Be.Kontek;
 // const Kanvas = ha.be.Be.Kanvas;
-// const Garis = ha.be.Be.Garis;
-// const Kotak = ha.be.Be.Kotak;
-// const Oval = ha.be.Be.Oval;
+
+const Line = ha.be.Be.Garis;
+const Rect = ha.be.Be.Kotak;
+const Oval = ha.be.Be.Oval;
+
+//TODO: bezier, bezier 3, dll

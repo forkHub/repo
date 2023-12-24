@@ -264,8 +264,9 @@ namespace ha.be {
 				// }, 0);
 
 				//font default
-				ha.be.Teks.Font("12px sans-serif");
-				ha.be.Teks.Rata("center");
+				Teks.Font("12px cursive");
+				Teks.Rata("left");
+				Teks.Goto(0, 10);
 				Be.Warna(255, 255, 255, 100);
 				Be.canvasAktif.ctx.strokeStyle = "#ffffff";
 			}

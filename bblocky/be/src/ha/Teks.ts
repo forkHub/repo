@@ -4,9 +4,9 @@ namespace ha.be {
 		private static nama: string = 'cursive';
 		private static ukuran: number = 30;
 		private static x: number = 0;
-		private static y: number = 0;
+		private static y: number = 10;
 		private static _stroke: boolean = false;
-		private static _jarak: number = 40;
+		private static _jarak: number = 15;
 		private static _fill: boolean = true;
 
 		public static get stroke(): boolean {
@@ -66,7 +66,6 @@ namespace ha.be {
 		 */
 		static Rata(rata: CanvasTextAlign = "left"): void {
 			Teks.ctx.textAlign = rata;
-
 		}
 
 		/**

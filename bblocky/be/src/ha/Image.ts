@@ -472,6 +472,7 @@ namespace ha.be {
 			if (gbr.load == false) return;
 
 			gbr.ctrIdx = ha.be.Spr.ctrDraw++;
+			frame = Math.floor(frame);
 
 			jmlH = Math.floor(gbr.img.naturalWidth / gbr.frameW);
 			jmlV = Math.floor(gbr.img.naturalHeight / gbr.frameH);

@@ -81,7 +81,7 @@ namespace ha.be {
 			return sin;
 		}
 
-		private static normalizeDeg(deg: number): number {
+		static normalizeDeg(deg: number): number {
 
 			while (deg >= 360) {
 				deg -= 360;

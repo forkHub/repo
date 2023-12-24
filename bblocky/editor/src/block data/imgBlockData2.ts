@@ -13,19 +13,31 @@ namespace ha.blockly.ImageBlockData2 {
         tooltip: "Draw image to screen"
     })
 
-    // DrawImage w frame
+    // DrawImageAnim
+    // DrawImage
+    // ha.be.Spr.Gambar animasi
     list.push({
-        type: "ha.be.Spr.Gambar_frame",
+        type: "ha.be.Spr.Gambar_animasi",
+        message0: "DrawImage %1 image %2 frame: %3",
         perintah: "DrawImage",
-        message0: "Draw Image %1, frame no: %2",
         inputsInline: true,
         args: {
+            dummy: '',
             sprite: {},
-            frame: 0
+            frame: 0,
         },
-        tooltip: "Draw image to screen at a specific frame"
+        tooltip: `
+            Draw image at specific frame.
+        `
     })
 
+    // const DrawAllImage = ha.be.Spr.GambarSemua;
+    list.push({
+        type: "ha.be.Spr.GambarSemua",
+        perintah: "DrawAllImage",
+        message0: "DrawAllImage",
+        tooltip: 'Draw All Images, ordered by created time'
+    })
 
     // ha.be.Spr.DragMode();
     list.push({
@@ -36,7 +48,64 @@ namespace ha.blockly.ImageBlockData2 {
         args: {
             sprite: {},
             dragMode: 1
-        }
+        },
+        tooltip: `
+            Make an image dragable.
+
+            There are two drag-mode available:
+            - 0: no interaction, default
+            - 1: drag movement, 
+            - 2: drag rotate
+        `
+    })
+
+    // const PositionImageXY = ha.be.Spr.Posisi;
+    // PositionImageXY
+    list.push({
+        type: "ha.be.Spr.Posisi",
+        perintah: "PositionImageXY",
+        message0: "Image %1 set position to x %2 y %3",
+        inputsInline: true,
+        args: {
+            sprite: {},
+            x: 0,
+            y: 0
+        },
+        tooltip: 'Position image at x,y'
+    })
+
+
+    // const PositionImagePolar = ha.be.Spr.posisiPolar;
+    // PositionImagePolar
+    list.push({
+        type: "ha.be.Spr.posisiPolar",
+        perintah: "PositionImagePolar",
+        message0: "Image %1 set position relative to x %4 y %5 by angle %2 at dist %3 scale x %6 scale y %7",
+        inputsInline: true,
+        args: {
+            sprite: {},
+            angle: 0,
+            dist: 100,
+            x: 0,
+            y: 0,
+            scaleX: 1,
+            scaleY: 1
+        },
+        tooltip: 'Position image relative to certain position'
+    })
+
+    // const ImageAlpha = ha.be.Spr.Alpha;
+    // ImageAlpha
+    list.push({
+        type: "ha.be.Spr.Alpha",
+        perintah: "ImageAlpha",
+        message0: "Image %1 set alpha to (0-100) %2",
+        args: {
+            sprite: {},
+            alpha: 100
+        },
+        inputsInline: true,
+        tooltip: 'set image alpha '
     })
 
     // const ImageLoaded = ha.be.Spr.Dimuat;
@@ -61,57 +130,19 @@ namespace ha.blockly.ImageBlockData2 {
         tooltip: 'Check if All Images have been loaded'
     })
 
-    // const PositionImageXY = ha.be.Spr.Posisi;
-    // PositionImageXY
-    list.push({
-        type: "ha.be.Spr.Posisi",
-        perintah: "PositionImageXY",
-        message0: "Image %1 set position to x %2 y %3",
-        inputsInline: true,
-        args: {
-            sprite: {},
-            x: 0,
-            y: 0
-        },
-        tooltip: 'Position image at x,y'
-    })
 
-    // const PositionImagePolar = ha.be.Spr.posisiPolar;
-    // PositionImagePolar
-    list.push({
-        type: "ha.be.Spr.posisiPolar",
-        perintah: "PositionImagePolar",
-        message0: "Image %1 set position relative to x %4 y %5 by angle %2 at dist %3 scale x %6 scale y %7",
-        inputsInline: true,
-        args: {
-            sprite: {},
-            angle: 0,
-            dist: 100,
-            x: 0,
-            y: 0,
-            scaleX: 1,
-            scaleY: 1
-        },
-        tooltip: 'Position image relative to certain position'
-    })
 
-    // const DrawAllImage = ha.be.Spr.GambarSemua;
-    list.push({
-        type: "ha.be.Spr.GambarSemua",
-        perintah: "DrawAllImage",
-        message0: "DrawAllImage",
-        tooltip: 'Draw All Images, ordered by created time'
-    })
 
     // const ImageXPosition = ha.be.Spr.PosisiX;
     // ImageXPosition
     list.push({
         type: "ha.be.Spr.PosisiX",
         perintah: "ImageXPosition",
-        message0: "ImageXPosition %1",
+        message0: "Image %1 get X position",
         args: {
             sprite: {},
         },
+        inputsInline: true,
         output: EOutput.Number,
         tooltip: 'Return Image x position'
     })
@@ -121,26 +152,13 @@ namespace ha.blockly.ImageBlockData2 {
     list.push({
         type: "ha.be.Spr.PosisiY",
         perintah: "ImageYPosition",
-        message0: "ImageYPosition %1",
+        message0: "Image %1 get Y position",
         args: {
             sprite: {},
-        },
-        output: EOutput.Number,
-        tooltip: 'Return Image y position'
-    })
-
-    // const ImageAlpha = ha.be.Spr.Alpha;
-    // ImageAlpha
-    list.push({
-        type: "ha.be.Spr.Alpha",
-        perintah: "ImageAlpha",
-        message0: "Image %1 set alpha to (0-100) %2",
-        args: {
-            sprite: {},
-            alpha: 100
         },
         inputsInline: true,
-        tooltip: 'set image alpha '
+        output: EOutput.Number,
+        tooltip: 'Return Image y position'
     })
 
     //rotation get

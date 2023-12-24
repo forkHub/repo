@@ -33,7 +33,7 @@ namespace ha.be {
 			}
 		}
 
-		/**
+		/** 
 		 * 
 		 * @param spr 
 		 * @returns 
@@ -80,7 +80,7 @@ namespace ha.be {
 		static StatusDrag(spr: ISpr): boolean {
 			let hasil: boolean = false;
 
-			this.daftar.forEach((item: ISpr) => {
+			Spr.daftar.forEach((item: ISpr) => {
 				if (spr == item) {
 					hasil = spr.dragged;
 					return;
@@ -135,7 +135,7 @@ namespace ha.be {
 				spr.buff.rotasi = sudut;
 			}
 
-			return spr.buff.rotasi;
+			return Transform.normalizeDeg(spr.buff.rotasi);
 		}
 
 		/**
@@ -326,7 +326,7 @@ namespace ha.be {
 				}
 			}
 
-			this.daftar.push(hasil);
+			Spr.daftar.push(hasil);
 
 			// console.debug('buat sprite');
 			// console.debug(hasil);
@@ -341,7 +341,7 @@ namespace ha.be {
 		 */
 		static Gambar(sprite: ISpr, frame?: number): void {
 			if (sprite == null) {
-				this.GambarSemua();
+				Spr.GambarSemua();
 				return;
 			}
 			Img.gambar(sprite.buff, sprite.x, sprite.y, frame);

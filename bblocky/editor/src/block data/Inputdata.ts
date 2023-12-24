@@ -7,7 +7,7 @@ namespace ha.blockly.InputBlockData {
     list.push({
         type: "ha.be.Input.InputHit",
         perintah: "InputHit",
-        message0: "InputHit",
+        message0: "Input Hit count",
         tooltip: "return how many time an input is pressed since the last call",
         output: EOutput.Number
     })
@@ -16,7 +16,7 @@ namespace ha.blockly.InputBlockData {
     list.push({
         type: "ha.be.Input.InputX",
         perintah: "InputX",
-        message0: "InputX",
+        message0: "Input X position",
         tooltip: "return the x position of input",
         output: EOutput.Number
     })
@@ -25,7 +25,7 @@ namespace ha.blockly.InputBlockData {
     list.push({
         type: "ha.be.Input.InputY",
         perintah: "InputY",
-        message0: "InputY",
+        message0: "Input Y position",
         tooltip: "return the y position of input",
         output: EOutput.Number
     })
@@ -37,7 +37,7 @@ namespace ha.blockly.InputBlockData {
     list.push({
         type: "ha.be.Input.Pencet",
         perintah: "InputIsDown",
-        message0: "InputIsDown",
+        message0: "Input Is Down",
         tooltip: "return true if an input is pressed",
         output: EOutput.Boolean
     })
@@ -46,8 +46,8 @@ namespace ha.blockly.InputBlockData {
     list.push({
         type: "ha.be.Input.GeserX",
         perintah: "DragX",
-        message0: "InputDragX",
-        tooltip: "return how much input is dragged in x axis",
+        message0: "Drag X position",
+        tooltip: "return drag x position relative to start position",
         output: EOutput.Boolean
     })
 
@@ -55,8 +55,8 @@ namespace ha.blockly.InputBlockData {
     list.push({
         type: "ha.be.Input.GeserY",
         perintah: "DragY",
-        message0: "DragY",
-        tooltip: "return how much input is dragged in y axis",
+        message0: "Drag Y position",
+        tooltip: "return drag y position relative to start position",
         output: EOutput.Number
     })
 
@@ -64,7 +64,7 @@ namespace ha.blockly.InputBlockData {
     list.push({
         type: "ha.be.Input.Geser",
         perintah: "InputIsDragged",
-        message0: "InputIsDragged",
+        message0: "Input Is Dragged",
         tooltip: "return true if input is dragged",
         output: EOutput.Boolean
     })

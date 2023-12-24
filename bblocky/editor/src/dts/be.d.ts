@@ -668,6 +668,16 @@ declare namespace ha.be {
 declare const Cls: typeof ha.be.Be.Bersih;
 declare const Graphics: typeof ha.be.Be.Grafis;
 declare const Color: typeof ha.be.Be.Warna;
+declare const Stroke: typeof ha.be.Be.StrokeColor;
+declare const Red: typeof ha.be.Be.Merah;
+declare const Green: typeof ha.be.Be.Hijau;
+declare const Blue: typeof ha.be.Be.Biru;
+declare const Alpha: typeof ha.be.Be.Transparan;
+declare const GetPixel: typeof ha.be.Img.AmbilPiksel;
+declare const SetPixel: typeof ha.be.Img.SetPiksel;
+declare const Line: typeof ha.be.Be.Garis;
+declare const Rect: typeof ha.be.Be.Kotak;
+declare const Oval: typeof ha.be.Be.Oval;
 declare const InputHit: typeof ha.be.Input.InputHit;
 declare const InputX: typeof ha.be.Input.InputX;
 declare const InputY: typeof ha.be.Input.InputY;

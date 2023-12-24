@@ -30,13 +30,20 @@ namespace ha.blockly.ImageBlockData {
         perintah: "LoadAnimImage",
         args: {
             dummy: '',
-            sprite: {},
+            url: "./imgs/exp2_0.png",
             fw: 32,
             fh: 32
         },
         inputsInline: true,
         output: EOutput.Any,
-        tooltip: 'Load image that contains multiple frames/spritesheet'
+        tooltip: `
+        Load image that contains multiple frames (spritesheet)
+
+        Param:
+        url: the url of image, can be local or absolute
+        fw: frame wdith
+        fh: frame height 
+        `
     })
 
 
@@ -53,23 +60,13 @@ namespace ha.blockly.ImageBlockData {
             x: 0,
             y: 0,
             dummy: ""
-        }
+        },
+        tooltip: `
+            Draw image at x, y location
+        `
     })
 
-    // DrawImageAnim
-    // DrawImage
-    // ha.be.Spr.Gambar animasi
-    list.push({
-        type: "ha.be.Spr.Gambar_animasi",
-        message0: "DrawImage %1 image %2 frame: %3",
-        perintah: "DrawImage",
-        inputsInline: true,
-        args: {
-            dummy: '',
-            sprite: {},
-            frame: 0,
-        }
-    })
+
 
     // TileImage
     //ha.be.Spr.Ubin;
@@ -84,7 +81,10 @@ namespace ha.blockly.ImageBlockData {
             y: 0,
             frame: 0,
             dummy: ''
-        }
+        },
+        tooltip: `
+            Draw image with tiling effect
+        `
     })
 
     // HandleImage
@@ -99,7 +99,12 @@ namespace ha.blockly.ImageBlockData {
             sprite: {},
             x: 0,
             y: 0,
-        }
+        },
+        tooltip: `
+            Set the position of image handle, 
+            useful for rotation when you want to rotate at specific position 
+            rather than from top-left position
+        `
     })
 
     // ResizeImage
@@ -114,7 +119,8 @@ namespace ha.blockly.ImageBlockData {
             sprite: {},
             width: 0,
             height: 0,
-        }
+        },
+        tooltip: `Resize an Image`
     })
 
     // RotateImage 
@@ -128,7 +134,8 @@ namespace ha.blockly.ImageBlockData {
             dummy: '',
             sprite: {},
             angle: 0
-        }
+        },
+        tooltip: `rotate an image`
     })
 
     // ImageAlpha
@@ -142,7 +149,8 @@ namespace ha.blockly.ImageBlockData {
             dummy: '',
             image: {},
             alpha: 50
-        }
+        },
+        tooltip: `set image alpha`
     })
 
     // CopyImage
@@ -160,13 +168,14 @@ namespace ha.blockly.ImageBlockData {
     list.push({
         type: "ha.be.Spr.Panjang",
         perintah: "Width",
-        message0: "ImageWidth: %1 image %2",
+        message0: "Image %2 get width %1",
         inputsInline: true,
         args: {
             dummy: '',
             sprite: {},
         },
-        output: EOutput.Number
+        output: EOutput.Number,
+        tooltip: `Return image width`
     })
 
     // ImageHeight
@@ -175,12 +184,14 @@ namespace ha.blockly.ImageBlockData {
     list.push({
         type: "ha.be.Spr.Lebar",
         perintah: "Height",
-        message0: "ImageHeight: %1 image %2",
+        message0: "%1 Image %2 get height",
         args: {
             dummy: '',
             sprite: {},
         },
-        output: EOutput.Number
+        inputsInline: true,
+        output: EOutput.Number,
+        tooltip: 'Return image get height'
     })
 
     // ImageXHandle
@@ -188,13 +199,14 @@ namespace ha.blockly.ImageBlockData {
     list.push({
         type: "ha.be.Spr.HandleX",
         perintah: "ha.be.Spr.HandleX",
-        message0: "ImageXHandle: %1 image %2",
+        message0: "Image %2 get handle X position %1",
         args: {
             dummy: '',
             sprite: {},
         },
-        tooltip: "return the image-handle X coordinate",
-        output: EOutput.Number
+        tooltip: "Return the image handle X position",
+        output: EOutput.Number,
+        inputsInline: true
     })
 
     // ImageYHandle
@@ -202,13 +214,14 @@ namespace ha.blockly.ImageBlockData {
     list.push({
         type: "ha.be.Spr.HandleY",
         perintah: "ha.be.Spr.HandleY",
-        message0: "ImageYHandle: %1 image %2",
+        message0: "image %2 get handle Y position %1",
         args: {
             dummy: '',
             sprite: {},
         },
-        tooltip: "return the image-handle Y coordinate",
-        output: EOutput.Number
+        tooltip: "return the image-handle Y position",
+        output: EOutput.Number,
+        inputsInline: true
     })
 
     // ImagesCollideXY

@@ -1,19 +1,20 @@
 ///<reference path="./Route.ts"/>
 
-const Muat = ha.be.Spr.Muat; //
+const LoadImage = ha.be.Spr.Muat; //
 const MuatAsync = ha.be.Spr.MuatAsync;
-const MuatAnimasi = ha.be.Spr.MuatAnimasi;
-const Ukuran = ha.be.Spr.Ukuran;
+const LoadAnimImage = ha.be.Spr.MuatAnimasi;
+const ResizeImage = ha.be.Spr.Ukuran;
 const DrawImage = ha.be.Spr.Gambar;
+const DrawImageXY = ha.be.Spr.GambarXY;
 const Handle = ha.be.Spr.Handle;
-const Rotasi = ha.be.Spr.Rotasi;
+const Rotation = ha.be.Spr.Rotasi;
 const Collide = ha.be.Spr.Tabrakan;
 const CollideXY = ha.be.Spr.TabrakanXY;
 const SpriteKontek = ha.be.Spr.kontek;
 
-const Panjang = ha.be.Spr.Panjang;
-const Lebar = ha.be.Spr.Lebar;
-const Ubin = ha.be.Spr.Ubin;
+const Width = ha.be.Spr.Panjang;
+const Height = ha.be.Spr.Lebar;
+const Tile = ha.be.Spr.Ubin;
 
 //next:
 const ImageLoaded = ha.be.Spr.Dimuat;
