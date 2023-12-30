@@ -118,7 +118,7 @@ class Modul {
 class ModulView {
     private static daftarEl: HTMLDivElement;
 
-    static init() {
+    static async init() {
         this.daftarEl = document.querySelector('div.daftar');
     }
 
@@ -170,7 +170,7 @@ class ModulService {
     private static readonly _daftar: ModulObj[] = [];
     private static readonly namaStorage: string = 'ha.be.modul.modul';
 
-    static toObj(obj: ModulObj): TModul {
+    private static toObj(obj: ModulObj): TModul {
         obj.indukId = obj.indukId || 0;
         return {
             id: obj.id,
@@ -180,7 +180,7 @@ class ModulService {
         }
     }
 
-    static fromObj(obj: TModul): ModulObj {
+    private static fromObj(obj: TModul): ModulObj {
         //TODO: default value
         if (obj.indukId == undefined) obj.indukId = 0;
         return new ModulObj(obj.id, obj.nama, obj.indukId);
@@ -198,17 +198,17 @@ class ModulService {
         return hasil;
     }
 
-    static tambah(nama: string, indukId: number): ModulObj {
+    static async tambah(nama: string, indukId: number): Promise<ModulObj> {
         let obj = new ModulObj(Id.id, nama, indukId);
         this._daftar.push(obj);
         return obj;
     }
 
-    static init() {
-        this.muat();
+    static async init() {
+        await this.muat();
     }
 
-    static muat() {
+    static async muat() {
 
         while (this._daftar.length > 0) {
             this._daftar.pop();
@@ -252,11 +252,11 @@ class ModulService {
         return hasil;
     }
 
-    static getDaftar(): ModulObj[] {
+    static async getDaftar(): Promise<ModulObj[]> {
         return this._daftar.slice();
     }
 
-    static getByIndukId(indukId: number): ModulObj[] {
+    static async getByIndukId(indukId: number): Promise<ModulObj[]> {
         return this._daftar.filter((item) => {
             return item.indukId == indukId
         })

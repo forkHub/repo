@@ -1,4 +1,1 @@
-TODO:
-asynch
-init
-commit
+modul anak
