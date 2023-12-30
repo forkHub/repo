@@ -1,42 +1,61 @@
 window.onload = () => {
-    const gPj = 600;
-    const gLb = 800;
+    const gPj = 950;
+    const gLb = 1024;
     Grafis(gPj, gLb);
-    let teks = "Hanan membantu umi";
-    let jarak = 22;
-    let marginKi = 10;
-    let marginTop = 20;
-    let jarakV = 48;
+    let teks = [
+        "- Kami sekeluarga akan pergi umrah",
+        "- ",
+        "- Hanan sudah tidak sabar untuk melihat Ka'bah",
+        "- ",
+        "- Kami ke bandara bersama rombongan",
+        "- ",
+        "- Walau masih anak-anak, kami antri dengan",
+        "- ",
+        "- tertib. Kami berjalan melalui terowongan",
+        "- ",
+        "- garbarata. Para pramugari memeriksa tiket",
+        "- ",
+    ];
+    let jarak = 80;
+    let marginKi = 25;
+    let marginTop = 50;
     Rata("left");
     window.requestAnimationFrame(update);
     function update() {
         Bersih(255, 255, 255);
-        gambarGrid();
+        // gambarGrid();
         Kontek().fillStyle = '#000';
-        Kontek().font = '32px Consolas';
-        //kunci psosi y pada posisi 100
-        for (let j = 0; j < 3; j++) {
-            for (let i = 0; i < teks.length; i++) {
-                Tulis(teks.charAt(i), i * jarak + marginKi, 20 + marginTop + (j * jarakV));
-            }
+        Kontek().font = '36px Consolas';
+        for (let j = 0; j < teks.length; j++) {
+            Tulis(teks[j], marginKi, jarak * j + marginTop);
         }
         window.requestAnimationFrame(update);
+        gambarGrid();
     }
     function gambarGrid() {
         let c = Kontek();
-        c.strokeStyle = '#000';
+        // const gridPjg = 24;
+        const gridLbr = 80;
+        const gridMarginTop = 50;
+        c.strokeStyle = "#00000040";
         c.strokeRect(0, 0, gPj, gLb);
-        for (let i = 0; i < 60; i++) {
-            for (let j = 0; j < 80; j++) {
-                c.beginPath();
-                c.moveTo(i * jarak, 0);
-                c.lineTo(i * jarak, gLb);
-                c.stroke();
-                c.beginPath();
-                c.moveTo(i * jarak, 0);
-                c.lineTo(i * jarak, gLb);
-                c.stroke();
-            }
+        //horizontal
+        // for (let i = 0; i < 100; i++) {
+        // 	c.beginPath();
+        // 	c.moveTo(i * gridPjg, 0);
+        // 	c.lineTo(i * gridPjg, 2000);
+        // 	c.stroke();
+        // }
+        //vertical
+        for (let i = 0; i < 80; i++) {
+            c.beginPath();
+            c.moveTo(0, i * gridLbr + gridMarginTop);
+            c.lineTo(2000, i * gridLbr + gridMarginTop);
+            c.stroke();
+            c.beginPath();
+            c.moveTo(0, i * gridLbr + gridMarginTop - 15);
+            c.lineTo(2000, i * gridLbr + gridMarginTop - 15);
+            c.stroke();
         }
     }
 };
