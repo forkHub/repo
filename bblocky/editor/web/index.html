@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,
+        target-densityDpi=device-dpi">
+
+    <title>Basik Blok</title>
+    <link href="./css/css.css" rel="stylesheet">
+</head>
+
+<body>
+    <!--  -->
+    <div class="hal main" style="position: relative; width: 100%; height: 100%; display: table;">
+
+        <div class="block-cont" style="position: relative; display: table-row;">
+            <div id="blocklyArea" class="block-cont" style="position: relative; display: table-cell; height: 100%;">
+            </div>
+        </div>
+
+        <div style="display: table-row;">
+            <div style="display: table-cell; padding: 8px;">
+                <span class="judul_file"></span>
+            </div>
+        </div>
+
+        <div style="display: table-row;">
+            <div style="display: table-cell; padding: 8px;">
+                <button onclick="simpan()">save</button>&nbsp;
+                <button onclick="ha.blockly.Op.simpanBaru()">save as ...</button>&nbsp;
+                <button onclick="load()">load</button>&nbsp;
+                <button onclick="ha.blockly.HalListDemo.show()">sample</button>&nbsp;
+                <button onclick="ha.blockly.Op.export()">export</button>
+                <button onclick="ha.blockly.Op.import()">import</button>
+                <button onclick="run()">run</button>
+                <button onclick="publish()">publish</button>
+                <button onclick="ha.blockly.Op.doc()">About</button>
+
+                <!-- dev mode -->
+                <span id="span_dev_mode" style="display: none;">
+                    <button onclick="ha.blockly.Op.code()">Code</button>
+                    <button onclick="ha.blockly.Op.demo()">Demo</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="blocklyDiv" style="position: absolute;"></div>
+
+    <!--  -->
+    <dialog class="publish">
+        <div class="cont" style="display: flex; flex-direction: column;">
+            <p></p>
+            <textarea rows="10" cols="80"></textarea>
+            <br />
+            <button onclick="ha.blockly.DialogPublish.klik()">OK</button>
+        </div>
+    </dialog>
+
+    <!--  -->
+    <dialog class="alert">
+        <p></p>
+        <button onclick="ha.blockly.Dialog.klik()">Ok</button>
+    </dialog>
+
+    <dialog class="export">
+        <div class="cont" style="display: flex; flex-direction: column;">
+            <p></p>
+            <textarea rows="10" cols="80"></textarea>
+            <br />
+            <button onclick="ha.blockly.DialogExport.klik()">OK</button>
+        </div>
+    </dialog>
+
+    <dialog class="import">
+        <div class="cont" style="display: flex; flex-direction: column;">
+            <p></p>
+            <textarea rows="10" cols="80"></textarea>
+            <br />
+            <button onclick="ha.blockly.DialogImport.klik()">OK</button>
+            <button onclick="ha.blockly.DialogImport.batal()">Cancel</button>
+        </div>
+    </dialog>
+
+    <script src="lib/blockly_compressed.js" defer></script>
+    <script src="lib/blocks_compressed.js" defer></script>
+    <script src="lib/javascript_compressed.js" defer></script>
+    <script src="lib/en.js" defer></script>
+    <script src="./js/index.js" defer></script>
+
+    <script>
+        window.onload = () => {
+            ha.blockly.Index.init();
+        }
+    </script>
+</body>
+
+</html>

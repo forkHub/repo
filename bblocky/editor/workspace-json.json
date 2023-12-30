@@ -1,0 +1,131 @@
+{
+    "blocks": {
+        "languageVersion": 0,
+        "blocks": [
+            {
+                "type": "ha.be.Be.Grafis",
+                "id": "Z+Of?3:!cWg]gm*#z7=)",
+                "x": 124,
+                "y": 34,
+                "inputs": {
+                    "width": {
+                        "shadow": {
+                            "type": "math_number",
+                            "id": "Awv;xAA$pmcxdQ:!CPXe",
+                            "fields": {
+                                "NUM": 320
+                            }
+                        }
+                    },
+                    "height": {
+                        "shadow": {
+                            "type": "math_number",
+                            "id": "TpRfpdnX,]m}wocZ5nF_",
+                            "fields": {
+                                "NUM": 240
+                            }
+                        }
+                    }
+                },
+                "next": {
+                    "block": {
+                        "type": "variables_set",
+                        "id": "NP868/^eyya{g2|HR7#~",
+                        "fields": {
+                            "VAR": {
+                                "id": "Zi/U_FQ,})qcy0RA6OXQ"
+                            }
+                        },
+                        "inputs": {
+                            "VALUE": {
+                                "block": {
+                                    "type": "ha.be.Sprite.Muat",
+                                    "id": "YN7zKqRXCt6Idp=12PmK",
+                                    "inputs": {
+                                        "url": {
+                                            "shadow": {
+                                                "type": "text",
+                                                "id": "*)E:G.xXPinpd/[.o+la",
+                                                "fields": {
+                                                    "TEXT": "./imgs/box.png"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "type": "procedures_defnoreturn",
+                "id": "U-Ky|V9Mc3=G2W3;I:3-",
+                "x": 555,
+                "y": 127,
+                "icons": {
+                    "comment": {
+                        "text": "Describe this function...",
+                        "pinned": false,
+                        "height": 80,
+                        "width": 160
+                    }
+                },
+                "fields": {
+                    "NAME": "update"
+                },
+                "inputs": {
+                    "STACK": {
+                        "block": {
+                            "type": "ha.be.Main.Bersih",
+                            "id": "zqCVOWp$3Cv0_oR{ub4)",
+                            "next": {
+                                "block": {
+                                    "type": "ha.be.Sprite.Gambar",
+                                    "id": "NC^SZ!14?}Qiv?a6:Qh9",
+                                    "inputs": {
+                                        "sprite": {
+                                            "block": {
+                                                "type": "variables_get",
+                                                "id": ".H-2)?34C3b;**(,XR=R",
+                                                "fields": {
+                                                    "VAR": {
+                                                        "id": "Zi/U_FQ,})qcy0RA6OXQ"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "x": {
+                                            "shadow": {
+                                                "type": "math_number",
+                                                "id": "N|W4N[aUjN8#_gtfWL#L",
+                                                "fields": {
+                                                    "NUM": 0
+                                                }
+                                            }
+                                        },
+                                        "y": {
+                                            "shadow": {
+                                                "type": "math_number",
+                                                "id": "smLpOrm|bq)K!,TS|It3",
+                                                "fields": {
+                                                    "NUM": 0
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "variables": [
+        {
+            "name": "image",
+            "id": "Zi/U_FQ,})qcy0RA6OXQ"
+        }
+    ]
+}

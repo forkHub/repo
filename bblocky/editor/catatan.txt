@@ -1,0 +1,56 @@
+bug: 
+hapus project gak hapus file
+
+next:
+
+sample tut:
+===========
+menggerakkan kotak
+kotak bisa balik lagi
+tombol start
+glbb
+glb
+offline download
+scrolling background
+animasi sinus
+animasi mobil
+animasi solar sistem
+amiga shooter
+
+
+sample yang belum:
+==================
+input demo
+sample dari be edu
+
+BACKLOG PERINTAH:
+=================
+gradient
+stroke width
+gambar bezier 4
+gambar bezier 3
+
+
+BACKLOG ARCH:
+=============
+Routine
+Event based 
+Global UI
+gambar64
+gambar95
+Undo
+
+merge:
+======
+nama variable ada di beberapa tempat
+    var dec
+    parameter decklarsi fungsi
+    parameter panggil fungsi
+    variable panggil
+nama fungsi
+    deklarasi
+    panggil
+
+
+
+    #<include.environment.engineering-local-dev-ad>
