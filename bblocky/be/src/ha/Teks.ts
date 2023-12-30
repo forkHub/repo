@@ -33,17 +33,17 @@ namespace ha.be {
 		}
 
 		static Goto(x: number, y: number): void {
-			this.x = x;
-			this.y = y;
+			Teks.x = x;
+			Teks.y = y;
 		}
 
 		static Write(str: string): void {
-			this.Tulis(str, this.x, this.y, this.fill, this.stroke);
+			Teks.Tulis(str, Teks.x, Teks.y, Teks.fill, Teks.stroke);
 		}
 
 		static WriteLn(str: string): void {
-			this.Tulis(str, this.x, this.y, this.fill, this.stroke);
-			this.y += this.jarak;
+			Teks.Tulis(str, Teks.x, Teks.y, Teks.fill, Teks.stroke);
+			Teks.y += Teks.jarak;
 		}
 
 		/**
@@ -51,13 +51,14 @@ namespace ha.be {
 		 * @param nama 
 		 */
 		static Font(nama: string = 'cursive'): void {
-			this.nama = nama;
-			Teks.ctx.font = this.nama + this.ukuran + 'px';
+			Teks.nama = nama;
+			Teks.ctx.font = Teks.ukuran + 'px ' + Teks.nama;
 		}
 
 		static FontSize(n: number = 30): void {
-			this.ukuran = n;
-			Teks.ctx.font = this.nama + this.ukuran + 'px';
+			Teks.ukuran = n;
+			Teks.ctx.font = Teks.ukuran + 'px ' + Teks.nama;
+			console.log(Teks.ukuran, Teks.nama);
 		}
 
 		/**

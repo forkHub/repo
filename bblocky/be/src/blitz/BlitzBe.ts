@@ -28,3 +28,10 @@ const Rect = ha.be.Be.Kotak;
 const Oval = ha.be.Be.Oval;
 
 //TODO: bezier, bezier 3, dll
+
+
+const CreateDict = ha.be.Dict.Create;
+const DictGetValue = ha.be.Dict.GetValue;
+const DictAddAttr = ha.be.Dict.AddAttr;
+const DictGetKeyList = ha.be.Dict.GetKeyList;
+const DictGetValueList = ha.be.Dict.GetValueList;   

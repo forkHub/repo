@@ -11,3 +11,4 @@
 ///<reference path="../ha/Sprite2.ts"/>
 ///<reference path="../ha/Cache.ts"/>
 ///<reference path="../ha/Mat.ts"/>
+///<reference path="../ha/Attr.ts"/>

@@ -371,9 +371,8 @@ namespace ha.be {
 		 * @param skalaX 
 		 * @param skalaY 
 		 */
-		static posisiPolar(sprite: ISpr, sudut: number, jarak: number, x2: number, y2: number, skalaX: number = 1, skalaY: number = 1): void {
+		static posisiPolar(sprite: ISpr, sudut: number, jarak: number, x2: number, y2: number, skalaX: number = 1, skalaY: number = 1, tilt: number = 0): void {
 			let p: IPoint2D = Point.posPolar(jarak, sudut, x2, y2);
-
 			p.y -= y2;
 			p.y *= skalaY;
 			p.y += y2;
@@ -381,6 +380,10 @@ namespace ha.be {
 			p.x -= x2;
 			p.x *= skalaX;
 			p.x += x2;
+
+			Transform.rotateRel(p.x, p.y, x2, y2, tilt);
+			p.x = Transform.lastX;
+			p.y = Transform.lastY;
 
 			sprite.x = p.x;
 			sprite.y = p.y;

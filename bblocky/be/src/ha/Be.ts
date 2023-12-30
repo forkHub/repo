@@ -264,7 +264,7 @@ namespace ha.be {
 				// }, 0);
 
 				//font default
-				Teks.Font("12px cursive");
+				// Teks.Font("12px cursive");
 				Teks.Rata("left");
 				Teks.Goto(0, 10);
 				Be.Warna(255, 255, 255, 100);

@@ -1,0 +1,65 @@
+{
+    "blocks": {
+        "languageVersion": 0,
+        "blocks": [
+            {
+                "type": "procedures_defnoreturn",
+                "id": "Xeq7?$MJ`::bsU_j4X^t",
+                "x": 157,
+                "y": 136,
+                "extraState": {
+                    "params": [
+                        {
+                            "name": "x",
+                            "id": "%p9xkloh]E$MNLNMBjpI"
+                        }
+                    ]
+                },
+                "icons": {
+                    "comment": {
+                        "text": "Describe this function...",
+                        "pinned": false,
+                        "height": 80,
+                        "width": 160
+                    }
+                },
+                "fields": {
+                    "NAME": "do something"
+                }
+            },
+            {
+                "type": "procedures_callnoreturn",
+                "id": "_h3!hJ/}~Hi@*9$teHM%",
+                "x": 116,
+                "y": 258,
+                "extraState": {
+                    "name": "do something",
+                    "params": [
+                        "x"
+                    ]
+                },
+                "inputs": {
+                    "ARG0": {
+                        "block": {
+                            "type": "math_number",
+                            "id": "Jr3X_04(ZUtP8;s}|c]Z",
+                            "fields": {
+                                "NUM": 0
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "variables": [
+        {
+            "name": "image",
+            "id": "99*3xs_.J9FLSB`sp](v"
+        },
+        {
+            "name": "x",
+            "id": "%p9xkloh]E$MNLNMBjpI"
+        }
+    ]
+}

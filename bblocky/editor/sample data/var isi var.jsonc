@@ -1,0 +1,41 @@
+{
+    "blocks": {
+        "languageVersion": 0,
+        "blocks": [
+            {
+                "type": "variables_set",
+                "id": "|6eA~$u#X{a90fjoD#Q{",
+                "x": 39,
+                "y": -9,
+                "fields": {
+                    "VAR": {
+                        "id": "g^D%DX]%_[x5pd.}^hzU"
+                    }
+                },
+                "inputs": {
+                    "VALUE": {
+                        "block": {
+                            "type": "variables_get",
+                            "id": "c=`6cugNPJWGRF|xRm.p",
+                            "fields": {
+                                "VAR": {
+                                    "id": "Kdfp!`j2j)$CyxsTQJn("
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "variables": [
+        {
+            "name": "var1",
+            "id": "Kdfp!`j2j)$CyxsTQJn("
+        },
+        {
+            "name": "var2",
+            "id": "g^D%DX]%_[x5pd.}^hzU"
+        }
+    ]
+}

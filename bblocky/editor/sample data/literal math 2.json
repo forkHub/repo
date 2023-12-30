@@ -1,0 +1,25 @@
+{
+    "blocks": {
+        "languageVersion": 0,
+        "blocks": [
+            {
+                "type": "math_number",
+                "id": "Y.#/Z/z060yrO_98=l!2",
+                "x": 178,
+                "y": 89,
+                "fields": {
+                    "NUM": 0
+                }
+            },
+            {
+                "type": "math_number",
+                "id": "}BAlgJXX$6O1;Off]F?T",
+                "x": 240,
+                "y": 145,
+                "fields": {
+                    "NUM": 0
+                }
+            }
+        ]
+    }
+}
