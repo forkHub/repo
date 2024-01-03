@@ -33,6 +33,9 @@ namespace ha.blockly {
                 let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
                 window.localStorage.setItem("blocklycode", codeHtml);
                 window.open('./play.html', "_blank");
+                if (Store.devMode) {
+                    Op.simpan();
+                }
             }
 
             w.publish = () => {
@@ -197,6 +200,10 @@ namespace ha.blockly {
             }
 
             Index.updateName();
+
+            if (Store.devMode) {
+                Op.demo();
+            }
         }
 
         static code() {
@@ -218,7 +225,7 @@ namespace ha.blockly {
             }
 
             try {
-                const body = Store.idFile;
+                const body = Entity.getData();
                 let fd = new FormData();
                 fd.append("body", body);
                 fd.append("dev", 'true');

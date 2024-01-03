@@ -97,11 +97,6 @@ namespace ha.blockly {
                 return;
             }
 
-            // if (this.isDemo) {
-            //     Dialog.show("The project is read only");
-            //     return;
-            // }
-
             if (Store.selectedId == Store.projectId) {
                 //already opened
                 console.log("already opened");
@@ -116,6 +111,10 @@ namespace ha.blockly {
                 console.log('delete by id ' + Store.selectedId);
                 Entity.delete(Store.selectedId);
                 Entity.commit();
+
+                //delete file
+                console.log("delete file");
+                Entity.delete(Entity.getByParentId(Store.selectedId).id);
 
                 console.log("get view to delete");
                 this.listCont.querySelectorAll('.project').forEach((item) => {
@@ -133,7 +132,6 @@ namespace ha.blockly {
             }
 
             console.groupEnd();
-            // this.closeKlik();
         }
 
         static closeKlik() {

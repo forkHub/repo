@@ -1,3 +1,5 @@
+declare var demoData: IEntity[];
+
 namespace ha.blockly {
 
     export enum EEntity {
@@ -7,7 +9,7 @@ namespace ha.blockly {
 
     export class Entity {
         private static readonly dbName = 'ha.blockly.data2';
-        // private static readonly dbTutName = 'ha.blockly.dataTut';
+        private static readonly dbDemoName = 'ha.blockly.dataDemo';
         private static dbAktif = '';
         static readonly list: IEntity[] = [];
 
@@ -19,8 +21,10 @@ namespace ha.blockly {
 
             try {
                 if (Store.devMode) {
-                    Store.demo.forEach((item) => {
+                    this.dbAktif = this.dbDemoName;
+                    demoData.forEach((item) => {
                         this.list.push(item);
+                        // console.log(item)
                     })
                     this.commit();
                     return;

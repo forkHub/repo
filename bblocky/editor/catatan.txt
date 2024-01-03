@@ -1,22 +1,24 @@
 bug: 
 hapus project gak hapus file
 
-next:
-
 sample tut:
 ===========
-menggerakkan kotak
 kotak bisa balik lagi
 tombol start
-glbb
-glb
+rename, hapus varable, dll
 offline download
 scrolling background
+arraudah scrolling background
 animasi sinus
-animasi mobil
-animasi solar sistem
-amiga shooter
+glbb
+glb
 
+project:
+animasi solar sistem
+angry bird
+angry bat
+pong
+publish (disertai contoh zip)
 
 sample yang belum:
 ==================
@@ -30,27 +32,7 @@ stroke width
 gambar bezier 4
 gambar bezier 3
 
-
 BACKLOG ARCH:
 =============
-Routine
-Event based 
-Global UI
 gambar64
 gambar95
-Undo
-
-merge:
-======
-nama variable ada di beberapa tempat
-    var dec
-    parameter decklarsi fungsi
-    parameter panggil fungsi
-    variable panggil
-nama fungsi
-    deklarasi
-    panggil
-
-
-
-    #<include.environment.engineering-local-dev-ad>

@@ -626,6 +626,7 @@ declare namespace ha.be {
      * Handle interaksi sprite
      */
     class SpriteInteraksi {
+        spriteDown(lastSprite: ISpr, pos: any, id: number): void;
         inputDown(pos: any, id: number): void;
         inputMove(pos: any, pointerId: number): void;
         inputUp(): void;
@@ -668,7 +669,11 @@ declare namespace ha.be {
 declare namespace ha.be {
     class Dict {
         private list;
+        private _id;
+        set id(value: string);
+        get id(): string;
         static Create(): Dict;
+        static Id(d: Dict): string;
         static AddAttr(d: Dict, key: string, value: any): void;
         static GetKeyList(d: Dict): string[];
         static GetValueList(d: Dict): string[];
@@ -749,6 +754,12 @@ declare const FontName: typeof ha.be.Teks.Font;
 declare const FontSize: typeof ha.be.Teks.FontSize;
 declare const Print: typeof ha.be.Teks.Tulis;
 declare const Align: typeof ha.be.Teks.Rata;
+declare namespace ha.be {
+    class Id {
+        private static _id;
+        static id(): string;
+    }
+}
 /**
  * INTERFACE
 */

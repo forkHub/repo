@@ -27,8 +27,8 @@ namespace ha.be {
 		}
 
 		static DragMode(s: ISpr, n: number): void {
-			s.tipeDrag = n;
 			if (n > 0) {
+				s.tipeDrag = n;
 				s.dragable = true;
 			}
 		}

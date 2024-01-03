@@ -8,7 +8,7 @@ namespace ha.blockly.BlitzData {
     list.push({
         type: "ha.be.Be.Start",
         perintah: "Graphics",
-        message0: "🛩️ %1 width: %2 height: %3 %4",
+        message0: "🛩️ Start %1 width: %2 height: %3 %4",
         inputsInline: true,
         args: {
             dummy: '',

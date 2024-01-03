@@ -8,7 +8,18 @@ namespace ha.be {
 	 * Handle interaksi sprite
 	 */
 	class SpriteInteraksi {
-		//TODO: validasi sprite ada di stage
+
+		spriteDown(lastSprite: ISpr, pos: any, id: number) {
+			lastSprite.down = true;
+			lastSprite.dragStartX = pos.x - lastSprite.x;
+			lastSprite.dragStartY = pos.y - lastSprite.y;
+			lastSprite.inputId = id;
+			lastSprite.jmlHit++;
+
+			lastSprite.sudutTekanAwal = Transform.sudut(pos.x - lastSprite.x, pos.y - lastSprite.y);
+			lastSprite.sudutAwal = lastSprite.buff.rotasi;
+		}
+
 		inputDown(pos: any, id: number): void {
 			//sprite down
 			let lastIdx: number = -1;
@@ -25,20 +36,27 @@ namespace ha.be {
 						lastSprite = item;
 					}
 				}
+				else {
+					if (item.tipeDrag == 3 || item.tipeDrag == 4) {
+						this.spriteDown(item, pos, id);
+					}
+				}
 			}
 
+			//
 			if (lastSprite) {
-				lastSprite.down = true;
-				lastSprite.dragStartX = pos.x - lastSprite.x;
-				lastSprite.dragStartY = pos.y - lastSprite.y;
-				lastSprite.inputId = id;
-				lastSprite.jmlHit++;
+				this.spriteDown(lastSprite, pos, id);
+				// lastSprite.down = true;
+				// lastSprite.dragStartX = pos.x - lastSprite.x;
+				// lastSprite.dragStartY = pos.y - lastSprite.y;
+				// lastSprite.inputId = id;
+				// lastSprite.jmlHit++;
 
-				lastSprite.sudutTekanAwal = Transform.sudut(pos.x - lastSprite.x, pos.y - lastSprite.y);
-				lastSprite.sudutAwal = lastSprite.buff.rotasi;
-
-				return;
+				// lastSprite.sudutTekanAwal = Transform.sudut(pos.x - lastSprite.x, pos.y - lastSprite.y);
+				// lastSprite.sudutAwal = lastSprite.buff.rotasi;
 			}
+
+			//
 
 		}
 
@@ -48,12 +66,11 @@ namespace ha.be {
 				if (item.down && item.dragable && (item.inputId == pointerId)) {
 					item.dragged = true;
 
-					if (item.tipeDrag == TypeDrag.drag) {
+					if (item.tipeDrag == TypeDrag.drag || (item.tipeDrag == 3)) {
 						item.x = pos.x - item.dragStartX
 						item.y = pos.y - item.dragStartY
 					}
-					else if (item.tipeDrag == TypeDrag.rotasi) {
-						//TODO: peruban sudut
+					else if (item.tipeDrag == TypeDrag.rotasi || (item.tipeDrag == 4)) {
 						let sudut2: number = Transform.sudut(pos.x - item.x, pos.y - item.y);
 						let perbedaan: number = sudut2 - item.sudutTekanAwal;
 						item.buff.rotasi = item.sudutAwal + perbedaan;

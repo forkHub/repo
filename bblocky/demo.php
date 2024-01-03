@@ -22,6 +22,13 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
     fwrite($myfile, "ha.blockly.Store.demo =");
     fwrite($myfile, $content);
     fclose($myfile);
+
+    //write demo.json
+    $myfile = fopen("./editor/web/js/demo.js", "w") or die("Unable to open file!");
+    fwrite($myfile, "const demoData =");
+    fwrite($myfile, $content);
+    fclose($myfile);
+
   } else if ($tut == "true") {
     $id = $_POST["id"];       //project id tutorial
     echo "tut mode";

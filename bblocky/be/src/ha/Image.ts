@@ -387,8 +387,17 @@ namespace ha.be {
 				x += w2;
 			}
 
+			while (x > 0) {
+				x -= w2;
+			}
+
+			//posisi gambar dimulai dari sebelum titik 0,0
 			while (y < 0) {
 				y += h2;
+			}
+
+			while (y > 0) {
+				y -= h2;
 			}
 
 			x -= w2;
