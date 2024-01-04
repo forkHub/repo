@@ -1,5 +1,6 @@
-bug: 
-hapus project gak hapus file
+create image
+delay update bila masih ada image yang belum ke load?
+dummy image buat image yang gagal load
 
 sample tut:
 ===========

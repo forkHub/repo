@@ -1,7 +1,7 @@
 namespace ha.blockly {
     export class Export {
         static readonly beUrl = `./js/be.js`;
-        static readonly beUrlProd = `https://forkhub.github.io/blockly/js/be.js`;
+        static readonly beUrlProd = `https://forkhub.github.io/bblok/js/be.js`;
         static readonly dataTemplate = `
 "use strict";
 window.onload = () => {

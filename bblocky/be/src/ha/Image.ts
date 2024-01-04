@@ -336,6 +336,7 @@ namespace ha.be {
 			img.onerror = () => {
 				console.warn('gagal load image, url ' + url);
 				//TODO: default image
+				imgOnLoadDefault();
 			}
 
 			let img2: HTMLImageElement = ha.be.cache.getGbr(url);
@@ -346,30 +347,66 @@ namespace ha.be {
 				img.src = url;
 			}
 
-			function imgOnLoad(img: HTMLImageElement): void {
-				canvas.width = img.naturalWidth;
-				canvas.height = img.naturalHeight;
-				ctx.drawImage(img, 0, 0);
-				gbr.rect = ha.be.Kotak.buat(0, 0, img.naturalWidth, img.naturalHeight);
+			function imgOnLoad(imgP: HTMLImageElement): void {
+				canvas.width = imgP.naturalWidth;
+				canvas.height = imgP.naturalHeight;
+				ctx.drawImage(imgP, 0, 0);
+				gbr.rect = ha.be.Kotak.buat(0, 0, imgP.naturalWidth, imgP.naturalHeight);
 
 				gbr.load = true;
-				gbr.img = img;
+				gbr.img = imgP;
 
 				if (!gbr.panjangDiSet) {
 					gbr.panjangDiSet = true;
-					gbr.panjang = img.naturalWidth;
+					gbr.panjang = imgP.naturalWidth;
 				}
 
 				if (!gbr.lebarDiSet) {
-					gbr.lebar = img.naturalHeight;
+					gbr.lebar = imgP.naturalHeight;
 					gbr.lebarDiSet = true;
 				}
 
-				gbr.frameH = img.naturalHeight;
-				gbr.frameW = img.naturalWidth;
+				gbr.frameH = imgP.naturalHeight;
+				gbr.frameW = imgP.naturalWidth;
 
-				ha.be.cache.setFile(url, img);
+				ha.be.cache.setFile(url, imgP);
 			}
+
+			function imgOnLoadDefault(): void {
+				canvas.width = 32;
+				canvas.height = 32;
+
+				//TODO: draw rectangle, broken image
+				ctx = canvas.getContext('2d');
+
+				gbr.rect = ha.be.Kotak.buat(0, 0, 32, 32);
+				ctx.beginPath();
+				ctx.rect(0, 0, 32, 32);
+				ctx.moveTo(0, 0);
+				ctx.lineTo(31, 31);
+				ctx.moveTo(0, 31);
+				ctx.lineTo(31, 0);
+				ctx.stroke();
+
+				gbr.load = true;
+				gbr.img = document.createElement('img');
+
+				if (!gbr.panjangDiSet) {
+					gbr.panjangDiSet = true;
+					gbr.panjang = 32;
+				}
+
+				if (!gbr.lebarDiSet) {
+					gbr.lebar = 32;
+					gbr.lebarDiSet = true;
+				}
+
+				gbr.frameH = 32;
+				gbr.frameW = 32;
+
+				ha.be.cache.setFile(url, gbr.img);
+			}
+
 
 			return gbr;
 		}
