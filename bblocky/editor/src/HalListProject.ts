@@ -1,3 +1,5 @@
+declare var demoData: IEntity[];
+
 namespace ha.blockly {
     export class HalListProject {
         private static cont: HTMLDialogElement;
@@ -299,7 +301,7 @@ namespace ha.blockly {
         }
 
         render(cont: HTMLDivElement): void {
-            let list: IProject[] = (Store.demo as IProject[]).filter((item) => {
+            let list: IProject[] = (demoData as IProject[]).filter((item) => {
                 return item.type == "project";
             });
 
@@ -310,6 +312,7 @@ namespace ha.blockly {
             })
 
             list.forEach((item) => {
+                //temporary 
                 cont.appendChild(this.buatItemView(item, cont));
             })
         }

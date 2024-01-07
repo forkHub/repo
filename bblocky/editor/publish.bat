@@ -1,4 +1,4 @@
-set BB_DEST_DIR=C:\soft\htdocs\forkHub.github.io\bblok
+set BB_DEST_DIR=C:\xampp\htdocs\forkHub.github.io\bblok
 
 7z a bblok ./web/*
 xcopy bblok.7z "G:\My Drive"

@@ -19,7 +19,10 @@ namespace ha.blockly.BlitzData {
         stmt: false,
         tooltip: `
             Start Application.
-            Use this block as the first block in your appp.
+            Use this block as the first block in your app.
+
+
+            Parameters:
             width: prefered canvas width
             height: prefered canvas height
         `
@@ -28,7 +31,7 @@ namespace ha.blockly.BlitzData {
     // Update
     list.push({
         type: "ha.be.Be.Update",
-        perintah: "function update",
+        perintah: "function #update",
         message0: "⏱️ update %1 %2 %3",
         inputsInline: false,
         args: {
@@ -39,10 +42,9 @@ namespace ha.blockly.BlitzData {
         stmt: true,
         hat: true,
         tooltip: `
-            Start Application.
-            Use this block as the first block in your appp.
-            width: prefered canvas width
-            height: prefered canvas height
+            Update Application.
+            Will be called up to 60x per second.
+            Put all block to update app here
         `
     });
 
@@ -87,7 +89,8 @@ namespace ha.blockly.BlitzData {
             alpha: 100
         },
         tooltip: `
-            Set default fill color:
+            Set default fill color for font, drawing, etc.
+            red, green, blue are from 0-255
         `
     });
 
@@ -104,7 +107,7 @@ namespace ha.blockly.BlitzData {
             alpha: 100
         },
         tooltip: `
-            Set default stroke color:
+            Set default stroke color for font, drawing, etc
         `
     });
 
@@ -159,7 +162,7 @@ namespace ha.blockly.BlitzData {
             stroke: true,
         },
         tooltip: `
-            Draw Rectangle
+            Draw Rectangle with additional parameters
         `
     });
 
@@ -194,7 +197,9 @@ namespace ha.blockly.BlitzData {
         },
         tooltip: `
             Get Pixel Color at x, y position.
-            You can get the red, green, blue element by calling the Red, Green, Blue command respectively
+            You can get the red, green, and blue result by calling the Red, Green, Blue command respectively.
+            If you load images from external domain, then this function will failed.
+            This is normal because of CORS Policy. 
         `
     });
 
@@ -204,7 +209,7 @@ namespace ha.blockly.BlitzData {
         perintah: "Red",
         message0: 'Red',
         tooltip: `
-            Return the red color of the previous GetPixel command
+            Return the red color from the GetPixel command
         `,
         output: EOutput.Number
     });
@@ -215,7 +220,7 @@ namespace ha.blockly.BlitzData {
         perintah: "Green",
         message0: 'Green',
         tooltip: `
-            Return the Green color from the previous GetPixel command
+            Return the Green color from the GetPixel command
         `,
         output: EOutput.Number
 
@@ -227,7 +232,7 @@ namespace ha.blockly.BlitzData {
         perintah: "Blue",
         message0: 'Blue',
         tooltip: `
-            Return the blue blue from the previous GetPixel command
+            Return the blue blue from the GetPixel command
         `,
         output: EOutput.Number
 
@@ -239,7 +244,7 @@ namespace ha.blockly.BlitzData {
         perintah: "Alpha",
         message0: 'Alpha',
         tooltip: `
-            Return the transparent color from the previous GetPixel command
+            Return the transparent color from the GetPixel command
         `,
         output: EOutput.Number
 

@@ -8,7 +8,7 @@ namespace ha.blockly.InputBlockData {
         type: "ha.be.Input.InputHit",
         perintah: "InputHit",
         message0: "Input Hit count",
-        tooltip: "return how many time an input is pressed since the last call",
+        tooltip: `Return how many time an input is pressed since the last call.`,
         output: EOutput.Number
     })
 
@@ -45,16 +45,16 @@ namespace ha.blockly.InputBlockData {
     // const GeserX = ha.be.Input.GeserX;
     list.push({
         type: "ha.be.Input.GeserX",
-        perintah: "DragX",
+        perintah: "InputDragX",
         message0: "Drag X position",
         tooltip: "return drag x position relative to start position",
-        output: EOutput.Boolean
+        output: EOutput.Number
     })
 
     // const DragY = ha.be.Input.GeserY;
     list.push({
         type: "ha.be.Input.GeserY",
-        perintah: "DragY",
+        perintah: "InputDragY",
         message0: "Drag Y position",
         tooltip: "return drag y position relative to start position",
         output: EOutput.Number
@@ -69,12 +69,37 @@ namespace ha.blockly.InputBlockData {
         output: EOutput.Boolean
     })
 
-    // const InputType = ha.be.Input.InputType;
-    // const TapCount = ha.be.Input.JmlTap;
-    // const DragStartCount = ha.be.Input.JmlDragMulai;
-    // const DragEndCount = ha.be.Input.JmlDragSelesai;
-    // const DragStartX = ha.be.Input.InputXAwal;
-    // const DragStartY = ha.be.Input.InputYAwal;
+    // const InputDragStartX = ha.be.Input.InputXAwal;
+    list.push({
+        type: "ha.be.Input.InputXAwal",
+        perintah: "InputDragStartX",
+        message0: "Input Drag Start X",
+        tooltip: "Return x position of the initial drag",
+        output: EOutput.Number
+    })
+
+    // const InputDragStartY = ha.be.Input.InputYAwal;
+    list.push({
+        type: "ha.be.Input.InputYAwal",
+        perintah: "InputDragStartY",
+        message0: "Input Drag Start Y",
+        tooltip: "Return y position of the initial drag",
+        output: EOutput.Number
+    })
+
+    // const InputTapCount = ha.be.Input.JmlTap;
+    list.push({
+        type: "ha.be.Input.JmlTap",
+        perintah: "InputTapCount",
+        message0: "Input Tap Count",
+        tooltip: `Return the number tap happens since last call.
+        Calling this method inside update block will return tap counts between update.
+        `,
+        output: EOutput.Number
+    })
+
+    // const InputStartDragCount = ha.be.Input.JmlDragMulai;
+    // const InputEndDragCount = ha.be.Input.JmlDragSelesai;
 
 
 }

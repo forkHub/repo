@@ -176,7 +176,9 @@ namespace ha.blockly.toolbox {
                 if (itemBlockData.output == undefined) {
                     code += `\n/*${itemBlockData.message0}*/\n`;
                 }
+
                 code += itemBlockData.perintah.split('_')[0];
+                code = code.replace("#update", "_update");
 
                 if (itemBlockData.kurung) {
                     code += '(';

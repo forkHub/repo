@@ -15,9 +15,6 @@ namespace ha.blockly.ImageBlockData {
         tooltip: `
             Load an Image from url.
             Url can be local or absolute.
-            When you are drawing an image, 
-            and the image is still loaded, 
-            then it will only draw a blank image
         `
     }
     list.push(blitz_Muat);
@@ -38,8 +35,8 @@ namespace ha.blockly.ImageBlockData {
         output: EOutput.Any,
         tooltip: `
         Load image that contains multiple frames (spritesheet)
-
-        Param:
+           
+        Params:
         url: the url of image, can be local or absolute
         fw: frame wdith
         fh: frame height 
@@ -62,7 +59,8 @@ namespace ha.blockly.ImageBlockData {
             dummy: ""
         },
         tooltip: `
-            Draw image at x, y location
+            Draw image at x, y location.
+            When the image is not yet fully loaded, then it will not draw anything.
         `
     })
 
@@ -84,6 +82,7 @@ namespace ha.blockly.ImageBlockData {
         },
         tooltip: `
             Draw image with tiling effect
+            When the image is not yet fully loaded, then it will not draw anything.
         `
     })
 
@@ -135,7 +134,7 @@ namespace ha.blockly.ImageBlockData {
             sprite: {},
             angle: 0
         },
-        tooltip: `rotate an image`
+        tooltip: `Rotate an image`
     })
 
     // ImageAlpha
@@ -150,7 +149,7 @@ namespace ha.blockly.ImageBlockData {
             image: {},
             alpha: 50
         },
-        tooltip: `set image alpha`
+        tooltip: `Set image alpha/transparency`
     })
 
     // CopyImage
@@ -175,7 +174,9 @@ namespace ha.blockly.ImageBlockData {
             sprite: {},
         },
         output: EOutput.Number,
-        tooltip: `Return image width`
+        tooltip: `Return image width
+        Will return zero when image is still loading
+        `
     })
 
     // ImageHeight
@@ -191,7 +192,9 @@ namespace ha.blockly.ImageBlockData {
         },
         inputsInline: true,
         output: EOutput.Number,
-        tooltip: 'Return image get height'
+        tooltip: `Return image get height
+        Will return zero when image is still loading
+        `
     })
 
     // ImageXHandle
@@ -240,7 +243,7 @@ namespace ha.blockly.ImageBlockData {
             y2: 0
         },
         inputsInline: true,
-        tooltip: "return true if two images are collided at position",
+        tooltip: "return true if two images are collided at the position",
         output: EOutput.Boolean,
     })
 

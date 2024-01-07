@@ -1,6 +1,6 @@
 namespace ha.blockly.debugData {
     export const list: TToolBoxBlockDef[] = [];
-    export const group = "Debug";
+    export const group = "Misc";
 
     list.push({
         type: "console.log",

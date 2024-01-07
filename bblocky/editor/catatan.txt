@@ -1,6 +1,8 @@
 create image
-delay update bila masih ada image yang belum ke load?
 dummy image buat image yang gagal load
+alamat url masih pakai absolute
+tambahan doc buat publish
+update function pakai underscore
 
 sample tut:
 ===========
@@ -32,8 +34,17 @@ gradient
 stroke width
 gambar bezier 4
 gambar bezier 3
+sound
+    load
+    play
+    ended
+    loop
+
 
 BACKLOG ARCH:
 =============
 gambar64
 gambar95
+
+TUTORIAL:
+=========

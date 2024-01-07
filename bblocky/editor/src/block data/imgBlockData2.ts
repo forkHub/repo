@@ -54,8 +54,10 @@ namespace ha.blockly.ImageBlockData2 {
 
             There are two drag-mode available:
             - 0: no interaction, default
-            - 1: drag movement, 
-            - 2: drag rotate
+            - 1: move
+            - 2: rotate
+            - 3: move on any drag, even if you don't actually touch the image 
+            - 4: rotate on any drag, even if you don't actually touch the image
         `
     })
 
@@ -71,7 +73,7 @@ namespace ha.blockly.ImageBlockData2 {
             x: 0,
             y: 0
         },
-        tooltip: 'Position image at x,y'
+        tooltip: `Position image at x, y`
     })
 
 
@@ -89,7 +91,9 @@ namespace ha.blockly.ImageBlockData2 {
             x: 0,
             y: 0,
         },
-        tooltip: 'Position image relative to certain position'
+        tooltip: `Position image relative to a certain position
+        Can be used to create orbitng motion
+        `
     })
 
 
@@ -146,7 +150,7 @@ namespace ha.blockly.ImageBlockData2 {
             alpha: 100
         },
         inputsInline: true,
-        tooltip: 'set image alpha '
+        tooltip: 'Set image alpha '
     })
 
     // const ImageLoaded = ha.be.Spr.Dimuat;
@@ -159,6 +163,7 @@ namespace ha.blockly.ImageBlockData2 {
         args: {
             sprite: {},
         },
+        tooltip: `Return true is image is already loaded`,
         output: EOutput.Boolean
     })
 
@@ -168,10 +173,8 @@ namespace ha.blockly.ImageBlockData2 {
         perintah: "AllImageLoaded",
         message0: "All Images Loaded",
         output: EOutput.Boolean,
-        tooltip: 'Check if All Images have been loaded'
+        tooltip: 'Return true if All Images have been loaded'
     })
-
-
 
 
     // const ImageXPosition = ha.be.Spr.PosisiX;
@@ -214,7 +217,7 @@ namespace ha.blockly.ImageBlockData2 {
         },
         inputsInline: true,
         output: EOutput.Number,
-        tooltip: 'set image rotation'
+        tooltip: 'Set image rotation'
     })
 
     // const ImageIsDragged = ha.be.Spr.StatusDrag;

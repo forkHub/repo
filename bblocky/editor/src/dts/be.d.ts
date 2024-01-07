@@ -18,7 +18,6 @@ declare namespace ha.be {
         private static _biru;
         private static _transparan;
         private static warnaBackup;
-        static Pause(): void;
         /**
          * Handle saat window di resize
          * @private
@@ -31,10 +30,10 @@ declare namespace ha.be {
          * @returns CanvasRenderingContext2D
          */
         static Kontek(ctx?: CanvasRenderingContext2D): CanvasRenderingContext2D;
-        static buatCanvas(canvasEl: HTMLCanvasElement): IGbr;
+        static buatCanvas(canvasEl: HTMLCanvasElement): IGambar;
         static init(canvasBelakang: HTMLCanvasElement, canvasDepan: HTMLCanvasElement): void;
-        private static backupWarna;
-        private static restoreWarna;
+        static backupWarna(): void;
+        static restoreWarna(): void;
         /**
          *
          * @param merah {angka} warna merah, optional default = 0
@@ -43,15 +42,7 @@ declare namespace ha.be {
          * @param transparan
          */
         static Bersih(merah?: number, hijau?: number, biru?: number, transparan?: number): void;
-        /**
-         * Update style warna
-         * @param r (0-255)
-         * @param g (0-255)
-         * @param b (0-255)
-         * @param a (0-100)
-         */
         static Warna(r?: number, g?: number, b?: number, a?: number): void;
-        static StrokeColor(r?: number, g?: number, b?: number, a?: number): void;
         private static updateStyleWarna;
         /**
          * Mengembalikan warna merah dari perintah AmbilPixel terakhir
@@ -75,11 +66,7 @@ declare namespace ha.be {
          */
         static Kanvas(): HTMLCanvasElement;
         static Grafis(panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, fullScreen?: boolean, input?: boolean): void;
-        /**
-         * @private
-         * helper method
-         * */
-        private static Grafis2;
+        static Grafis2(p: number, l: number, ubahStyle: boolean): void;
         /**
          *
          * @param x1
@@ -109,10 +96,10 @@ declare namespace ha.be {
          * @param rotasi sudut oval
          */
         static Oval(x: number, y: number, radius: number, skalaX?: number, skalaY?: number, rotasi?: number): void;
-        static get canvasAktif(): IGbr;
-        static set canvasAktif(value: IGbr);
-        static get canvasAr(): IGbr[];
-        static set canvasAr(value: IGbr[]);
+        static get canvasAktif(): IGambar;
+        static set canvasAktif(value: IGambar);
+        static get canvasAr(): IGambar[];
+        static set canvasAr(value: IGambar[]);
         static get skalaOtomatis(): boolean;
         static set skalaOtomatis(value: boolean);
         static get merah(): number;
@@ -126,17 +113,22 @@ declare namespace ha.be {
     }
 }
 declare namespace ha.be {
-    class Img {
-        static buatBagiCanvas(canvas: HTMLCanvasElement, w?: number, h?: number, frameW?: number, frameH?: number): IGbr;
-        static panjang(gbr: IGbr, pj?: number): number;
-        static lebar(gbr: IGbr, lb?: number): number;
-        static tabrakan(gbr1: IGbr, x1: number, y1: number, gbr2: IGbr, x2: number, y2: number): boolean;
-        static dotDidalamGambar(gbr1: IGbr, x1: number, y1: number, x2: number, y2: number): boolean;
-        static muatAnimAsync(url: string, fw: number, fh: number): IGbr;
-        static muatAnimAsyncCanvas(url: string, fw: number, fh: number, canvas: HTMLCanvasElement): IGbr;
-        static muatAsync(url: string, onload: () => void): IGbr;
-        static muatAsyncKanvas(url: string, canvas: HTMLCanvasElement, onload: () => void): IGbr;
-        static gambarUbin(gbr: IGbr, x?: number, y?: number, frame?: number): void;
+    class Image {
+        static buatBagiCanvas(canvas: HTMLCanvasElement, w?: number, h?: number, frameW?: number, frameH?: number): IGambar;
+        static gambarRect(spr: ISprite): void;
+        static buat(w?: number, h?: number, frameW?: number, frameH?: number): IGambar;
+        static panjang(gbr: IGambar, pj?: number): number;
+        static lebar(gbr: IGambar, lb?: number): number;
+        static handleX(gbr: IGambar): number;
+        static handleY(gbr: IGambar): number;
+        static tabrakan(gbr1: IGambar, x1: number, y1: number, gbr2: IGambar, x2: number, y2: number): boolean;
+        static dotDidalamGambar(gbr1: IGambar, x1: number, y1: number, x2: number, y2: number): boolean;
+        static muatAnimAsync(url: string, fw: number, fh: number): IGambar;
+        static muatAnimAsyncCanvas(url: string, fw: number, fh: number, canvas: HTMLCanvasElement): IGambar;
+        static muatAsync(url: string, onload: () => void): IGambar;
+        static muatAsyncKanvas(url: string, canvas: HTMLCanvasElement, onload: () => void): IGambar;
+        static gambarUbin(gbr: IGambar, x?: number, y?: number, frame?: number): void;
+        static putarGambar(gbr: IGambar, sudut?: number): void;
         /**
          * mengambil pixel di layar
          * @param x posisi x
@@ -150,22 +142,26 @@ declare namespace ha.be {
          * @param y
          */
         static SetPiksel(x?: number, y?: number): void;
-        static gambar(gbr: IGbr, x?: number, y?: number, frame?: number): void;
+        static handle(gbr: IGambar, x?: number, y?: number): void;
+        static grabGambar(gbr: IGambar, x?: number, y?: number): void;
+        static gambar(gbr: IGambar, x?: number, y?: number, frame?: number): void;
         /**
          * Ubah Ukuran Gambar
          * @param gbr
          * @param w
          * @param h
          */
-        static ukuran(gbr: IGbr, w?: number, h?: number): void;
-        static resetRect(img: IGbr): void;
-        static rectToImageTransform(image: IGbr, x: number, y: number): void;
+        static ukuran(gbr: IGambar, w?: number, h?: number): void;
+        static resetRect(img: IGambar): void;
+        static rectToImageTransform(image: IGambar, x: number, y: number): void;
     }
 }
 declare namespace ha.be {
-    class Spr implements ISpr {
-        static readonly daftar: ISpr[];
+    class Sprite implements ISprite {
+        static readonly daftar: ISprite[];
         private static _ctrDraw;
+        static get ctrDraw(): number;
+        static set ctrDraw(value: number);
         private _buff;
         private _x;
         private _y;
@@ -180,98 +176,97 @@ declare namespace ha.be {
         private _sudutTekanAwal;
         private _sudutAwal;
         private _inputId;
-        constructor(buffer: IGbr, dragable?: boolean);
-        static DragMode(s: ISpr, n: number): void;
+        get inputId(): number;
+        set inputId(value: number);
+        constructor(buffer: IGambar, dragable?: boolean);
         /**
          *
          * @param spr
          * @returns
          */
-        static kontek(spr: ISpr): CanvasRenderingContext2D;
+        static kontek(spr: ISprite): CanvasRenderingContext2D;
         /**
          *
-         * @param sprS {ISpr} sprite
+         * @param sprS {ISprite} sprite
          * @param onload {() => void} optional, fungsi yang dipanggil sprite selesai dimuat
          * @returns
          */
-        static Copy(sprS: ISpr, onload?: () => void): ISpr;
+        static Copy(sprS: ISprite, onload?: () => void): ISprite;
         /**
          *
          * @param spr
          * @returns
          */
-        static Dimuat(spr: ISpr): boolean;
+        static Dimuat(spr: ISprite): boolean;
         /**
          *
          * @param spr
          * @returns
          */
-        static StatusDrag(spr: ISpr): boolean;
+        static StatusDrag(spr: ISprite): boolean;
         /**
          *
          * @param spr
          * @param pj
          * @returns
          */
-        static Panjang(spr: ISpr, pj?: number): number;
+        static Panjang(spr: ISprite, pj?: number): number;
         /**
          *
          * @param spr
          * @param lb
          * @returns
          */
-        static Lebar(spr: ISpr, lb?: number): number;
+        static Lebar(spr: ISprite, lb?: number): number;
         /**
          *
          * @param spr
          * @param alpha
          * @returns
          */
-        static Alpha(spr: ISpr, alpha?: number): number;
+        static Alpha(spr: ISprite, alpha?: number): number;
         /**
          *
          * @param spr
          * @param sudut
          * @returns
          */
-        static Rotasi(spr: ISpr, sudut?: number): number;
+        static Rotasi(spr: ISprite, sudut?: number): number;
         /**
          *
          * @param spr
          * @param x
          * @param y
          */
-        static Posisi(spr: ISpr, x?: number, y?: number): void;
+        static Posisi(spr: ISprite, x?: number, y?: number): void;
         /**
          *
          * @param spr
          * @param x
          * @returns
          */
-        static PosisiX(spr: ISpr, x?: number | null | undefined): number;
+        static PosisiX(spr: ISprite, x?: number | null | undefined): number;
         /**
          *
-         * @param s
+         * @param spr
          * @param y
          * @returns
          */
-        static PosisiY(s: ISpr, y?: number | null | undefined): number;
+        static PosisiY(spr: ISprite, y?: number | null | undefined): number;
         /**
          *
-         * @param s
+         * @param spr
          * @returns
          */
-        static Bound(s: ISpr): IKotak;
+        static Bound(spr: ISprite): IKotak;
         /**
          *
-         * @param s
+         * @param spr
          * @param x
          * @param y
          * @returns
          */
-        static Handle(s: ISpr, x?: number, y?: number): void;
-        static HandleX(s: ISpr): number;
-        static HandleY(s: ISpr): number;
+        static Handle(spr: ISprite, x?: number, y?: number): void;
         /**
          *
          */
@@ -282,8 +277,7 @@ declare namespace ha.be {
          * @param spr2
          * @returns
          */
-        static Tabrakan(spr: ISpr, spr2: ISpr): boolean;
-        static TabrakanXY(spr: ISpr, x1: number, y1: number, spr2: ISpr, x2: number, y2: number): boolean;
+        static Tabrakan(spr: ISprite, spr2: ISprite): boolean;
         private static muatAnimasiAsyncKanvas;
         /**
          *
@@ -294,7 +288,7 @@ declare namespace ha.be {
          * @param tipeDrag
          * @returns
          */
-        static MuatAnimasi(url: string, pf: number, lf: number, bisaDiDrag?: boolean, tipeDrag?: number): ISpr;
+        static MuatAnimasi(url: string, pf: number, lf: number, bisaDiDrag?: boolean, tipeDrag?: number): ISprite;
         private static muatAsyncBerbagiKanvas;
         /**
          *
@@ -303,7 +297,7 @@ declare namespace ha.be {
          * @param tipeDrag
          * @returns
          */
-        static MuatAsync(url: string, bisaDiDrag?: boolean, tipeDrag?: number): Promise<ISpr>;
+        static MuatAsync(url: string, bisaDiDrag?: boolean, tipeDrag?: number): Promise<ISprite>;
         /**
          *
          * @param url (string) url gambar
@@ -312,30 +306,21 @@ declare namespace ha.be {
          * @param onload
          * @returns
          */
-        static Muat(url: string, bisaDiDrag?: boolean, tipeDrag?: number, onload?: () => void): ISpr;
+        static Muat(url: string, bisaDiDrag?: boolean, tipeDrag?: number, onload?: () => void): ISprite;
         /**
          *
          * @param gbr
          * @param w
          * @param h
          */
-        static Ukuran(gbr: ISpr, w: number, h: number): void;
+        static Ukuran(gbr: ISprite, w: number, h: number): void;
         private static buatPrivate;
-        /**
-         * Menggambar sprite ke layar
-         * @param sprite
-         * @param frame
-         */
-        static Gambar(sprite: ISpr, frame?: number): void;
         /**
          *
          * @param sprite
-         * @param x
-         * @param y
          * @param frame
-         * @returns
          */
-        static GambarXY(sprite: ISpr, x: number, y: number, frame?: number): void;
+        static Gambar(sprite: ISprite, frame?: number): void;
         /**
          *
          * @param sprite
@@ -346,7 +331,7 @@ declare namespace ha.be {
          * @param skalaX
          * @param skalaY
          */
-        static posisiPolar(sprite: ISpr, sudut: number, jarak: number, x2: number, y2: number, skalaX?: number, skalaY?: number, tilt?: number): void;
+        static posisiPolar(sprite: ISprite, sudut: number, jarak: number, x2: number, y2: number, skalaX?: number, skalaY?: number): void;
         /**
          *
          * @param spr
@@ -354,27 +339,27 @@ declare namespace ha.be {
          * @param y
          * @param frame
          */
-        static Ubin(spr: ISpr, x?: number, y?: number, frame?: number): void;
+        static Ubin(spr: ISprite, x?: number, y?: number, frame?: number): void;
         /**
          *
          * @param spr
          * @returns
          */
-        static StatusMuat(spr?: ISpr): boolean;
+        static StatusMuat(spr?: ISprite): boolean;
         get dragStartX(): number;
         set dragStartX(value: number);
         get dragStartY(): number;
         set dragStartY(value: number);
         get dragged(): boolean;
         set dragged(value: boolean);
-        get buff(): IGbr;
-        set buff(value: IGbr);
+        get buffer(): IGambar;
+        set buffer(value: IGambar);
         get x(): number;
         set x(value: number);
         get y(): number;
         set y(value: number);
-        get jmlHit(): number;
-        set jmlHit(value: number);
+        get hit(): number;
+        set hit(value: number);
         get down(): boolean;
         set down(value: boolean);
         get dragable(): boolean;
@@ -387,10 +372,6 @@ declare namespace ha.be {
         set tipeDrag(value: number);
         get url(): string;
         set url(value: string);
-        static get ctrDraw(): number;
-        static set ctrDraw(value: number);
-        get inputId(): number;
-        set inputId(value: number);
     }
 }
 declare enum EInput {
@@ -401,7 +382,7 @@ declare enum EInput {
 }
 declare namespace ha.be {
     class EventHandler {
-        move(input: IInput, buffer: IGbr, e: PointerEvent): void;
+        move(input: IInput, buffer: IGambar, e: PointerEvent): void;
         down(input: IInput, key: string, type: EInput, pos: IV2D): void;
         up(input: IInput): void;
         private checkTap;
@@ -490,13 +471,13 @@ declare namespace ha.be {
          */
         static Geser(): boolean;
         private static getMouseKeyId;
-        static init(buffer: IGbr): void;
+        static init(buffer: IGambar): void;
         private static buatInputDefault;
         private static flush;
         private static flushByInput;
         private static getInput;
         private static baru;
-        static pos: (cx: number, cy: number, buffer: IGbr) => {
+        static pos: (cx: number, cy: number, buffer: IGambar) => {
             x: number;
             y: number;
         };
@@ -573,7 +554,7 @@ declare namespace ha.be {
          * @returns sudut relative ke posisi 0,0
          */
         static sudut(x: number, y: number): number;
-        static normalizeDeg(deg: number): number;
+        private static normalizeDeg;
         static degDistMax(angleS: number, angleT: number): number;
         static degDistMin(angleS: number, angleT: number): number;
         static jarak(x: number, y: number, xt: number, yt: number): number;
@@ -582,29 +563,12 @@ declare namespace ha.be {
 }
 declare namespace ha.be {
     class Teks {
-        private static nama;
-        private static ukuran;
-        private static x;
-        private static y;
-        private static _stroke;
-        private static _jarak;
-        private static _fill;
-        static get stroke(): boolean;
-        static set stroke(value: boolean);
-        static get fill(): boolean;
-        static set fill(value: boolean);
-        static get jarak(): number;
-        static set jarak(value: number);
         private static get ctx();
-        static Goto(x: number, y: number): void;
-        static Write(str: string): void;
-        static WriteLn(str: string): void;
         /**
          *
-         * @param nama
+         * @param font
          */
-        static Font(nama?: string): void;
-        static FontSize(n?: number): void;
+        static Font(font?: string): void;
         /**
          *
          * @param rata (string) "center" | "end" | "left" | "right" | "start"
@@ -622,11 +586,7 @@ declare namespace ha.be {
     }
 }
 declare namespace ha.be {
-    /**
-     * Handle interaksi sprite
-     */
     class SpriteInteraksi {
-        spriteDown(lastSprite: ISpr, pos: any, id: number): void;
         inputDown(pos: any, id: number): void;
         inputMove(pos: any, pointerId: number): void;
         inputUp(): void;
@@ -652,114 +612,89 @@ declare namespace ha.be {
          * @returns sudut relative ke posisi 0,0
          */
         static Sudut(x: number, y: number): number;
-        static Pi(): number;
-        static Int(n: string): number;
-        static Float(n: string): number;
-        static Floor(n: number): number;
-        static Ceil(n: number): number;
-        static Sgn(n: number): number;
-        static Abs(n: number): number;
-        static Mod(a: number, b: number): number;
-        static Sqr(n: number): number;
-        static Sin(n: number): number;
-        static Cos(n: number): number;
-        static Tan(n: number): number;
     }
 }
-declare namespace ha.be {
-    class Dict {
-        private list;
-        private _id;
-        set id(value: string);
-        get id(): string;
-        static Create(): Dict;
-        static Id(d: Dict): string;
-        static AddAttr(d: Dict, key: string, value: any): void;
-        static GetKeyList(d: Dict): string[];
-        static GetValueList(d: Dict): string[];
-        static GetValue(d: Dict, key: string): any;
-        addAttr(attr: Attr): void;
-        getAttrByKey(key: string): Attr;
-        getValueByKey(key: string): any;
-        getKeyList(): string[];
-        getValueList(): string[];
-    }
-    class Attr {
-        private _key;
-        private _value;
-        get key(): string;
-        get value(): any;
-        set value(value: any);
-        constructor(key: string, value: any);
-    }
-}
-declare const Cls: typeof ha.be.Be.Bersih;
-declare const Graphics: typeof ha.be.Be.Grafis;
-declare const Color: typeof ha.be.Be.Warna;
-declare const Stroke: typeof ha.be.Be.StrokeColor;
-declare const Red: typeof ha.be.Be.Merah;
-declare const Green: typeof ha.be.Be.Hijau;
-declare const Blue: typeof ha.be.Be.Biru;
-declare const Alpha: typeof ha.be.Be.Transparan;
-declare const GetPixel: typeof ha.be.Img.AmbilPiksel;
-declare const SetPixel: typeof ha.be.Img.SetPiksel;
-declare const Line: typeof ha.be.Be.Garis;
-declare const Rect: typeof ha.be.Be.Kotak;
+/**
+ * Membersihkan layar dengan warna tertentu, default hitam
+ * @param merah {angka} opsional, merah, default = 0
+ * @param hijau {angka} opsional, hijau,, default = 0
+ * @param biru {angka} opsional, biru, default = 0
+ * @param transparan {angka} opsional, transparan (0-100)
+ */
+declare const Bersih: (merah?: number, hijau?: number, biru?: number, transparan?: number) => void;
+/**
+ * Setup Blitz Edu
+ * @param panjang (angka) panjang dari kanvas
+ * @param lebar (angka) lebar dari kanvs
+ * @param canvas (HTMLCanvasElement) referensi ke kanvas
+ * @param fullScreen (boolean) apakah akan men-skala kanvas mengikuti ukuran layar/fullscreen
+ * @returns
+ */
+declare const Grafis: (panjang?: number, lebar?: number, canvas?: HTMLCanvasElement, fullScreen?: boolean, input?: boolean) => void;
+/**
+ * Mengeset warna untuk dipakai pada perintah menggambar berikutnya
+ * @param r (number) merah
+ * @param g (number) hijau
+ * @param b (number) biru
+ * @param a (number) alpha (0-100)
+ */
+declare const Warna: (r?: number, g?: number, b?: number, a?: number) => void;
+/**
+ * Mengembalikan warna merah dari perintah AmbilPixel terakhir
+ * @returns (number) warna merah
+ */
+declare const Merah: () => number;
+declare const Hijau: typeof ha.be.Be.Hijau;
+declare const Biru: typeof ha.be.Be.Biru;
+declare const Transparan: typeof ha.be.Be.Transparan;
+declare const AmbilPiksel: typeof ha.be.Image.AmbilPiksel;
+declare const SetPiksel: typeof ha.be.Image.SetPiksel;
+declare const Kontek: typeof ha.be.Be.Kontek;
+declare const Kanvas: typeof ha.be.Be.Kanvas;
+declare const Garis: typeof ha.be.Be.Garis;
+declare const Kotak: typeof ha.be.Be.Kotak;
 declare const Oval: typeof ha.be.Be.Oval;
-declare const CreateDict: typeof ha.be.Dict.Create;
-declare const DictGetValue: typeof ha.be.Dict.GetValue;
-declare const DictAddAttr: typeof ha.be.Dict.AddAttr;
-declare const DictGetKeyList: typeof ha.be.Dict.GetKeyList;
-declare const DictGetValueList: typeof ha.be.Dict.GetValueList;
 declare const InputHit: typeof ha.be.Input.InputHit;
 declare const InputX: typeof ha.be.Input.InputX;
 declare const InputY: typeof ha.be.Input.InputY;
-declare const InputIsDown: typeof ha.be.Input.Pencet;
+declare const InputDragStartX: typeof ha.be.Input.InputXAwal;
+declare const InputDragStartY: typeof ha.be.Input.InputYAwal;
+declare const InputDragX: typeof ha.be.Input.GeserX;
+declare const InputDragY: typeof ha.be.Input.GeserY;
 declare const FlushInput: typeof ha.be.Input.FlushInput;
-declare const DragX: typeof ha.be.Input.GeserX;
-declare const DragY: typeof ha.be.Input.GeserY;
+declare const InputIsDown: typeof ha.be.Input.Pencet;
 declare const InputIsDragged: typeof ha.be.Input.Geser;
 declare const InputType: typeof ha.be.Input.InputType;
-declare const TapCount: typeof ha.be.Input.JmlTap;
-declare const DragStartCount: typeof ha.be.Input.JmlDragMulai;
-declare const DragEndCount: typeof ha.be.Input.JmlDragSelesai;
-declare const DragStartX: typeof ha.be.Input.InputXAwal;
-declare const DragStartY: typeof ha.be.Input.InputYAwal;
-declare const LoadImage: typeof ha.be.Spr.Muat;
-declare const MuatAsync: typeof ha.be.Spr.MuatAsync;
-declare const LoadAnimImage: typeof ha.be.Spr.MuatAnimasi;
-declare const ResizeImage: typeof ha.be.Spr.Ukuran;
-declare const DrawImage: typeof ha.be.Spr.Gambar;
-declare const DrawImageXY: typeof ha.be.Spr.GambarXY;
-declare const Handle: typeof ha.be.Spr.Handle;
-declare const Rotation: typeof ha.be.Spr.Rotasi;
-declare const Collide: typeof ha.be.Spr.Tabrakan;
-declare const CollideXY: typeof ha.be.Spr.TabrakanXY;
-declare const SpriteKontek: typeof ha.be.Spr.kontek;
-declare const Width: typeof ha.be.Spr.Panjang;
-declare const Height: typeof ha.be.Spr.Lebar;
-declare const Tile: typeof ha.be.Spr.Ubin;
-declare const ImageLoaded: typeof ha.be.Spr.Dimuat;
-declare const AllImageLoaded: typeof ha.be.Spr.StatusMuat;
-declare const PositionImageXY: typeof ha.be.Spr.Posisi;
-declare const PositionImagePolar: typeof ha.be.Spr.posisiPolar;
-declare const DrawAllImage: typeof ha.be.Spr.GambarSemua;
-declare const ImageXPosition: typeof ha.be.Spr.PosisiX;
-declare const ImageYPosition: typeof ha.be.Spr.PosisiY;
-declare const ImageAlpha: typeof ha.be.Spr.Alpha;
-declare const ImageIsDragged: typeof ha.be.Spr.StatusDrag;
-declare const CopyImage: typeof ha.be.Spr.Copy;
-declare const ImageBound: typeof ha.be.Spr.Bound;
-declare const FontName: typeof ha.be.Teks.Font;
-declare const FontSize: typeof ha.be.Teks.FontSize;
-declare const Print: typeof ha.be.Teks.Tulis;
-declare const Align: typeof ha.be.Teks.Rata;
-declare namespace ha.be {
-    class Id {
-        private static _id;
-        static id(): string;
-    }
-}
+declare const InputTapCount: typeof ha.be.Input.JmlTap;
+declare const InputStartDragCount: typeof ha.be.Input.JmlDragMulai;
+declare const InputEndDragCount: typeof ha.be.Input.JmlDragSelesai;
+declare const Sudut: typeof ha.be.Mat.Sudut;
+declare const Muat: typeof ha.be.Sprite.Muat;
+declare const MuatAsync: typeof ha.be.Sprite.MuatAsync;
+declare const Dimuat: typeof ha.be.Sprite.Dimuat;
+declare const MuatAnimasi: typeof ha.be.Sprite.MuatAnimasi;
+declare const StatusMuat: typeof ha.be.Sprite.StatusMuat;
+declare const Posisi: typeof ha.be.Sprite.Posisi;
+declare const Ukuran: typeof ha.be.Sprite.Ukuran;
+declare const PosisiPolar: typeof ha.be.Sprite.posisiPolar;
+declare const Gambar: typeof ha.be.Sprite.Gambar;
+declare const GambarSemua: typeof ha.be.Sprite.GambarSemua;
+declare const PosisiX: typeof ha.be.Sprite.PosisiX;
+declare const PosisiY: typeof ha.be.Sprite.PosisiY;
+declare const Handle: typeof ha.be.Sprite.Handle;
+declare const Rotasi: typeof ha.be.Sprite.Rotasi;
+declare const Alpha: typeof ha.be.Sprite.Alpha;
+declare const Tabrakan: typeof ha.be.Sprite.Tabrakan;
+declare const StatusDrag: typeof ha.be.Sprite.StatusDrag;
+declare const SpriteKontek: typeof ha.be.Sprite.kontek;
+declare const Panjang: typeof ha.be.Sprite.Panjang;
+declare const Lebar: typeof ha.be.Sprite.Lebar;
+declare const Copy: typeof ha.be.Sprite.Copy;
+declare const Ubin: typeof ha.be.Sprite.Ubin;
+declare const Bound: typeof ha.be.Sprite.Bound;
+declare var Font: typeof ha.be.Teks.Font;
+declare var Tulis: typeof ha.be.Teks.Tulis;
+declare var Rata: typeof ha.be.Teks.Rata;
 /**
  * INTERFACE
 */
@@ -792,7 +727,7 @@ interface IInput {
     tapJml: number;
     upJml: number;
 }
-interface IGbr {
+interface IGambar {
     img: HTMLImageElement;
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
@@ -821,17 +756,14 @@ interface IPoint2D {
     x: number;
     y: number;
 }
-interface ISpr {
-    buff: IGbr;
+interface ISprite {
+    buffer: IGambar;
     x: number;
     y: number;
     dragable: boolean;
     dragged: boolean;
     down: boolean;
-    jmlHit?: number;
-    jmlup?: number;
-    jmlStartDrag?: number;
-    jmlEndDrag?: number;
+    hit: number;
     dragStartX: number;
     dragStartY: number;
     url: string;
