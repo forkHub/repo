@@ -79,6 +79,11 @@ namespace ha.blockly {
 			else if (this.getQuery("tut") == "true") {
 				Store.tutMode = true;
 			}
+			else {
+				// Logo.sho
+				ha.blockly.Logo.init();
+				(Logo.dlg as any).showModal();
+			}
 
 			HalListProject.init();
 			HalListDemo.init();
@@ -87,6 +92,7 @@ namespace ha.blockly {
 			Index.initWorkSpace();
 			Op.resize();
 			Op.op();
+
 			try {
 				let def = JSON.parse(Store.defWSpace);
 				console.log(def);

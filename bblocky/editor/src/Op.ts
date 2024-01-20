@@ -72,10 +72,11 @@ namespace ha.blockly {
         static publish() {
             let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace), true);
             DialogPublish.open(`
-                    <h1>Publish</h1>
+                    <h1>Html Code</h1>
                     <p>
-                        Copy content of textarea below, and save it to a file with .html extension.
-                        You can run the file directly without setting up a web-server
+                        Copy content of textarea below, and save it to an .html file.<br/>
+                        You can run the file directly without setting up a web-server.
+                        Please build the folder structure according to your project.
                     </p>
             `, (codeHtml));
         }

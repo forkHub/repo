@@ -49,7 +49,7 @@ namespace ha.be {
 		// 	rect: IRect
 		// ): IGambar {
 
-		// 	let gbr: IGambar = new Gambar();
+		// 	let gbr: IGambar = new Gambar();defaut 
 
 		// 	gbr.panjang = w;
 		// 	gbr.lebar = h;
@@ -369,17 +369,37 @@ namespace ha.be {
 				gbr.frameH = imgP.naturalHeight;
 				gbr.frameW = imgP.naturalWidth;
 
+				// ctx.fillStyle = 'rgba(255, 255, 255, 100)';
+				// ctx.strokeStyle = 'rgba(255, 0, 0, 100)';
+				// ctx.beginPath();
+				// ctx.rect(0, 0, 32, 32);
+				// ctx.moveTo(0, 0);
+				// ctx.lineTo(31, 31);
+				// ctx.moveTo(0, 31);
+				// ctx.lineTo(31, 0);
+				// ctx.stroke();
+
+				// ctx.fillRect(0, 0, 32, 32);
+
+
+
 				ha.be.cache.setFile(url, imgP);
 			}
 
 			function imgOnLoadDefault(): void {
+				console.log("img on load default");
+
 				canvas.width = 32;
 				canvas.height = 32;
 
 				//TODO: draw rectangle, broken image
-				ctx = canvas.getContext('2d');
+				// ctx = canvas.getContext('2d');
+				gbr.img = document.createElement('img');
+				// ctx.drawImage(gbr.img, 0, 0);
 
 				gbr.rect = ha.be.Kotak.buat(0, 0, 32, 32);
+				ctx.fillStyle = 'rgba(255, 255, 255, 100)';
+				ctx.strokeStyle = 'rgba(255, 0, 0, 100)';
 				ctx.beginPath();
 				ctx.rect(0, 0, 32, 32);
 				ctx.moveTo(0, 0);
@@ -388,8 +408,10 @@ namespace ha.be {
 				ctx.lineTo(31, 0);
 				ctx.stroke();
 
+				// ctx.setf
+				// ctx.fillRect(0, 0, 32, 32);
+
 				gbr.load = true;
-				gbr.img = document.createElement('img');
 
 				if (!gbr.panjangDiSet) {
 					gbr.panjangDiSet = true;
@@ -407,7 +429,7 @@ namespace ha.be {
 				ha.be.cache.setFile(url, gbr.img);
 			}
 
-
+			console.log(gbr);
 			return gbr;
 		}
 
@@ -550,7 +572,7 @@ namespace ha.be {
 				ctx.translate(x, y);
 				ctx.rotate(gbr.rotasi * (Math.PI / 180));
 				ctx.globalAlpha = gbr.alpha;
-				ctx.drawImage(gbr.img, frameX, frameY, gbr.frameW, gbr.frameH, - gbr.handleX, -gbr.handleY, w2, h2);
+				ctx.drawImage(gbr.canvas, frameX, frameY, gbr.frameW, gbr.frameH, - gbr.handleX, -gbr.handleY, w2, h2);
 				ctx.restore();
 			}
 			else {

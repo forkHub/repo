@@ -1,4 +1,4 @@
-declare var update: any;
+declare var _update: any;
 declare var Update: any;
 declare var UPDATE: any;
 
@@ -8,9 +8,7 @@ window.onload = () => {
     /** script here **/
 
     let __update: () => void; // = update || Update || UPDATE as any;
-    if (typeof update === "function") __update = update;
-    if (typeof Update === "function") __update = Update;
-    if (typeof UPDATE === "function") __update = UPDATE;
+    if (typeof _update === "function") __update = _update;
 
     console.log(__update);
 

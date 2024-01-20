@@ -8,15 +8,15 @@ const InputIsDown = ha.be.Input.Pencet;
 // //extended
 const FlushInput = ha.be.Input.FlushInput;
 
-const DragX = ha.be.Input.GeserX;
-const DragY = ha.be.Input.GeserY;
+const InputDragX = ha.be.Input.GeserX;
+const InputDragY = ha.be.Input.GeserY;
 const InputIsDragged = ha.be.Input.Geser;
 const InputType = ha.be.Input.InputType;
-const TapCount = ha.be.Input.JmlTap;
-const DragStartCount = ha.be.Input.JmlDragMulai;
-const DragEndCount = ha.be.Input.JmlDragSelesai;
-const DragStartX = ha.be.Input.InputXAwal;
-const DragStartY = ha.be.Input.InputYAwal;
+const InputTapCount = ha.be.Input.JmlTap;
+const InputDragStartCount = ha.be.Input.JmlDragMulai;
+const InputDragEndCount = ha.be.Input.JmlDragSelesai;
+const InputDragStartX = ha.be.Input.InputXAwal;
+const InputDragStartY = ha.be.Input.InputYAwal;
 
 //TODO: input id
 

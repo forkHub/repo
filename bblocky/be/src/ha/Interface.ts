@@ -77,6 +77,13 @@ interface IPoint2D {
 	y: number
 }
 
+interface IAudio {
+	src: string;
+	loaded: boolean;
+	sound: HTMLAudioElement;
+	playedCount: number;
+}
+
 interface ISpr {
 	buff: IGbr,
 	x: number,

@@ -1,8 +1,7 @@
-<!DOCTYPE html>
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,
         target-densityDpi=device-dpi">
     <title>Basik Blok</title>
@@ -17,7 +16,7 @@
     <canvas></canvas>
 
     <!-- copy be.js script to your local to help save bandwith, thanks -->
-    <script src="https://forkhub.github.io/bblok/js/be.js"></script>
+    <script src="./js/be.js"></script>
 
     <!-- main  -->
     <script>
@@ -25,23 +24,13 @@
         "use strict";
         window.onload = () => {
             console.log('start');
-            var image2, image;
+            var image;
 
 
 
             /*🛩️ Start %1 width: %2 height: %3 %4*/
             Graphics(320, 240,);
-            image2 = (LoadImage('https://forkhub.github.io/blockly/imgs/box.png'));
-
-            /*Image %1 set position to x %2 y %3*/
-            PositionImageXY(image2, 116, 116);
-            image = (LoadImage('https://forkhub.github.io/blockly/imgs/box.png'));
-
-            /*Image %1 set position to x %2 y %3*/
-            PositionImageXY(image, 100, 100);
-
-            /*Image %1 set alpha to (0-100) %2*/
-            ImageAlpha(image, 50);
+            image = (LoadImage('./imgs/box.png'));
 
             ;
 
@@ -51,8 +40,8 @@
                 /*Cls*/
                 Cls();
 
-                /*DrawAllImage*/
-                DrawAllImage();
+                /*DrawImage: %4 image %1 x: %2 y: %3*/
+                DrawImageXY(image, 120, 100,);
             };
 
             let __update; // = update || Update || UPDATE as any;
@@ -69,6 +58,9 @@
         };
 
     </script>
+
+
+
 </body>
 
 </html>

@@ -347,10 +347,15 @@ namespace ha.blockly {
             // let project
             let code;
 
+            console.group("open project");
+            console.log("selectedId:", Store.selectedId);
+
             f = Store.demo.find((item) => {
+                console.log(item);
                 return (item as IEntity).parentId == Store.selectedId;
             });
             console.log(f);
+            console.groupEnd();
 
             code = JSON.parse(f.wspace);
             // project = Store.demo.find((item) => {

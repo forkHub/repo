@@ -3,12 +3,8 @@ window.onload = () => {
     console.log('start');
     /** script here **/
     let __update; // = update || Update || UPDATE as any;
-    if (typeof update === "function")
-        __update = update;
-    if (typeof Update === "function")
-        __update = Update;
-    if (typeof UPDATE === "function")
-        __update = UPDATE;
+    if (typeof _update === "function")
+        __update = _update;
     console.log(__update);
     let __updater = () => {
         if (__update) {

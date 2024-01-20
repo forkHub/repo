@@ -8,7 +8,10 @@ namespace ha.blockly.InputBlockData {
         type: "ha.be.Input.InputHit",
         perintah: "InputHit",
         message0: "Input Hit count",
-        tooltip: `Return how many time an input is pressed since the last call.`,
+        tooltip: `
+            Return how many time an input is pressed since the last call.
+            Calling this method inside update block will return the count between update.
+        `,
         output: EOutput.Number
     })
 
@@ -92,15 +95,36 @@ namespace ha.blockly.InputBlockData {
         type: "ha.be.Input.JmlTap",
         perintah: "InputTapCount",
         message0: "Input Tap Count",
-        tooltip: `Return the number tap happens since last call.
-        Calling this method inside update block will return tap counts between update.
+        tooltip: `
+            Return the number of tap happens since last call.
+            Calling this method inside update block will return the count between update.
         `,
         output: EOutput.Number
     })
 
-    // const InputStartDragCount = ha.be.Input.JmlDragMulai;
-    // const InputEndDragCount = ha.be.Input.JmlDragSelesai;
+    // const InputDragStartCount = ha.be.Input.JmlDragMulai;
+    list.push({
+        type: "ha.be.Input.JmlDragMulai",
+        perintah: "InputDragStartCount",
+        message0: "Input Drag Start Count",
+        tooltip: `
+            Return the number drag happens since last call.
+            Calling this method inside update block will return the count between update.
+        `,
+        output: EOutput.Number
+    })
 
+    // const InputDragEndCount = ha.be.Input.JmlDragSelesai;
+    list.push({
+        type: "ha.be.Input.JmlDragSelesai",
+        perintah: "InputDragEndCount",
+        message0: "Input Drag End Count",
+        tooltip: `
+            Return the number drag ends since last call.
+            Calling this method inside update block will return the count between update.
+        `,
+        output: EOutput.Number
+    })
 
 }
 

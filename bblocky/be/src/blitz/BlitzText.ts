@@ -1,4 +1,4 @@
-///<reference path="../ha/Route.ts"/>
+///<reference path="./Route.ts"/>
 
 // Shortcut buat perintah-perintah font
 const FontName = ha.be.Teks.Font;

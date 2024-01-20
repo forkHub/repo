@@ -1,8 +1,9 @@
 create image
-dummy image buat image yang gagal load
-alamat url masih pakai absolute
-tambahan doc buat publish
-update function pakai underscore
+sound definition
+publish ganti html
+dialog logo
+demo dibuat jsonp
+tutorial dibuat jsonp
 
 sample tut:
 ===========
@@ -17,6 +18,7 @@ glbb
 glb
 
 project:
+========
 animasi solar sistem
 angry bird
 angry bat
@@ -34,12 +36,7 @@ gradient
 stroke width
 gambar bezier 4
 gambar bezier 3
-sound
-    load
-    play
-    ended
-    loop
-
+sound loop
 
 BACKLOG ARCH:
 =============

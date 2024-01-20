@@ -16,8 +16,12 @@ namespace ha.be {
 			input.id = e.pointerId;
 
 			if (input.isDown) {
+
+				if (input.isDrag == false) {
+					input.dragJml++;
+				}
+
 				input.isDrag = true;
-				input.dragJml++;
 				input.xDrag = input.x - input.xStart;
 				input.yDrag = input.y - input.yStart;
 			}
