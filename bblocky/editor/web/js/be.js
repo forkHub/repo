@@ -2703,10 +2703,13 @@ var ha;
             static Play(s) {
                 s.sound.play();
             }
-            static PlayedCount(s) {
+            static SoundEnded(s) {
                 let h = s.playedCount;
                 s.playedCount = 0;
-                return h;
+                return (h > 0);
+            }
+            static SoundLoaded(s) {
+                return s.loaded;
             }
         }
         be.Sound = Sound;
@@ -2730,7 +2733,8 @@ var ha;
 ///<reference path="./Route.ts"/>
 const LoadSound = ha.be.Sound.Load;
 const PlaySound = ha.be.Sound.Play;
-const SoundPlayedCount = ha.be.Sound.PlayedCount;
+const SoundEnded = ha.be.Sound.SoundEnded;
+const SoundLoaded = ha.be.Sound.SoundLoaded;
 ///<reference path="./Route.ts"/>
 const Cls = ha.be.Be.Bersih;
 const Graphics = ha.be.Be.Grafis;

@@ -710,12 +710,14 @@ declare namespace ha.be {
         set src(value: string);
         static Load(url: string): void;
         static Play(s: IAudio): void;
-        static PlayedCount(s: IAudio): number;
+        static SoundEnded(s: IAudio): boolean;
+        static SoundLoaded(s: IAudio): boolean;
     }
 }
 declare const LoadSound: typeof ha.be.Sound.Load;
 declare const PlaySound: typeof ha.be.Sound.Play;
-declare const SoundPlayedCount: typeof ha.be.Sound.PlayedCount;
+declare const SoundEnded: typeof ha.be.Sound.SoundEnded;
+declare const SoundLoaded: typeof ha.be.Sound.SoundLoaded;
 declare const Cls: typeof ha.be.Be.Bersih;
 declare const Graphics: typeof ha.be.Be.Grafis;
 declare const Color: typeof ha.be.Be.Warna;

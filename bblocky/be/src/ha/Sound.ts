@@ -60,12 +60,15 @@ namespace ha.be {
             s.sound.play();
         }
 
-        static PlayedCount(s: IAudio): number {
+        static SoundEnded(s: IAudio): boolean {
             let h = s.playedCount;
             s.playedCount = 0;
-            return h;
+            return (h > 0);
         }
 
+        static SoundLoaded(s: IAudio): boolean {
+            return s.loaded;
+        }
 
     }
 }

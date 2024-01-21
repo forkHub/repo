@@ -2,4 +2,5 @@
 
 const LoadSound = ha.be.Sound.Load;
 const PlaySound = ha.be.Sound.Play;
-const SoundPlayedCount = ha.be.Sound.PlayedCount;
+const SoundEnded = ha.be.Sound.SoundEnded;
+const SoundLoaded = ha.be.Sound.SoundLoaded;

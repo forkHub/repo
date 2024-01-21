@@ -1,7 +1,5 @@
 create image
 sound definition
-publish ganti html
-dialog logo
 demo dibuat jsonp
 tutorial dibuat jsonp
 
