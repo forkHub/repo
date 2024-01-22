@@ -1,4 +1,4 @@
-///<reference path="./toobox.ts"/>
+///<reference path="./toolbox.ts"/>
 
 namespace ha.blockly {
 

@@ -35,6 +35,7 @@ stroke width
 gambar bezier 4
 gambar bezier 3
 sound loop
+Define object => otomatis define 
 
 BACKLOG ARCH:
 =============
