@@ -750,6 +750,7 @@ declare const InputDragStartCount: typeof ha.be.Input.JmlDragMulai;
 declare const InputDragEndCount: typeof ha.be.Input.JmlDragSelesai;
 declare const InputDragStartX: typeof ha.be.Input.InputXAwal;
 declare const InputDragStartY: typeof ha.be.Input.InputYAwal;
+declare const DistMin: typeof ha.be.Transform.degDistMin;
 declare const LoadImage: typeof ha.be.Spr.Muat;
 declare const MuatAsync: typeof ha.be.Spr.MuatAsync;
 declare const LoadAnimImage: typeof ha.be.Spr.MuatAnimasi;

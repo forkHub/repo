@@ -29,6 +29,7 @@ namespace ha.be {
         static Cos(n: number) { return Math.cos(n * Math.PI / 180) }
         static Tan(n: number) { return Math.tan(n * Math.PI / 180) }
 
+
         // ASin
         // ACos
         // ATan

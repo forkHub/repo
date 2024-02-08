@@ -1,7 +1,9 @@
+BUG:
+====
+demo.son
+
 create image
 sound definition
-demo dibuat jsonp
-tutorial dibuat jsonp
 
 sample tut:
 ===========
@@ -21,12 +23,15 @@ animasi solar sistem
 angry bird
 angry bat
 pong
-publish (disertai contoh zip)
 
 sample yang belum:
 ==================
 input demo
 sample dari be edu
+
+TUTORIAL:
+=========
+
 
 BACKLOG PERINTAH:
 =================
@@ -41,6 +46,5 @@ BACKLOG ARCH:
 =============
 gambar64
 gambar95
-
-TUTORIAL:
-=========
+demo dibuat jsonp
+tutorial dibuat jsonp

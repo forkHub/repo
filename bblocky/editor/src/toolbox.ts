@@ -1,36 +1,6 @@
 ///<reference path="./toolboxType.ts"/>
 
 namespace ha.blockly.toolbox {
-    // export function ToolBoxCreateJSDef(t: TBlockDef) {
-    //     console.log("test: " + t.type);
-
-    //     javascript.javascriptGenerator.forBlock[t.type] = function (block: any, generator: any) {
-    //         let code = '';
-
-    //         code = t.type + '('
-    //         t.args0.forEach((item, idx) => {
-    //             console.log('item type: ', item.type);
-    //             if (item.type == EArgType.inputDummy) {
-
-    //             }
-    //             else {
-    //                 let value = generator.valueToCode(block, item.name, javascript.Order.ATOMIC);
-    //                 console.log('value to code >>', "item name:", item.name, "value", value);
-
-    //                 code += value;
-
-    //                 if (idx < t.args0.length - 1) {
-    //                     code += ','
-    //                 }
-    //             }
-    //         });
-    //         code += ');\n';
-
-    //         console.log("code", code);
-
-    //         return code;
-    //     };
-    // }
 
     export function init() {
         BDef.normalizeAllBlock();
@@ -42,9 +12,10 @@ namespace ha.blockly.toolbox {
         toolbox.contents.push(getCategory("Graphics", BlitzData.list)); //registerBlitz());
         toolbox.contents.push(getCategory("Image 1", ImageBlockData.list));
         toolbox.contents.push(getCategory("Image 2", ImageBlockData2.list));
-        toolbox.contents.push(getCategory(debugData.group, debugData.list));
         toolbox.contents.push(getCategory(InputBlockData.group, InputBlockData.list));
         toolbox.contents.push(getCategory(TextData.group, TextData.list));
+        toolbox.contents.push(getCategory(MathBlockData.group, MathBlockData.list));
+        toolbox.contents.push(getCategory(debugData.group, debugData.list));
 
         js(allToolBoxDef);
     }
@@ -159,6 +130,9 @@ namespace ha.blockly.toolbox {
             blockData.push(item);
         })
 
+        MathBlockData.list.forEach((item) => {
+            blockData.push(item);
+        })
         return blockData;
     }
 

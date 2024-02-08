@@ -17,13 +17,13 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if ($dev == "true") {
     echo "dev mode";
-    $myfile = fopen("./editor/src/StoreEntry.ts", "w") or die("Unable to open file!");
-    fwrite($myfile, "///<reference path=\"Store.ts\"/>\n");
-    fwrite($myfile, "ha.blockly.Store.demo =");
-    fwrite($myfile, $content);
-    fclose($myfile);
+    // $myfile = fopen("./editor/src/StoreEntry.ts", "w") or die("Unable to open file!");
+    // fwrite($myfile, "///<reference path=\"Store.ts\"/>\n");
+    // fwrite($myfile, "ha.blockly.Store.demo =");
+    // fwrite($myfile, $content);
+    // fclose($myfile);
 
-    //write demo.json
+    //write demo.js
     $myfile = fopen("./editor/web/js/demo.js", "w") or die("Unable to open file!");
     fwrite($myfile, "const demoData =");
     fwrite($myfile, $content);

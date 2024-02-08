@@ -4,7 +4,7 @@ namespace ha.blockly {
     export class HalListProject {
         private static cont: HTMLDialogElement;
         private static listCont: HTMLDivElement;
-        private static projekList: HalProjekList;
+        private static projekList: ProjectList;
 
         static openKlik() {
             if (Store.selectedId == '') {
@@ -209,7 +209,7 @@ namespace ha.blockly {
             document.body.append(this.cont);
 
             // this.demoList = new ListDemoView();
-            this.projekList = new HalProjekList();
+            this.projekList = new ProjectList();
         }
 
         static updateItemView(el: HTMLDivElement, item: IProject): void {
@@ -225,7 +225,7 @@ namespace ha.blockly {
         }
     }
 
-    class HalProjekList {
+    class ProjectList {
         buatItemViewIsi(item: IProject, cont: HTMLDivElement): void {
             cont.innerHTML = `
                 <span>${item.nama}</span>
@@ -269,8 +269,7 @@ namespace ha.blockly {
         }
     }
 
-    //TODO: depecrated
-    class ListDemoView {
+    class ListDemoEl {
 
         buatItemViewIsi(item: IProject, cont: HTMLDivElement): void {
             cont.innerHTML = `
@@ -312,7 +311,9 @@ namespace ha.blockly {
             })
 
             list.forEach((item) => {
-                //temporary 
+                // console.group('buat item view: ' + item.id);
+                // console.log(item);
+                // console.groupEnd();
                 cont.appendChild(this.buatItemView(item, cont));
             })
         }
@@ -321,7 +322,7 @@ namespace ha.blockly {
     export class HalListDemo {
         private static cont: HTMLDialogElement;
         private static listCont: HTMLDivElement;
-        private static demoList: ListDemoView;
+        private static listDemoEl: ListDemoEl;
 
         static DemoButtonKlik() {
             this.render();
@@ -350,18 +351,14 @@ namespace ha.blockly {
             console.group("open project");
             console.log("selectedId:", Store.selectedId);
 
-            f = Store.demo.find((item) => {
+            f = demoData.find((item) => {
                 console.log(item);
                 return (item as IEntity).parentId == Store.selectedId;
-            });
+            }) as IFile;
             console.log(f);
             console.groupEnd();
 
             code = JSON.parse(f.wspace);
-            // project = Store.demo.find((item) => {
-            //     return (item as IEntity).id == Store.selectedId;
-            // });
-
 
             Store.idFile = f.id;
             Store.projectId = '';
@@ -400,14 +397,14 @@ namespace ha.blockly {
             this.listCont = this.cont.querySelector("div.list-cont");
             document.body.append(this.cont);
 
-            this.demoList = new ListDemoView();
+            this.listDemoEl = new ListDemoEl();
         }
 
         private static render() {
             Store.selectedId = '';
             this.listCont.innerHTML = '';
 
-            this.demoList.render(this.listCont);
+            this.listDemoEl.render(this.listCont);
         }
 
     }

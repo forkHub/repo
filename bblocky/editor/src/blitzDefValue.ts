@@ -4,6 +4,19 @@
  * blitz toolbox definition
  */
 namespace ha.blockly.BDef {
+    /**
+     * normalize all block
+     */
+    export function normalizeAllBlock() {
+        hiddenData.list.forEach((item) => { normal(item); });
+        BlitzData.list.forEach((item) => { normal(item); });
+        ImageBlockData.list.forEach((item) => { normal(item) });
+        ImageBlockData2.list.forEach((item) => { normal(item) });
+        debugData.list.forEach((item) => { normal(item) });
+        InputBlockData.list.forEach((item) => { normal(item) })
+        TextData.list.forEach((item) => { normal(item) })
+        MathBlockData.list.forEach((item) => { normal(item) })
+    }
 
     /**
      * add default value
@@ -190,17 +203,5 @@ namespace ha.blockly.BDef {
         }
     }
 
-    /**
-     * normalize all block
-     */
-    export function normalizeAllBlock() {
-        hiddenData.list.forEach((item) => { normal(item); });
-        BlitzData.list.forEach((item) => { normal(item); });
-        ImageBlockData.list.forEach((item) => { normal(item) });
-        ImageBlockData2.list.forEach((item) => { normal(item) });
-        debugData.list.forEach((item) => { normal(item) });
-        InputBlockData.list.forEach((item) => { normal(item) })
-        TextData.list.forEach((item) => { normal(item) })
-    }
 }
 

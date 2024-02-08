@@ -80,7 +80,7 @@ namespace ha.blockly {
 				Store.tutMode = true;
 			}
 			else {
-				// Logo.sho
+				// Logo.show
 				ha.blockly.Logo.init();
 				(Logo.dlg as any).showModal();
 			}
