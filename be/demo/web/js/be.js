@@ -283,13 +283,13 @@ var ha;
                 }
             }
             /**
-             *
-             * @param x
-             * @param y
-             * @param radius
-             * @param skalaX
-             * @param skalaY
-             * @param rotasi
+             * Menggambar Oval
+             * @param x posisi x
+             * @param y posisi y
+             * @param radius radius
+             * @param skalaX skala horizontal
+             * @param skalaY skala vertikal
+             * @param rotasi sudut oval
              */
             static Oval(x = 0, y = 0, radius, skalaX = 1, skalaY = .5, rotasi = 0) {
                 let ctx = Be.canvasAktif.ctx;
@@ -305,23 +305,8 @@ var ha;
                 ctx.arc(0, 0, radius, 0, 2 * Math.PI, false);
                 // restore to original state
                 ctx.restore();
-                // apply styling
-                // ctx.fillStyle = '#8ED6FF';
-                // ctx.fill();
-                // ctx.lineWidth = 5;
-                // ctx.strokeStyle = 'black';
                 ctx.stroke();
-                // ctx.beginPath();
-                // ctx.moveTo(x - w / 2, y);
-                // ctx.quadraticCurveTo(x - w / 2, y + h / 2, x, y + h / 2);
-                // ctx.quadraticCurveTo(x + w / 2, y + h / 2, x + w / 2, y);
-                // ctx.quadraticCurveTo(x + w / 2, y - h / 2, x, y - h / 2);
-                // ctx.quadraticCurveTo(x - w / 2, y - h / 2, x - w / 2, y);
-                // ctx.stroke();
             }
-            // static SetBuffer(buffer: IGambar) {
-            // 	Main.canvasAktif = buffer
-            // }
             static get canvasAktif() {
                 return Be._canvasAktif;
             }
@@ -2218,7 +2203,7 @@ var ha;
             }
             /**
              *
-             * @param rata
+             * @param rata (string) "center" | "end" | "left" | "right" | "start"
              */
             static Rata(rata = "left") {
                 Teks.ctx.textAlign = rata;
@@ -2429,52 +2414,17 @@ const Oval = ha.be.Be.Oval;
 const InputHit = ha.be.Input.InputHit;
 const InputX = ha.be.Input.InputX;
 const InputY = ha.be.Input.InputY;
-const InputXAwal = ha.be.Input.InputXAwal;
-const InputYAwal = ha.be.Input.InputYAwal;
-const GeserX = ha.be.Input.GeserX;
-const GeserY = ha.be.Input.GeserY;
+const InputDragStartX = ha.be.Input.InputXAwal;
+const InputDragStartY = ha.be.Input.InputYAwal;
+const InputDragX = ha.be.Input.GeserX;
+const InputDragY = ha.be.Input.GeserY;
 const FlushInput = ha.be.Input.FlushInput;
-const Pencet = ha.be.Input.Pencet;
-const Geser = ha.be.Input.Geser;
+const InputIsDown = ha.be.Input.Pencet;
+const InputIsDragged = ha.be.Input.Geser;
 const InputType = ha.be.Input.InputType;
-const JmlTap = ha.be.Input.JmlTap;
-const JmlDragMulai = ha.be.Input.JmlDragMulai;
-const JmlDragSelesai = ha.be.Input.JmlDragSelesai;
-// const FlushKeys = () => {
-// 	// ha.be.input.flushByInput(ha.be.input.keybGlobal);
-// 	ha.be.input.flushByType('keyb');
-// }
-// const GetKey = (): string => {
-// 	return ha.be.input.keybGlobal.key;
-// }
-// const KeybDiPencet = (key: string = ''): boolean => {
-// 	if ("" == key) {
-// 		return ha.be.input.keybGlobal.isDown;
-// 	}
-// 	else {
-// 		let input: IInput = ha.be.input.getInput(key, 'keyb');
-// 		if (input) {
-// 			return input.isDown;
-// 		}
-// 		return false;
-// 	}
-// }
-// const KeybHit = (key: string = ''): number => {
-// 	if ("" == key) {
-// 		let n: number = ha.be.input.keybGlobal.hit;
-// 		ha.be.input.keybGlobal.hit = 0;
-// 		return (n);
-// 	}
-// 	else {
-// 		let input: IInput = ha.be.input.getInput(key, 'keyb');
-// 		let n: number = 0;
-// 		if (input) {
-// 			n = input.hit;
-// 			input.hit = 0;
-// 		}
-// 		return n;
-// 	}
-// }
+const InputTapCount = ha.be.Input.JmlTap;
+const InputStartDragCount = ha.be.Input.JmlDragMulai;
+const InputEndDragCount = ha.be.Input.JmlDragSelesai;
 ///<reference path="../ha/Be.ts"/>
 ///<reference path="../ha/Image.ts"/>
 const Sudut = ha.be.Mat.Sudut;

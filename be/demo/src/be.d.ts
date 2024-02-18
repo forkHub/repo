@@ -87,13 +87,13 @@ declare namespace ha.be {
          */
         static Kotak(x1: number, y1: number, x2: number, y2: number, isi?: boolean, garis?: boolean, rotasi?: number): void;
         /**
-         *
-         * @param x
-         * @param y
-         * @param radius
-         * @param skalaX
-         * @param skalaY
-         * @param rotasi
+         * Menggambar Oval
+         * @param x posisi x
+         * @param y posisi y
+         * @param radius radius
+         * @param skalaX skala horizontal
+         * @param skalaY skala vertikal
+         * @param rotasi sudut oval
          */
         static Oval(x: number, y: number, radius: number, skalaX?: number, skalaY?: number, rotasi?: number): void;
         static get canvasAktif(): IGambar;
@@ -571,7 +571,7 @@ declare namespace ha.be {
         static Font(font?: string): void;
         /**
          *
-         * @param rata
+         * @param rata (string) "center" | "end" | "left" | "right" | "start"
          */
         static Rata(rata?: CanvasTextAlign): void;
         /**
@@ -657,17 +657,17 @@ declare const Oval: typeof ha.be.Be.Oval;
 declare const InputHit: typeof ha.be.Input.InputHit;
 declare const InputX: typeof ha.be.Input.InputX;
 declare const InputY: typeof ha.be.Input.InputY;
-declare const InputXAwal: typeof ha.be.Input.InputXAwal;
-declare const InputYAwal: typeof ha.be.Input.InputYAwal;
-declare const GeserX: typeof ha.be.Input.GeserX;
-declare const GeserY: typeof ha.be.Input.GeserY;
+declare const InputDragStartX: typeof ha.be.Input.InputXAwal;
+declare const InputDragStartY: typeof ha.be.Input.InputYAwal;
+declare const InputDragX: typeof ha.be.Input.GeserX;
+declare const InputDragY: typeof ha.be.Input.GeserY;
 declare const FlushInput: typeof ha.be.Input.FlushInput;
-declare const Pencet: typeof ha.be.Input.Pencet;
-declare const Geser: typeof ha.be.Input.Geser;
+declare const InputIsDown: typeof ha.be.Input.Pencet;
+declare const InputIsDragged: typeof ha.be.Input.Geser;
 declare const InputType: typeof ha.be.Input.InputType;
-declare const JmlTap: typeof ha.be.Input.JmlTap;
-declare const JmlDragMulai: typeof ha.be.Input.JmlDragMulai;
-declare const JmlDragSelesai: typeof ha.be.Input.JmlDragSelesai;
+declare const InputTapCount: typeof ha.be.Input.JmlTap;
+declare const InputStartDragCount: typeof ha.be.Input.JmlDragMulai;
+declare const InputEndDragCount: typeof ha.be.Input.JmlDragSelesai;
 declare const Sudut: typeof ha.be.Mat.Sudut;
 declare const Muat: typeof ha.be.Sprite.Muat;
 declare const MuatAsync: typeof ha.be.Sprite.MuatAsync;

@@ -463,25 +463,19 @@ namespace ha.be {
 		static gambar(gbr: IGambar, x: number = 0, y: number = 0, frame: number = 0) {
 			let ctx: CanvasRenderingContext2D = Be.canvasAktif.ctx;
 			let jmlH: number = 0;
-			let jmlV: number = 0;
+			// let jmlV: number = 0;
 			let frameX: number = 0;
 			let frameY: number = 0;
-
-			// let rect: IRect = img.rect;
 
 			if (gbr.load == false) return;
 
 			gbr.ctrIdx = ha.be.Sprite.ctrDraw++;
 
 			jmlH = Math.floor(gbr.img.naturalWidth / gbr.frameW);
-			jmlV = Math.floor(gbr.img.naturalHeight / gbr.frameH);
-			// console.log('jmlH ' + jmlH);
-			// console.log('nw: ' + gbr.img.naturalWidth);
-			// console.log('fw: ' + gbr.frameW);
-			// debugger;
+			// jmlV = Math.floor(gbr.img.naturalHeight / gbr.frameH);
 
 			frameX = (frame % jmlH);
-			frameY = Math.floor(frame / jmlV);
+			frameY = Math.floor(frame / jmlH);
 
 			frameX *= gbr.frameW;
 			frameY *= gbr.frameH;
@@ -498,12 +492,14 @@ namespace ha.be {
 			x2 -= (gbr.handleX);
 			y2 -= (gbr.handleY);
 
+			// debugger;
+
 			if (gbr.rotasi != 0) {
 				ctx.save();
 				ctx.translate(x, y);
 				ctx.rotate(gbr.rotasi * (Math.PI / 180));
 				ctx.globalAlpha = gbr.alpha;
-				ctx.drawImage(gbr.img, frameX, frameY, gbr.frameW, gbr.frameH, - gbr.handleX, -gbr.handleY, w2, h2);
+				ctx.drawImage(gbr.canvas, frameX, frameY, gbr.frameW, gbr.frameH, -gbr.handleX, -gbr.handleY, w2, h2);
 				ctx.restore();
 			}
 			else {
