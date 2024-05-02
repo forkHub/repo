@@ -1,14 +1,9 @@
 "use strict";
 var ha;
 (function (ha) {
-    var cacah;
-    (function (cacah) {
-        let _sisa = '';
-        function sisa() {
-            return _sisa + '';
-        }
-        cacah.sisa = sisa;
-        function padding(s, n) {
+    class Cacah {
+        _sisa = '';
+        padding(s, n) {
             if (s.length >= n)
                 return s;
             while (s.length < n) {
@@ -16,23 +11,124 @@ var ha;
             }
             return s;
         }
-        function kurangDariSamaDengan(n1, n2) {
-            if (kurangDari(n1, n2))
+        sepuluhSet(target) {
+            let hasil = [];
+            while (target.length > 0) {
+                let char = target.charAt(0);
+                let n = parseInt(char);
+                target = target.slice(1, target.length);
+                for (let i = 0; i < n; i++) {
+                    hasil.push(target.length);
+                }
+            }
+            return hasil;
+        }
+        kaliSepuluh(a, b) {
+            let bn = parseInt(b);
+            if (b == '0')
+                return a;
+            for (let i = 0; i < bn; i++) {
+                a += '0';
+            }
+            return a;
+        }
+        /**
+         * pembagian kecil
+         * a / b
+         * untuk pembagian kecil kurang dari 10 iterasi
+         *
+         * @param a
+         * @param b
+         * @returns
+         */
+        bagiKurangDari10(a, b) {
+            let hasil = '0';
+            this._sisa = "0";
+            if (b == "0") {
+                throw Error('pembagian dengan 0');
+            }
+            if (a == b) {
+                return "1";
+            }
+            if (true == this.kurangDari(a, b)) {
+                this._sisa = a;
+                return "0";
+            }
+            while (true) {
+                if (true == this.kurangDari(a, b)) {
+                    this._sisa = a;
+                    break;
+                }
+                a = this.kurangi(a, b);
+                hasil = this.tambah(hasil, "1");
+            }
+            return hasil;
+        }
+        pangkat(a, b) {
+            let hasil = a;
+            let ctr = '1';
+            if (b == '0')
+                return '1';
+            if (b == '1')
+                return a;
+            while (this.kurangDari(ctr, b)) {
+                hasil = this.kali(hasil, a);
+                ctr = this.tambah(ctr, "1");
+            }
+            return hasil;
+        }
+        kali(a, b) {
+            let ar = this.sepuluhSet(b);
+            let hasil = '0';
+            for (let i = 0; i < ar.length; i++) {
+                hasil = this.tambah(hasil, this.kaliSepuluh(a, ar[i] + ''));
+            }
+            return hasil;
+        }
+        /**
+         * a habis dibagi b
+         *
+         * @param a
+         * @param b
+         * @param awal
+         * @returns
+         */
+        habisDibagi(a, b) {
+            this.bagi(a, b);
+            if (this.sisa() != '0')
+                return false;
+            return true;
+        }
+        sisa() {
+            return this._sisa + '';
+        }
+        /**
+         * n1 kurang dari sama dengan n2
+         * @param n1
+         * @param n2
+         * @returns
+         */
+        kurangDariSamaDengan(n1, n2) {
+            if (true == this.kurangDari(n1, n2))
                 return true;
             if (n1 == n2)
                 return true;
             return false;
         }
-        cacah.kurangDariSamaDengan = kurangDariSamaDengan;
-        function lebihDariSamaDengan(n1, n2) {
+        lebihDariSamaDengan(n1, n2) {
             if (n1 == n2)
                 return true;
-            if (kurangDari(n2, n1))
+            if (true == this.kurangDari(n2, n1))
                 return true;
             return false;
         }
-        cacah.lebihDariSamaDengan = lebihDariSamaDengan;
-        function kurangDari(n1, n2) {
+        /**
+         * n1 kurang dari n2
+         * @param n1
+         * @param n2
+         * @returns
+         */
+        kurangDari(n1, n2) {
             // console.log('kurang dari', n1, n2);
             if (n1.length < n2.length)
                 return true;
@@ -56,26 +152,24 @@ var ha;
             }
             throw Error('');
         }
-        cacah.kurangDari = kurangDari;
-        function lebihDari(n1, n2) {
+        lebihDari(n1, n2) {
             if (n1 == n2)
                 return false;
-            if (kurangDari(n2, n1))
+            if (true == this.kurangDari(n2, n1))
                 return false;
             return true;
         }
-        cacah.lebihDari = lebihDari;
         /**
          *
          * @param n1
          * @param n2
          * @returns
          */
-        function tambah(n1, n2) {
+        tambah(n1, n2) {
             let hasil = '';
             let simpan = 0;
-            n1 = padding(n1, n2.length);
-            n2 = padding(n2, n1.length);
+            n1 = this.padding(n1, n2.length);
+            n2 = this.padding(n2, n1.length);
             // console.log('tambah ' + n1 + '/' + n2);
             for (let i = n1.length - 1; i >= 0; i--) {
                 let c1 = n1.charAt(i);
@@ -95,7 +189,6 @@ var ha;
             }
             return hasil;
         }
-        cacah.tambah = tambah;
         /**
          * pengurangan
          * bila hasilnya minus, yang dikembalikan adalah 0
@@ -103,14 +196,14 @@ var ha;
          * @param n2
          * @returns
          */
-        function kurangi(n1, n2) {
+        kurangi(n1, n2) {
             let hasil = '';
             let pinjam = 0;
-            if (kurangDariSamaDengan(n1, n2)) {
+            if (this.kurangDariSamaDengan(n1, n2) == true) {
                 return '0';
             }
-            n1 = padding(n1, n2.length);
-            n2 = padding(n2, n1.length);
+            n1 = this.padding(n1, n2.length);
+            n2 = this.padding(n2, n1.length);
             for (let i = n1.length - 1; i >= 0; i--) {
                 let c1 = parseInt(n1.charAt(i));
                 let c2 = parseInt(n2.charAt(i));
@@ -132,53 +225,67 @@ var ha;
             }
             return hasil;
         }
-        cacah.kurangi = kurangi;
-        async function kali(n1, n2) {
-            let hasil = '0';
-            let ctr = '0';
-            while (kurangDari(ctr, n2)) {
-                hasil = tambah(hasil, n1);
-                ctr = tambah(ctr, "1");
-            }
-            return hasil;
-        }
-        cacah.kali = kali;
         /**
-         * pembagian
-         *
-         *
-         * @param n1
-         * @param n2
+         * a dibagi b
+         * @param a
+         * @param b
          * @returns
          */
-        async function bagi(n1, n2) {
+        bagi(a, b) {
             let hasil = '0';
-            _sisa = "0";
-            // console.log("bagi n1 " + n1 + "/n2 " + n2);
-            if (n2 == "0") {
-                return "0";
+            let base = '0';
+            let ar = this.sepuluhSet(a);
+            this._sisa = "0";
+            //pengecekan awal
+            //jika b * 10 > a
+            //pembagian kecil dilakukan dengan cara biasa
+            if (true == this.lebihDariSamaDengan(this.kaliSepuluh(b, "1"), a)) {
+                return this.bagiKurangDari10(a, b);
             }
-            if (n1 == n2) {
+            //pembagian noll menghasilkan error
+            if (b == "0") {
+                throw Error('pembagian dengan 0');
+            }
+            if (a == b) {
                 return "1";
             }
-            if (n1.length < n2.length) {
-                _sisa = n1;
+            //bila a lebih kecil, menghasilkan a
+            if (true == this.kurangDari(a, b)) {
+                this._sisa = a;
                 return "0";
             }
-            if (kurangDari(n1, n2)) {
-                _sisa = n1;
-                return "0";
-            }
-            while (true) {
-                if (kurangDari(n1, n2)) {
-                    _sisa = n1;
-                    break;
+            // console.group('bagi 2');
+            // console.log('a ' + a + '/b ' + b);
+            // console.log(ar);
+            for (let i = 0; i < ar.length; i++) {
+                // console.group();
+                let item = ar[i] + '';
+                let item10 = this.kaliSepuluh("1", item);
+                let test = this.kali(b, item10);
+                test = this.tambah(test, base);
+                if (this.kurangDariSamaDengan(test, a)) {
+                    let baseTemp = this.kali(b, item10);
+                    base = this.tambah(base, baseTemp);
+                    hasil = this.tambah(hasil, item10);
                 }
-                n1 = kurangi(n1, n2);
-                hasil = tambah(hasil, "1");
+                else {
+                    //skip
+                }
+                // console.groupEnd();
             }
+            //pembagian sisa
+            let sisa2 = this.kurangi(a, base);
+            if (sisa2 != '0') {
+                let hasil2 = this.bagiKurangDari10(sisa2, b);
+                let base2 = this.kali(hasil2, b);
+                base = this.tambah(base, base2);
+                this._sisa = this.kurangi(a, base);
+                hasil = this.tambah(hasil, hasil2);
+                // debugger;
+            }
+            console.groupEnd();
             return hasil;
         }
-        cacah.bagi = bagi;
-    })(cacah = ha.cacah || (ha.cacah = {}));
+    }
+    ha.cacah = new Cacah();
 })(ha || (ha = {}));

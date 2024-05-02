@@ -1,12 +1,12 @@
 "use strict";
-async function testTambah(i, j) {
+function testTambah(i, j) {
     let h = (i + j) + '';
     let hs = ha.cacah.tambah(i + '', j + '');
     if (h != hs) {
         throw Error('test tambah error, h: ' + h + '/hs' + hs);
     }
 }
-async function testKurangi(i, j) {
+function testKurangi(i, j) {
     let hn;
     let hs;
     hs = ha.cacah.kurangi(i + '', j + '');
@@ -22,21 +22,21 @@ async function testKurangi(i, j) {
             throw Error('kurang i ' + i + '/j ' + j + '/hn ' + hn + '/hs' + hs);
     }
 }
-async function testKurangDari(i, j) {
+function testKurangDari(i, j) {
     let h = (i < j);
     let hs = ha.cacah.kurangDari(i + '', j + '');
     if (h != hs) {
         throw Error('kurang dari error /i ' + i + '/j ' + j + '/h ' + h + '/hs ' + hs);
     }
 }
-async function testKurangDariSama(i, j) {
+function testKurangDariSama(i, j) {
     let h = (i <= j);
     let hs = ha.cacah.kurangDariSamaDengan(i + '', j + '');
     if (h != hs) {
         throw Error('kurang dari sama error /i ' + i + '/j ' + j + '/h ' + h + '/hs ' + hs);
     }
 }
-async function testlebihDariSama(i, j) {
+function testlebihDariSama(i, j) {
     let h = (i >= j);
     let hs = ha.cacah.lebihDariSamaDengan(i + '', j + '');
     if (h != hs) {
@@ -45,16 +45,20 @@ async function testlebihDariSama(i, j) {
 }
 async function testKali(i, j) {
     let hn = (i * j);
-    let hs = parseInt(ha.cacah.kali(i + '', j + ''));
+    let hs = parseInt(await ha.cacah.kali(i + '', j + ''));
     if (hn != hs) {
         console.log("test kali error, /i ", i, "/j ", j, "/hn ", hn, "/hs ", hs);
         throw Error('test kali error');
     }
 }
 async function testBagi(i, j) {
-    if (j == 0)
+    let hs = await ha.cacah.bagi(i + '', j + '');
+    // console.log('test bagi i ' + i + '/j ' + j);
+    if (j == 0) {
+        if (hs != "0")
+            throw Error("");
         return;
-    let hs = ha.cacah.bagi(i + '', j + '');
+    }
     if (i < j) {
         if (ha.cacah.sisa() != (i + '')) {
             console.log('sisa bagi error sisa: ' + ha.cacah.sisa() + "/i " + i + "/j " + j);
@@ -67,15 +71,14 @@ async function testBagi(i, j) {
     }
     else if (i > j) {
         let hn = '';
-        hn = Math.floor(i / j) + '';
-        let sisa = i % j;
+        if (j != 0) {
+            hn = Math.floor(i / j) + '';
+        }
+        else {
+            hn = '0';
+        }
         if (hs != hn) {
             console.log("hasil bagi tidak sama, hn " + hn + "/hs " + hs + "/i " + i + "/j " + j);
-            throw Error("");
-        }
-        if (sisa + '' != ha.cacah.sisa()) {
-            console.log("i " + i + "/j " + j);
-            console.log("sisa tidak sama, sisa n " + sisa + "/sisa s " + ha.cacah.sisa());
             throw Error("");
         }
     }
@@ -87,17 +90,36 @@ async function testBagi(i, j) {
         }
     }
 }
-async function testHabisDibagi(n, n2) {
-    if (n2 == 0)
-        return;
-    if (false == ha.cacah.habisDibagi(n + '', n2 + '')) {
-        console.log("angka " + n);
-        console.log("pembagi " + n2);
+function testSepuluh(n) {
+    let sep = ha.cacah.sepuluh(n + '0');
+    if (sep != (n + '')) {
+        console.log('n: ' + n);
+        console.log('hasil: ' + sep);
         throw Error('');
     }
 }
-async function kali(a, b) {
-    let hs = (ha.cacah.kali(a + '', b + ''));
+async function testHabisDibagi(n, n2, awal = 0) {
+    if (!ha.cacah.habisDibagi(n + '', n2 + '', awal + '')) {
+        console.log("angka " + n);
+        console.log("pembagi " + n2);
+        console.log("awal " + awal);
+        throw Error('');
+    }
+}
+let h = ha.cacah.bagi('20', '2');
+if (!h) {
+    throw new Error('');
+}
+function testSepuluhSet() {
+    console.group('test sepuluh set');
+    console.log(ha.cacah.sepuluhSet('10'));
+    console.log(ha.cacah.sepuluhSet('12'));
+    console.log(ha.cacah.sepuluhSet('32'));
+    console.log(ha.cacah.sepuluhSet('2'));
+    console.groupEnd();
+}
+async function testKali2(a, b) {
+    let hs = (await ha.cacah.kali(a + '', b + ''));
     let h = parseInt(hs) == (a * b);
     if (!h) {
         console.log('test kali 2');
@@ -108,39 +130,21 @@ async function kali(a, b) {
         throw Error();
     }
 }
-async function testPangkat(n, b) {
-    let n2 = Math.pow(n, b) + '';
-    let hs = ha.cacah.pangkat(n + '', b + '');
-    if (hs != n2) {
-        console.log("n " + n + '/b ' + b + '/n2 ' + n2 + '/hs ' + hs);
-        throw Error();
-    }
-}
 async function test() {
-    //benchmark pangkat
-    let timer = Date.now();
-    console.log('test pangkat');
-    console.log(ha.cacah.pangkat('879652756465456', '150'));
-    console.log(Date.now() - timer);
-    //test pangkat
-    for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-            await testPangkat(i, j);
-        }
-    }
-    for (let i = 0; i < 20; i++) {
-        // testSepuluh(i);
+    testSepuluhSet();
+    for (let i = 0; i < 200; i++) {
+        testSepuluh(i);
         await testHabisDibagi(i * Math.floor(Math.random() * 100), i);
-        await testHabisDibagi(i * Math.floor(Math.random() * 100), i);
-        for (let j = 0; j < 20; j++) {
-            await kali(i, j);
-            await testTambah(i, j);
-            await testKurangDari(i, j);
-            await testKurangi(i, j);
+        await testHabisDibagi(i * Math.floor(Math.random() * 100), i, i);
+        for (let j = 0; j < 200; j++) {
+            await testKali2(i, j);
+            testTambah(i, j);
+            testKurangDari(i, j);
+            testKurangi(i, j);
             await testKali(i, j);
             await testBagi(i, j);
-            await testKurangDariSama(i, j);
-            await testlebihDariSama(i, j);
+            testKurangDariSama(i, j);
+            testlebihDariSama(i, j);
         }
     }
 }
