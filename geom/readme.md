@@ -1,1 +1,0 @@
-Pustaka untuk menghitung geometri

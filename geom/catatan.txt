@@ -1,2 +1,0 @@
-support polygon segitiga
-support polygon => banyak segitiga/grouping 
