@@ -1,6 +1,6 @@
 BUG:
 ====
-demo.son
+demo.json
 
 create image
 sound definition
@@ -48,3 +48,5 @@ gambar64
 gambar95
 demo dibuat jsonp
 tutorial dibuat jsonp
+load pakai ajax, gak support local
+npm upgrade

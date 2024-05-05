@@ -722,6 +722,9 @@ var ha;
                     });
                     Blockly.serialization.workspaces.load(simpan, blockly.Index.workspace);
                 };
+                /**
+                 *
+                 */
                 w.run = () => {
                     let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(blockly.Index.workspace));
                     window.localStorage.setItem("blocklycode", codeHtml);
@@ -741,20 +744,11 @@ var ha;
                 };
             }
             static loadKlik() {
-                // let list: IEntity[] = Entity.getByType(EEntity.PROJECT);
-                // let p: IProject = list[0] as IProject;
-                // let f: IFile = Entity.getByParentId(p.id) as IFile;
                 //develop ui
                 blockly.HalListProject.show();
-                // let code = JSON.parse(f.wspace);
-                // console.log(code);
-                // Blockly.serialization.workspaces.load(code, Index.workspace);
-                // Store.idFile = f.id;
-                // Store.namaProject = p.nama;
-                // console.log(list);
             }
             static publish() {
-                let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(blockly.Index.workspace), true);
+                let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(blockly.Index.workspace));
                 blockly.DialogPublish.open(`
                     <h1>Html Code</h1>
                     <p>
@@ -764,6 +758,9 @@ var ha;
                     </p>
             `, (codeHtml));
             }
+            /**
+             * Export to JSON
+             */
             static export() {
                 let simpan = Blockly.serialization.workspaces.save(blockly.Index.workspace);
                 blockly.DialogExport.open(`
@@ -820,6 +817,10 @@ var ha;
                     onresize();
                 }, 100);
             }
+            /**
+             * Simpan dengan nama baru
+             *
+            **/
             static simpanBaru() {
                 let id = blockly.Id.id;
                 let nama = window.prompt("project name", "def1");
@@ -851,6 +852,9 @@ var ha;
                     return;
                 }
             }
+            /**
+             * Simpan
+             */
             static simpan() {
                 if (blockly.Store.projectId == "") {
                     this.simpanBaru();
@@ -871,6 +875,7 @@ var ha;
                     Op.demo();
                 }
             }
+            //TODO: depecrated
             static code() {
                 // let code = javascript.javascriptGenerator.workspaceToCode(Index.workspace);
                 console.log(Blockly.serialization.workspaces.save(blockly.Index.workspace));
@@ -1277,8 +1282,8 @@ var ha;
     var blockly;
     (function (blockly) {
         class Export {
-            static beUrl = `./js/be.js`;
-            static beUrlProd = `https://forkhub.github.io/bblok/js/be.js`;
+            static blitzUrl = './js/blitz.js';
+            static beUrl = `./js/bblok.js`;
             static dataTemplate = `
 "use strict";
 window.onload = () => {
@@ -1316,7 +1321,7 @@ window.onload = () => {
 <body>
     <canvas></canvas>
 
-    <!-- copy be.js script to your local to help save bandwith, thanks -->
+    <script src="<!--blitz-js-here-->"></script>
     <script src="<!--be-js-here-->"></script>
 
     <!-- main  -->
@@ -1326,12 +1331,14 @@ window.onload = () => {
 </body>
 
 </html>
-        `;
-            static export(code, prod = false) {
+`;
+            static export(code) {
                 console.group("export:");
                 console.log(code);
                 console.groupEnd();
-                let data2 = this.dataHtml.replace('<!--be-js-here-->', prod ? this.beUrlProd : this.beUrl);
+                let data2 = this.dataHtml;
+                data2 = data2.replace('<!--blitz-js-here-->', this.blitzUrl);
+                data2 = data2.replace('<!--be-js-here-->', this.beUrl);
                 data2 = data2.replace('/** template **/', this.dataTemplate);
                 data2 = data2.replace('/** script here **/', code);
                 // debugger;
@@ -1351,6 +1358,7 @@ var ha;
                 let simpan = window.localStorage.getItem("blocklycode");
                 let iframe = document.querySelector('iframe');
                 let doc = iframe.contentWindow.document;
+                // console.log(simpan);
                 doc.open();
                 doc.write(simpan);
                 doc.close();

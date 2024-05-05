@@ -1,7 +1,7 @@
 namespace ha.blockly {
     export class Export {
-        static readonly beUrl = `./js/be.js`;
-        static readonly beUrlProd = `https://forkhub.github.io/bblok/js/be.js`;
+        static readonly blitzUrl = './js/blitz.js';
+        static readonly beUrl = `./js/bblok.js`;
         static readonly dataTemplate = `
 "use strict";
 window.onload = () => {
@@ -40,7 +40,7 @@ window.onload = () => {
 <body>
     <canvas></canvas>
 
-    <!-- copy be.js script to your local to help save bandwith, thanks -->
+    <script src="<!--blitz-js-here-->"></script>
     <script src="<!--be-js-here-->"></script>
 
     <!-- main  -->
@@ -50,14 +50,16 @@ window.onload = () => {
 </body>
 
 </html>
-        `;
+`;
 
-        static export(code: string, prod: boolean = false): string {
+        static export(code: string): string {
             console.group("export:");
             console.log(code);
             console.groupEnd();
 
-            let data2 = this.dataHtml.replace('<!--be-js-here-->', prod ? this.beUrlProd : this.beUrl);
+            let data2 = this.dataHtml;
+            data2 = data2.replace('<!--blitz-js-here-->', this.blitzUrl);
+            data2 = data2.replace('<!--be-js-here-->', this.beUrl);
             data2 = data2.replace('/** template **/', this.dataTemplate);
             data2 = data2.replace('/** script here **/', code);
             // debugger;

@@ -29,6 +29,9 @@ namespace ha.blockly {
                 Blockly.serialization.workspaces.load(simpan, Index.workspace);
             }
 
+            /**
+             * 
+             */
             w.run = () => {
                 let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
                 window.localStorage.setItem("blocklycode", codeHtml);
@@ -52,25 +55,12 @@ namespace ha.blockly {
         }
 
         static loadKlik() {
-            // let list: IEntity[] = Entity.getByType(EEntity.PROJECT);
-            // let p: IProject = list[0] as IProject;
-            // let f: IFile = Entity.getByParentId(p.id) as IFile;
-
             //develop ui
             HalListProject.show()
-
-            // let code = JSON.parse(f.wspace);
-            // console.log(code);
-            // Blockly.serialization.workspaces.load(code, Index.workspace);
-
-            // Store.idFile = f.id;
-            // Store.namaProject = p.nama;
-
-            // console.log(list);
         }
 
         static publish() {
-            let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace), true);
+            let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
             DialogPublish.open(`
                     <h1>Html Code</h1>
                     <p>
@@ -81,6 +71,9 @@ namespace ha.blockly {
             `, (codeHtml));
         }
 
+        /**
+         * Export to JSON
+         */
         static export() {
             let simpan = Blockly.serialization.workspaces.save(Index.workspace);
             DialogExport.open(`
@@ -145,6 +138,10 @@ namespace ha.blockly {
 
         }
 
+        /**
+         * Simpan dengan nama baru
+         * 
+        **/
         static simpanBaru() {
             let id: string = Id.id;
             let nama = window.prompt("project name", "def1");
@@ -184,6 +181,9 @@ namespace ha.blockly {
             }
         }
 
+        /**
+         * Simpan
+         */
         static simpan() {
             if (Store.projectId == "") {
                 this.simpanBaru();
@@ -207,6 +207,7 @@ namespace ha.blockly {
             }
         }
 
+        //TODO: depecrated
         static code() {
             // let code = javascript.javascriptGenerator.workspaceToCode(Index.workspace);
             console.log(Blockly.serialization.workspaces.save(Index.workspace));

@@ -6,5 +6,6 @@ copy \tsmodule\bblok.d.ts .\src\dts\
 
 copy \tsmodule\blitz.js .\web\js\
 copy \tsmodule\bblok.js .\web\js\
+
 pause
 pause

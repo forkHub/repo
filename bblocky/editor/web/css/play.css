@@ -1,0 +1,17 @@
+* {
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+
+
+html,
+body {
+    height: 100%;
+}
+
+iframe {
+    width: 100%;
+    height: calc(100% - 10px);
+    padding: 8px;
+}

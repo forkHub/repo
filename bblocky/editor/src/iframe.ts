@@ -5,9 +5,13 @@ namespace ha.blockly {
             let simpan = window.localStorage.getItem("blocklycode");
             let iframe = document.querySelector('iframe') as HTMLIFrameElement;
             let doc = iframe.contentWindow.document;
+
+            // console.log(simpan);
+
             doc.open();
             doc.write(simpan);
             doc.close();
+
         }
     }
 }
