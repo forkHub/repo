@@ -1,0 +1,17 @@
+fase 1
+Bangun jalan
+	interaksi, pakai drag,
+	viewport bergeser saat dipinggir
+	klik tombol ok saat selesai
+	klik tombol cancel saat batal
+Bangun area
+	1 macam area
+	interaksi, pakai drag,
+	viewport bergeser saat dipinggir
+	klik tombol ok saat selesai
+	klik tombol cancel saat batal
+
+
+todo:
+penghitungan penghasilan pajak
+jumlah uang
