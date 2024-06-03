@@ -2,224 +2,235 @@ declare var demoData: IEntity[];
 
 namespace ha.blockly {
 
-    export enum EEntity {
-        PROJECT = "project",
-        FILE = "file",
-    }
+	export enum EEntity {
+		PROJECT = "project",
+		FILE = "file",
+	}
 
-    export class Entity {
-        private static readonly dbName = 'ha.blockly.data2';
-        private static readonly dbDemoName = 'ha.blockly.dataDemo';
-        private static dbAktif = '';
-        static readonly list: IEntity[] = [];
+	export class Entity {
+		private static readonly dbName = 'ha.blockly.data2';
+		private static readonly dbDemoName = 'ha.blockly.dataDemo';
+		private static dbAktif = '';
+		static readonly list: IEntity[] = [];
 
-        static init() {
-            if (Store.tutMode) {
-                this.getProjekTut();
-                return;
-            }
+		static loadDemoData() {
+			this.dbAktif = this.dbDemoName;
+			demoData.forEach((item) => {
+				this.list.push(item);
+			})
+			this.commit();
+		}
 
-            try {
-                if (Store.devMode) {
-                    this.dbAktif = this.dbDemoName;
-                    demoData.forEach((item) => {
-                        this.list.push(item);
-                        // console.log(item)
-                    })
-                    this.commit();
-                    return;
-                }
-                else {
-                    this.dbAktif = this.dbName;
-                }
+		static loadSavedData() {
+			this.dbAktif = this.dbName;
 
-                let str;
-                let obj: IEntity[];
+			let str;
+			let obj: IEntity[];
 
-                while (this.list.length > 0) {
-                    this.list.pop();
-                }
+			while (this.list.length > 0) {
+				this.list.pop();
+			}
 
-                str = window.localStorage.getItem(this.dbAktif);
-                obj = JSON.parse(str);
+			str = window.localStorage.getItem(this.dbAktif);
+			obj = JSON.parse(str);
 
-                obj.forEach((item) => {
-                    this.list.push(item);
-                })
+			obj.forEach((item) => {
+				this.list.push(item);
+			})
 
-            }
-            catch (e) {
-                console.log('load error');
-                console.warn(e);
-            }
-        }
+		}
 
-        static getProjekTut(): void {
-            try {
+		static init() {
+			try {
+				if (Store.tutMode) {
+					this.loadDataFromUrl("./tut/list.json");
+					return;
+				}
 
-                fetch(
-                    "./tut/list.json",
-                    {
-                        // headers: { 'Content-Type': 'application/json' }, // Added in response to comment
-                        method: 'GET',
-                    }
-                ).then(function (response) {
-                    console.log(response);
-                    console.log(response.text().then((e) => {
-                        console.log("load projek list response text")
-                        console.log(e);
+				if (Store.devMode) {
+					this.loadDemoData();
+					//TODO:
+					// this.loadDataFromUrl("./tut/demo.json");
+					return;
+				}
 
-                        while (Entity.list.length > 0) {
-                            Entity.list.pop();
-                        }
+				this.loadSavedData();
+			}
+			catch (e) {
+				console.log('load error');
+				console.warn(e);
+			}
+		}
 
-                        let obj = JSON.parse(e);
+		static loadDataFromUrl(url: string): void {
+			try {
 
-                        obj.forEach((item: any) => {
-                            Entity.list.push(item);
-                        })
+				fetch(
+					url, //"./tut/list.json",
+					{
+						// headers: { 'Content-Type': 'application/json' }, // Added in response to comment
+						method: 'GET',
+					}
+				).then(function (response) {
+					console.log(response);
+					console.log(response.text().then((e) => {
+						console.log("load projek list response text")
+						console.log(e);
 
-                    }));
-                }).catch((e) => {
-                    console.error(e);
-                })
-            }
-            catch (e) {
-                console.error(e);
-            }
+						while (Entity.list.length > 0) {
+							Entity.list.pop();
+						}
 
-        }
+						let obj = JSON.parse(e);
 
-        static getData(): string {
-            try {
-                let str = window.localStorage.getItem(this.dbAktif);
-                return str;
-            }
-            catch (e) {
-                console.log('load error');
-                console.warn(e);
-                return "";
-            }
-        }
+						obj.forEach((item: any) => {
+							Entity.list.push(item);
+						})
 
-        static getByType(ty: EEntity): IEntity[] {
-            let hasil: IEntity[] = [];
+					}));
+				}).catch((e) => {
+					console.error(e);
+				})
+			}
+			catch (e) {
+				console.error(e);
+			}
 
-            this.list.forEach((item) => {
-                if (item.type == ty) {
-                    hasil.push(item);
-                }
-            })
+		}
 
-            return hasil;
 
-        }
 
-        static getById(id: string): IEntity {
-            let hasil: IEntity;
+		//session data
+		static loadDataFromStorage(): string {
+			try {
+				let str = window.localStorage.getItem(this.dbAktif);
+				return str;
+			}
+			catch (e) {
+				console.log('load error');
+				console.warn(e);
+				return "";
+			}
+		}
 
-            this.list.forEach((item) => {
-                if (item.id == id) {
-                    hasil = item;
-                }
-            })
+		static getByType(ty: EEntity): IEntity[] {
+			let hasil: IEntity[] = [];
 
-            return hasil;
-        }
+			this.list.forEach((item) => {
+				if (item.type == ty) {
+					hasil.push(item);
+				}
+			})
 
-        static getByParentId(pId: string): IEntity {
-            let hasil: IEntity;
+			return hasil;
 
-            this.list.forEach((item) => {
-                if (item.parentId == pId) {
-                    hasil = item;
-                }
-            })
+		}
 
-            return hasil;
-        }
+		static getById(id: string): IEntity {
+			let hasil: IEntity;
 
-        static update(id: string, data: IEntity) {
-            this.delete(id);
-            this.tambah(data);
-        }
+			this.list.forEach((item) => {
+				if (item.id == id) {
+					hasil = item;
+				}
+			})
 
-        static delete(id: string): void {
-            console.group('delete by id ' + id);
-            for (let i = 0; i < this.list.length; i++) {
-                if (this.list[i].id == id) {
-                    console.log('deleted ' + id);
-                    this.list.splice(i, 1);
-                    break;
-                }
-            }
-            console.groupEnd();
-        }
+			return hasil;
+		}
 
-        static tambah(data: IEntity): void {
-            this.list.push(data);
-        }
+		static getByParentId(pId: string): IEntity {
+			let hasil: IEntity;
 
-        static commit() {
-            try {
-                window.localStorage.setItem(this.dbAktif, JSON.stringify(this.list));
-            }
-            catch (e) {
-                console.error(e);
-            }
-        }
-    }
+			this.list.forEach((item) => {
+				if (item.parentId == pId) {
+					hasil = item;
+				}
+			})
 
-    export class Project {
+			return hasil;
+		}
 
-        getById(id: string): IProject {
-            return Entity.getById(id) as IProject;
-        }
+		static update(id: string, data: IEntity) {
+			this.delete(id);
+			this.tambah(data);
+		}
 
-        delete(id: string): void {
-            Entity.delete(id);
-        }
+		static delete(id: string): void {
+			console.group('delete by id ' + id);
+			for (let i = 0; i < this.list.length; i++) {
+				if (this.list[i].id == id) {
+					console.log('deleted ' + id);
+					this.list.splice(i, 1);
+					break;
+				}
+			}
+			console.groupEnd();
+		}
 
-        update(data: IProject): void {
-            Entity.update(data.id, data);
-        }
+		static tambah(data: IEntity): void {
+			this.list.push(data);
+		}
 
-        tambah(data: IProject): void {
-            Entity.tambah(data);
-        }
-    }
+		static commit() {
+			try {
+				window.localStorage.setItem(this.dbAktif, JSON.stringify(this.list));
+			}
+			catch (e) {
+				console.error(e);
+			}
+		}
+	}
 
-    export class File {
-        getById(id: string): IFile {
-            id;
-            return null;
-        }
+	export class Project {
 
-        delete(id: string): void {
-            id;
-        }
+		getById(id: string): IProject {
+			return Entity.getById(id) as IProject;
+		}
 
-        update(data: IFile): void {
-            data;
-        }
+		delete(id: string): void {
+			Entity.delete(id);
+		}
 
-        tambah(data: IFile): void {
-            data;
-        }
-    }
+		update(data: IProject): void {
+			Entity.update(data.id, data);
+		}
+
+		tambah(data: IProject): void {
+			Entity.tambah(data);
+		}
+	}
+
+	export class File {
+		getById(id: string): IFile {
+			id;
+			return null;
+		}
+
+		delete(id: string): void {
+			id;
+		}
+
+		update(data: IFile): void {
+			data;
+		}
+
+		tambah(data: IFile): void {
+			data;
+		}
+	}
 }
 
 interface IEntity {
-    id: string,
-    type: string,
-    parentId: string
+	id: string,
+	type: string,
+	parentId: string
 }
 
 interface IProject extends IEntity {
-    nama: string
+	nama: string
 }
 
 interface IFile extends IEntity {
-    nama: string,
-    wspace: string
+	nama: string,
+	wspace: string
 }
