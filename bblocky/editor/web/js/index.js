@@ -4,7 +4,6 @@ var ha;
     var blockly;
     (function (blockly) {
         class Dialog {
-            static dlg;
             static show(msg) {
                 this.dlg = document.body.querySelector("dialog.alert");
                 this.dlg.querySelector('P').innerHTML = msg;
@@ -22,8 +21,6 @@ var ha;
     var blockly;
     (function (blockly) {
         class DialogPublish {
-            static dlg = document.querySelector('dialog.publish');
-            static onClick = () => { };
             static open(p, cont) {
                 this.dlg.querySelector('p').innerHTML = p;
                 this.dlg.querySelector('textarea').value = cont;
@@ -37,10 +34,10 @@ var ha;
                 this.onClick();
             }
         }
+        DialogPublish.dlg = document.querySelector('dialog.publish');
+        DialogPublish.onClick = () => { };
         blockly.DialogPublish = DialogPublish;
         class DialogExport {
-            static dlg = document.querySelector('dialog.export');
-            static onClick = () => { };
             static open(p, cont) {
                 this.dlg.querySelector('p').innerHTML = p;
                 this.dlg.querySelector('textarea').value = cont;
@@ -55,10 +52,10 @@ var ha;
                 this.onClick();
             }
         }
+        DialogExport.dlg = document.querySelector('dialog.export');
+        DialogExport.onClick = () => { };
         blockly.DialogExport = DialogExport;
         class DialogImport {
-            static dlg = document.querySelector('dialog.import');
-            static onClick = () => { };
             static open(p, cont) {
                 this.dlg.querySelector('p').innerHTML = p;
                 this.dlg.querySelector('textarea').value = cont;
@@ -72,6 +69,8 @@ var ha;
                 this.onClick();
             }
         }
+        DialogImport.dlg = document.querySelector('dialog.import');
+        DialogImport.onClick = () => { };
         blockly.DialogImport = DialogImport;
     })(blockly = ha.blockly || (ha.blockly = {}));
 })(ha || (ha = {}));
@@ -85,47 +84,49 @@ var ha;
             EEntity["FILE"] = "file";
         })(EEntity = blockly.EEntity || (blockly.EEntity = {}));
         class Entity {
-            static dbName = 'ha.blockly.data2';
-            static dbDemoName = 'ha.blockly.dataDemo';
-            static dbAktif = '';
-            static list = [];
-            static init() {
-                if (blockly.Store.tutMode) {
-                    this.getProjekTut();
-                    return;
+            static loadDemoData() {
+                this.dbAktif = this.dbDemoName;
+                demoData.forEach((item) => {
+                    this.list.push(item);
+                });
+                this.commit();
+            }
+            static loadSavedData() {
+                this.dbAktif = this.dbName;
+                let str;
+                let obj;
+                while (this.list.length > 0) {
+                    this.list.pop();
                 }
+                str = window.localStorage.getItem(this.dbAktif);
+                obj = JSON.parse(str);
+                obj.forEach((item) => {
+                    this.list.push(item);
+                });
+            }
+            static init() {
                 try {
-                    if (blockly.Store.devMode) {
-                        this.dbAktif = this.dbDemoName;
-                        demoData.forEach((item) => {
-                            this.list.push(item);
-                            // console.log(item)
-                        });
-                        this.commit();
+                    if (blockly.Store.tutMode) {
+                        this.loadDataFromUrl("./tut/list.json");
                         return;
                     }
-                    else {
-                        this.dbAktif = this.dbName;
+                    if (blockly.Store.devMode) {
+                        this.loadDemoData();
+                        //TODO:
+                        // this.loadDataFromUrl("./tut/demo.json");
+                        return;
                     }
-                    let str;
-                    let obj;
-                    while (this.list.length > 0) {
-                        this.list.pop();
-                    }
-                    str = window.localStorage.getItem(this.dbAktif);
-                    obj = JSON.parse(str);
-                    obj.forEach((item) => {
-                        this.list.push(item);
-                    });
+                    this.loadSavedData();
                 }
                 catch (e) {
                     console.log('load error');
                     console.warn(e);
                 }
             }
-            static getProjekTut() {
+            static loadDataFromUrl(url) {
                 try {
-                    fetch("./tut/list.json", {
+                    fetch(url, //"./tut/list.json",
+                    {
                         // headers: { 'Content-Type': 'application/json' }, // Added in response to comment
                         method: 'GET',
                     }).then(function (response) {
@@ -149,7 +150,8 @@ var ha;
                     console.error(e);
                 }
             }
-            static getData() {
+            //session data
+            static loadDataFromStorage() {
                 try {
                     let str = window.localStorage.getItem(this.dbAktif);
                     return str;
@@ -214,6 +216,10 @@ var ha;
                 }
             }
         }
+        Entity.dbName = 'ha.blockly.data2';
+        Entity.dbDemoName = 'ha.blockly.dataDemo';
+        Entity.dbAktif = '';
+        Entity.list = [];
         blockly.Entity = Entity;
         class Project {
             getById(id) {
@@ -273,9 +279,6 @@ var ha;
     var blockly;
     (function (blockly) {
         class HalListProject {
-            static cont;
-            static listCont;
-            static projekList;
             static openKlik() {
                 if (blockly.Store.selectedId == '') {
                     //no selected
@@ -528,9 +531,6 @@ var ha;
             }
         }
         class HalListDemo {
-            static cont;
-            static listCont;
-            static listDemoEl;
             static DemoButtonKlik() {
                 this.render();
             }
@@ -606,13 +606,13 @@ var ha;
     var blockly;
     (function (blockly) {
         class Id {
-            static _id = Date.now();
-            static prefix = (Math.floor(Math.random() * 8000) + 1000) + '';
             static get id() {
                 this._id++;
                 return this.prefix + this._id + '';
             }
         }
+        Id._id = Date.now();
+        Id.prefix = (Math.floor(Math.random() * 8000) + 1000) + '';
         blockly.Id = Id;
     })(blockly = ha.blockly || (ha.blockly = {}));
 })(ha || (ha = {}));
@@ -621,7 +621,6 @@ var ha;
     var blockly;
     (function (blockly) {
         class Logo {
-            static dlg;
             static init() {
                 this.dlg = document.createElement('dialog');
                 let dlg = this.dlg;
@@ -886,7 +885,7 @@ var ha;
                     return;
                 }
                 try {
-                    const body = blockly.Entity.getData();
+                    const body = blockly.Entity.loadDataFromStorage();
                     let fd = new FormData();
                     fd.append("body", body);
                     fd.append("dev", 'true');
@@ -991,13 +990,6 @@ var ha;
     var blockly;
     (function (blockly) {
         class Store {
-            static _idFile = '';
-            static _projectId = '';
-            static _defWSpace = '';
-            static _demo = [];
-            static _selectedId = '';
-            static _devMode = false;
-            static _tutMode = false;
             static get tutMode() {
                 return Store._tutMode;
             }
@@ -1041,6 +1033,13 @@ var ha;
                 Store._idFile = value;
             }
         }
+        Store._idFile = '';
+        Store._projectId = '';
+        Store._defWSpace = '';
+        Store._demo = [];
+        Store._selectedId = '';
+        Store._devMode = false;
+        Store._tutMode = false;
         blockly.Store = Store;
         Store.defWSpace = "{\"blocks\":{\"languageVersion\":0,\"blocks\":[{\"type\":\"ha.be.Be.Start\",\"id\":\"ttDi6Y1piNqKi!GKH=;f\",\"x\":249,\"y\":198,\"inputs\":{\"width\":{\"shadow\":{\"type\":\"math_number\",\"id\":\"!n`U},x?W~b8S2S9fc;-\",\"fields\":{\"NUM\":320}}},\"height\":{\"shadow\":{\"type\":\"math_number\",\"id\":\"(i=R@FswM^]Ps$?-8bzQ\",\"fields\":{\"NUM\":240}}},\"statementst\":{\"block\":{\"type\":\"variables_set\",\"id\":\"?BBuRH-xfVFsVL#ivCx)\",\"fields\":{\"VAR\":{\"id\":\"99*3xs_.J9FLSB`sp](v\"}},\"inputs\":{\"VALUE\":{\"block\":{\"type\":\"ha.be.Spr.Muat\",\"id\":\"-Wwr3nwkx~$;z$;b1tzu\",\"inputs\":{\"url\":{\"shadow\":{\"type\":\"text\",\"id\":\"tjz/~)*VQIRK@:47=aoI\",\"fields\":{\"TEXT\":\"./imgs/box.png\"}}}}}}}}}}},{\"type\":\"ha.be.Be.Update\",\"id\":\"D!_p@;(TK|!Jb;q9U}?k\",\"x\":389,\"y\":333,\"inputs\":{\"statementst\":{\"block\":{\"type\":\"ha.be.Be.Bersih\",\"id\":\"(7d4VY9ISHI3=xQXw=c0\",\"next\":{\"block\":{\"type\":\"ha.be.Spr.Gambar\",\"id\":\"TKi]Pbe|YLS%b}yYe+1L\",\"inputs\":{\"sprite\":{\"block\":{\"type\":\"variables_get\",\"id\":\"Oxp^k?rAe(XG%z7DGmrI\",\"fields\":{\"VAR\":{\"id\":\"99*3xs_.J9FLSB`sp](v\"}}}},\"x\":{\"shadow\":{\"type\":\"math_number\",\"id\":\"iR^9X(~I02#.l.kt.[;:\",\"fields\":{\"NUM\":120}}},\"y\":{\"shadow\":{\"type\":\"math_number\",\"id\":\"Sn*[t/Kt[]3J~cg5t9-K\",\"fields\":{\"NUM\":100}}}}}}}}}}]},\"variables\":[{\"name\":\"image\",\"id\":\"99*3xs_.J9FLSB`sp](v\"}]}";
     })(blockly = ha.blockly || (ha.blockly = {}));
@@ -1090,17 +1089,32 @@ var ha;
             /**
              * normalize all block
              */
-            function normalizeAllBlock() {
-                blockly.hiddenData.list.forEach((item) => { normal(item); });
-                blockly.BlitzData.list.forEach((item) => { normal(item); });
-                blockly.ImageBlockData.list.forEach((item) => { normal(item); });
-                blockly.ImageBlockData2.list.forEach((item) => { normal(item); });
-                blockly.debugData.list.forEach((item) => { normal(item); });
-                blockly.InputBlockData.list.forEach((item) => { normal(item); });
-                blockly.TextData.list.forEach((item) => { normal(item); });
-                blockly.MathBlockData.list.forEach((item) => { normal(item); });
+            function normalizeAllBlock(list) {
+                // hiddenData.list.forEach((item) => { normal(item); });
+                // BlitzData.list.forEach((item) => { normal(item); });
+                // ImageBlockData.list.forEach((item) => { normal(item) });
+                // ImageBlockData2.list.forEach((item) => { normal(item) });
+                // debugData.list.forEach((item) => { normal(item) });
+                // InputBlockData.list.forEach((item) => { normal(item) })
+                // TextData.list.forEach((item) => { normal(item) })
+                // MathBlockData.list.forEach((item) => { normal(item) })
+                normalizeAllBlock2(list);
             }
             BDef.normalizeAllBlock = normalizeAllBlock;
+            function normalizeAllBlock2(list) {
+                list.forEach((item) => {
+                    item.list.forEach((item) => { normal(item); });
+                });
+                // hiddenData.list.forEach((item) => { normal(item); });
+                // BlitzData.list.forEach((item) => { normal(item); });
+                // ImageBlockData.list.forEach((item) => { normal(item) });
+                // ImageBlockData2.list.forEach((item) => { normal(item) });
+                // debugData.list.forEach((item) => { normal(item) });
+                // InputBlockData.list.forEach((item) => { normal(item) })
+                // TextData.list.forEach((item) => { normal(item) })
+                // MathBlockData.list.forEach((item) => { normal(item) })
+            }
+            BDef.normalizeAllBlock2 = normalizeAllBlock2;
             /**
              * add default value
              * @param t
@@ -1277,9 +1291,20 @@ var ha;
     var blockly;
     (function (blockly) {
         class Export {
-            static beUrl = `./js/be.js`;
-            static beUrlProd = `https://forkhub.github.io/bblok/js/be.js`;
-            static dataTemplate = `
+            static export(code, prod = false) {
+                console.group("export:");
+                console.log(code);
+                console.groupEnd();
+                let data2 = this.dataHtml.replace('<!--be-js-here-->', prod ? this.beUrlProd : this.beUrl);
+                data2 = data2.replace('/** template **/', this.dataTemplate);
+                data2 = data2.replace('/** script here **/', code);
+                // debugger;
+                return data2;
+            }
+        }
+        Export.beUrl = `./js/be.js`;
+        Export.beUrlProd = `https://forkhub.github.io/bblok/js/be.js`;
+        Export.dataTemplate = `
 "use strict";
 window.onload = () => {
     console.log('start');
@@ -1297,7 +1322,7 @@ window.onload = () => {
     requestAnimationFrame(__updater);
 };
         `;
-            static dataHtml = `
+        Export.dataHtml = `
 <!DOCTYPE html>
 <html>
 
@@ -1327,17 +1352,6 @@ window.onload = () => {
 
 </html>
         `;
-            static export(code, prod = false) {
-                console.group("export:");
-                console.log(code);
-                console.groupEnd();
-                let data2 = this.dataHtml.replace('<!--be-js-here-->', prod ? this.beUrlProd : this.beUrl);
-                data2 = data2.replace('/** template **/', this.dataTemplate);
-                data2 = data2.replace('/** script here **/', code);
-                // debugger;
-                return data2;
-            }
-        }
         blockly.Export = Export;
     })(blockly = ha.blockly || (ha.blockly = {}));
 })(ha || (ha = {}));
@@ -1367,17 +1381,31 @@ var ha;
         var toolbox;
         (function (toolbox_1) {
             function init() {
-                blockly.BDef.normalizeAllBlock();
-                let allToolBoxDef = populateToolBox();
+                const blockRawData = [
+                    blockly.hiddenData,
+                    blockly.BlitzData,
+                    blockly.ImageBlockData,
+                    blockly.ImageBlockData2,
+                    blockly.debugData,
+                    blockly.InputBlockData,
+                    blockly.TextData,
+                    blockly.MathBlockData,
+                ];
+                blockly.BDef.normalizeAllBlock(blockRawData);
+                let allToolBoxDef = populateToolBox(blockRawData);
                 Blockly.common.defineBlocksWithJsonArray(allToolBoxDef);
-                toolbox_1.toolbox.contents.push(getCategory(blockly.hiddenData.group, blockly.hiddenData.list, "true")); //registerBlitz());
-                toolbox_1.toolbox.contents.push(getCategory("Graphics", blockly.BlitzData.list)); //registerBlitz());
-                toolbox_1.toolbox.contents.push(getCategory("Image 1", blockly.ImageBlockData.list));
-                toolbox_1.toolbox.contents.push(getCategory("Image 2", blockly.ImageBlockData2.list));
-                toolbox_1.toolbox.contents.push(getCategory(blockly.InputBlockData.group, blockly.InputBlockData.list));
-                toolbox_1.toolbox.contents.push(getCategory(blockly.TextData.group, blockly.TextData.list));
-                toolbox_1.toolbox.contents.push(getCategory(blockly.MathBlockData.group, blockly.MathBlockData.list));
-                toolbox_1.toolbox.contents.push(getCategory(blockly.debugData.group, blockly.debugData.list));
+                //TODO: list
+                blockRawData.forEach((item) => {
+                    toolbox_1.toolbox.contents.push(getCategory(item.group, item.list, item.hidden)); //registerBlitz());
+                });
+                // toolbox.contents.push(getCategory(hiddenData.group, hiddenData.list, "true")); //registerBlitz());
+                // toolbox.contents.push(getCategory(BlitzData.group, BlitzData.list)); //registerBlitz());
+                // toolbox.contents.push(getCategory(ImageBlockData.group, ImageBlockData.list));
+                // toolbox.contents.push(getCategory(ImageBlockData2.group, ImageBlockData2.list));
+                // toolbox.contents.push(getCategory(InputBlockData.group, InputBlockData.list));
+                // toolbox.contents.push(getCategory(TextData.group, TextData.list));
+                // toolbox.contents.push(getCategory(MathBlockData.group, MathBlockData.list));
+                // toolbox.contents.push(getCategory(debugData.group, debugData.list));
                 js(allToolBoxDef);
             }
             toolbox_1.init = init;
@@ -1458,32 +1486,37 @@ var ha;
                 return blitz;
             }
             */
-            function populateToolBox() {
+            function populateToolBox(l) {
                 let blockData = [];
-                blockly.hiddenData.list.forEach((item) => {
-                    blockData.push(item);
+                l.forEach((item) => {
+                    item.list.forEach((item) => {
+                        blockData.push(item);
+                    });
                 });
-                blockly.BlitzData.list.forEach((item) => {
-                    blockData.push(item);
-                });
-                blockly.ImageBlockData.list.forEach((item) => {
-                    blockData.push(item);
-                });
-                blockly.ImageBlockData2.list.forEach((item) => {
-                    blockData.push(item);
-                });
-                blockly.debugData.list.forEach((item) => {
-                    blockData.push(item);
-                });
-                blockly.InputBlockData.list.forEach((item) => {
-                    blockData.push(item);
-                });
-                blockly.TextData.list.forEach((item) => {
-                    blockData.push(item);
-                });
-                blockly.MathBlockData.list.forEach((item) => {
-                    blockData.push(item);
-                });
+                // hiddenData.list.forEach((item) => {
+                // 	blockData.push(item);
+                // })
+                // BlitzData.list.forEach((item) => {
+                // 	blockData.push(item);
+                // })
+                // ImageBlockData.list.forEach((item) => {
+                // 	blockData.push(item);
+                // })
+                // ImageBlockData2.list.forEach((item) => {
+                // 	blockData.push(item);
+                // })
+                // debugData.list.forEach((item) => {
+                // 	blockData.push(item);
+                // })
+                // InputBlockData.list.forEach((item) => {
+                // 	blockData.push(item);
+                // })
+                // TextData.list.forEach((item) => {
+                // 	blockData.push(item);
+                // })
+                // MathBlockData.list.forEach((item) => {
+                // 	blockData.push(item);
+                // })
                 return blockData;
             }
             function js(blockData) {
@@ -1784,9 +1817,6 @@ var ha;
     var blockly;
     (function (blockly) {
         class Index {
-            static workspace;
-            static blocklyArea;
-            static blocklyDiv;
             static updateName() {
                 let spanNama = document.body.querySelector("span.judul_file");
                 if (blockly.Store.projectId) {
@@ -1906,6 +1936,7 @@ var ha;
         (function (InputBlockData) {
             InputBlockData.list = [];
             InputBlockData.group = "Input";
+            InputBlockData.hidden = "false";
             // ha.be.Input.InputHit;
             // InputHit
             InputBlockData.list.push({
@@ -2028,6 +2059,7 @@ var ha;
         (function (MathBlockData) {
             MathBlockData.list = [];
             MathBlockData.group = "Math 2";
+            MathBlockData.hidden = "false";
             // DistMin
             // ha.be.Transform.degDistMin
             MathBlockData.list.push({
@@ -2053,6 +2085,7 @@ var ha;
         (function (debugData) {
             debugData.list = [];
             debugData.group = "Misc";
+            debugData.hidden = "false";
             debugData.list.push({
                 type: "console.log",
                 perintah: "console.log",
@@ -2128,6 +2161,7 @@ var ha;
         (function (TextData) {
             TextData.list = [];
             TextData.group = "Text 2";
+            TextData.hidden = "false";
             // Shortcut buat perintah-perintah font
             // FontName
             TextData.list.push({
@@ -2238,7 +2272,9 @@ var ha;
     (function (blockly) {
         var BlitzData;
         (function (BlitzData) {
+            BlitzData.group = "Graphics";
             BlitzData.list = [];
+            BlitzData.hidden = "false";
             // Start
             BlitzData.list.push({
                 type: "ha.be.Be.Start",
@@ -2478,6 +2514,7 @@ var ha;
         (function (hiddenData) {
             hiddenData.list = [];
             hiddenData.group = "hidden";
+            hiddenData.hidden = "true";
             // ha.be.Be.Grafis
             // depecrated
             hiddenData.Grafis = {
@@ -2508,7 +2545,9 @@ var ha;
     (function (blockly) {
         var ImageBlockData;
         (function (ImageBlockData) {
+            ImageBlockData.group = "Image 1";
             ImageBlockData.list = [];
+            ImageBlockData.hidden = "false";
             // ha.be.Spr.Muat
             ImageBlockData.blitz_Muat = {
                 type: "ha.be.Spr.Muat",
@@ -2779,7 +2818,9 @@ var ha;
     (function (blockly) {
         var ImageBlockData2;
         (function (ImageBlockData2) {
+            ImageBlockData2.group = "Image 2";
             ImageBlockData2.list = [];
+            ImageBlockData2.hidden = "false";
             // DrawImage
             ImageBlockData2.list.push({
                 type: "ha.be.Spr.Gambar_no_frame",

@@ -2,449 +2,471 @@
 
 namespace ha.blockly.toolbox {
 
-    export function init() {
-        BDef.normalizeAllBlock();
+	export function init() {
+		const blockRawData: TBlockRawData[] = [
+			hiddenData,
+			BlitzData,
+			ImageBlockData,
+			ImageBlockData2,
+			debugData,
+			InputBlockData,
+			TextData,
+			MathBlockData,
+		]
 
-        let allToolBoxDef = populateToolBox();
-        Blockly.common.defineBlocksWithJsonArray(allToolBoxDef)
+		BDef.normalizeAllBlock(blockRawData);
+		let allToolBoxDef = populateToolBox(blockRawData);
+		Blockly.common.defineBlocksWithJsonArray(allToolBoxDef)
 
-        toolbox.contents.push(getCategory(hiddenData.group, hiddenData.list, "true")); //registerBlitz());
-        toolbox.contents.push(getCategory("Graphics", BlitzData.list)); //registerBlitz());
-        toolbox.contents.push(getCategory("Image 1", ImageBlockData.list));
-        toolbox.contents.push(getCategory("Image 2", ImageBlockData2.list));
-        toolbox.contents.push(getCategory(InputBlockData.group, InputBlockData.list));
-        toolbox.contents.push(getCategory(TextData.group, TextData.list));
-        toolbox.contents.push(getCategory(MathBlockData.group, MathBlockData.list));
-        toolbox.contents.push(getCategory(debugData.group, debugData.list));
+		//TODO: list
+		blockRawData.forEach((item) => {
+			toolbox.contents.push(getCategory(item.group, item.list, item.hidden)); //registerBlitz());
+		});
 
-        js(allToolBoxDef);
-    }
+		// toolbox.contents.push(getCategory(hiddenData.group, hiddenData.list, "true")); //registerBlitz());
+		// toolbox.contents.push(getCategory(BlitzData.group, BlitzData.list)); //registerBlitz());
+		// toolbox.contents.push(getCategory(ImageBlockData.group, ImageBlockData.list));
+		// toolbox.contents.push(getCategory(ImageBlockData2.group, ImageBlockData2.list));
+		// toolbox.contents.push(getCategory(InputBlockData.group, InputBlockData.list));
+		// toolbox.contents.push(getCategory(TextData.group, TextData.list));
+		// toolbox.contents.push(getCategory(MathBlockData.group, MathBlockData.list));
+		// toolbox.contents.push(getCategory(debugData.group, debugData.list));
 
-    function getCategory(nama: string, l: TToolBoxBlockDef[], hidden: string = "false") {
-        let h: TToolbokContentDef = {
-            kind: "category",
-            name: nama,
-            contents: getToolBoxContentDef(l),
-            hidden: hidden
-        }
+		js(allToolBoxDef);
+	}
 
-        return h;
-    }
+	function getCategory(nama: string, l: TToolBoxBlockDef[], hidden: string = "false") {
+		let h: TToolbokContentDef = {
+			kind: "category",
+			name: nama,
+			contents: getToolBoxContentDef(l),
+			hidden: hidden
+		}
 
-    /*
-    function registerImage(): TToolbokContentDef {
-        let h: TToolbokContentDef = {
-            kind: "category",
-            name: "Image",
-            contents: getToolBoxContentDef(ImageBlockData.list)
-        }
+		return h;
+	}
 
-        // //register blitz content 
-        // ImageBlockData.list.forEach((item) => {
-        //     let def: TToolbokContentDef = {
-        //         name: item.type,
-        //         kind: ToolBoxKind.block,
-        //         type: item.type
-        //     }
-        //     if (item.inputs) {
-        //         def.inputs = item.inputs
-        //     }
+	/*
+	function registerImage(): TToolbokContentDef {
+		let h: TToolbokContentDef = {
+			kind: "category",
+			name: "Image",
+			contents: getToolBoxContentDef(ImageBlockData.list)
+		}
 
-        //     h.contents.push(def);
-        // })
+		// //register blitz content 
+		// ImageBlockData.list.forEach((item) => {
+		//     let def: TToolbokContentDef = {
+		//         name: item.type,
+		//         kind: ToolBoxKind.block,
+		//         type: item.type
+		//     }
+		//     if (item.inputs) {
+		//         def.inputs = item.inputs
+		//     }
 
-        return h;
-    }
-    */
+		//     h.contents.push(def);
+		// })
 
-    function getToolBoxContentDef(l: TToolBoxBlockDef[]): any[] {
-        //register blitz content 
-        let h: any[] = [];
+		return h;
+	}
+	*/
 
-        l.forEach((item) => {
-            let def: TToolbokContentDef = {
-                name: item.type,
-                kind: ToolBoxKind.block,
-                type: item.type
-            }
-            if (item.inputs) {
-                def.inputs = item.inputs
-            }
+	function getToolBoxContentDef(l: TToolBoxBlockDef[]): any[] {
+		//register blitz content 
+		let h: any[] = [];
 
-            h.push(def);
-        })
+		l.forEach((item) => {
+			let def: TToolbokContentDef = {
+				name: item.type,
+				kind: ToolBoxKind.block,
+				type: item.type
+			}
+			if (item.inputs) {
+				def.inputs = item.inputs
+			}
 
-        return h;
-    }
+			h.push(def);
+		})
 
-    /*
-    function registerBlitz(): TToolbokContentDef {
-        let blitz: TToolbokContentDef =
-        {
-            kind: "category",
-            name: "Blitz",
-            contents: []
-        }
+		return h;
+	}
 
-        //register blitz content 
-        BlitzData.list.forEach((item) => {
-            let def: TToolbokContentDef = {
-                name: item.type,
-                kind: ToolBoxKind.block,
-                type: item.type
-            }
-            if (item.inputs) {
-                def.inputs = item.inputs
-            }
+	/*
+	function registerBlitz(): TToolbokContentDef {
+		let blitz: TToolbokContentDef =
+		{
+			kind: "category",
+			name: "Blitz",
+			contents: []
+		}
 
-            blitz.contents.push(def);
-        })
+		//register blitz content 
+		BlitzData.list.forEach((item) => {
+			let def: TToolbokContentDef = {
+				name: item.type,
+				kind: ToolBoxKind.block,
+				type: item.type
+			}
+			if (item.inputs) {
+				def.inputs = item.inputs
+			}
+
+			blitz.contents.push(def);
+		})
 
 
-        return blitz;
-    }
-    */
+		return blitz;
+	}
+	*/
 
-    function populateToolBox(): TToolBoxBlockDef[] {
-        let blockData: TToolBoxBlockDef[] = [];
+	function populateToolBox(l: TBlockRawData[]): TToolBoxBlockDef[] {
+		let blockData: TToolBoxBlockDef[] = [];
 
-        hiddenData.list.forEach((item) => {
-            blockData.push(item);
-        })
-        BlitzData.list.forEach((item) => {
-            blockData.push(item);
-        })
-        ImageBlockData.list.forEach((item) => {
-            blockData.push(item);
-        })
-        ImageBlockData2.list.forEach((item) => {
-            blockData.push(item);
-        })
-        debugData.list.forEach((item) => {
-            blockData.push(item);
-        })
-        InputBlockData.list.forEach((item) => {
-            blockData.push(item);
-        })
-        TextData.list.forEach((item) => {
-            blockData.push(item);
-        })
+		l.forEach((item) => {
+			item.list.forEach((item) => {
+				blockData.push(item);
+			})
+		})
 
-        MathBlockData.list.forEach((item) => {
-            blockData.push(item);
-        })
-        return blockData;
-    }
+		// hiddenData.list.forEach((item) => {
+		// 	blockData.push(item);
+		// })
+		// BlitzData.list.forEach((item) => {
+		// 	blockData.push(item);
+		// })
+		// ImageBlockData.list.forEach((item) => {
+		// 	blockData.push(item);
+		// })
+		// ImageBlockData2.list.forEach((item) => {
+		// 	blockData.push(item);
+		// })
+		// debugData.list.forEach((item) => {
+		// 	blockData.push(item);
+		// })
+		// InputBlockData.list.forEach((item) => {
+		// 	blockData.push(item);
+		// })
+		// TextData.list.forEach((item) => {
+		// 	blockData.push(item);
+		// })
 
-    function js(blockData: TToolBoxBlockDef[]) {
-        for (let i = 0; i < blockData.length; i++) {
-            let itemBlockData = blockData[i];
-            // console.log('type: ' + itemBlockData.type);
+		// MathBlockData.list.forEach((item) => {
+		// 	blockData.push(item);
+		// })
 
-            javascript.javascriptGenerator.forBlock[itemBlockData.type] = (block: any, generator: any): any => {
-                let code = '';
-                let statement = '';
+		return blockData;
+	}
 
-                console.group("");
+	function js(blockData: TToolBoxBlockDef[]) {
+		for (let i = 0; i < blockData.length; i++) {
+			let itemBlockData = blockData[i];
+			// console.log('type: ' + itemBlockData.type);
 
-                if (itemBlockData.output == undefined) {
-                    code += `\n/*${itemBlockData.message0}*/\n`;
-                }
+			javascript.javascriptGenerator.forBlock[itemBlockData.type] = (block: any, generator: any): any => {
+				let code = '';
+				let statement = '';
 
-                code += itemBlockData.perintah.split('_')[0];
-                code = code.replace("#update", "_update");
+				console.group("");
 
-                if (itemBlockData.kurung) {
-                    code += '(';
-                }
-                console.log('code', code);
+				if (itemBlockData.output == undefined) {
+					code += `\n/*${itemBlockData.message0}*/\n`;
+				}
 
-                itemBlockData.args0.forEach((item, idx) => {
-                    if (item.type == EArgType.inputDummy) {
+				code += itemBlockData.perintah.split('_')[0];
+				code = code.replace("#update", "_update");
 
-                    }
-                    else if (item.type == EArgType.input_end_row) {
+				if (itemBlockData.kurung) {
+					code += '(';
+				}
+				console.log('code', code);
 
-                    }
-                    else if (item.type == EArgType.statementValue) {
-                        console.log("arg statement");
-                        statement = generator.statementToCode(block, item.name);
-                    }
-                    else {
-                        let value = generator.valueToCode(block, item.name, javascript.Order.ATOMIC);
+				itemBlockData.args0.forEach((item, idx) => {
+					if (item.type == EArgType.inputDummy) {
 
-                        code += value;
+					}
+					else if (item.type == EArgType.input_end_row) {
 
-                        if (idx < itemBlockData.args0.length - 1) {
-                            code += ','
-                        }
-                        console.log('code', code);
+					}
+					else if (item.type == EArgType.statementValue) {
+						console.log("arg statement");
+						statement = generator.statementToCode(block, item.name);
+					}
+					else {
+						let value = generator.valueToCode(block, item.name, javascript.Order.ATOMIC);
 
-                    }
-                });
+						code += value;
 
-                if (itemBlockData.kurung) {
-                    code += ')';
-                }
-                console.log('code', code);
+						if (idx < itemBlockData.args0.length - 1) {
+							code += ','
+						}
+						console.log('code', code);
 
-                if (statement) {
-                    console.log("statement:", statement);
-                    if (itemBlockData.stmt) {
-                        code += `{${statement}}`;
-                    }
-                    else {
-                        code += `;\n${statement}\n`;
-                    }
-                }
-                else {
+					}
+				});
 
-                }
+				if (itemBlockData.kurung) {
+					code += ')';
+				}
+				console.log('code', code);
 
-                console.log("code", code);
-                console.groupEnd();
+				if (statement) {
+					console.log("statement:", statement);
+					if (itemBlockData.stmt) {
+						code += `{${statement}}`;
+					}
+					else {
+						code += `;\n${statement}\n`;
+					}
+				}
+				else {
 
-                if (itemBlockData.output != null) {
-                    return [code, Blockly.JavaScript.ORDER_NONE]
-                }
-                else {
-                    return code + ';\n';
-                }
+				}
 
-            };
-        }
-    }
+				console.log("code", code);
+				console.groupEnd();
 
-    // let blockData: TBlockDef[] = [];
+				if (itemBlockData.output != null) {
+					return [code, Blockly.JavaScript.ORDER_NONE]
+				}
+				else {
+					return code + ';\n';
+				}
 
-    //default toolbox
-    export const toolbox: TToolbokDef = {
-        kind: ToolBoxKind.categoryToolbox,
-        contents: [
-            {
-                kind: ToolBoxKind.category,
-                name: "Logic",
-                contents: [
-                    {
-                        kind: "block",
-                        type: "controls_if"
-                    },
-                    {
-                        kind: "block",
-                        type: "logic_compare"
-                    },
-                    {
-                        kind: "block",
-                        type: "logic_operation"
-                    },
-                    {
-                        kind: "block",
-                        type: "logic_negate"
-                    },
-                    {
-                        kind: "block",
-                        type: "logic_boolean"
-                    },
-                    {
-                        kind: "block",
-                        type: "logic_null"
-                    },
-                    {
-                        kind: "block",
-                        type: "logic_ternary"
-                    }
-                ]
-            },
-            {
-                kind: "category",
-                name: "Loops",
-                contents: [
-                    {
-                        kind: "block",
-                        type: "controls_repeat_ext"
-                    },
-                    {
-                        kind: "block",
-                        type: "controls_whileUntil"
-                    }, {
-                        kind: "block",
-                        type: "controls_for"
-                    }, {
-                        kind: "block",
-                        type: "controls_forEach"
-                    }, {
-                        kind: "block",
-                        type: "controls_flow_statements"
-                    },
-                ]
-            },
-            {
-                kind: "category",
-                name: "Math",
-                contents: [
-                    {
-                        kind: "block",
-                        type: "math_number"
-                    },
-                    {
-                        kind: "block",
-                        type: "math_arithmetic",
-                    },
-                    {
-                        kind: "block",
-                        type: "math_single"
-                    },
-                    {
-                        kind: "block",
-                        type: "math_trig"
-                    },
-                    {
-                        kind: "block",
-                        type: "math_constant"
-                    },
-                    {
-                        kind: "block",
-                        type: "math_number_property"
-                    },
-                    {
-                        kind: "block",
-                        type: "math_round"
-                    },
-                    {
-                        kind: "block",
-                        type: "math_on_list"
-                    },
-                    {
-                        kind: "block",
-                        type: "math_modulo"
-                    },
-                    {
-                        kind: "block",
-                        type: "math_constrain"
-                    },
-                    {
-                        kind: "block",
-                        type: "math_random_int"
-                    },
-                    {
-                        kind: "block",
-                        type: "math_random_float"
-                    },
-                ]
-            },
-            {
-                kind: "category",
-                name: "Text",
-                contents: [
-                    {
-                        kind: "block",
-                        type: "text"
-                    },
-                    {
-                        kind: "block",
-                        type: "text_join"
-                    },
-                    {
-                        kind: "block",
-                        type: "text_append"
-                    },
-                    {
-                        kind: "block",
-                        type: "text_length"
-                    },
-                    {
-                        kind: "block",
-                        type: "text_isEmpty"
-                    },
-                    {
-                        kind: "block",
-                        type: "text_indexOf"
-                    },
-                    {
-                        kind: "block",
-                        type: "text_charAt"
-                    },
-                    {
-                        kind: "block",
-                        type: "text_getSubstring"
-                    },
-                    {
-                        kind: "block",
-                        type: "text_changeCase"
-                    },
-                    {
-                        kind: "block",
-                        type: "text_trim"
-                    },
-                    {
-                        kind: "block",
-                        type: "text_print"
-                    },
-                    {
-                        kind: "block",
-                        type: "text_prompt_ext"
-                    },
-                ]
-            },
-            {
-                kind: "category",
-                name: "Lists",
-                contents: [
-                    {
-                        kind: "block",
-                        type: "lists_create_with"
-                    },
-                    {
-                        kind: "block",
-                        type: "lists_repeat"
-                    },
-                    {
-                        kind: "block",
-                        type: "lists_length"
-                    },
-                    {
-                        kind: "block",
-                        type: "lists_isEmpty"
-                    },
-                    {
-                        kind: "block",
-                        type: "lists_indexOf"
-                    },
-                    {
-                        kind: "block",
-                        type: "lists_getIndex"
-                    },
-                    {
-                        kind: "block",
-                        type: "lists_setIndex"
-                    },
-                    {
-                        kind: "block",
-                        type: "lists_getSublist"
-                    },
-                    {
-                        kind: "block",
-                        type: "lists_split"
-                    },
-                    {
-                        kind: "block",
-                        type: "lists_sort"
-                    },
-                ]
-            },
+			};
+		}
+	}
 
-            {
-                kind: "category",
-                name: "Variables",
-                custom: "VARIABLE",
-            },
-            {
-                kind: "category",
-                name: "Functions",
-                custom: "PROCEDURE"
-            }
-        ]
-    }
+	// let blockData: TBlockDef[] = [];
+
+	//default toolbox
+	export const toolbox: TToolbokDef = {
+		kind: ToolBoxKind.categoryToolbox,
+		contents: [
+			{
+				kind: ToolBoxKind.category,
+				name: "Logic",
+				contents: [
+					{
+						kind: "block",
+						type: "controls_if"
+					},
+					{
+						kind: "block",
+						type: "logic_compare"
+					},
+					{
+						kind: "block",
+						type: "logic_operation"
+					},
+					{
+						kind: "block",
+						type: "logic_negate"
+					},
+					{
+						kind: "block",
+						type: "logic_boolean"
+					},
+					{
+						kind: "block",
+						type: "logic_null"
+					},
+					{
+						kind: "block",
+						type: "logic_ternary"
+					}
+				]
+			},
+			{
+				kind: "category",
+				name: "Loops",
+				contents: [
+					{
+						kind: "block",
+						type: "controls_repeat_ext"
+					},
+					{
+						kind: "block",
+						type: "controls_whileUntil"
+					}, {
+						kind: "block",
+						type: "controls_for"
+					}, {
+						kind: "block",
+						type: "controls_forEach"
+					}, {
+						kind: "block",
+						type: "controls_flow_statements"
+					},
+				]
+			},
+			{
+				kind: "category",
+				name: "Math",
+				contents: [
+					{
+						kind: "block",
+						type: "math_number"
+					},
+					{
+						kind: "block",
+						type: "math_arithmetic",
+					},
+					{
+						kind: "block",
+						type: "math_single"
+					},
+					{
+						kind: "block",
+						type: "math_trig"
+					},
+					{
+						kind: "block",
+						type: "math_constant"
+					},
+					{
+						kind: "block",
+						type: "math_number_property"
+					},
+					{
+						kind: "block",
+						type: "math_round"
+					},
+					{
+						kind: "block",
+						type: "math_on_list"
+					},
+					{
+						kind: "block",
+						type: "math_modulo"
+					},
+					{
+						kind: "block",
+						type: "math_constrain"
+					},
+					{
+						kind: "block",
+						type: "math_random_int"
+					},
+					{
+						kind: "block",
+						type: "math_random_float"
+					},
+				]
+			},
+			{
+				kind: "category",
+				name: "Text",
+				contents: [
+					{
+						kind: "block",
+						type: "text"
+					},
+					{
+						kind: "block",
+						type: "text_join"
+					},
+					{
+						kind: "block",
+						type: "text_append"
+					},
+					{
+						kind: "block",
+						type: "text_length"
+					},
+					{
+						kind: "block",
+						type: "text_isEmpty"
+					},
+					{
+						kind: "block",
+						type: "text_indexOf"
+					},
+					{
+						kind: "block",
+						type: "text_charAt"
+					},
+					{
+						kind: "block",
+						type: "text_getSubstring"
+					},
+					{
+						kind: "block",
+						type: "text_changeCase"
+					},
+					{
+						kind: "block",
+						type: "text_trim"
+					},
+					{
+						kind: "block",
+						type: "text_print"
+					},
+					{
+						kind: "block",
+						type: "text_prompt_ext"
+					},
+				]
+			},
+			{
+				kind: "category",
+				name: "Lists",
+				contents: [
+					{
+						kind: "block",
+						type: "lists_create_with"
+					},
+					{
+						kind: "block",
+						type: "lists_repeat"
+					},
+					{
+						kind: "block",
+						type: "lists_length"
+					},
+					{
+						kind: "block",
+						type: "lists_isEmpty"
+					},
+					{
+						kind: "block",
+						type: "lists_indexOf"
+					},
+					{
+						kind: "block",
+						type: "lists_getIndex"
+					},
+					{
+						kind: "block",
+						type: "lists_setIndex"
+					},
+					{
+						kind: "block",
+						type: "lists_getSublist"
+					},
+					{
+						kind: "block",
+						type: "lists_split"
+					},
+					{
+						kind: "block",
+						type: "lists_sort"
+					},
+				]
+			},
+
+			{
+				kind: "category",
+				name: "Variables",
+				custom: "VARIABLE",
+			},
+			{
+				kind: "category",
+				name: "Functions",
+				custom: "PROCEDURE"
+			}
+		]
+	}
 }
 
 
