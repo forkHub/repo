@@ -620,6 +620,9 @@ var ha;
 (function (ha) {
     var blockly;
     (function (blockly) {
+        /**
+         * LOGO UI
+         */
         class Logo {
             static init() {
                 this.dlg = document.createElement('dialog');
@@ -634,7 +637,7 @@ var ha;
                     
                 </div>
             </div>
-        `;
+        	`;
                 tombol(dlg.querySelector('div.block-cont'));
                 function tombol(cont) {
                     let tbl;
@@ -753,7 +756,7 @@ var ha;
                 // console.log(list);
             }
             static publish() {
-                let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(blockly.Index.workspace), true);
+                let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(blockly.Index.workspace));
                 blockly.DialogPublish.open(`
                     <h1>Html Code</h1>
                     <p>
@@ -1291,11 +1294,11 @@ var ha;
     var blockly;
     (function (blockly) {
         class Export {
-            static export(code, prod = false) {
+            static export(code) {
                 console.group("export:");
                 console.log(code);
                 console.groupEnd();
-                let data2 = this.dataHtml.replace('<!--be-js-here-->', prod ? this.beUrlProd : this.beUrl);
+                let data2 = this.dataHtml.replace('<!--be-js-here-->', this.beUrl);
                 data2 = data2.replace('/** template **/', this.dataTemplate);
                 data2 = data2.replace('/** script here **/', code);
                 // debugger;
@@ -1303,7 +1306,6 @@ var ha;
             }
         }
         Export.beUrl = `./js/be.js`;
-        Export.beUrlProd = `https://forkhub.github.io/bblok/js/be.js`;
         Export.dataTemplate = `
 "use strict";
 window.onload = () => {
@@ -1341,8 +1343,8 @@ window.onload = () => {
 <body>
     <canvas></canvas>
 
-    <!-- copy be.js script to your local to help save bandwith, thanks -->
     <script src="<!--be-js-here-->"></script>
+    <script src="./js/js.js"></script>
 
     <!-- main  -->
     <script>
@@ -1390,6 +1392,7 @@ var ha;
                     blockly.InputBlockData,
                     blockly.TextData,
                     blockly.MathBlockData,
+                    blockly.ListDef
                 ];
                 blockly.BDef.normalizeAllBlock(blockRawData);
                 let allToolBoxDef = populateToolBox(blockRawData);
@@ -2055,6 +2058,46 @@ var ha;
 (function (ha) {
     var blockly;
     (function (blockly) {
+        var ListDef;
+        (function (ListDef) {
+            ListDef.list = [];
+            ListDef.group = "List 2";
+            ListDef.hidden = "false";
+            // ha.js.List.push
+            ListDef.list.push({
+                type: "ha.js.List.push",
+                perintah: "ha.js.List.push",
+                message0: "List %1 push %2",
+                args: {
+                    list: {},
+                    value: {},
+                },
+                inputsInline: true,
+                tooltip: `
+            Push value to the end of a list
+        `,
+            });
+            // ha.js.List.pop;
+            ListDef.list.push({
+                type: "ha.js.List.pop",
+                perintah: "ha.js.List.pop",
+                message0: "List %1 pop",
+                args: {
+                    list: {},
+                },
+                output: EOutput.Any,
+                inputsInline: true,
+                tooltip: `
+            Pop value from the end of a list and return the value
+        `,
+            });
+        })(ListDef = blockly.ListDef || (blockly.ListDef = {}));
+    })(blockly = ha.blockly || (ha.blockly = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var blockly;
+    (function (blockly) {
         var MathBlockData;
         (function (MathBlockData) {
             MathBlockData.list = [];
@@ -2551,7 +2594,7 @@ var ha;
             // ha.be.Spr.Muat
             ImageBlockData.blitz_Muat = {
                 type: "ha.be.Spr.Muat",
-                message0: 'LoadImage %1 url: %2',
+                message0: 'LoadImage %1 from url: %2',
                 perintah: "LoadImage",
                 args: {
                     dummy: '',
@@ -2569,7 +2612,7 @@ var ha;
             // ha.be.Spr.MuatAnimasi
             ImageBlockData.list.push({
                 type: "ha.be.Spr.MuatAnimasi",
-                message0: "LoadAnimImage %1 url: %2 frame width: %3 frame height: %4",
+                message0: "LoadAnimImage %1 from url: %2 frame width: %3 frame height: %4",
                 perintah: "LoadAnimImage",
                 args: {
                     dummy: '',
@@ -2586,44 +2629,6 @@ var ha;
         url: the url of image, can be local or absolute
         fw: frame wdith
         fh: frame height 
-        `
-            });
-            // DrawImage
-            // ha.be.Spr.GambarXY
-            // DrawImageXY
-            ImageBlockData.list.push({
-                type: "ha.be.Spr.Gambar",
-                message0: "DrawImage: %4 image %1 x: %2 y: %3",
-                perintah: "DrawImageXY",
-                inputsInline: true,
-                args: {
-                    sprite: {},
-                    x: 0,
-                    y: 0,
-                    dummy: ""
-                },
-                tooltip: `
-            Draw image at x, y location.
-            When the image is not yet fully loaded, then it will not draw anything.
-        `
-            });
-            // TileImage
-            //ha.be.Spr.Ubin;
-            ImageBlockData.list.push({
-                type: "ha.be.Spr.Ubin",
-                message0: "TileImage: %5 image %1 x: %2 y: %3 frame: %4",
-                perintah: "Tile",
-                inputsInline: true,
-                args: {
-                    sprite: {},
-                    x: 0,
-                    y: 0,
-                    frame: 0,
-                    dummy: ''
-                },
-                tooltip: `
-            Draw image with tiling effect
-            When the image is not yet fully loaded, then it will not draw anything.
         `
             });
             // HandleImage
@@ -2760,7 +2765,7 @@ var ha;
             // ha.be.Spr.TabrakanXY;
             ImageBlockData.list.push({
                 type: "ha.be.Spr.TabrakanXY",
-                message0: "ImagesCollide: %1 image1: %2 x1: %3 y1: %4 image2: %5 x2: %6 y2: %7",
+                message0: "image1 %2 at x1 %3 y1 %4 %1 collide with image2 %5 at x2 %6 y2 %7",
                 perintah: "ha.be.Spr.TabrakanXY",
                 args: {
                     dummy: '',
@@ -2772,7 +2777,7 @@ var ha;
                     y2: 0
                 },
                 inputsInline: true,
-                tooltip: "return true if two images are collided at the position",
+                tooltip: "return true if two images are collided at the specified position",
                 output: EOutput.Boolean,
             });
         })(ImageBlockData = blockly.ImageBlockData || (blockly.ImageBlockData = {}));
@@ -2832,12 +2837,50 @@ var ha;
                 },
                 tooltip: "Draw image to screen"
             });
+            // DrawImage
+            // ha.be.Spr.GambarXY
+            // DrawImageXY
+            ImageBlockData2.list.push({
+                type: "ha.be.Spr.Gambar",
+                message0: "DrawImage: %4 image %1 x: %2 y: %3",
+                perintah: "DrawImageXY",
+                inputsInline: true,
+                args: {
+                    sprite: {},
+                    x: 0,
+                    y: 0,
+                    dummy: ""
+                },
+                tooltip: `
+            Draw image at x, y location.
+            When the image is not yet fully loaded, then it will not draw anything.
+        `
+            });
+            // TileImage
+            //ha.be.Spr.Ubin;
+            ImageBlockData2.list.push({
+                type: "ha.be.Spr.Ubin",
+                message0: "TileImage: %5 image %1 x: %2 y: %3 frame: %4",
+                perintah: "Tile",
+                inputsInline: true,
+                args: {
+                    sprite: {},
+                    x: 0,
+                    y: 0,
+                    frame: 0,
+                    dummy: ''
+                },
+                tooltip: `
+            Draw image with tiling effect
+            When the image is not yet fully loaded, then it will not draw anything.
+        `
+            });
             // DrawImageAnim
             // DrawImage
             // ha.be.Spr.Gambar animasi
             ImageBlockData2.list.push({
                 type: "ha.be.Spr.Gambar_animasi",
-                message0: "DrawImage %1 image %2 frame: %3",
+                message0: "image %2 %1 draw at frame: %3",
                 perintah: "DrawImage",
                 inputsInline: true,
                 args: {
@@ -2847,6 +2890,7 @@ var ha;
                 },
                 tooltip: `
             Draw image at specific frame.
+			Use the last position 
         `
             });
             // const DrawAllImage = ha.be.Spr.GambarSemua;

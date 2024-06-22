@@ -32,6 +32,9 @@ type TBlockRawData = {
 	hidden: "true" | "false"
 }
 
+/**
+ * 
+ */
 type TToolBoxBlockDef = {
 	type: string,
 	message0: string
@@ -39,6 +42,7 @@ type TToolBoxBlockDef = {
 	output?: EOutput;
 	hat?: boolean;
 	perintah: string;
+	f?: () => string;	//generate code pakai callback
 
 	//auto fill
 	args0?: TArgDef[]

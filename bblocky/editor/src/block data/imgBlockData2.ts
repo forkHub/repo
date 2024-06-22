@@ -15,12 +15,53 @@ namespace ha.blockly.ImageBlockData2 {
 		tooltip: "Draw image to screen"
 	})
 
+	// DrawImage
+	// ha.be.Spr.GambarXY
+	// DrawImageXY
+	list.push({
+		type: "ha.be.Spr.Gambar",
+		message0: "DrawImage: %4 image %1 x: %2 y: %3",
+		perintah: "DrawImageXY",
+		inputsInline: true,
+		args: {
+			sprite: {},
+			x: 0,
+			y: 0,
+			dummy: ""
+		},
+		tooltip: `
+            Draw image at x, y location.
+            When the image is not yet fully loaded, then it will not draw anything.
+        `
+	})
+
+	// TileImage
+	//ha.be.Spr.Ubin;
+	list.push({
+		type: "ha.be.Spr.Ubin",
+		message0: "TileImage: %5 image %1 x: %2 y: %3 frame: %4",
+		perintah: "Tile",
+		inputsInline: true,
+		args: {
+			sprite: {},
+			x: 0,
+			y: 0,
+			frame: 0,
+			dummy: ''
+		},
+		tooltip: `
+            Draw image with tiling effect
+            When the image is not yet fully loaded, then it will not draw anything.
+        `
+	})
+
+
 	// DrawImageAnim
 	// DrawImage
 	// ha.be.Spr.Gambar animasi
 	list.push({
 		type: "ha.be.Spr.Gambar_animasi",
-		message0: "DrawImage %1 image %2 frame: %3",
+		message0: "image %2 %1 draw at frame: %3",
 		perintah: "DrawImage",
 		inputsInline: true,
 		args: {
@@ -30,6 +71,7 @@ namespace ha.blockly.ImageBlockData2 {
 		},
 		tooltip: `
             Draw image at specific frame.
+			Use the last position 
         `
 	})
 

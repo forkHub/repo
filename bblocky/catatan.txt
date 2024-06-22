@@ -1,1 +1,27 @@
-pengunaan label untuk menghindari variable clutter
+collision
+ball dengan grafitasi
+simulasi matahari
+simulasi mesin
+meload gambar dari unsplash
+tiling
+tiling 2 gambar
+tiling 3 gambar
+animasi
+atom
+contoh be
+
+backlog demo:
+========
+interaksi
+flappy box
+doodle
+
+backlog system
+==============
+npm webpack
+demo manager (node)/firebase
+galery gambar
+grid
+List advanced
+tool box data berbasis json
+custom command generator pakai function

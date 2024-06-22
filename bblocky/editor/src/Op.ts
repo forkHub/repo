@@ -70,7 +70,7 @@ namespace ha.blockly {
 		}
 
 		static publish() {
-			let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace), true);
+			let codeHtml = ha.blockly.Export.export(javascript.javascriptGenerator.workspaceToCode(Index.workspace));
 			DialogPublish.open(`
                     <h1>Html Code</h1>
                     <p>

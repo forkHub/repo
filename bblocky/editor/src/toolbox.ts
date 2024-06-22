@@ -12,6 +12,7 @@ namespace ha.blockly.toolbox {
 			InputBlockData,
 			TextData,
 			MathBlockData,
+			ListDef
 		]
 
 		BDef.normalizeAllBlock(blockRawData);

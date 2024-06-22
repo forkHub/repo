@@ -1,8 +1,7 @@
 namespace ha.blockly {
-    export class Export {
-        static readonly beUrl = `./js/be.js`;
-        static readonly beUrlProd = `https://forkhub.github.io/bblok/js/be.js`;
-        static readonly dataTemplate = `
+	export class Export {
+		static readonly beUrl = `./js/be.js`;
+		static readonly dataTemplate = `
 "use strict";
 window.onload = () => {
     console.log('start');
@@ -21,7 +20,7 @@ window.onload = () => {
 };
         `;
 
-        static readonly dataHtml = `
+		static readonly dataHtml = `
 <!DOCTYPE html>
 <html>
 
@@ -40,8 +39,8 @@ window.onload = () => {
 <body>
     <canvas></canvas>
 
-    <!-- copy be.js script to your local to help save bandwith, thanks -->
     <script src="<!--be-js-here-->"></script>
+    <script src="./js/js.js"></script>
 
     <!-- main  -->
     <script>
@@ -52,17 +51,17 @@ window.onload = () => {
 </html>
         `;
 
-        static export(code: string, prod: boolean = false): string {
-            console.group("export:");
-            console.log(code);
-            console.groupEnd();
+		static export(code: string): string {
+			console.group("export:");
+			console.log(code);
+			console.groupEnd();
 
-            let data2 = this.dataHtml.replace('<!--be-js-here-->', prod ? this.beUrlProd : this.beUrl);
-            data2 = data2.replace('/** template **/', this.dataTemplate);
-            data2 = data2.replace('/** script here **/', code);
-            // debugger;
+			let data2 = this.dataHtml.replace('<!--be-js-here-->', this.beUrl);
+			data2 = data2.replace('/** template **/', this.dataTemplate);
+			data2 = data2.replace('/** script here **/', code);
+			// debugger;
 
-            return data2;
-        }
-    }
+			return data2;
+		}
+	}
 }

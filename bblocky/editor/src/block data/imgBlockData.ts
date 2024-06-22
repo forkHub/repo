@@ -6,7 +6,7 @@ namespace ha.blockly.ImageBlockData {
 	// ha.be.Spr.Muat
 	export const blitz_Muat: TToolBoxBlockDef = {
 		type: "ha.be.Spr.Muat",
-		message0: 'LoadImage %1 url: %2',
+		message0: 'LoadImage %1 from url: %2',
 		perintah: "LoadImage",
 		args: {
 			dummy: '',
@@ -25,7 +25,7 @@ namespace ha.blockly.ImageBlockData {
 	// ha.be.Spr.MuatAnimasi
 	list.push({
 		type: "ha.be.Spr.MuatAnimasi",
-		message0: "LoadAnimImage %1 url: %2 frame width: %3 frame height: %4",
+		message0: "LoadAnimImage %1 from url: %2 frame width: %3 frame height: %4",
 		perintah: "LoadAnimImage",
 		args: {
 			dummy: '',
@@ -42,49 +42,6 @@ namespace ha.blockly.ImageBlockData {
         url: the url of image, can be local or absolute
         fw: frame wdith
         fh: frame height 
-        `
-	})
-
-
-	// DrawImage
-	// ha.be.Spr.GambarXY
-	// DrawImageXY
-	list.push({
-		type: "ha.be.Spr.Gambar",
-		message0: "DrawImage: %4 image %1 x: %2 y: %3",
-		perintah: "DrawImageXY",
-		inputsInline: true,
-		args: {
-			sprite: {},
-			x: 0,
-			y: 0,
-			dummy: ""
-		},
-		tooltip: `
-            Draw image at x, y location.
-            When the image is not yet fully loaded, then it will not draw anything.
-        `
-	})
-
-
-
-	// TileImage
-	//ha.be.Spr.Ubin;
-	list.push({
-		type: "ha.be.Spr.Ubin",
-		message0: "TileImage: %5 image %1 x: %2 y: %3 frame: %4",
-		perintah: "Tile",
-		inputsInline: true,
-		args: {
-			sprite: {},
-			x: 0,
-			y: 0,
-			frame: 0,
-			dummy: ''
-		},
-		tooltip: `
-            Draw image with tiling effect
-            When the image is not yet fully loaded, then it will not draw anything.
         `
 	})
 
@@ -233,7 +190,7 @@ namespace ha.blockly.ImageBlockData {
 	// ha.be.Spr.TabrakanXY;
 	list.push({
 		type: "ha.be.Spr.TabrakanXY",
-		message0: "ImagesCollide: %1 image1: %2 x1: %3 y1: %4 image2: %5 x2: %6 y2: %7",
+		message0: "image1 %2 at x1 %3 y1 %4 %1 collide with image2 %5 at x2 %6 y2 %7",
 		perintah: "ha.be.Spr.TabrakanXY",
 		args: {
 			dummy: '',
@@ -245,7 +202,7 @@ namespace ha.blockly.ImageBlockData {
 			y2: 0
 		},
 		inputsInline: true,
-		tooltip: "return true if two images are collided at the position",
+		tooltip: "return true if two images are collided at the specified position",
 		output: EOutput.Boolean,
 	})
 
