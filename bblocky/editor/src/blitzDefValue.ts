@@ -35,7 +35,6 @@ namespace ha.blockly.BDef {
 		// MathBlockData.list.forEach((item) => { normal(item) })
 	}
 
-
 	/**
 	 * add default value
 	 * @param t 
