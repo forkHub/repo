@@ -1,23 +1,41 @@
 declare var _update: any;
-declare var Update: any;
-declare var UPDATE: any;
 
 window.onload = () => {
-    console.log('start');
+	console.log('start');
+	let error = false;
 
-    /** script here **/
+	/** script here **/
 
-    let __update: () => void; // = update || Update || UPDATE as any;
-    if (typeof _update === "function") __update = _update;
+	if (error) return;
 
-    console.log(__update);
+	let __update: () => void; // = update || Update || UPDATE as any;
+	if (typeof _update === "function") __update = _update;
 
-    let __updater = () => {
-        if (__update) {
-            __update();
-        }
-        requestAnimationFrame(__updater);
-    }
+	console.log(__update);
 
-    requestAnimationFrame(__updater);
+	let __updater = () => {
+		try {
+			if (__update) {
+				//TODO: pre update
+				__update();
+				//TODO: post update
+			}
+			requestAnimationFrame(__updater);
+		}
+		catch (e) {
+			e.message = 'Ada kesalahan di grup update: ' + e.message;
+			handleError(e);
+		}
+	}
+
+	requestAnimationFrame(__updater);
+}
+
+/* fungsi tambhan */
+function handleError(e: Error) {
+	console.log(e.message);
+	alert(e.message);
+	//dialog
+	//pesan
+	//highlight
 }
