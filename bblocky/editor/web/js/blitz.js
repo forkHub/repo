@@ -3,8 +3,15 @@ var ha;
     var be;
     (function (be) {
         class Dict {
+<<<<<<< HEAD
             list = [];
             _id = '';
+=======
+            constructor() {
+                this.list = [];
+                this._id = '';
+            }
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             set id(value) {
                 this._id = value;
             }
@@ -64,8 +71,16 @@ var ha;
         }
         be.Dict = Dict;
         class Attr {
+<<<<<<< HEAD
             _key = '';
             _value;
+=======
+            constructor(key, value) {
+                this._key = '';
+                this._key = key;
+                this._value = value;
+            }
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             get key() {
                 return this._key;
             }
@@ -75,10 +90,13 @@ var ha;
             set value(value) {
                 this._value = value;
             }
+<<<<<<< HEAD
             constructor(key, value) {
                 this._key = key;
                 this._value = value;
             }
+=======
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
         }
         be.Attr = Attr;
     })(be = ha.be || (ha.be = {}));
@@ -98,6 +116,7 @@ var ha;
          * @memberof ha.be
          */
         class Be {
+<<<<<<< HEAD
             static _canvasAr = [];
             static _canvasAktif;
             static _skalaOtomatis = true;
@@ -111,6 +130,8 @@ var ha;
                 h: 0,
                 t: 1
             };
+=======
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             static Pause() {
                 debugger;
             }
@@ -466,6 +487,21 @@ var ha;
                 Be._transparan = value;
             }
         }
+<<<<<<< HEAD
+=======
+        Be._canvasAr = [];
+        Be._skalaOtomatis = true;
+        Be._merah = 0;
+        Be._hijau = 0;
+        Be._biru = 0;
+        Be._transparan = 0;
+        Be.warnaBackup = {
+            m: 0,
+            b: 0,
+            h: 0,
+            t: 1
+        };
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
         be.Be = Be;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
@@ -474,7 +510,13 @@ var ha;
     var be;
     (function (be) {
         class Cache {
+<<<<<<< HEAD
             files = [];
+=======
+            constructor() {
+                this.files = [];
+            }
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             getGbr(url) {
                 for (let i = 0; i < this.files.length; i++) {
                     if (this.files[i].url == url) {
@@ -505,12 +547,19 @@ var ha;
     var be;
     (function (be) {
         class Id {
+<<<<<<< HEAD
             static _id = Date.now();
+=======
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             static id() {
                 Id._id++;
                 return Id._id + '';
             }
         }
+<<<<<<< HEAD
+=======
+        Id._id = Date.now();
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
         be.Id = Id;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
@@ -519,6 +568,7 @@ var ha;
     var be;
     (function (be) {
         class Gbr {
+<<<<<<< HEAD
             img;
             canvas;
             ctx;
@@ -539,6 +589,27 @@ var ha;
             ratioY = 1;
             klikKum = 0;
             _ctrIdx = 0;
+=======
+            constructor() {
+                this.frameW = 32;
+                this.frameH = 32;
+                this._rotasi = 0;
+                this.alpha = 100;
+                this.isAnim = false;
+                this.rect = new be.Kotak();
+                this.load = false;
+                this.panjang = 0;
+                this.lebar = 0;
+                this.panjangDiSet = false;
+                this.lebarDiSet = false;
+                this.handleX = 0;
+                this.handleY = 0;
+                this.ratioX = 1;
+                this.ratioY = 1;
+                this.klikKum = 0;
+                this._ctrIdx = 0;
+            }
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             get ctrIdx() {
                 return this._ctrIdx;
             }
@@ -956,7 +1027,11 @@ var ha;
             static gambar(gbr, x = 0, y = 0, frame = 0) {
                 let ctx = be.Be.canvasAktif.ctx;
                 let jmlH = 0;
+<<<<<<< HEAD
                 let jmlV = 0;
+=======
+                // let jmlV: number = 0;
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
                 let frameX = 0;
                 let frameY = 0;
                 // let rect: IRect = img.rect;
@@ -965,13 +1040,21 @@ var ha;
                 gbr.ctrIdx = ha.be.Spr.ctrDraw++;
                 frame = Math.floor(frame);
                 jmlH = Math.floor(gbr.img.naturalWidth / gbr.frameW);
+<<<<<<< HEAD
                 jmlV = Math.floor(gbr.img.naturalHeight / gbr.frameH);
+=======
+                // jmlV = Math.floor(gbr.img.naturalHeight / gbr.frameH);
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
                 // console.log('jmlH ' + jmlH);
                 // console.log('nw: ' + gbr.img.naturalWidth);
                 // console.log('fw: ' + gbr.frameW);
                 // debugger;
                 frameX = (frame % jmlH);
+<<<<<<< HEAD
                 frameY = Math.floor(frame / jmlV);
+=======
+                frameY = Math.floor(frame / jmlH);
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
                 frameX *= gbr.frameW;
                 frameY *= gbr.frameH;
                 frameX = Math.floor(frameX);
@@ -1132,6 +1215,7 @@ var ha;
             }
         }
         class Input {
+<<<<<<< HEAD
             static _inputs = []; //any input, todo: clean up
             static _debug = false;
             static get debug() {
@@ -1145,6 +1229,8 @@ var ha;
             // private _keybGlobal: IInput;	//global keyb
             static _inputGlobal; //global input
             static _event = new EventHandler();
+=======
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             constructor() {
                 // this._touchGlobal = this.buatInputDefault();
                 // this._mouseGlobal = this.buatInputDefault();
@@ -1153,6 +1239,15 @@ var ha;
                 // this._keybGlobal.type = EInput.KEYB;
                 // this._mouseGlobal.type = EInput.MOUSE;
             }
+<<<<<<< HEAD
+=======
+            static get debug() {
+                return Input._debug;
+            }
+            static set debug(value) {
+                Input._debug = value;
+            }
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             // static init() {
             // }
             /**
@@ -1449,6 +1544,7 @@ var ha;
                 }
                 return input;
             }
+<<<<<<< HEAD
             static pos = (cx, cy, buffer) => {
                 let rect = buffer.canvas.getBoundingClientRect();
                 let canvasScaleX = parseInt(window.getComputedStyle(buffer.canvas).width) / buffer.canvas.width;
@@ -1460,6 +1556,8 @@ var ha;
                     y: posly
                 };
             };
+=======
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             static get inputs() {
                 return Input._inputs;
             }
@@ -1479,6 +1577,23 @@ var ha;
                 return Input._inputGlobal;
             }
         }
+<<<<<<< HEAD
+=======
+        Input._inputs = []; //any input, todo: clean up
+        Input._debug = false;
+        Input._event = new EventHandler();
+        Input.pos = (cx, cy, buffer) => {
+            let rect = buffer.canvas.getBoundingClientRect();
+            let canvasScaleX = parseInt(window.getComputedStyle(buffer.canvas).width) / buffer.canvas.width;
+            let canvasScaleY = parseInt(window.getComputedStyle(buffer.canvas).height) / buffer.canvas.height;
+            let poslx = Math.floor((cx - rect.x) / canvasScaleX);
+            let posly = Math.floor((cy - rect.y) / canvasScaleY);
+            return {
+                x: poslx,
+                y: posly
+            };
+        };
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
         be.Input = Input;
         // export const input: Input = new Input();
     })(be = ha.be || (ha.be = {}));
@@ -1911,11 +2026,18 @@ var ha;
     var be;
     (function (be) {
         class Sound {
+<<<<<<< HEAD
             static list = [];
             _src = '';
             _loaded = false;
             _sound;
             _playedCount;
+=======
+            constructor() {
+                this._src = '';
+                this._loaded = false;
+            }
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             get playedCount() {
                 return this._playedCount;
             }
@@ -1967,6 +2089,10 @@ var ha;
                 return s.loaded;
             }
         }
+<<<<<<< HEAD
+=======
+        Sound.list = [];
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
         be.Sound = Sound;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
@@ -1976,6 +2102,7 @@ var ha;
     var be;
     (function (be) {
         class Spr {
+<<<<<<< HEAD
             static daftar = [];
             static _ctrDraw = 0;
             _buff;
@@ -1993,6 +2120,17 @@ var ha;
             _sudutAwal;
             _inputId;
             constructor(buffer, dragable = false) {
+=======
+            constructor(buffer, dragable = false) {
+                this._x = 0;
+                this._y = 0;
+                this._dragged = false;
+                this._down = false;
+                this._hit = 0;
+                this._dragStartY = 0;
+                this._dragStartX = 0;
+                this._dragable = false;
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
                 this.buff = buffer;
                 this.dragable = dragable;
             }
@@ -2417,6 +2555,11 @@ var ha;
                 this._inputId = value;
             }
         }
+<<<<<<< HEAD
+=======
+        Spr.daftar = [];
+        Spr._ctrDraw = 0;
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
         be.Spr = Spr;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
@@ -2517,6 +2660,7 @@ var ha;
     var be;
     (function (be) {
         class Teks {
+<<<<<<< HEAD
             static nama = 'cursive';
             static ukuran = 30;
             static x = 0;
@@ -2524,6 +2668,8 @@ var ha;
             static _stroke = false;
             static _jarak = 15;
             static _fill = true;
+=======
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             static get stroke() {
                 return Teks._stroke;
             }
@@ -2593,6 +2739,16 @@ var ha;
                 }
             }
         }
+<<<<<<< HEAD
+=======
+        Teks.nama = 'cursive';
+        Teks.ukuran = 30;
+        Teks.x = 0;
+        Teks.y = 10;
+        Teks._stroke = false;
+        Teks._jarak = 15;
+        Teks._fill = true;
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
         be.Teks = Teks;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));
@@ -2601,10 +2757,13 @@ var ha;
     var be;
     (function (be) {
         class Transform {
+<<<<<<< HEAD
             static RAD2DEG = 180.0 / Math.PI;
             static DEG2RAD = Math.PI / 180.0;
             static _lastX = 0;
             static _lastY = 0;
+=======
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
             static get lastX() {
                 return Transform._lastX;
             }
@@ -2731,6 +2890,13 @@ var ha;
                 Transform._lastY = y1 + yt;
             }
         }
+<<<<<<< HEAD
+=======
+        Transform.RAD2DEG = 180.0 / Math.PI;
+        Transform.DEG2RAD = Math.PI / 180.0;
+        Transform._lastX = 0;
+        Transform._lastY = 0;
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
         be.Transform = Transform;
     })(be = ha.be || (ha.be = {}));
 })(ha || (ha = {}));

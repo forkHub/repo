@@ -1,8 +1,14 @@
 namespace ha.blockly {
+<<<<<<< HEAD
     export class Export {
         static readonly blitzUrl = './js/blitz.js';
         static readonly beUrl = `./js/bblok.js`;
         static readonly dataTemplate = `
+=======
+	export class Export {
+		static readonly beUrl = `./js/be.js`;
+		static readonly dataTemplate = `
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
 "use strict";
 window.onload = () => {
     console.log('start');
@@ -21,7 +27,7 @@ window.onload = () => {
 };
         `;
 
-        static readonly dataHtml = `
+		static readonly dataHtml = `
 <!DOCTYPE html>
 <html>
 
@@ -40,8 +46,12 @@ window.onload = () => {
 <body>
     <canvas></canvas>
 
+<<<<<<< HEAD
     <script src="<!--blitz-js-here-->"></script>
+=======
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
     <script src="<!--be-js-here-->"></script>
+    <script src="./js/js.js"></script>
 
     <!-- main  -->
     <script>
@@ -52,6 +62,7 @@ window.onload = () => {
 </html>
 `;
 
+<<<<<<< HEAD
         static export(code: string): string {
             console.group("export:");
             console.log(code);
@@ -63,8 +74,19 @@ window.onload = () => {
             data2 = data2.replace('/** template **/', this.dataTemplate);
             data2 = data2.replace('/** script here **/', code);
             // debugger;
+=======
+		static export(code: string): string {
+			console.group("export:");
+			console.log(code);
+			console.groupEnd();
 
-            return data2;
-        }
-    }
+			let data2 = this.dataHtml.replace('<!--be-js-here-->', this.beUrl);
+			data2 = data2.replace('/** template **/', this.dataTemplate);
+			data2 = data2.replace('/** script here **/', code);
+			// debugger;
+>>>>>>> 567a500018e153dbbd43956de2fd3b30425b0108
+
+			return data2;
+		}
+	}
 }

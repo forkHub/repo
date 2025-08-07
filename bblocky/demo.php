@@ -1,48 +1,57 @@
 <?php
+
 //simple script to handle demo file
-if (false) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-}
-else if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // var_dump($_POST["body"]);
+	var_dump($_POST);
 
-  $content = $_POST["body"];
+	// var_dump($_POST["body"]);
+	$content = $_POST["body"];
 
-  //flag
-  $dev = $_POST["dev"];
-  $tut = $_POST["tut"];
-  $list = $_POST["list"];   //boolean = list project tutorial
+	//flag
+	$list = $_POST["list"];   //boolean = list project tutorial
+	$mode = $_POST["mode"];	  //string
+	$data = $_POST["data"];	  //json-string
 
-  var_dump($_POST);
+	if ($mode == "dev") {
+		echo "dev mode";
 
-  if ($dev == "true") {
-    echo "dev mode";
-    // $myfile = fopen("./editor/src/StoreEntry.ts", "w") or die("Unable to open file!");
-    // fwrite($myfile, "///<reference path=\"Store.ts\"/>\n");
-    // fwrite($myfile, "ha.blockly.Store.demo =");
-    // fwrite($myfile, $content);
-    // fclose($myfile);
+		if ($data == "judul") {
+			echo "list mode";
+			$myfile = fopen("./editor/web/tut/dlist.json", "w") or die("Unable to open file!");
+			fwrite($myfile, $content);
+			fclose($myfile);
+		}
+		else if ($data == "isi") {
+			echo "data mode";
 
-    //write demo.js
-    $myfile = fopen("./editor/web/js/demo.js", "w") or die("Unable to open file!");
-    fwrite($myfile, "const demoData =");
-    fwrite($myfile, $content);
-    fclose($myfile);
-
-  } else if ($tut == "true") {
-    $id = $_POST["id"];       //project id tutorial
-    echo "tut mode";
-    $myfile = fopen("./editor/web/tut/p". $id .".json", "w") or die("Unable to open file!");
-    fwrite($myfile, $content);
-    fclose($myfile);
-  } else if ($list == "true") {
-    echo "list mode";
-    $myfile = fopen("./editor/web/tut/list.json", "w") or die("Unable to open file!");
-    fwrite($myfile, $content);
-    fclose($myfile);
-  }
-}
-else {
-    echo "invalid request";
+			$id = $_POST["id"];       //project id tutorial
+			echo "tut mode";
+			$myfile = fopen("./editor/web/tut/d". $id .".json", "w") or die("Unable to open file!");
+			fwrite($myfile, $content);
+			fclose($myfile);
+		}
+		else {
+			die("invalid data " . $data);
+		}
+	} 
+	else if ($mode == "tut") {
+		if ($list == "true") {
+			echo "tut list mode";
+			$myfile = fopen("./editor/web/tut/List.ts", "w") or die("Unable to open file!");
+			fwrite($myfile, $content);
+			fclose($myfile);
+		}
+		else if ($ist == "false") {
+			$id = $_POST["id"];       //project id tutorial
+			echo "tut data mode";
+			$myfile = fopen("./editor/web/tut/p". $id .".json", "w") or die("Unable to open file!");
+			fwrite($myfile, $content);
+			fclose($myfile);
+		}
+	}
+	else {
+		die ("mode error: " . $mode);
+	}
 }
 ?>
