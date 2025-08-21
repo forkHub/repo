@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aplikasi Faktor Dua Byte</title>
+</head>
+
+<body>
+    <h2>Upload File untuk Analisis Faktor Dua Byte</h2>
+    <input type="file" id="fileInput" />
+
+    <script>
+        function cariFaktor(n) {
+            let faktor = [];
+            for (let i = 1; i <= n; i++) {
+                if (n % i === 0) {
+                    faktor.push(i);
+                }
+            }
+            return faktor;
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const arrayBuffer = e.target.result;
+                const bytes = new Uint8Array(arrayBuffer);
+
+                for (let i = 0; i < bytes.length - 1; i += 2) {
+                    const twoByteValue = (bytes[i] << 8) | bytes[i + 1]; // Gabung dua byte jadi satu bilangan
+                    const faktor = cariFaktor(twoByteValue);
+                    console.log(`Nilai: ${twoByteValue}, Faktor: ${faktor.join(', ')}`);
+                }
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
+</body>
+
+</html>

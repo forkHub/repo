@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>File Entropy Calculator</title>
+</head>
+
+<body>
+    <h2>Shannon Entropy Calculator</h2>
+    <input type="file" id="fileInput" />
+    <p id="result"></p>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const arrayBuffer = e.target.result;
+                const byteArray = new Uint8Array(arrayBuffer);
+                const entropy = calculateEntropy(byteArray);
+                document.getElementById('result').textContent =
+                    `Shannon entropy: ${entropy.toFixed(4)} bits per byte`;
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        function calculateEntropy(byteArray) {
+            const byteCounts = new Array(256).fill(0);
+            for (let byte of byteArray) {
+                byteCounts[byte]++;
+            }
+
+            const totalBytes = byteArray.length;
+            let entropy = 0;
+            for (let count of byteCounts) {
+                if (count > 0) {
+                    const p = count / totalBytes;
+                    entropy -= p * Math.log2(p);
+                }
+            }
+            return entropy;
+        }
+    </script>
+</body>
+
+</html>

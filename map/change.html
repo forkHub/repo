@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bit Modifier & File Saver</title>
+</head>
+
+<body>
+    <h2>Modify File Bits</h2>
+    <input type="file" id="fileInput" />
+    <button id="downloadBtn" disabled>Download Modified File</button>
+
+    <script>
+        let modifiedBlob = null;
+
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const arrayBuffer = e.target.result;
+                const byteArray = new Uint8Array(arrayBuffer);
+
+                // Modify each byte: zero out first and second bits (bit 7 and bit 6)
+                for (let i = 0; i < byteArray.length; i++) {
+                    byteArray[i] &= 0b00111111; // Mask to keep only last 6 bits
+                }
+
+                // Create a Blob for download
+                modifiedBlob = new Blob([byteArray], { type: 'application/octet-stream' });
+                document.getElementById('downloadBtn').disabled = false;
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        document.getElementById('downloadBtn').addEventListener('click', function () {
+            if (!modifiedBlob) return;
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(modifiedBlob);
+            link.download = 'modified_file.bin';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        });
+    </script>
+</body>
+
+</html>
