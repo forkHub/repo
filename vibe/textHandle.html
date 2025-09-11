@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Text Editor</title>
+    <style>
+        canvas {
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="addText()">Add Text</button>
+    <canvas id="canvas" width="800" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let texts = [];
+        let selectedText = null;
+        let offsetX, offsetY;
+
+        function addText() {
+            texts.push({
+                text: 'Editable Text',
+                x: 100,
+                y: 100,
+                width: 0,
+                height: 0,
+                selected: false
+            });
+            draw();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            texts.forEach(obj => {
+                ctx.font = '20px Arial';
+                ctx.fillStyle = 'black';
+                ctx.fillText(obj.text, obj.x, obj.y);
+                const metrics = ctx.measureText(obj.text);
+                obj.width = metrics.width;
+                obj.height = 24;
+
+                if (obj.selected) {
+                    ctx.strokeStyle = 'blue';
+                    ctx.strokeRect(obj.x - 5, obj.y - obj.height, obj.width + 10, obj.height + 10);
+                    drawHandles(obj);
+                }
+            });
+        }
+
+        function drawHandles(obj) {
+            const handleSize = 6;
+            const corners = [
+                [obj.x - 5, obj.y - obj.height],
+                [obj.x + obj.width + 5, obj.y - obj.height],
+                [obj.x - 5, obj.y + 10],
+                [obj.x + obj.width + 5, obj.y + 10]
+            ];
+            ctx.fillStyle = 'red';
+            corners.forEach(([x, y]) => {
+                ctx.fillRect(x - handleSize / 2, y - handleSize / 2, handleSize, handleSize);
+            });
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            const mouseX = e.offsetX;
+            const mouseY = e.offsetY;
+            selectedText = null;
+
+            texts.forEach(obj => {
+                if (
+                    mouseX >= obj.x - 5 &&
+                    mouseX <= obj.x + obj.width + 5 &&
+                    mouseY >= obj.y - obj.height &&
+                    mouseY <= obj.y + 10
+                ) {
+                    obj.selected = true;
+                    selectedText = obj;
+                    offsetX = mouseX - obj.x;
+                    offsetY = mouseY - obj.y;
+                } else {
+                    obj.selected = false;
+                }
+            });
+
+            draw();
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (selectedText) {
+                selectedText.x = e.offsetX - offsetX;
+                selectedText.y = e.offsetY - offsetY;
+                draw();
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            selectedText = null;
+        });
+    </script>
+</body>
+
+</html>

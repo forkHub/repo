@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<title>Perkalian</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  .nav-instruction {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  .nav-buttons {
+    margin-bottom: 20px;
+  }
+  .nav-buttons button {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+    border-radius: 50%;
+    border: none;
+    background-color: #2196F3;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    outline: none;
+  }
+  .nav-buttons button:hover {
+    background-color: #1976D2;
+  }
+  .nav-buttons button.active {
+    background-color: #0B3D91;
+    box-shadow: 0 0 6px 2px #0B3D91;
+  }
+  .section {
+    display: none;
+  }
+  .section.active {
+    display: block;
+  }
+  .question-wrapper {
+    border: 2px solid #2196F3;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f9fefe;
+  }
+  .question {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1.5px solid #0B3D91;
+    border-radius: 5px;
+    background-color: #e8f0fe;
+  }
+  .option-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .option-row label {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #64b5f6;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    cursor: pointer;
+    flex: 1 1 calc(25% - 10px);
+    box-sizing: border-box;
+  }
+  .option-row label.correct {
+    background-color: #c8e6c9 !important;
+    border-color: #388e3c;
+  }
+  .option-row label.incorrect {
+    background-color: #ffcdd2 !important;
+    border-color: #d32f2f;
+  }
+  input[type="radio"] {
+    cursor: pointer;
+  }
+  .score {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #1a73e8;
+    margin-top: 10px;
+  }
+  button.check-btn, button.nav-btn, button.back-btn {
+    margin-top: 15px;
+    padding: 8px 15px;
+    font-size: 14px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button.check-btn:hover, button.nav-btn:hover, button.back-btn:hover {
+    background-color: #388E3C;
+  }
+  .timer {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #d32f2f;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="nav-instruction">Silakan pilih tombol berikut:</div>
+<div class="nav-buttons" id="navButtons"></div>
+<div id="quizContainer"></div>
+
+<script>
+const navButtonsContainer = document.getElementById("navButtons");
+const quizContainer = document.getElementById("quizContainer");
+
+let timerInterval = null;
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function generateQuestions() {
+  const questions = [];
+  for (let a = 2; a <= 9; a++) {
+    for (let b = 2; b <= 9; b++) {
+      // Kecualikan perkalian dengan 1 dan 10
+      if (a !== 10 && b !== 10) {
+        questions.push({ question: `${a} × ${b}`, answer: a * b });
+      }
+    }
+  }
+  shuffle(questions);
+  return questions.slice(0, 10);
+}
+
+let currentGroupIndex = 0;
+let currentQuestionIndex = 0;
+let groupsQuestions = [];
+
+for (let i = 0; i < 10; i++) {
+  const button = document.createElement("button");
+  button.className = "nav-btn";
+  button.onclick = () => loadSection(i);
+  navButtonsContainer.appendChild(button);
+
+  const section = document.createElement("div");
+  section.className = "section";
+  section.id = `section-${i}`;
+  quizContainer.appendChild(section);
+}
+
+function loadSection(index) {
+  currentGroupIndex = index;
+  currentQuestionIndex = 0;
+
+  document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
+  document.querySelectorAll(".nav-buttons button").forEach(btn => btn.classList.remove("active"));
+
+  document.getElementById(`section-${index}`).classList.add("active");
+  document.querySelectorAll(".nav-buttons button")[index].classList.add("active");
+
+  groupsQuestions[index] = generateQuestions();
+
+  showQuestion();
+}
+
+function showQuestion() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+
+  const section = document.getElementById(`section-${currentGroupIndex}`);
+  section.innerHTML = "";
+
+  const q = groupsQuestions[currentGroupIndex][currentQuestionIndex];
+
+  const timerEl = document.createElement("div");
+  timerEl.className = "timer";
+  section.appendChild(timerEl);
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "question-wrapper";
+
+  const questionEl = document.createElement("div");
+  questionEl.className = "question";
+  questionEl.textContent = q.question;
+  wrapper.appendChild(questionEl);
+
+  const options = [];
+  while (options.length < 10) {
+    const val = Math.floor(Math.random() * 81) + 4;
+    if (!options.includes(val)) options.push(val);
+  }
+  if (!options.includes(q.answer)) {
+    options[Math.floor(Math.random() * 10)] = q.answer;
+  }
+  shuffle(options);
+
+  // Bagi opsi jadi 4 baris (terakhir bisa 1 atau 2 item)
+  const rows = [[], [], [], []];
+  for (let i = 0; i < 10; i++) {
+    rows[Math.floor(i / 3)].push(options[i]);
+  }
+
+  rows.forEach(row => {
+    const rowEl = document.createElement("div");
+    rowEl.className = "option-row";
+    row.forEach(opt => {
+      const label = document.createElement("label");
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = `q-${currentGroupIndex}-${currentQuestionIndex}`;
+      input.value = opt;
+      if (q.selectedAnswer === opt) input.checked = true;
+      label.appendChild(input);
+      label.appendChild(document.createTextNode(" " + opt));
+      rowEl.appendChild(label);
+    });
+    wrapper.appendChild(rowEl);
+  });
+
+  const feedback = document.createElement("div");
+  feedback.className = "feedback";
+
+  const checkBtn = document.createElement("button");
+  checkBtn.className = "check-btn";
+  checkBtn.textContent = "Periksa";
+  checkBtn.onclick = () => {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    const selected = wrapper.querySelector("input[type=radio]:checked");
+    if (!selected) return alert("Pilih jawaban terlebih dahulu.");
+
+    const value = parseInt(selected.value);
+    q.selectedAnswer = value;
+
+    const labels = wrapper.querySelectorAll("label");
+    labels.forEach(label => {
+      const val = parseInt(label.textContent.trim());
+      if (val === q.answer) label.classList.add("correct");
+      else if (val === value) label.classList.add("incorrect");
+      label.querySelector("input").disabled = true;
+    });
+
+    feedback.textContent = value === q.answer ? "✅ Benar" : `❌ Salah. Jawaban: ${q.answer}`;
+    checkBtn.disabled = true;
+    wrapper.appendChild(feedback);
+  };
+  wrapper.appendChild(checkBtn);
+
+  section.appendChild(wrapper);
+
+  // Navigasi soal
+  const navDiv = document.createElement("div");
+  navDiv.style.marginTop = "15px";
+
+  if (currentQuestionIndex > 0) {
+    const prevBtn = document.createElement("button");
+    prevBtn.className = "back-btn";
+    prevBtn.textContent = "Sebelumnya";
+    prevBtn.onclick = () => {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      currentQuestionIndex--;
+      showQuestion();
+    };
+    navDiv.appendChild(prevBtn);
+  }
+
+  if (currentQuestionIndex < groupsQuestions[currentGroupIndex].length - 1) {
+    const nextBtn = document.createElement("button");
+    nextBtn.className = "back-btn";
+    nextBtn.textContent = "Berikutnya";
+    nextBtn.onclick = () => {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      currentQuestionIndex++;
+      showQuestion();
+    };
+    navDiv.appendChild(nextBtn);
+  }
+
+  section.appendChild(navDiv);
+
+  // Timer 10 detik
+  let timeLeft = 10;
+  timerEl.textContent = `Waktu: ${timeLeft} detik`;
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerEl.textContent = `Waktu: ${timeLeft} detik`;
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      if (currentQuestionIndex < groupsQuestions[currentGroupIndex].length - 1) {
+        currentQuestionIndex++;
+        showQuestion();
+      } else {
+        alert("Waktu habis di soal terakhir.");
+      }
+    }
+  }, 1000);
+}
+
+loadSection(0);
+</script>
+</body>
+</html>

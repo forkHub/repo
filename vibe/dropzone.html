@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Image Canvas App</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        canvas {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+
+        #dropZone {
+            border: 2px dashed #aaa;
+            padding: 40px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            background-color: #f9f9f9;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Paste or Drag-and-Drop Image</h1>
+    <p>📋 Paste with <strong>Ctrl+V</strong> or ⌘+V, or 🖱️ drag an image into the box below:</p>
+
+    <div id="dropZone">Drop image here</div>
+    <canvas id="imageCanvas" width="600" height="400"></canvas>
+    <br>
+    <button id="copyButton">📋 Copy Image to Clipboard</button>
+
+    <script>
+        const canvas = document.getElementById('imageCanvas');
+        const ctx = canvas.getContext('2d');
+        const dropZone = document.getElementById('dropZone');
+        const copyButton = document.getElementById('copyButton');
+
+        function displayImage(blob) {
+            const img = new Image();
+            const url = URL.createObjectURL(blob);
+
+            img.onload = () => {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+                URL.revokeObjectURL(url);
+            };
+
+            img.src = url;
+        }
+
+        // Paste handler
+        window.addEventListener('paste', (event) => {
+            const items = event.clipboardData.items;
+            for (const item of items) {
+                if (item.type.startsWith('image/')) {
+                    const blob = item.getAsFile();
+                    displayImage(blob);
+                    break;
+                }
+            }
+        });
+
+        // Drag-and-drop handlers
+        dropZone.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropZone.style.backgroundColor = '#e0f7fa';
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.style.backgroundColor = '#f9f9f9';
+        });
+
+        dropZone.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropZone.style.backgroundColor = '#f9f9f9';
+
+            const files = event.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('image/')) {
+                displayImage(files[0]);
+            }
+        });
+
+        // Copy to clipboard handler
+        copyButton.addEventListener('click', async () => {
+            try {
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                const item = new ClipboardItem({ 'image/png': blob });
+                await navigator.clipboard.write([item]);
+                alert('✅ Image copied to clipboard!');
+            } catch (err) {
+                console.error('Clipboard copy failed:', err);
+                alert('❌ Failed to copy image. Make sure your browser supports Clipboard API.');
+            }
+        });
+    </script>
+</body>
+
+</html>

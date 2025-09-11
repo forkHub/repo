@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive Canvas Measurement</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      gap: 20px;
+    }
+
+    canvas {
+      border: 1px solid black;
+      cursor: crosshair;
+    }
+
+    #info {
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    ul {
+      padding-left: 20px;
+      list-style-type: none;
+    }
+
+    li {
+      margin-bottom: 8px;
+      padding: 4px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    li:hover {
+      background-color: #f0f0f0;
+    }
+
+    li.selected {
+      background-color: #d0eaff;
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" width="800" height="600"></canvas>
+  <div id="info">
+    <h3>Measurements</h3>
+    <ul id="measurementList"></ul>
+    <button id="deleteBtn" disabled>Delete Selected</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const measurementList = document.getElementById('measurementList');
+    const deleteBtn = document.getElementById('deleteBtn');
+
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let isDrawing = false;
+    const measurements = [];
+    let selectedIndex = null;
+
+    canvas.addEventListener('mousedown', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      startX = e.clientX - rect.left;
+      startY = e.clientY - rect.top;
+      isDrawing = true;
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      currentX = e.clientX - rect.left;
+      currentY = e.clientY - rect.top;
+      redrawCanvas(true);
+    });
+
+    canvas.addEventListener('mouseup', (e) => {
+      if (!isDrawing) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const endX = e.clientX - rect.left;
+      const endY = e.clientY - rect.top;
+
+      const dx = endX - startX;
+      const dy = endY - startY;
+      const distance = Math.sqrt(dx * dx + dy * dy).toFixed(2);
+
+      const measurement = { startX, startY, endX, endY, distance };
+      measurements.push(measurement);
+      selectedIndex = null;
+      isDrawing = false;
+      redrawCanvas();
+      updateMeasurementList();
+    });
+
+    function redrawCanvas(showPreview = false) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw saved measurements
+      measurements.forEach((m, index) => {
+        ctx.beginPath();
+        ctx.moveTo(m.startX, m.startY);
+        ctx.lineTo(m.endX, m.endY);
+        ctx.strokeStyle = index === selectedIndex ? 'blue' : 'red';
+        ctx.lineWidth = index === selectedIndex ? 3 : 2;
+        ctx.stroke();
+
+        ctx.fillStyle = 'black';
+        ctx.font = '16px Arial';
+        ctx.fillText(`${m.distance} px`, (m.startX + m.endX) / 2, (m.startY + m.endY) / 2 - 10);
+      });
+
+      // Draw live preview
+      if (showPreview) {
+        const dx = currentX - startX;
+        const dy = currentY - startY;
+        const distance = Math.sqrt(dx * dx + dy * dy).toFixed(2);
+
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(currentX, currentY);
+        ctx.strokeStyle = 'green';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = 'green';
+        ctx.font = '16px Arial';
+        ctx.fillText(`${distance} px`, (startX + currentX) / 2, (startY + currentY) / 2 - 10);
+      }
+    }
+
+    function updateMeasurementList() {
+      measurementList.innerHTML = '';
+      measurements.forEach((m, index) => {
+        const item = document.createElement('li');
+        item.textContent = `#${index + 1}: Start(${m.startX}, ${m.startY}) → End(${m.endX}, ${m.endY}) = ${m.distance} px`;
+        item.className = index === selectedIndex ? 'selected' : '';
+        item.addEventListener('click', () => {
+          selectedIndex = index;
+          redrawCanvas();
+          updateMeasurementList();
+          deleteBtn.disabled = false;
+        });
+        measurementList.appendChild(item);
+      });
+
+      if (selectedIndex === null) {
+        deleteBtn.disabled = true;
+      }
+    }
+
+    deleteBtn.addEventListener('click', () => {
+      if (selectedIndex !== null) {
+        measurements.splice(selectedIndex, 1);
+        selectedIndex = null;
+        redrawCanvas();
+        updateMeasurementList();
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dialpad Modal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .open-modal-btn {
+            padding: 12px 24px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            width: 180px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            font-size: 20px;
+            font-weight: bold;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .close-btn:hover {
+            background-color: #eee;
+        }
+
+        .screen {
+            width: 100%;
+            min-height: 40px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            background-color: white;
+            font-size: 24px;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            word-wrap: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+        }
+
+        .dialpad {
+            display: grid;
+            grid-template-columns: repeat(3, 70px);
+            gap: 15px;
+            justify-content: center;
+        }
+
+        button {
+            font-size: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .controls {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .clear-btn,
+        .backspace-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .clear-btn:hover,
+        .backspace-btn:hover {
+            background-color: #a71d2a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="open-modal-btn" onclick="openModal()">Open Dialpad</button>
+
+    <div id="dialpadModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="screen" id="screen"></div>
+            <div class="dialpad">
+                <button onclick="press('1')">1</button>
+                <button onclick="press('2')">2</button>
+                <button onclick="press('3')">3</button>
+                <button onclick="press('4')">4</button>
+                <button onclick="press('5')">5</button>
+                <button onclick="press('6')">6</button>
+                <button onclick="press('7')">7</button>
+                <button onclick="press('8')">8</button>
+                <button onclick="press('9')">9</button>
+                <button onclick="press('*')">*</button>
+                <button onclick="press('0')">0</button>
+                <button onclick="press('#')">#</button>
+            </div>
+            <div class="controls">
+                <button class="backspace-btn" onclick="backspace()">←</button>
+                <button class="clear-btn" onclick="clearScreen()">C</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let rawInput = '';
+
+        function formatInput(input) {
+            return input.replace(/(.{3})/g, '$1 ').trim();
+        }
+
+        function updateScreen() {
+            const screen = document.getElementById('screen');
+            screen.textContent = formatInput(rawInput);
+        }
+
+        function press(value) {
+            rawInput += value;
+            updateScreen();
+        }
+
+        function clearScreen() {
+            rawInput = '';
+            updateScreen();
+        }
+
+        function backspace() {
+            rawInput = rawInput.slice(0, -1);
+            updateScreen();
+        }
+
+        function openModal() {
+            document.getElementById('dialpadModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('dialpadModal').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

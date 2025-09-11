@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Small Basic Autocomplete with CodeMirror</title>
+  <script type="module">
+    import { EditorView, basicSetup } from "https://esm.sh/@codemirror/basic-setup";
+    import { EditorState } from "https://esm.sh/@codemirror/state";
+    import { autocompletion, completeFromList } from "https://esm.sh/@codemirror/autocomplete";
+
+    const smallBasicDotCompletions = context => {
+      let word = context.matchBefore(/\w+\.$/);
+      if (!word) return null;
+
+      if (word.text === "TextWindow.") {
+        return {
+          from: word.from,
+          options: [
+            { label: "WriteLine", type: "function" },
+            { label: "Read", type: "function" },
+            { label: "ReadNumber", type: "function" }
+          ]
+        };
+      }
+
+      if (word.text === "GraphicsWindow.") {
+        return {
+          from: word.from,
+          options: [
+            { label: "DrawRectangle", type: "function" },
+            { label: "SetColor", type: "function" },
+            { label: "SetSize", type: "function" }
+          ]
+        };
+      }
+
+      return null;
+    };
+
+    const nestedCompletions = context => {
+      let word = context.matchBefore(/\w+\.\w+\.$/);
+      if (!word) return null;
+
+      if (word.text === "TextWindow.WriteLine.") {
+        return {
+          from: word.from,
+          options: [
+            { label: "WithColor", type: "function" },
+            { label: "WithNewLine", type: "function" }
+          ]
+        };
+      }
+
+      return null;
+    };
+
+    const startState = EditorState.create({
+      doc: "",
+      extensions: [
+        basicSetup,
+        autocompletion({
+          override: [smallBasicDotCompletions, nestedCompletions]
+        })
+      ]
+    });
+
+    const view = new EditorView({
+      state: startState,
+      parent: document.body
+    });
+  </script>
+</head>
+<body></body>
+</html>

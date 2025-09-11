@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ANSI to HTML Viewer</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .ansi-red {
+            color: red;
+        }
+
+        .ansi-green {
+            color: limegreen;
+        }
+
+        .ansi-yellow {
+            color: yellow;
+        }
+
+        .ansi-blue {
+            color: dodgerblue;
+        }
+
+        .ansi-reset {
+            color: inherit;
+        }
+
+        pre {
+            background-color: #2e2e2e;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>ANSI to HTML Viewer</h1>
+    <pre>
+        +┌▄▀▓▒░«¡░
+        test
+        +┌▄▀▓▒░«¡░
+        +┌▄▀▓▒░«¡░
+        test 2
+        +┌▄▀▓▒░«¡░
+    
+    </pre>
+    <pre id="output"></pre>
+
+    <script>
+        const ansiText = '\x1b[31mRed text\x1b[0m, \x1b[32mGreen text\x1b[0m, and \x1b[34mBlue text\x1b[0m.';
+
+        function ansiToHtml(text) {
+            return text
+                .replace(/\x1b\[31m/g, '<span class="ansi-red">')
+                .replace(/\x1b\[32m/g, '<span class="ansi-green">')
+                .replace(/\x1b\[33m/g, '<span class="ansi-yellow">')
+                .replace(/\x1b\[34m/g, '<span class="ansi-blue">')
+                .replace(/\x1b\[0m/g, '</span>');
+        }
+
+        document.getElementById('output').innerHTML = ansiToHtml(ansiText);
+    </script>
+
+</body>
+
+</html>

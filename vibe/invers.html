@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>2-Joint Inverse Kinematics</title>
+  <style>
+    canvas { background: #f0f0f0; display: block; margin: auto; }
+  </style>
+</head>
+<body>
+<canvas id="ikCanvas" width="600" height="600"></canvas>
+
+<script>
+const canvas = document.getElementById('ikCanvas');
+const ctx = canvas.getContext('2d');
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+
+const l1 = 150; // length of first segment
+const l2 = 150; // length of second segment
+
+let target = { x: 200, y: 100 };
+
+canvas.addEventListener('click', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  target.x = e.clientX - rect.left - centerX;
+  target.y = e.clientY - rect.top - centerY;
+  draw();
+});
+
+function inverseKinematics(x, y) {
+  const dist = Math.sqrt(x * x + y * y);
+  if (dist > l1 + l2) return null;
+
+  const cosA2 = (x * x + y * y - l1 * l1 - l2 * l2) / (2 * l1 * l2);
+  const sinA2 = Math.sqrt(1 - cosA2 * cosA2);
+  const angle2 = Math.atan2(sinA2, cosA2);
+
+  const k1 = l1 + l2 * cosA2;
+  const k2 = l2 * sinA2;
+  const angle1 = Math.atan2(y, x) - Math.atan2(k2, k1);
+
+  return { angle1, angle2 };
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Translate to center
+  ctx.save();
+  ctx.translate(centerX, centerY);
+
+  const ik = inverseKinematics(target.x, target.y);
+  if (!ik) {
+    ctx.fillStyle = 'red';
+    ctx.fillText("Target out of reach", -50, 0);
+    ctx.restore();
+    return;
+  }
+
+  const { angle1, angle2 } = ik;
+
+  const x1 = l1 * Math.cos(angle1);
+  const y1 = l1 * Math.sin(angle1);
+  const x2 = x1 + l2 * Math.cos(angle1 + angle2);
+  const y2 = y1 + l2 * Math.sin(angle1 + angle2);
+
+  // Draw arm
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+
+  // Draw joints
+  ctx.fillStyle = 'blue';
+  ctx.beginPath();
+  ctx.arc(0, 0, 6, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(x1, y1, 6, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Draw end effector
+  ctx.fillStyle = 'green';
+  ctx.beginPath();
+  ctx.arc(x2, y2, 6, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Draw target
+  ctx.fillStyle = 'red';
+  ctx.beginPath();
+  ctx.arc(target.x, target.y, 5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+draw();
+</script>
+</body>
+</html>
